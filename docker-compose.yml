@@ -1,0 +1,27 @@
+---
+services:
+  scaffold.webapi:
+    build:
+      context: "."
+      dockerfile: Sources/Scaffold.WebApi/Dockerfile
+    depends_on:
+      - postgres
+    environment:
+      ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=postgres;Username=postgres;
+    image: "${DOCKER_REGISTRY}scaffold-webapi"
+    ports:
+      -
+        mode: ingress
+        protocol: tcp
+        published: 80
+        target: 80
+  postgres:
+    image: "postgres:latest"
+    volumes:
+      -
+        source: postgres_pgdata
+        target: /var/lib/postgresql/data
+        type: volume
+version: "3.5"
+volumes:
+  postgres_pgdata: ~

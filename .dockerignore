@@ -1,0 +1,13 @@
+.dockerignore
+.env
+.git
+.gitattributes
+.gitignore
+.vs
+.vscode
+docker-compose.yml
+docker-compose.*.yml
+Docs
+README.md
+*/*/bin
+*/*/obj

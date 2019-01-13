@@ -1,0 +1,13 @@
+---
+services:
+  scaffold.webapi:
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+  postgres:
+    ports:
+      -
+        mode: ingress
+        protocol: tcp
+        published: 5432
+        target: 5432
+version: "3.5"
