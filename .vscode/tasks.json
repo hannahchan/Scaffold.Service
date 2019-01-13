@@ -1,0 +1,84 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "preLaunch",
+            "dependsOn": [
+                "build",
+                "startPostgres"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "postDebug",
+            "dependsOn": [
+                "stopPostgres"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "clean",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "clean"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "restore",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "restore"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "startPostgres",
+            "command": "docker-compose",
+            "dependsOn": [
+                "stopPostgres"
+            ],
+            "type": "process",
+            "args": [
+                "up",
+                "-d",
+                "postgres"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "never",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "stopPostgres",
+            "command": "docker-compose",
+            "type": "process",
+            "args": [
+                "down"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "never",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true
+            },
+            "problemMatcher": []
+        }
+    ]
+}

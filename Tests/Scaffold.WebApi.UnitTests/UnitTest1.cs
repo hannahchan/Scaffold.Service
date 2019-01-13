@@ -1,14 +1,12 @@
-using System;
-using Xunit;
-
 namespace Scaffold.WebApi.UnitTests
 {
+    using Xunit;
+
     public class UnitTest1
     {
         [Fact]
         public void Test1()
         {
-
         }
     }
 }
