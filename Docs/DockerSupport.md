@@ -25,3 +25,11 @@ To stop your Web API running in Docker, run;
 This will stop your Web API and the PostgreSQL containers that were running in the background. This command will also leave behind a Docker volume belonging to PostgreSQL which contains any data that was persisted to the database. To remove this volume, run;
 
 `docker-compose down --volume`
+
+## Running the PostgreSQL Database Only ##
+
+When developing your Web API, you may only want to run the PostgreSQL database locally in Docker and not the Web API. To do this use the command;
+
+`docker-compose up -d postgres`
+
+This is ideal if you don't want to install PostgreSQL onto your computer or need to manage different versions for different projects. In this scenario you would run your Web API natively on your machine.
