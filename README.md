@@ -13,4 +13,4 @@ To bootstrap your next WebApi project with Scaffold.WebApi.
 
 ## Example App ##
 
-Scaffold.WebApi includes an example application which is intended to be replaced with your actual application when using this template. The example application has only been included to help demonstrate features provided by this template.
+Scaffold.WebApi includes an example application which is intended to be replaced with your actual application when using this template. This example application has been included to help demonstrate features in this template.
