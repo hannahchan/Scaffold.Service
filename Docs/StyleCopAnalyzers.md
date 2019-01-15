@@ -10,7 +10,7 @@ For each C# project you want code analysis on, you'll need to add StyleCop to th
 
 By default, StyleCop will apply all StyleCop rules to your project. To control the severity of individual rules, you'll need to reference a rule set file in your `.csproj` file. A configured rule set file has been included in the root directory of this project.
 
-Assuming your C# project is located either in the [Sources](../Sources) or [Tests](../Tests) directory of this project, you can add the included rule set file by adding the following under the `<PropertyGroup>` section of your `.csproj` file.
+Assuming your C# project is located either in the [Sources](../Sources) or [Tests](../Tests) directories of this project, you can add the included rule set file by including the following under the `<PropertyGroup>` section of your `.csproj` file.
 
 `<CodeAnalysisRuleSet>../../StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>`
 
