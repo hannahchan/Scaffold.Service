@@ -16,6 +16,11 @@ namespace Scaffold.WebApi.Filters
                 context.Result = new ConflictObjectResult(new ErrorResponse(domainException));
             }
 
+            if (context.Exception is IntegrationException integrationException)
+            {
+                context.Result = new ObjectResult(new ErrorResponse(integrationException)) { StatusCode = 503 };
+            }
+
             if (context.Exception is NotFoundException notFoundException)
             {
                 context.Result = new NotFoundObjectResult(new ErrorResponse(notFoundException));
