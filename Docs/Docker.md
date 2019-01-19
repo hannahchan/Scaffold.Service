@@ -16,7 +16,7 @@ Scaffold.WebApi can be run locally in Docker without installing the prerequisite
 
 `docker-compose up -d`
 
-If a container image of the Web API doesn't exist, this command will also build it. Once up and running you can access the Web API by going to `http://localhost`.
+If a container image of the Web API doesn't exist, this command will also build it. Once up and running you can access the Web API on `localhost`.
 
 To stop the Web API running in Docker, run;
 
