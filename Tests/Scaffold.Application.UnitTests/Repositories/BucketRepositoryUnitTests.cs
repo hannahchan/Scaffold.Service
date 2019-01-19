@@ -1,0 +1,307 @@
+namespace Scaffold.Application.UnitTests.Repositories
+{
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
+    using Scaffold.Application.Repositories;
+    using Scaffold.Data;
+    using Scaffold.Domain.Entities;
+    using Xunit;
+
+    public class BucketRepositoryUnitTests
+    {
+        private readonly DbContextOptions<BucketContext> dbContextOptions;
+
+        public BucketRepositoryUnitTests()
+        {
+            this.dbContextOptions = new DbContextOptionsBuilder<BucketContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+        }
+
+        public class Add : BucketRepositoryUnitTests
+        {
+            [Fact]
+            public void When_AddingNewBucket_Expect_Saved()
+            {
+                // Arrange
+                Bucket bucket = new Bucket();
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    repository.Add(bucket);
+                }
+
+                // Assert
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    Bucket result = context.Set<Bucket>().Find(bucket.Id);
+
+                    Assert.Equal(1, context.Set<Bucket>().Count());
+                    Assert.NotEqual(bucket, result);
+                    Assert.Equal(bucket.Id, result.Id);
+                }
+            }
+        }
+
+        public class AddAsync : BucketRepositoryUnitTests
+        {
+            [Fact]
+            public async Task When_AddingNewBucket_Expect_Saved()
+            {
+                // Arrange
+                Bucket bucket = new Bucket();
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    await repository.AddAsync(bucket);
+                }
+
+                // Assert
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    Bucket result = context.Set<Bucket>().Find(bucket.Id);
+
+                    Assert.Equal(1, context.Set<Bucket>().Count());
+                    Assert.NotEqual(bucket, result);
+                    Assert.Equal(bucket.Id, result.Id);
+                }
+            }
+        }
+
+        public class Get : BucketRepositoryUnitTests
+        {
+            [Fact]
+            public void When_GettingExistingBucket_Expect_ExistingBucket()
+            {
+                // Arrange
+                Bucket bucket = new Bucket();
+
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(bucket);
+                    context.SaveChanges();
+                }
+
+                Bucket result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = repository.Get(bucket.Id);
+                }
+
+                // Assert
+                Assert.NotEqual(bucket, result);
+                Assert.Equal(bucket.Id, result.Id);
+                Assert.Equal(bucket.Name, result.Name);
+            }
+
+            [Fact]
+            public void When_GettingNonExistingBucket_Expect_Null()
+            {
+                // Arrange
+                Bucket result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = repository.Get(new Random().Next(int.MaxValue));
+                }
+
+                // Assert
+                Assert.Null(result);
+            }
+        }
+
+        public class GetAsync : BucketRepositoryUnitTests
+        {
+            [Fact]
+            public async Task When_GettingExistingBucket_Expect_ExistingBucket()
+            {
+                // Arrange
+                Bucket bucket = new Bucket();
+
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(bucket);
+                    context.SaveChanges();
+                }
+
+                Bucket result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = await repository.GetAsync(bucket.Id);
+                }
+
+                // Assert
+                Assert.NotEqual(bucket, result);
+                Assert.Equal(bucket.Id, result.Id);
+                Assert.Equal(bucket.Name, result.Name);
+            }
+
+            [Fact]
+            public async Task When_GettingNonExistingBucket_Expect_Null()
+            {
+                // Arrange
+                Bucket result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = await repository.GetAsync(new Random().Next(int.MaxValue));
+                }
+
+                // Assert
+                Assert.Null(result);
+            }
+        }
+
+        public class Remove : BucketRepositoryUnitTests
+        {
+            [Fact]
+            public void When_RemovingExistingBucket_Expect_Removed()
+            {
+                // Arrange
+                Bucket bucket = new Bucket();
+
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(bucket);
+                    context.SaveChanges();
+                }
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    repository.Remove(bucket);
+                }
+
+                // Assert
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    Assert.Null(context.Set<Bucket>().Find(bucket.Id));
+                    Assert.Equal(0, context.Set<Bucket>().Count());
+                }
+            }
+        }
+
+        public class RemoveAsync : BucketRepositoryUnitTests
+        {
+            [Fact]
+            public async Task When_RemovingExistingBucket_Expect_Removed()
+            {
+                // Arrange
+                Bucket bucket = new Bucket();
+
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(bucket);
+                    context.SaveChanges();
+                }
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    await repository.RemoveAsync(bucket);
+                }
+
+                // Assert
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    Assert.Null(context.Set<Bucket>().Find(bucket.Id));
+                    Assert.Equal(0, context.Set<Bucket>().Count());
+                }
+            }
+        }
+
+        public class Update : BucketRepositoryUnitTests
+        {
+            [Fact]
+            public void When_UpdatingExistingBucket_Expect_Updated()
+            {
+                // Arrange
+                Bucket bucket = new Bucket();
+
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(bucket);
+                    context.SaveChanges();
+                }
+
+                string newValue = Guid.NewGuid().ToString();
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    bucket.Name = newValue;
+                    repository.Update(bucket);
+                }
+
+                // Assert
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    Bucket result = context.Set<Bucket>().Find(bucket.Id);
+
+                    Assert.NotEqual(bucket, result);
+                    Assert.Equal(bucket.Id, result.Id);
+                    Assert.Equal(newValue, result.Name);
+
+                    Assert.Equal(1, context.Set<Bucket>().Count());
+                }
+            }
+        }
+
+        public class UpdateAsync : BucketRepositoryUnitTests
+        {
+            [Fact]
+            public async Task When_UpdatingExistingBucket_Expect_Updated()
+            {
+                // Arrange
+                Bucket bucket = new Bucket();
+
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(bucket);
+                    context.SaveChanges();
+                }
+
+                string newValue = Guid.NewGuid().ToString();
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    bucket.Name = newValue;
+                    await repository.UpdateAsync(bucket);
+                }
+
+                // Assert
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    Bucket result = context.Set<Bucket>().Find(bucket.Id);
+
+                    Assert.NotEqual(bucket, result);
+                    Assert.Equal(bucket.Id, result.Id);
+                    Assert.Equal(newValue, result.Name);
+
+                    Assert.Equal(1, context.Set<Bucket>().Count());
+                }
+            }
+        }
+    }
+}
