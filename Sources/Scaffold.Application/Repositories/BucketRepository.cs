@@ -16,12 +16,22 @@ namespace Scaffold.Application.Repositories
 
         public void Add(Bucket bucket)
         {
+            if (bucket == null)
+            {
+                throw new ArgumentNullException(nameof(bucket));
+            }
+
             this.context.Set<Bucket>().Add(bucket);
             this.context.SaveChanges();
         }
 
         public async Task AddAsync(Bucket bucket)
         {
+            if (bucket == null)
+            {
+                throw new ArgumentNullException(nameof(bucket));
+            }
+
             this.context.Set<Bucket>().Add(bucket);
             await this.context.SaveChangesAsync();
         }
@@ -40,24 +50,44 @@ namespace Scaffold.Application.Repositories
 
         public void Remove(Bucket bucket)
         {
+            if (bucket == null)
+            {
+                throw new ArgumentNullException(nameof(bucket));
+            }
+
             this.context.Set<Bucket>().Remove(bucket);
             this.context.SaveChanges();
         }
 
         public async Task RemoveAsync(Bucket bucket)
         {
+            if (bucket == null)
+            {
+                throw new ArgumentNullException(nameof(bucket));
+            }
+
             this.context.Set<Bucket>().Remove(bucket);
             await this.context.SaveChangesAsync();
         }
 
         public void Update(Bucket bucket)
         {
+            if (bucket == null)
+            {
+                throw new ArgumentNullException(nameof(bucket));
+            }
+
             this.context.Set<Bucket>().Update(bucket);
             this.context.SaveChanges();
         }
 
         public async Task UpdateAsync(Bucket bucket)
         {
+            if (bucket == null)
+            {
+                throw new ArgumentNullException(nameof(bucket));
+            }
+
             this.context.Set<Bucket>().Update(bucket);
             await this.context.SaveChangesAsync();
         }

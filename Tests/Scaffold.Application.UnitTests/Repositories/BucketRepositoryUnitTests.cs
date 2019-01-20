@@ -45,6 +45,22 @@ namespace Scaffold.Application.UnitTests.Repositories
                     Assert.Equal(bucket.Id, result.Id);
                 }
             }
+
+            [Fact]
+            public void When_AddingNull_Expect_ArgumentNullException()
+            {
+                // Arrange
+                BucketContext context = new BucketContext(this.dbContextOptions);
+                IBucketRepository repository = new BucketRepository(context);
+
+                // Act
+                Exception exception = Record.Exception(() => repository.Add(null));
+
+                // Assert
+                Assert.NotNull(exception);
+                Assert.IsType<ArgumentNullException>(exception);
+                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
+            }
         }
 
         public class AddAsync : BucketRepositoryUnitTests
@@ -71,6 +87,22 @@ namespace Scaffold.Application.UnitTests.Repositories
                     Assert.NotEqual(bucket, result);
                     Assert.Equal(bucket.Id, result.Id);
                 }
+            }
+
+            [Fact]
+            public async Task When_AddingNull_Expect_ArgumentNullException()
+            {
+                // Arrange
+                BucketContext context = new BucketContext(this.dbContextOptions);
+                IBucketRepository repository = new BucketRepository(context);
+
+                // Act
+                Exception exception = await Record.ExceptionAsync(() => repository.AddAsync(null));
+
+                // Assert
+                Assert.NotNull(exception);
+                Assert.IsType<ArgumentNullException>(exception);
+                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
         }
 
@@ -196,6 +228,22 @@ namespace Scaffold.Application.UnitTests.Repositories
                     Assert.Equal(0, context.Set<Bucket>().Count());
                 }
             }
+
+            [Fact]
+            public void When_RemovingNull_Expect_ArgumentNullException()
+            {
+                // Arrange
+                BucketContext context = new BucketContext(this.dbContextOptions);
+                IBucketRepository repository = new BucketRepository(context);
+
+                // Act
+                Exception exception = Record.Exception(() => repository.Remove(null));
+
+                // Assert
+                Assert.NotNull(exception);
+                Assert.IsType<ArgumentNullException>(exception);
+                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
+            }
         }
 
         public class RemoveAsync : BucketRepositoryUnitTests
@@ -225,6 +273,22 @@ namespace Scaffold.Application.UnitTests.Repositories
                     Assert.Null(context.Set<Bucket>().Find(bucket.Id));
                     Assert.Equal(0, context.Set<Bucket>().Count());
                 }
+            }
+
+            [Fact]
+            public async Task When_RemovingNull_Expect_ArgumentNullException()
+            {
+                // Arrange
+                BucketContext context = new BucketContext(this.dbContextOptions);
+                IBucketRepository repository = new BucketRepository(context);
+
+                // Act
+                Exception exception = await Record.ExceptionAsync(() => repository.RemoveAsync(null));
+
+                // Assert
+                Assert.NotNull(exception);
+                Assert.IsType<ArgumentNullException>(exception);
+                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
         }
 
@@ -264,6 +328,22 @@ namespace Scaffold.Application.UnitTests.Repositories
                     Assert.Equal(1, context.Set<Bucket>().Count());
                 }
             }
+
+            [Fact]
+            public void When_UpdatingNull_Expect_ArgumentNullException()
+            {
+                // Arrange
+                BucketContext context = new BucketContext(this.dbContextOptions);
+                IBucketRepository repository = new BucketRepository(context);
+
+                // Act
+                Exception exception = Record.Exception(() => repository.Update(null));
+
+                // Assert
+                Assert.NotNull(exception);
+                Assert.IsType<ArgumentNullException>(exception);
+                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
+            }
         }
 
         public class UpdateAsync : BucketRepositoryUnitTests
@@ -301,6 +381,22 @@ namespace Scaffold.Application.UnitTests.Repositories
 
                     Assert.Equal(1, context.Set<Bucket>().Count());
                 }
+            }
+
+            [Fact]
+            public async Task When_UpdatingNull_Expect_ArgumentNullException()
+            {
+                // Arrange
+                BucketContext context = new BucketContext(this.dbContextOptions);
+                IBucketRepository repository = new BucketRepository(context);
+
+                // Act
+                Exception exception = await Record.ExceptionAsync(() => repository.UpdateAsync(null));
+
+                // Assert
+                Assert.NotNull(exception);
+                Assert.IsType<ArgumentNullException>(exception);
+                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
         }
     }
