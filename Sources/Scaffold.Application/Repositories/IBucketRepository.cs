@@ -1,6 +1,7 @@
 namespace Scaffold.Application.Repositories
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Scaffold.Domain.Entities;
 
@@ -11,6 +12,10 @@ namespace Scaffold.Application.Repositories
         Task AddAsync(Bucket bucket);
 
         Bucket Get(int id);
+
+        IList<Bucket> GetAll();
+
+        Task<IList<Bucket>> GetAllAsync();
 
         Task<Bucket> GetAsync(int id);
 

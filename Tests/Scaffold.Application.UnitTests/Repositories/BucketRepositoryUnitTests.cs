@@ -1,6 +1,7 @@
 namespace Scaffold.Application.UnitTests.Repositories
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
@@ -153,6 +154,104 @@ namespace Scaffold.Application.UnitTests.Repositories
             }
         }
 
+        public class GetAll : BucketRepositoryUnitTests
+        {
+            [Fact]
+            public void When_GettingExistingBuckets_Expect_ExistingBuckets()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(new Bucket());
+                    context.Set<Bucket>().Add(new Bucket());
+                    context.Set<Bucket>().Add(new Bucket());
+
+                    context.SaveChanges();
+                }
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = repository.GetAll();
+                }
+
+                // Assert
+                Assert.NotNull(result);
+                Assert.NotEmpty(result);
+                Assert.Equal(3, result.Count);
+            }
+
+            [Fact]
+            public void When_GettingNonExistingBuckets_Expect_EmptyList()
+            {
+                // Arrange
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = repository.GetAll();
+                }
+
+                // Assert
+                Assert.NotNull(result);
+                Assert.Empty(result);
+            }
+        }
+
+        public class GetAllAsync : BucketRepositoryUnitTests
+        {
+            [Fact]
+            public async Task When_GettingExistingBuckets_Expect_ExistingBuckets()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(new Bucket());
+                    context.Set<Bucket>().Add(new Bucket());
+                    context.Set<Bucket>().Add(new Bucket());
+
+                    await context.SaveChangesAsync();
+                }
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = await repository.GetAllAsync();
+                }
+
+                // Assert
+                Assert.NotNull(result);
+                Assert.NotEmpty(result);
+                Assert.Equal(3, result.Count);
+            }
+
+            [Fact]
+            public async Task When_GettingNonExistingBuckets_Expect_EmptyList()
+            {
+                // Arrange
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = await repository.GetAllAsync();
+                }
+
+                // Assert
+                Assert.NotNull(result);
+                Assert.Empty(result);
+            }
+        }
+
         public class GetAsync : BucketRepositoryUnitTests
         {
             [Fact]
@@ -164,7 +263,7 @@ namespace Scaffold.Application.UnitTests.Repositories
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     context.Set<Bucket>().Add(bucket);
-                    context.SaveChanges();
+                    await context.SaveChangesAsync();
                 }
 
                 Bucket result;
@@ -257,7 +356,7 @@ namespace Scaffold.Application.UnitTests.Repositories
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     context.Set<Bucket>().Add(bucket);
-                    context.SaveChanges();
+                    await context.SaveChangesAsync();
                 }
 
                 // Act
@@ -357,7 +456,7 @@ namespace Scaffold.Application.UnitTests.Repositories
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     context.Set<Bucket>().Add(bucket);
-                    context.SaveChanges();
+                    await context.SaveChangesAsync();
                 }
 
                 string newValue = Guid.NewGuid().ToString();

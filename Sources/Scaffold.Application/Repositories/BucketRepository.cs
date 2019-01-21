@@ -1,6 +1,7 @@
 namespace Scaffold.Application.Repositories
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
@@ -41,6 +42,16 @@ namespace Scaffold.Application.Repositories
                 .Where(bucket => bucket.Id == id)
                 .Include(bucket => bucket.Items)
                 .SingleOrDefault();
+
+        public IList<Bucket> GetAll() =>
+            this.context.Set<Bucket>()
+                .Include(bucket => bucket.Items)
+                .ToList();
+
+        public async Task<IList<Bucket>> GetAllAsync() =>
+            await this.context.Set<Bucket>()
+                .Include(bucket => bucket.Items)
+                .ToListAsync();
 
         public async Task<Bucket> GetAsync(int id) =>
             await this.context.Set<Bucket>()
