@@ -17,5 +17,9 @@ namespace Scaffold.Application.Exceptions
             : base(message, innerException)
         {
         }
+
+        public virtual string Detail { get; set; }
+
+        public virtual string Title { get; set; }
     }
 }

@@ -17,5 +17,7 @@ namespace Scaffold.Application.Exceptions
             : base(message, innerException)
         {
         }
+
+        public virtual int Status { get; set; }
     }
 }
