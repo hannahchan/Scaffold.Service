@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="8.1.2" />
     <PackageReference Include="MediatR" Version="6.0.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
