@@ -179,7 +179,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 bucket = configuration.CreateMapper().Map<UpdateBucket.Command, Bucket>(command, bucket);
 
                 // Assert
-                Assert.NotNull(bucket.Id);
                 Assert.Null(bucket.Name);
                 Assert.Null(bucket.Description);
             }
