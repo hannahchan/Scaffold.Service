@@ -12,8 +12,8 @@ namespace Scaffold.Application.Repositories
     {
         private readonly BucketContext context;
 
-        public BucketRepository(BucketContext modernContext) =>
-            this.context = modernContext;
+        public BucketRepository(BucketContext context) =>
+            this.context = context;
 
         public void Add(Bucket bucket)
         {

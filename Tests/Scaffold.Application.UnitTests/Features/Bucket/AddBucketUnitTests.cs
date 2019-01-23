@@ -1,4 +1,4 @@
-namespace Scaffold.Application.UnitTests.Features
+namespace Scaffold.Application.UnitTests.Features.Bucket
 {
     using System;
     using System.Threading;
@@ -17,11 +17,11 @@ namespace Scaffold.Application.UnitTests.Features
 
         public AddBucketUnitTests()
         {
-            BucketContext modernContext = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
+            BucketContext context = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options);
 
-            this.repository = new BucketRepository(modernContext);
+            this.repository = new BucketRepository(context);
         }
 
         public class Validator
