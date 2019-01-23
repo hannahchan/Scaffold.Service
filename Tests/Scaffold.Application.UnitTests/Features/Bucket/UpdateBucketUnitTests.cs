@@ -134,7 +134,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             {
                 // Arrange
                 Bucket bucket = new Bucket { Name = "abc", Description = "xyz" };
-                UpdateBucket.Command command = new UpdateBucket.Command { Name = string.Empty };
+                UpdateBucket.Command command = new UpdateBucket.Command { Name = "def" };
 
                 MapperConfiguration configuration = new MapperConfiguration(config =>
                     config.AddProfile(new UpdateBucket.MappingProfile()));
@@ -143,7 +143,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 bucket = configuration.CreateMapper().Map<UpdateBucket.Command, Bucket>(command, bucket);
 
                 // Assert
-                Assert.Equal(string.Empty, bucket.Name);
+                Assert.Equal("def", bucket.Name);
                 Assert.Equal("xyz", bucket.Description);
             }
 
@@ -152,7 +152,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             {
                 // Arrange
                 Bucket bucket = new Bucket { Name = "abc", Description = "xyz" };
-                UpdateBucket.Command command = new UpdateBucket.Command { Description = string.Empty };
+                UpdateBucket.Command command = new UpdateBucket.Command { Description = "uvw" };
 
                 MapperConfiguration configuration = new MapperConfiguration(config =>
                     config.AddProfile(new UpdateBucket.MappingProfile()));
@@ -162,7 +162,26 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 // Assert
                 Assert.Equal("abc", bucket.Name);
-                Assert.Equal(string.Empty, bucket.Description);
+                Assert.Equal("uvw", bucket.Description);
+            }
+
+            [Fact]
+            public void When_MappingCommandToBucketWithEmptyStringProperties_Expect_NullMappedToStringProperties()
+            {
+                // Arrange
+                Bucket bucket = new Bucket { Name = "abc", Description = "xyz" };
+                UpdateBucket.Command command = new UpdateBucket.Command { Name = string.Empty, Description = string.Empty };
+
+                MapperConfiguration configuration = new MapperConfiguration(config =>
+                    config.AddProfile(new UpdateBucket.MappingProfile()));
+
+                // Act
+                bucket = configuration.CreateMapper().Map<UpdateBucket.Command, Bucket>(command, bucket);
+
+                // Assert
+                Assert.NotNull(bucket.Id);
+                Assert.Null(bucket.Name);
+                Assert.Null(bucket.Description);
             }
         }
     }
