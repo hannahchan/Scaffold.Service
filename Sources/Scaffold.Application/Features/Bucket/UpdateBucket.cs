@@ -32,6 +32,7 @@ namespace Scaffold.Application.Features.Bucket
             public Validator()
             {
                 this.RuleFor(command => command.Id).NotEmpty();
+                this.RuleFor(command => command.Name).NotEmpty().When(command => command.Name != null);
             }
         }
 

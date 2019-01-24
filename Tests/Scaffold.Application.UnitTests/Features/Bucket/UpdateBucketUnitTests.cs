@@ -37,6 +37,8 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 // Act and Assert
                 validator.ShouldNotHaveValidationErrorFor(command => command.Id, new Random().Next(int.MaxValue));
+                validator.ShouldNotHaveValidationErrorFor(command => command.Name, Guid.NewGuid().ToString());
+                validator.ShouldNotHaveValidationErrorFor(command => command.Name, value: null);
             }
 
             [Fact]
@@ -47,6 +49,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 // Act and Assert
                 validator.ShouldHaveValidationErrorFor(command => command.Id, default(int));
+                validator.ShouldHaveValidationErrorFor(command => command.Name, string.Empty);
             }
         }
 
