@@ -9,6 +9,7 @@ namespace Scaffold.Application.Features.Bucket
     using Scaffold.Application.Exceptions;
     using Scaffold.Application.Repositories;
     using Scaffold.Domain.Entities;
+    using Scaffold.Domain.Exceptions;
 
     public class UpdateBucket
     {
@@ -30,7 +31,7 @@ namespace Scaffold.Application.Features.Bucket
         {
             public Validator()
             {
-                this.RuleFor(command => command.Name).NotEmpty().NotNull();
+                this.RuleFor(command => command.Id).NotEmpty();
             }
         }
 
@@ -51,8 +52,15 @@ namespace Scaffold.Application.Features.Bucket
 
                 await new Validator().ValidateAndThrowAsync(command);
 
-                MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(new MappingProfile()));
-                response.Bucket = configuration.CreateMapper().Map<Command, Bucket>(command, response.Bucket);
+                try
+                {
+                    MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(new MappingProfile()));
+                    response.Bucket = configuration.CreateMapper().Map<Command, Bucket>(command, response.Bucket);
+                }
+                catch (AutoMapperMappingException exception) when (exception.InnerException is DomainException)
+                {
+                    throw exception.InnerException;
+                }
 
                 await this.repository.UpdateAsync(response.Bucket);
 

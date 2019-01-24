@@ -36,8 +36,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 UpdateBucket.Validator validator = new UpdateBucket.Validator();
 
                 // Act and Assert
-                validator.ShouldNotHaveValidationErrorFor(command => command.Name, Guid.NewGuid().ToString());
-                validator.ShouldNotHaveValidationErrorFor(command => command.Description, Guid.NewGuid().ToString());
+                validator.ShouldNotHaveValidationErrorFor(command => command.Id, new Random().Next(int.MaxValue));
             }
 
             [Fact]
@@ -47,8 +46,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 UpdateBucket.Validator validator = new UpdateBucket.Validator();
 
                 // Act and Assert
-                validator.ShouldHaveValidationErrorFor(command => command.Name, string.Empty);
-                validator.ShouldHaveValidationErrorFor(command => command.Name, null as string);
+                validator.ShouldHaveValidationErrorFor(command => command.Id, default(int));
             }
         }
 
