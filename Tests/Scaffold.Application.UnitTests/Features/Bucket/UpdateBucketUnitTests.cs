@@ -115,6 +115,12 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Assert.NotNull(exception);
                 Assert.IsType<ValidationException>(exception);
             }
+
+            [Fact(Skip = "Not Implemented")]
+            public void When_UpdatingBucketResultingInDomainConflict_Expect_DomainException()
+            {
+                // Not Implemented
+            }
         }
 
         public class MappingProfile
