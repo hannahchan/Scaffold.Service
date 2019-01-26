@@ -5,6 +5,9 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Scaffold.Data;
+    using Scaffold.WebApi.Extensions;
+    using Scaffold.WebApi.Filters;
 
     public class Startup
     {
@@ -18,24 +21,28 @@
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddHealthChecks()
+                .AddDbContextCheck<BucketContext>();
+
+            services
+                .AddDbContext(this.Configuration)
+                .AddOptions(this.Configuration)
+                .AddRepositories()
+                .AddServices()
+                .AddUtilities();
+
+            services.AddMvcCore(options => options.Filters.Add(new ExceptionFilter()))
+                .AddCustomJsonFormatters()
+                .AddCustomXmlFormatters()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-
-            app.UseHttpsRedirection();
-            app.UseMvc();
+            app
+                .UseMiddleware()
+                .UseMvc();
         }
     }
 }
