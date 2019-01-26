@@ -58,7 +58,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
             {
                 // Arrange
                 Bucket bucket = new Bucket();
-                this.repository.Add(bucket);
+                await this.repository.AddAsync(bucket);
 
                 AddItem.Command command = new AddItem.Command
                 {
