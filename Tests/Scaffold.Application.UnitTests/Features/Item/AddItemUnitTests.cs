@@ -75,7 +75,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 Assert.NotEqual(default(int), response.Item.Id);
                 Assert.Equal(command.Name, response.Item.Name);
                 Assert.Equal(bucket, response.Item.Bucket);
-                Assert.Contains(response.Item, bucket.Items);
+                Assert.Contains(response.Item, response.Item.Bucket.Items);
             }
 
             [Fact]
