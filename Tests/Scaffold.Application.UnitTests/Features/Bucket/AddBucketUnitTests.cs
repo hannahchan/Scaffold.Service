@@ -45,7 +45,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 // Act and Assert
                 validator.ShouldHaveValidationErrorFor(command => command.Name, string.Empty);
-                validator.ShouldHaveValidationErrorFor(command => command.Name, null as string);
+                validator.ShouldHaveValidationErrorFor(command => command.Name, value: null);
             }
         }
 
@@ -58,7 +58,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 AddBucket.Command command = new AddBucket.Command
                 {
                     Name = Guid.NewGuid().ToString(),
-                    Description = Guid.NewGuid().ToString()
                 };
 
                 AddBucket.Handler handler = new AddBucket.Handler(this.repository);
