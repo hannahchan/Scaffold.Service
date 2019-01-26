@@ -54,7 +54,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
         public class Handler : AddItemUnitTests
         {
             [Fact]
-            public async Task When_AddingNewItemToExistingBucket_Expect_AddedItem()
+            public async Task When_AddingNewItemToBucket_Expect_AddedItem()
             {
                 // Arrange
                 Bucket bucket = new Bucket();

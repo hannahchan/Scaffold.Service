@@ -28,11 +28,11 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
         public class Handler : RemoveBucketUnitTests
         {
             [Fact]
-            public async Task When_RemovingExistingBucket_Expect_Removed()
+            public async Task When_RemovingBucket_Expect_Removed()
             {
                 // Arrange
                 Bucket bucket = new Bucket();
-                this.repository.Add(bucket);
+                await this.repository.AddAsync(bucket);
 
                 RemoveBucket.Command command = new RemoveBucket.Command { Id = bucket.Id };
                 RemoveBucket.Handler handler = new RemoveBucket.Handler(this.repository);
@@ -49,7 +49,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             {
                 // Arrange
                 Bucket bucket = new Bucket();
-                this.repository.Add(bucket);
+                await this.repository.AddAsync(bucket);
 
                 RemoveBucket.Command command = new RemoveBucket.Command { Id = new Random().Next(int.MaxValue) };
                 RemoveBucket.Handler handler = new RemoveBucket.Handler(this.repository);

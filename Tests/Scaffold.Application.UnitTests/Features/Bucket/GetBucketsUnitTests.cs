@@ -26,12 +26,12 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
         public class Handler : GetBucketsUnitTests
         {
             [Fact]
-            public async Task When_GettingExistingBuckets_Expect_ExistingBuckets()
+            public async Task When_GettingBuckets_Expect_ExistingBuckets()
             {
                 // Arrange
-                this.repository.Add(new Bucket());
-                this.repository.Add(new Bucket());
-                this.repository.Add(new Bucket());
+                await this.repository.AddAsync(new Bucket());
+                await this.repository.AddAsync(new Bucket());
+                await this.repository.AddAsync(new Bucket());
 
                 GetBuckets.Query query = new GetBuckets.Query();
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);

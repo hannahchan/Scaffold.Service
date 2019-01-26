@@ -60,7 +60,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             {
                 // Arrange
                 Bucket bucket = new Bucket();
-                this.repository.Add(bucket);
+                await this.repository.AddAsync(bucket);
 
                 string newValue = Guid.NewGuid().ToString();
 
@@ -102,7 +102,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             {
                 // Arrange
                 Bucket bucket = new Bucket();
-                this.repository.Add(bucket);
+                await this.repository.AddAsync(bucket);
 
                 UpdateBucket.Command command = new UpdateBucket.Command { Id = bucket.Id, Name = string.Empty };
                 UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository);
