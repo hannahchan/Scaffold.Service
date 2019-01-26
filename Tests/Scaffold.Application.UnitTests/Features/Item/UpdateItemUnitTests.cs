@@ -1,9 +1,13 @@
 namespace Scaffold.Application.UnitTests.Features.Item
 {
     using System;
+    using System.Threading;
+    using System.Threading.Tasks;
     using AutoMapper;
+    using FluentValidation;
     using FluentValidation.TestHelper;
     using Microsoft.EntityFrameworkCore;
+    using Scaffold.Application.Exceptions;
     using Scaffold.Application.Features.Item;
     using Scaffold.Application.Repositories;
     using Scaffold.Data;
@@ -54,26 +58,97 @@ namespace Scaffold.Application.UnitTests.Features.Item
         public class Handler : UpdateItemUnitTests
         {
             [Fact]
-            public void When_UpdatingItemFromBucket_Expect_ItemUpdated()
+            public async Task When_UpdatingItemFromBucket_Expect_ItemUpdated()
             {
+                // Arrange
+                Bucket bucket = new Bucket();
+                Item item = new Item { Name = "abc", Description = "def" };
+                bucket.AddItem(item);
+
+                await this.repository.AddAsync(bucket);
+
+                UpdateItem.Command command = new UpdateItem.Command
+                {
+                    BucketId = bucket.Id,
+                    ItemId = item.Id,
+                    Name = "uvw",
+                    Description = "xyz"
+                };
+
+                UpdateItem.Handler handler = new UpdateItem.Handler(this.repository);
+
+                // Act
+                UpdateItem.Response response = await handler.Handle(command, default(CancellationToken));
+
+                // Assert
+                Assert.Equal("uvw", response.Item.Name);
+                Assert.Equal("xyz", response.Item.Description);
             }
 
             [Fact]
 
-            public void When_UpdatingNonExistingItemFromBucket_Expect_ItemNotFoundException()
+            public async Task When_UpdatingNonExistingItemFromBucket_Expect_ItemNotFoundException()
             {
+                // Arrange
+                Bucket bucket = new Bucket();
+                await this.repository.AddAsync(bucket);
+
+                UpdateItem.Command command = new UpdateItem.Command
+                {
+                    BucketId = bucket.Id,
+                    ItemId = new Random().Next(int.MaxValue),
+                    Name = Guid.NewGuid().ToString()
+                };
+
+                UpdateItem.Handler handler = new UpdateItem.Handler(this.repository);
+
+                // Act
+                Exception exception = await Record.ExceptionAsync(() =>
+                    handler.Handle(command, default(CancellationToken)));
+
+                // Assert
+                Assert.NotNull(exception);
+                Assert.IsType<ItemNotFoundException>(exception);
             }
 
             [Fact]
 
-            public void When_UpdatingItemFromNonExistingBucket_Expect_BucketNotFoundException()
+            public async Task When_UpdatingItemFromNonExistingBucket_Expect_BucketNotFoundException()
             {
+                // Arrange
+                UpdateItem.Command command = new UpdateItem.Command
+                {
+                    BucketId = new Random().Next(int.MaxValue),
+                    ItemId = new Random().Next(int.MaxValue),
+                    Name = Guid.NewGuid().ToString()
+                };
+
+                UpdateItem.Handler handler = new UpdateItem.Handler(this.repository);
+
+                // Act
+                Exception exception = await Record.ExceptionAsync(() =>
+                    handler.Handle(command, default(CancellationToken)));
+
+                // Assert
+                Assert.NotNull(exception);
+                Assert.IsType<BucketNotFoundException>(exception);
             }
 
             [Fact]
 
-            public void When_UpdatingItemWithInvalidCommand_Expect_ValidationException()
+            public async Task When_UpdatingItemWithInvalidCommand_Expect_ValidationException()
             {
+                // Arrange
+                UpdateItem.Command command = new UpdateItem.Command { Name = string.Empty };
+                UpdateItem.Handler handler = new UpdateItem.Handler(this.repository);
+
+                // Act
+                Exception exception = await Record.ExceptionAsync(() =>
+                    handler.Handle(command, default(CancellationToken)));
+
+                // Assert
+                Assert.NotNull(exception);
+                Assert.IsType<ValidationException>(exception);
             }
 
             [Fact(Skip = "Not Implemented")]
