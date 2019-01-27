@@ -12,6 +12,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     using Scaffold.Application.Repositories;
     using Scaffold.Data;
     using Scaffold.Domain.Entities;
+    using Scaffold.Domain.Exceptions;
     using Xunit;
 
     public class UpdateBucketUnitTests
@@ -116,10 +117,24 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Assert.IsType<ValidationException>(exception);
             }
 
-            [Fact(Skip = "Not Implemented")]
-            public void When_UpdatingBucketResultingInDomainConflict_Expect_DomainException()
+            [Fact]
+            public async Task When_UpdatingBucketResultingInDomainConflict_Expect_DomainException()
             {
-                // Not Implemented
+                // Arrange
+                Bucket bucket = new Bucket();
+                bucket.AddItem(new Item());
+                await this.repository.AddAsync(bucket);
+
+                UpdateBucket.Command command = new UpdateBucket.Command { Id = bucket.Id, Size = 0 };
+                UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository);
+
+                // Act
+                Exception exception = await Record.ExceptionAsync(() =>
+                    handler.Handle(command, default(CancellationToken)));
+
+                // Assert
+                Assert.NotNull(exception);
+                Assert.IsAssignableFrom<DomainException>(exception);
             }
         }
 
@@ -170,6 +185,25 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 // Assert
                 Assert.Equal("abc", bucket.Name);
                 Assert.Equal("uvw", bucket.Description);
+            }
+
+            [Fact]
+            public void When_MappingCommandToBucketWithSizeNotNull_Expect_SizeMapped()
+            {
+                // Arrange
+                Bucket bucket = new Bucket { Name = "abc", Description = "xyz" };
+                UpdateBucket.Command command = new UpdateBucket.Command { Size = new Random().Next(int.MaxValue) };
+
+                MapperConfiguration configuration = new MapperConfiguration(config =>
+                    config.AddProfile(new UpdateBucket.MappingProfile()));
+
+                // Act
+                bucket = configuration.CreateMapper().Map<UpdateBucket.Command, Bucket>(command, bucket);
+
+                // Assert
+                Assert.Equal("abc", bucket.Name);
+                Assert.Equal("xyz", bucket.Description);
+                Assert.Equal(command.Size, bucket.Size);
             }
 
             [Fact]

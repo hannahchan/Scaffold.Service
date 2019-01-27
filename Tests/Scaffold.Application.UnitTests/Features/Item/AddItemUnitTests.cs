@@ -11,6 +11,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
     using Scaffold.Application.Repositories;
     using Scaffold.Data;
     using Scaffold.Domain.Entities;
+    using Scaffold.Domain.Exceptions;
     using Xunit;
 
     public class AddItemUnitTests
@@ -113,6 +114,30 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 // Assert
                 Assert.NotNull(exception);
                 Assert.IsType<ValidationException>(exception);
+            }
+
+            [Fact]
+            public async Task When_AddingNewItemToFullBucket_Expect_BucketFullException()
+            {
+                // Arrange
+                Bucket bucket = new Bucket { Size = 0 };
+                await this.repository.AddAsync(bucket);
+
+                AddItem.Command command = new AddItem.Command
+                {
+                    BucketId = bucket.Id,
+                    Name = Guid.NewGuid().ToString()
+                };
+
+                AddItem.Handler handler = new AddItem.Handler(this.repository);
+
+                // Act
+                Exception exception = await Record.ExceptionAsync(() =>
+                    handler.Handle(command, default(CancellationToken)));
+
+                // Assert
+                Assert.NotNull(exception);
+                Assert.IsType<BucketFullException>(exception);
             }
         }
     }
