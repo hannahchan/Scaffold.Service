@@ -60,9 +60,9 @@
         [HttpPatch("{bucketId}")]
         public async Task<ActionResult<Bucket>> Patch(int bucketId, [FromBody] Bucket bucket)
         {
-            bucket.Id = bucketId;
-
             UpdateBucket.Command command = this.mapper.Map<UpdateBucket.Command>(bucket);
+            command.Id = bucketId;
+
             UpdateBucket.Response response = await this.mediator.Send(command);
 
             return this.mapper.Map<Bucket>(response.Bucket);
