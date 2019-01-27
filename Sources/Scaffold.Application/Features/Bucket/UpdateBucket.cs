@@ -20,6 +20,8 @@ namespace Scaffold.Application.Features.Bucket
             public string Name { get; set; }
 
             public string Description { get; set; }
+
+            public int? Size { get; set; }
         }
 
         public class Response : ApplicationResponse
@@ -77,7 +79,8 @@ namespace Scaffold.Application.Features.Bucket
                     .AddTransform<string>(value => value == string.Empty ? null : value)
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
                     .ForMember(dest => dest.Name, opt => opt.Condition(src => src.Name != null))
-                    .ForMember(dest => dest.Description, opt => opt.Condition(src => src.Description != null));
+                    .ForMember(dest => dest.Description, opt => opt.Condition(src => src.Description != null))
+                    .ForMember(dest => dest.Size, opt => opt.Condition(src => src.Size != null));
             }
         }
     }

@@ -2,10 +2,13 @@ namespace Scaffold.Domain.Entities
 {
     using System;
     using System.Collections.Generic;
+    using Scaffold.Domain.Exceptions;
 
     public class Bucket
     {
         private readonly List<Item> items;
+
+        private int size = 5;
 
         public Bucket() => this.items = new List<Item>();
 
@@ -14,6 +17,28 @@ namespace Scaffold.Domain.Entities
         public string Name { get; set; }
 
         public string Description { get; set; }
+
+        public int Size
+        {
+            get => this.size;
+
+            set
+            {
+                if (value < 0)
+                {
+                    throw new InvalidSizeException(
+                        "Size cannot be set to a negative number.");
+                }
+
+                if (value < this.items.Count)
+                {
+                    throw new InvalidSizeException(
+                        "Size cannot be set less than the number of items already in the bucket.");
+                }
+
+                this.size = value;
+            }
+        }
 
         public IReadOnlyCollection<Item> Items => this.items.AsReadOnly();
 
@@ -27,6 +52,11 @@ namespace Scaffold.Domain.Entities
             if (item == null)
             {
                 throw new ArgumentNullException(nameof(item));
+            }
+
+            if (this.items.Count >= this.size)
+            {
+                throw new BucketFullException(this.Id);
             }
 
             this.items.Add(item);
