@@ -9,7 +9,7 @@ using Scaffold.Data;
 namespace Scaffold.Data.Migrations
 {
     [DbContext(typeof(BucketContext))]
-    [Migration("20190127001035_Initial")]
+    [Migration("20190127220107_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,6 +28,8 @@ namespace Scaffold.Data.Migrations
                     b.Property<string>("Description");
 
                     b.Property<string>("Name");
+
+                    b.Property<int>("Size");
 
                     b.HasKey("Id");
 

@@ -27,6 +27,8 @@ namespace Scaffold.Data.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<int>("Size");
+
                     b.HasKey("Id");
 
                     b.ToTable("Bucket");
