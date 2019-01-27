@@ -1,7 +1,8 @@
 namespace Scaffold.WebApi.Filters
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using FluentValidation;
-    using FluentValidation.Results;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
     using Microsoft.AspNetCore.Mvc.Formatters;
@@ -59,9 +60,14 @@ namespace Scaffold.WebApi.Filters
         {
             ValidationProblemDetails details = new ValidationProblemDetails { Title = "Validation Failure" };
 
-            foreach (ValidationFailure error in exception.Errors)
+            foreach (string property in exception.Errors.Select(error => error.PropertyName).Distinct())
             {
-                details.Errors.Add(error.PropertyName, new[] { error.ErrorMessage });
+                IEnumerable<string> errorMessages = exception.Errors
+                    .Where(error => error.PropertyName == property)
+                    .Select(error => error.ErrorMessage)
+                    .Distinct();
+
+                details.Errors.Add(property, errorMessages.ToArray());
             }
 
             return details;
