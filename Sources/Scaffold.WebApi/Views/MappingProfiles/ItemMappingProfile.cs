@@ -12,12 +12,10 @@ namespace Scaffold.WebApi.Views.MappingProfiles
                 .ForMember(dest => dest.RequestId, opt => opt.Ignore())
                 .ForMember(dest => dest.BucketId, opt => opt.Ignore());
 
-
             this.CreateMap<Item, UpdateItem.Command>()
                 .ForMember(dest => dest.RequestId, opt => opt.Ignore())
                 .ForMember(dest => dest.BucketId, opt => opt.Ignore())
                 .ForMember(dest => dest.ItemId, opt => opt.Ignore());
-
         }
     }
 }
