@@ -3,12 +3,14 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+    using AutoMapper;
     using FluentValidation;
     using FluentValidation.TestHelper;
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Repositories;
     using Scaffold.Data;
+    using Scaffold.Domain.Entities;
     using Xunit;
 
     public class AddBucketUnitTests
@@ -85,6 +87,38 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 // Assert
                 Assert.NotNull(exception);
                 Assert.IsType<ValidationException>(exception);
+            }
+        }
+
+        public class MappingProfile
+        {
+            [Fact]
+            public void IsValid()
+            {
+                // Arrange
+                AddBucket.MappingProfile profile = new AddBucket.MappingProfile();
+                MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(profile));
+
+                // Act and Assert
+                configuration.AssertConfigurationIsValid();
+            }
+
+            [Fact]
+            public void When_MappingCommandToBucketWithEmptyStringProperties_Expect_NullMappedToStringProperties()
+            {
+                // Arrange
+                Bucket bucket = new Bucket { Name = "abc", Description = "xyz" };
+                AddBucket.Command command = new AddBucket.Command { Name = string.Empty, Description = string.Empty };
+
+                MapperConfiguration configuration = new MapperConfiguration(config =>
+                    config.AddProfile(new AddBucket.MappingProfile()));
+
+                // Act
+                bucket = configuration.CreateMapper().Map<AddBucket.Command, Bucket>(command, bucket);
+
+                // Assert
+                Assert.Null(bucket.Name);
+                Assert.Null(bucket.Description);
             }
         }
     }

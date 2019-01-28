@@ -2,11 +2,13 @@ namespace Scaffold.Application.Features.Bucket
 {
     using System.Threading;
     using System.Threading.Tasks;
+    using AutoMapper;
     using FluentValidation;
     using MediatR;
     using Scaffold.Application.Context;
     using Scaffold.Application.Repositories;
     using Scaffold.Domain.Entities;
+    using Scaffold.Domain.Exceptions;
 
     public class AddBucket
     {
@@ -15,6 +17,8 @@ namespace Scaffold.Application.Features.Bucket
             public string Name { get; set; }
 
             public string Description { get; set; }
+
+            public int? Size { get; set; }
         }
 
         public class Response : ApplicationResponse
@@ -40,18 +44,32 @@ namespace Scaffold.Application.Features.Bucket
             {
                 await new Validator().ValidateAndThrowAsync(command);
 
-                Response response = new Response
+                Response response = new Response();
+
+                try
                 {
-                    Bucket = new Bucket
-                    {
-                        Name = command.Name,
-                        Description = command.Description
-                    }
-                };
+                    MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(new MappingProfile()));
+                    response.Bucket = configuration.CreateMapper().Map<Bucket>(command);
+                }
+                catch (AutoMapperMappingException exception) when (exception.InnerException is DomainException)
+                {
+                    throw exception.InnerException;
+                }
 
                 await this.repository.AddAsync(response.Bucket);
 
                 return response;
+            }
+        }
+
+        public class MappingProfile : Profile
+        {
+            public MappingProfile()
+            {
+                this.CreateMap<Command, Bucket>()
+                    .AddTransform<string>(value => value == string.Empty ? null : value)
+                    .ForMember(dest => dest.Id, opt => opt.Ignore())
+                    .ForMember(dest => dest.Size, opt => opt.Condition(src => src.Size != null));
             }
         }
     }
