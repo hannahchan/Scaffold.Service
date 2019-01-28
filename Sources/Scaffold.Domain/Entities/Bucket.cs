@@ -54,14 +54,16 @@ namespace Scaffold.Domain.Entities
                 throw new ArgumentNullException(nameof(item));
             }
 
-            if (this.items.Count >= this.size)
+            if (this.IsFull())
             {
-                throw new BucketFullException(this.Id);
+                throw new BucketFullException($"Bucket '{this.Id}' is full. Cannot add Item to Bucket.");
             }
 
             this.items.Add(item);
             item.Bucket = this;
         }
+
+        public bool IsFull() => this.items.Count >= this.size;
 
         public void RemoveItem(Item item)
         {

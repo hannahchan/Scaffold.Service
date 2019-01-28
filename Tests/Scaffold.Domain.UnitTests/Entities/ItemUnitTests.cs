@@ -1,6 +1,8 @@
 namespace Scaffold.Domain.UnitTests.Entities
 {
+    using System;
     using Scaffold.Domain.Entities;
+    using Scaffold.Domain.Exceptions;
     using Xunit;
 
     public class ItemUnitTests
@@ -56,6 +58,20 @@ namespace Scaffold.Domain.UnitTests.Entities
                 // Assert
                 Assert.DoesNotContain(item, bucket.Items);
                 Assert.Null(item.Bucket);
+            }
+
+            [Fact]
+            public void When_SettingBucketToBucketThatIsFull_Expect_BucketFullException()
+            {
+                // Arrange
+                Bucket bucket = new Bucket { Size = 0 };
+
+                // Act
+                Exception exception = Record.Exception(() => new Item().Bucket = bucket);
+
+                // Assert
+                Assert.NotNull(exception);
+                Assert.IsType<BucketFullException>(exception);
             }
         }
     }

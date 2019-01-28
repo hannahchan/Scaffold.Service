@@ -1,5 +1,7 @@
 namespace Scaffold.Domain.Entities
 {
+    using Scaffold.Domain.Exceptions;
+
     public class Item
     {
         private Bucket bucket;
@@ -19,6 +21,11 @@ namespace Scaffold.Domain.Entities
                 if (this.bucket == value)
                 {
                     return;
+                }
+
+                if (value.IsFull())
+                {
+                    throw new BucketFullException($"Bucket '{value.Id}' is full. Cannot add Item to Bucket.");
                 }
 
                 this.bucket?.RemoveItem(this);

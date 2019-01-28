@@ -2,8 +2,8 @@ namespace Scaffold.Domain.Exceptions
 {
     public class BucketFullException : DomainException
     {
-        public BucketFullException(int bucketId)
-            : base($"Bucket '{bucketId}' is full.")
+        public BucketFullException(string message)
+            : base(message)
         {
         }
 
