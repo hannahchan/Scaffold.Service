@@ -117,7 +117,6 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 Assert.IsType<ValidationException>(exception);
             }
 
-
             [Fact]
             public async Task When_AddingItemToFullBucket_Expect_BucketFullException()
             {
