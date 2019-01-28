@@ -23,7 +23,7 @@ namespace Scaffold.Domain.Entities
                     return;
                 }
 
-                if (value.IsFull())
+                if (value != null && value.IsFull())
                 {
                     throw new BucketFullException($"Bucket '{value.Id}' is full. Cannot add Item to Bucket.");
                 }
