@@ -3,6 +3,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+    using AutoMapper;
     using FluentValidation;
     using FluentValidation.TestHelper;
     using Microsoft.EntityFrameworkCore;
@@ -138,6 +139,38 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 // Assert
                 Assert.NotNull(exception);
                 Assert.IsType<BucketFullException>(exception);
+            }
+        }
+
+        public class MappingProfile
+        {
+            [Fact]
+            public void IsValid()
+            {
+                // Arrange
+                AddItem.MappingProfile profile = new AddItem.MappingProfile();
+                MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(profile));
+
+                // Act and Assert
+                configuration.AssertConfigurationIsValid();
+            }
+
+            [Fact]
+            public void When_MappingCommandToBucketWithEmptyStringProperties_Expect_NullMappedToStringProperties()
+            {
+                // Arrange
+                Item item = new Item { Name = "abc", Description = "xyz" };
+                AddItem.Command command = new AddItem.Command { Name = string.Empty, Description = string.Empty };
+
+                MapperConfiguration configuration = new MapperConfiguration(config =>
+                    config.AddProfile(new AddItem.MappingProfile()));
+
+                // Act
+                item = configuration.CreateMapper().Map<AddItem.Command, Item>(command, item);
+
+                // Assert
+                Assert.Null(item.Name);
+                Assert.Null(item.Description);
             }
         }
     }
