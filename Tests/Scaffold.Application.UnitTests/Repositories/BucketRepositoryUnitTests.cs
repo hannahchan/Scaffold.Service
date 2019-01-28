@@ -24,7 +24,7 @@ namespace Scaffold.Application.UnitTests.Repositories
         public class Add : BucketRepositoryUnitTests
         {
             [Fact]
-            public void When_AddingNewBucket_Expect_Saved()
+            public void When_AddingBucket_Expect_Saved()
             {
                 // Arrange
                 Bucket bucket = new Bucket();
@@ -67,7 +67,7 @@ namespace Scaffold.Application.UnitTests.Repositories
         public class AddAsync : BucketRepositoryUnitTests
         {
             [Fact]
-            public async Task When_AddingNewBucket_Expect_Saved()
+            public async Task When_AddingBucket_Expect_Saved()
             {
                 // Arrange
                 Bucket bucket = new Bucket();

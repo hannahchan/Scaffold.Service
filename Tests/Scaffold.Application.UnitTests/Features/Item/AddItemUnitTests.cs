@@ -56,7 +56,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
         public class Handler : AddItemUnitTests
         {
             [Fact]
-            public async Task When_AddingNewItemToBucket_Expect_AddedItem()
+            public async Task When_AddingItemToBucket_Expect_AddedItem()
             {
                 // Arrange
                 Bucket bucket = new Bucket();
@@ -81,7 +81,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
             }
 
             [Fact]
-            public async Task When_AddingNewItemToNonExistingBucket_Expect_BucketNotFoundException()
+            public async Task When_AddingItemToNonExistingBucket_Expect_BucketNotFoundException()
             {
                 // Arrange
                 AddItem.Command command = new AddItem.Command
@@ -102,7 +102,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
             }
 
             [Fact]
-            public async Task When_AddingNewItemWithInvalidCommand_Expect_ValidationException()
+            public async Task When_AddingItemWithInvalidCommand_Expect_ValidationException()
             {
                 // Arrange
                 AddItem.Command command = new AddItem.Command { Name = string.Empty };
@@ -117,8 +117,9 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 Assert.IsType<ValidationException>(exception);
             }
 
+
             [Fact]
-            public async Task When_AddingNewItemToFullBucket_Expect_BucketFullException()
+            public async Task When_AddingItemToFullBucket_Expect_BucketFullException()
             {
                 // Arrange
                 Bucket bucket = new Bucket { Size = 0 };
@@ -139,6 +140,12 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 // Assert
                 Assert.NotNull(exception);
                 Assert.IsType<BucketFullException>(exception);
+            }
+
+            [Fact(Skip = "Not Implemented")]
+            public void When_AddingItemResultingInDomainConflict_Expect_DomainException()
+            {
+                // Not Implemented
             }
         }
 

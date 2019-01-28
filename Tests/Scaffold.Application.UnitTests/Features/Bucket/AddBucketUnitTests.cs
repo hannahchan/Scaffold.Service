@@ -11,6 +11,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     using Scaffold.Application.Repositories;
     using Scaffold.Data;
     using Scaffold.Domain.Entities;
+    using Scaffold.Domain.Exceptions;
     using Xunit;
 
     public class AddBucketUnitTests
@@ -54,7 +55,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
         public class Handler : AddBucketUnitTests
         {
             [Fact]
-            public async Task When_AddingNewBucket_Expect_AddedBucket()
+            public async Task When_AddingBucket_Expect_AddedBucket()
             {
                 // Arrange
                 AddBucket.Command command = new AddBucket.Command
@@ -74,7 +75,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             }
 
             [Fact]
-            public async Task When_AddingNewBucketWithInvalidCommand_Expect_ValidationException()
+            public async Task When_AddingBucketWithInvalidCommand_Expect_ValidationException()
             {
                 // Arrange
                 AddBucket.Command command = new AddBucket.Command { Name = string.Empty };
@@ -87,6 +88,27 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 // Assert
                 Assert.NotNull(exception);
                 Assert.IsType<ValidationException>(exception);
+            }
+
+            [Fact]
+            public async Task When_AddingBucketResultingInDomainConflict_Expect_DomainException()
+            {
+                // Arrange
+                AddBucket.Command command = new AddBucket.Command
+                {
+                    Name = Guid.NewGuid().ToString(),
+                    Description= Guid.NewGuid().ToString(),
+                    Size = -1
+                };
+                AddBucket.Handler handler = new AddBucket.Handler(this.repository);
+
+                // Act
+                Exception exception = await Record.ExceptionAsync(() =>
+                    handler.Handle(command, default(CancellationToken)));
+
+                // Assert
+                Assert.NotNull(exception);
+                Assert.IsAssignableFrom<DomainException>(exception);
             }
         }
 
