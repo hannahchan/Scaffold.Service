@@ -8,6 +8,7 @@
     using Scaffold.Data;
     using Scaffold.WebApi.Extensions;
     using Scaffold.WebApi.Filters;
+    using Swashbuckle.AspNetCore.Swagger;
 
     public class Startup
     {
@@ -32,9 +33,22 @@
                 .AddUtilities();
 
             services.AddMvcCore(options => options.Filters.Add(new ExceptionFilter()))
+                .AddApiExplorer()
                 .AddCustomJsonFormatters()
                 .AddCustomXmlFormatters()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddSwaggerGen(options =>
+            {
+                Info info = new Info
+                {
+                    Version = "v1",
+                    Title = "Scaffold.WebApi",
+                    Description = "A simple CRUD application to demonstrate Scaffold.WebApi."
+                };
+
+                options.SwaggerDoc("v1", info);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

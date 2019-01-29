@@ -10,7 +10,12 @@ namespace Scaffold.WebApi.Extensions
         {
             app
                 .UseMiddleware<UnhandledExceptionHandler>()
-                .UseHealthChecks("/health");
+                .UseHealthChecks("/health")
+                .UseSwagger()
+                .UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Scaffold.WebApi v1");
+                });
 
             return app;
         }
