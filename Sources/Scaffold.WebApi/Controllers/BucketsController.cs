@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
     using AutoMapper;
     using MediatR;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Scaffold.Application.Exceptions;
     using Scaffold.Application.Features.Bucket;
@@ -47,6 +48,8 @@
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult> Post([FromBody] Bucket bucket)
         {
             AddBucket.Command command = this.mapper.Map<AddBucket.Command>(bucket);
@@ -69,6 +72,8 @@
         }
 
         [HttpDelete("{bucketId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult> Delete(int bucketId)
         {
             await this.mediator.Send(new RemoveBucket.Command { Id = bucketId });

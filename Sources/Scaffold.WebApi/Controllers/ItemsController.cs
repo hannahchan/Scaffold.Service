@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
     using AutoMapper;
     using MediatR;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Scaffold.Application.Exceptions;
     using Scaffold.Application.Features.Item;
@@ -47,6 +48,8 @@
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult> Post(int bucketId, [FromBody] Item item)
         {
             AddItem.Command command = this.mapper.Map<AddItem.Command>(item);
@@ -71,6 +74,8 @@
         }
 
         [HttpDelete("{itemId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult> Delete(int bucketId, int itemId)
         {
             await this.mediator.Send(new RemoveItem.Command { BucketId = bucketId, ItemId = itemId });
