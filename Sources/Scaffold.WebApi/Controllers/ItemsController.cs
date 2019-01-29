@@ -10,7 +10,7 @@
     using Scaffold.WebApi.Views;
 
     [ApiController]
-    [Route("api/buckets/{bucketId}/[controller]")]
+    [Route("api/Buckets/{bucketId}/[controller]")]
     public class ItemsController : ControllerBase
     {
         private readonly IMapper mapper;
