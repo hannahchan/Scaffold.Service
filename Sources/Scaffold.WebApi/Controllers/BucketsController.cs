@@ -24,6 +24,8 @@
             this.mediator = mediator;
         }
 
+        /// <summary>Retrieves a list of buckets.</summary>
+        /// <returns>A list of Bucket objects.</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
@@ -35,6 +37,9 @@
             return this.mapper.Map<List<Bucket>>(response.Buckets);
         }
 
+        /// <summary>Retrieves a bucket.</summary>
+        /// <param name="bucketId">The Id. of the Bucket object to retrieve.</param>
+        /// <returns>The specified Bucket object.</returns>
         [HttpGet("{bucketId}", Name = "GetBucket")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
@@ -51,6 +56,9 @@
             return this.mapper.Map<Bucket>(response.Bucket);
         }
 
+        /// <summary>Creates a bucket.</summary>
+        /// <param name="bucket">A complete or partial set of key-value pairs to create the Bucket object with.</param>
+        /// <returns>The newly created Bucket object.</returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesDefaultResponseType]
@@ -64,6 +72,10 @@
             return this.CreatedAtRoute("GetBucket", new { bucketId = bucket.Id }, bucket);
         }
 
+        /// <summary>Updates a bucket.</summary>
+        /// <param name="bucketId">The Id. of the Bucket object to update.</param>
+        /// <param name="bucket">A complete or partial set of key-value pairs to update the Bucket object with.</param>
+        /// <returns>The updated Bucket object.</returns>
         [HttpPatch("{bucketId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
@@ -77,6 +89,9 @@
             return this.mapper.Map<Bucket>(response.Bucket);
         }
 
+        /// <summary>Deletes a bucket.</summary>
+        /// <param name="bucketId">The Id. of the Bucket object to delete.</param>
+        /// <returns>A "No Content (204)" HTTP status response.</returns>
         [HttpDelete("{bucketId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
