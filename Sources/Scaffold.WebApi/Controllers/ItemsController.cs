@@ -50,7 +50,7 @@
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Post(int bucketId, [FromBody] Item item)
+        public async Task<ActionResult<Item>> Post(int bucketId, [FromBody] Item item)
         {
             AddItem.Command command = this.mapper.Map<AddItem.Command>(item);
             command.BucketId = bucketId;

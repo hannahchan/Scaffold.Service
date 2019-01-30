@@ -50,7 +50,7 @@
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Post([FromBody] Bucket bucket)
+        public async Task<ActionResult<Bucket>> Post([FromBody] Bucket bucket)
         {
             AddBucket.Command command = this.mapper.Map<AddBucket.Command>(bucket);
             AddBucket.Response response = await this.mediator.Send(command);
