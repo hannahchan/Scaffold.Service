@@ -25,6 +25,7 @@
         }
 
         [HttpGet]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<IList<Item>>> Get(int bucketId)
         {
             GetItems.Query query = new GetItems.Query { BucketId = bucketId };
@@ -34,6 +35,7 @@
         }
 
         [HttpGet("{itemId}", Name = "GetItem")]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<Item>> Get(int bucketId, int itemId)
         {
             GetItem.Query query = new GetItem.Query { BucketId = bucketId, ItemId = itemId };
@@ -62,6 +64,7 @@
         }
 
         [HttpPatch("{itemId}")]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<Item>> Patch(int bucketId, int itemId, [FromBody] Item item)
         {
             UpdateItem.Command command = this.mapper.Map<UpdateItem.Command>(item);

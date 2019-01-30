@@ -25,6 +25,7 @@
         }
 
         [HttpGet]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<IList<Bucket>>> Get()
         {
             GetBuckets.Query query = new GetBuckets.Query();
@@ -34,6 +35,7 @@
         }
 
         [HttpGet("{bucketId}", Name = "GetBucket")]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<Bucket>> Get(int bucketId)
         {
             GetBucket.Query query = new GetBucket.Query { Id = bucketId };
@@ -61,6 +63,7 @@
         }
 
         [HttpPatch("{bucketId}")]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<Bucket>> Patch(int bucketId, [FromBody] Bucket bucket)
         {
             UpdateBucket.Command command = this.mapper.Map<UpdateBucket.Command>(bucket);
