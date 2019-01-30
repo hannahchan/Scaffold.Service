@@ -38,7 +38,7 @@
         }
 
         /// <summary>Retrieves a bucket.</summary>
-        /// <param name="bucketId">The Id. of the Bucket object to retrieve.</param>
+        /// <param name="bucketId">The Id. of the Bucket object to be retrieved.</param>
         /// <returns>The specified Bucket object.</returns>
         [HttpGet("{bucketId}", Name = "GetBucket")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -58,7 +58,7 @@
 
         /// <summary>Creates a bucket.</summary>
         /// <param name="bucket">A complete or partial set of key-value pairs to create the Bucket object with.</param>
-        /// <returns>The newly created Bucket object.</returns>
+        /// <returns>The created Bucket object.</returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesDefaultResponseType]
@@ -73,7 +73,7 @@
         }
 
         /// <summary>Updates a bucket.</summary>
-        /// <param name="bucketId">The Id. of the Bucket object to update.</param>
+        /// <param name="bucketId">The Id. of the Bucket object to be updated.</param>
         /// <param name="bucket">A complete or partial set of key-value pairs to update the Bucket object with.</param>
         /// <returns>The updated Bucket object.</returns>
         [HttpPatch("{bucketId}")]
@@ -90,7 +90,7 @@
         }
 
         /// <summary>Deletes a bucket.</summary>
-        /// <param name="bucketId">The Id. of the Bucket object to delete.</param>
+        /// <param name="bucketId">The Id. of the Bucket object to be deleted.</param>
         /// <returns>A "No Content (204)" HTTP status response.</returns>
         [HttpDelete("{bucketId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
