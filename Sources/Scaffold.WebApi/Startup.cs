@@ -1,5 +1,8 @@
 ﻿namespace Scaffold.WebApi
 {
+    using System;
+    using System.IO;
+    using System.Reflection;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
@@ -48,6 +51,10 @@
                 };
 
                 options.SwaggerDoc("v1", info);
+
+                string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
             });
         }
 
