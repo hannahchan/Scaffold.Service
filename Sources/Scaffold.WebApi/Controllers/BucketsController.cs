@@ -26,6 +26,7 @@
 
         /// <summary>Retrieves a list of buckets.</summary>
         /// <returns>A list of Bucket objects.</returns>
+        /// <response code="default">Problem Details (RFC 7807) Response</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
@@ -40,6 +41,7 @@
         /// <summary>Retrieves a bucket.</summary>
         /// <param name="bucketId">The Id. of the Bucket object to be retrieved.</param>
         /// <returns>The specified Bucket object.</returns>
+        /// <response code="default">Problem Details (RFC 7807) Response</response>
         [HttpGet("{bucketId}", Name = "GetBucket")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
@@ -59,6 +61,7 @@
         /// <summary>Creates a bucket.</summary>
         /// <param name="bucket">A complete or partial set of key-value pairs to create the Bucket object with.</param>
         /// <returns>The created Bucket object.</returns>
+        /// <response code="default">Problem Details (RFC 7807) Response</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesDefaultResponseType]
@@ -76,6 +79,7 @@
         /// <param name="bucketId">The Id. of the Bucket object to be updated.</param>
         /// <param name="bucket">A complete or partial set of key-value pairs to update the Bucket object with.</param>
         /// <returns>The updated Bucket object.</returns>
+        /// <response code="default">Problem Details (RFC 7807) Response</response>
         [HttpPatch("{bucketId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
@@ -92,6 +96,7 @@
         /// <summary>Deletes a bucket.</summary>
         /// <param name="bucketId">The Id. of the Bucket object to be deleted.</param>
         /// <returns>A "No Content (204)" HTTP status response.</returns>
+        /// <response code="default">Problem Details (RFC 7807) Response</response>
         [HttpDelete("{bucketId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
