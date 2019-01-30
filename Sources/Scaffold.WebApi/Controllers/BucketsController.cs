@@ -25,6 +25,7 @@
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<IList<Bucket>>> Get()
         {
@@ -35,6 +36,7 @@
         }
 
         [HttpGet("{bucketId}", Name = "GetBucket")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<Bucket>> Get(int bucketId)
         {
@@ -63,6 +65,7 @@
         }
 
         [HttpPatch("{bucketId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<Bucket>> Patch(int bucketId, [FromBody] Bucket bucket)
         {
