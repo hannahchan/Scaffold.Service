@@ -73,6 +73,25 @@ namespace Scaffold.Domain.UnitTests.Entities
                 Assert.NotNull(exception);
                 Assert.IsType<BucketFullException>(exception);
             }
+
+            [Fact]
+            public void When_SettingBucketOnItemsToFillBucket_ExpectFilledBucket()
+            {
+                // Arrange
+                Bucket bucket = new Bucket { Size = 3 };
+
+                // Act
+                Exception exception = Record.Exception(() =>
+                {
+                    new Item().Bucket = bucket;
+                    new Item().Bucket = bucket;
+                    new Item().Bucket = bucket;
+                });
+
+                // Assert
+                Assert.Null(exception);
+                Assert.Equal(bucket.Size, bucket.Items.Count);
+            }
         }
     }
 }
