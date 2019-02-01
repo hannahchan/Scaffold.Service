@@ -64,7 +64,10 @@ namespace Scaffold.Domain.UnitTests.Entities
             public void When_SettingBucketToBucketThatIsFull_Expect_BucketFullException()
             {
                 // Arrange
-                Bucket bucket = new Bucket { Size = 0 };
+                Bucket bucket = new Bucket { Size = 3 };
+                bucket.AddItem(new Item());
+                bucket.AddItem(new Item());
+                bucket.AddItem(new Item());
 
                 // Act
                 Exception exception = Record.Exception(() => new Item().Bucket = bucket);
@@ -75,7 +78,7 @@ namespace Scaffold.Domain.UnitTests.Entities
             }
 
             [Fact]
-            public void When_SettingBucketOnItemsToFillBucket_ExpectFilledBucket()
+            public void When_SettingBucketOnItemsToFillBucket_ExpectFullBucket()
             {
                 // Arrange
                 Bucket bucket = new Bucket { Size = 3 };
