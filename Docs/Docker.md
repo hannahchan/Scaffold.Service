@@ -1,6 +1,6 @@
 # Docker Support #
 
-Scaffold.WebApi has been created with Docker support in mind so that you can build a container image of the Web API to be deployed into production or run locally without installing the prerequisites .NET Core and PostgreSQL. Docker support is facilitated by the `docker-compose.yml` file included in the root of this project.
+Scaffold.WebApi has been created with [Docker](https://www.docker.com/) support in mind so that you can build a container image of the Web API to be deployed into production or run locally without installing the prerequisites .NET Core and PostgreSQL. Docker support is facilitated by the `docker-compose.yml` file included in the root of this project.
 
 ## Building a Container Image of the Web API ##
 
@@ -16,7 +16,7 @@ Scaffold.WebApi can be run locally in Docker without installing the prerequisite
 
 `docker-compose up -d`
 
-If a container image of the Web API doesn't exist, this command will also build it. Once up and running you can access the Web API on `localhost`.
+If a container image of the Web API doesn't exist, this command will also build it. Once up and running you can access the Web API on `http://localhost`.
 
 To stop the Web API running in Docker, run;
 
@@ -33,3 +33,9 @@ When developing the Web API, you may only want to run the PostgreSQL database lo
 `docker-compose up -d postgres`
 
 This is ideal if you don't want to install PostgreSQL onto your computer or need to manage different versions for different projects. In this scenario you would run the Web API natively on your machine.
+
+To run the Web API natively on your computer, change directory to the [Scaffold.WebApi](../Sources/Scaffold.WebApi) project under [Sources](../Sources) and run;
+
+`dotnet run`
+
+Once up and running you can access the Web API on `http://localhost:5000`.
