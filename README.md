@@ -15,7 +15,7 @@ To bootstrap your next WebApi project with Scaffold.WebApi.
 
 Scaffold.WebApi includes an example application which is intended to be replaced with your actual application when using this template. This example application has been included to help demonstrate features in this template.
 
-The example application is a simple CRUD application where you can create **Buckets** and put **Items** in them. The Buckets have a *size* which represents the number of Items you can put in them. To *Create*, *Read*, *Update* and *Delete* Buckets or Items in the application, simply send a HTTP *POST*, *GET*, *PATCH* or *DELETE* request to the Web API.
+The example application is a simple CRUD application where you can create **Buckets** and put **Items** in them. The Buckets have a *size* which represents the number of Items you can put in them. To *Create*, *Read*, *Update* and *Delete* Buckets or Items in the application, simply send HTTP *POST*, *GET*, *PATCH* or *DELETE* requests to the Web API.
 
 Explore the Web API by going to `/swagger` in a web browser.
 

@@ -14,4 +14,4 @@ To support the Launch Configuration described above, various tasks have been def
 
 ## Workspace Settings ##
 
-By default, this project doesn't include any Workspace Settings for vscode. Please feel free to add them if it benefits the project.
+Workspace Settings in vscode are shared vscode settings in a project. Please feel free to add them if it benefits the project.
