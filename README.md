@@ -32,6 +32,13 @@ Other stuff you inherit when you bootstrap with Scaffold.WebApi.
 - [StyleCop Analyzers](Docs/StyleCopAnalyzers.md)
 - [Visual Studio Code (vscode) Support](Docs/VisualStudioCode.md)
 
+### Not Included ###
+
+Stuff you might want to add to your Web API / microservice but not included with Scaffold.WebApi.
+
+- [API Versioning](https://github.com/Microsoft/aspnet-api-versioning)
+- Authentication and Authorization
+
 ## Example App ##
 
 Scaffold.WebApi includes an example application which is intended to be replaced with your actual application when using this template. This example application has been included to help demonstrate features in this template.
