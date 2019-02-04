@@ -11,6 +11,27 @@ To bootstrap your next WebApi project with Scaffold.WebApi.
 3. Find and replace the words `Scaffold` and `scaffold` with the name of your project.
 4. Update `README.md` so that it makes sense.
 
+## Features ##
+
+Scaffold.WebApi aims to make developing the following features in your next Web API or microservice a little bit more easier.
+
+- Application Logging
+- Content Negotiation
+- Health Checks and Metrics
+- Request / Correlation ID Handling
+- OpenAPI (Swagger) Documentation
+- Problem Details (RFC 7807) Error Handling
+
+### Other Features ###
+
+Other stuff you inherit when you bootstrap with Scaffold.WebApi.
+
+- Architecture
+- [Docker Support](Docs/Docker.md)
+- Entity Framework and PostgreSQL
+- [StyleCop Analyzers](Docs/StyleCopAnalyzers.md)
+- [Visual Studio Code (vscode) Support](Docs/VisualStudioCode.md)
+
 ## Example App ##
 
 Scaffold.WebApi includes an example application which is intended to be replaced with your actual application when using this template. This example application has been included to help demonstrate features in this template.
