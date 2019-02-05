@@ -15,7 +15,8 @@ namespace Scaffold.WebApi.Extensions
                 .UseSwaggerUI(options =>
                 {
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "Scaffold.WebApi v1");
-                });
+                })
+                .UseMiddleware<RequestIdHandler>();
 
             return app;
         }
