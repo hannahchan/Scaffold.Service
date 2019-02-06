@@ -1,4 +1,4 @@
-namespace Scaffold.Application.Repositories
+namespace Scaffold.Data.Repositories
 {
     using System;
     using System.Collections.Generic;

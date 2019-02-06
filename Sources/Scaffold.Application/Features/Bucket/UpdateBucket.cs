@@ -8,7 +8,6 @@ namespace Scaffold.Application.Features.Bucket
     using Scaffold.Application.Context;
     using Scaffold.Application.Exceptions;
     using Scaffold.Application.Interfaces;
-    using Scaffold.Application.Repositories;
     using Scaffold.Domain.Entities;
     using Scaffold.Domain.Exceptions;
 

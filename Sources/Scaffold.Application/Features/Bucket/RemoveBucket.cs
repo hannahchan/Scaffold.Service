@@ -5,7 +5,6 @@ namespace Scaffold.Application.Features.Bucket
     using MediatR;
     using Scaffold.Application.Context;
     using Scaffold.Application.Interfaces;
-    using Scaffold.Application.Repositories;
     using Scaffold.Domain.Entities;
 
     public class RemoveBucket

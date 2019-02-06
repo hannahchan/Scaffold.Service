@@ -7,8 +7,8 @@ namespace Scaffold.Application.UnitTests.Features.Item
     using Scaffold.Application.Exceptions;
     using Scaffold.Application.Features.Item;
     using Scaffold.Application.Interfaces;
-    using Scaffold.Application.Repositories;
     using Scaffold.Data;
+    using Scaffold.Data.Repositories;
     using Scaffold.Domain.Entities;
     using Xunit;
 

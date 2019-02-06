@@ -8,8 +8,8 @@ namespace Scaffold.WebApi.Extensions
     using Scaffold.Application.Behavior;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
-    using Scaffold.Application.Repositories;
     using Scaffold.Data;
+    using Scaffold.Data.Repositories;
 
     public static class ServiceCollectionExtension
     {

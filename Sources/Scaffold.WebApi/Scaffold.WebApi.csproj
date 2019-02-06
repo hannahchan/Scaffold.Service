@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Scaffold.Application\Scaffold.Application.csproj" />
+    <ProjectReference Include="..\Scaffold.Data\Scaffold.Data.csproj" />
     <ProjectReference Include="..\Scaffold.Domain\Scaffold.Domain.csproj" />
   </ItemGroup>
 
