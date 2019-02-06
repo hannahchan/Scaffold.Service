@@ -1,6 +1,5 @@
 namespace Scaffold.Application.Interfaces
 {
-    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Scaffold.Domain.Entities;

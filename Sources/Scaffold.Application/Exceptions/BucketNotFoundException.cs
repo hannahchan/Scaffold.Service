@@ -1,7 +1,5 @@
 namespace Scaffold.Application.Exceptions
 {
-    using System;
-
     public class BucketNotFoundException : NotFoundException
     {
         public BucketNotFoundException(int bucketId)

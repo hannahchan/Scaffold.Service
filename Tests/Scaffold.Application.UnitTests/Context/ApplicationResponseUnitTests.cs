@@ -1,6 +1,5 @@
 namespace Scaffold.Application.UnitTests.Context
 {
-    using System;
     using Scaffold.Application.Context;
     using Xunit;
 

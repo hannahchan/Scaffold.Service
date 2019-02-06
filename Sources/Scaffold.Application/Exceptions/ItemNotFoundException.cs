@@ -1,7 +1,5 @@
 namespace Scaffold.Application.Exceptions
 {
-    using System;
-
     public class ItemNotFoundException : NotFoundException
     {
         public ItemNotFoundException(int itemId)
