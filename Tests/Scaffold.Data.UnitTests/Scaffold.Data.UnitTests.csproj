@@ -22,9 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Sources\Scaffold.Domain\Scaffold.Domain.csproj" />
-    <ProjectReference Include="..\..\Sources\Scaffold.Data\Scaffold.Data.csproj" />
     <ProjectReference Include="..\..\Sources\Scaffold.Application\Scaffold.Application.csproj" />
+    <ProjectReference Include="..\..\Sources\Scaffold.Data\Scaffold.Data.csproj" />
+    <ProjectReference Include="..\..\Sources\Scaffold.Domain\Scaffold.Domain.csproj" />
   </ItemGroup>
 
 </Project>
