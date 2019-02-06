@@ -1,4 +1,4 @@
-namespace Scaffold.Application.UnitTests.Repositories
+namespace Scaffold.Data.UnitTests.Repositories
 {
     using System;
     using System.Collections.Generic;
