@@ -9,6 +9,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Exceptions;
     using Scaffold.Application.Features.Item;
+    using Scaffold.Application.Interfaces;
     using Scaffold.Application.Repositories;
     using Scaffold.Data;
     using Scaffold.Domain.Entities;

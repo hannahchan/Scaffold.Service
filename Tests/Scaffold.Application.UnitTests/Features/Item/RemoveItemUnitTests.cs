@@ -5,6 +5,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Features.Item;
+    using Scaffold.Application.Interfaces;
     using Scaffold.Application.Repositories;
     using Scaffold.Data;
     using Scaffold.Domain.Entities;

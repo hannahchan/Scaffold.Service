@@ -6,6 +6,7 @@ namespace Scaffold.Application.Features.Bucket
     using FluentValidation;
     using MediatR;
     using Scaffold.Application.Context;
+    using Scaffold.Application.Interfaces;
     using Scaffold.Application.Repositories;
     using Scaffold.Domain.Entities;
     using Scaffold.Domain.Exceptions;

@@ -5,6 +5,7 @@ namespace Scaffold.Application.Repositories
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
+    using Scaffold.Application.Interfaces;
     using Scaffold.Data;
     using Scaffold.Domain.Entities;
 

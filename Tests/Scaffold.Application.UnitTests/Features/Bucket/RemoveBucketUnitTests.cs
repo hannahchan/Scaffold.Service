@@ -5,6 +5,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Features.Bucket;
+    using Scaffold.Application.Interfaces;
     using Scaffold.Application.Repositories;
     using Scaffold.Data;
     using Scaffold.Domain.Entities;

@@ -1,4 +1,4 @@
-namespace Scaffold.Application.Repositories
+namespace Scaffold.Application.Interfaces
 {
     using System;
     using System.Collections.Generic;
