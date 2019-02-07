@@ -5,11 +5,11 @@ namespace Scaffold.WebApi.Extensions
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Scaffold.Application.Behavior;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
     using Scaffold.Data;
     using Scaffold.Data.Repositories;
+    using Scaffold.WebApi.Services;
 
     public static class ServiceCollectionExtension
     {
@@ -28,14 +28,16 @@ namespace Scaffold.WebApi.Extensions
 
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-            services.AddScoped<IBucketRepository, BucketRepository>();
+            services
+                .AddScoped<IBucketRepository, BucketRepository>();
 
             return services;
         }
 
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestIdBehavior<,>));
+            services
+                .AddScoped<IRequestIdService, RequestIdService>();
 
             return services;
         }

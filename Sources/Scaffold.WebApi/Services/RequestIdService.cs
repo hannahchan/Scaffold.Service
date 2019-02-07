@@ -1,4 +1,4 @@
-namespace Scaffold.WebApi.Middleware
+namespace Scaffold.WebApi.Services
 {
     using Scaffold.Application.Interfaces;
 
