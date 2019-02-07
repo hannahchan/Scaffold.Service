@@ -35,7 +35,7 @@
                 .AddServices()
                 .AddUtilities();
 
-            services.AddMvcCore(options => options.Filters.Add(new ExceptionFilter()))
+            services.AddMvcCore(options => options.Filters.Add<ExceptionFilter>())
                 .AddApiExplorer()
                 .AddCustomJsonFormatters()
                 .AddCustomXmlFormatters()

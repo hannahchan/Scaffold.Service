@@ -7,15 +7,21 @@ namespace Scaffold.WebApi.Filters
     using Microsoft.AspNetCore.Mvc.Filters;
     using Microsoft.AspNetCore.Mvc.Formatters;
     using Scaffold.Application.Exceptions;
+    using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Exceptions;
+    using Scaffold.WebApi.Constants;
 
     public class ExceptionFilter : IExceptionFilter
     {
+        private readonly IRequestIdService requestIdService;
+
         private readonly MediaTypeCollection contentTypes = new MediaTypeCollection
         {
             "application/problem+json",
             "application/problem+xml",
         };
+
+        public ExceptionFilter(IRequestIdService requestIdService) => this.requestIdService = requestIdService;
 
         public void OnException(ExceptionContext context)
         {
@@ -40,25 +46,44 @@ namespace Scaffold.WebApi.Filters
 
         private ProblemDetails GetProblemDetails(ApplicationException exception)
         {
-            return new ProblemDetails
+            ProblemDetails details = new ProblemDetails
             {
                 Title = exception.Title,
                 Detail = exception.Detail
             };
+
+            if (!string.IsNullOrEmpty(this.requestIdService?.RequestId))
+            {
+                details.Extensions[Headers.RequestId.ToLower()] = this.requestIdService.RequestId;
+            }
+
+            return details;
         }
 
         private ProblemDetails GetProblemDetails(DomainException exception)
         {
-            return new ProblemDetails
+            ProblemDetails details = new ProblemDetails
             {
                 Title = exception.Title,
                 Detail = exception.Detail
             };
+
+            if (!string.IsNullOrEmpty(this.requestIdService?.RequestId))
+            {
+                details.Extensions[Headers.RequestId.ToLower()] = this.requestIdService.RequestId;
+            }
+
+            return details;
         }
 
         private ValidationProblemDetails GetProblemDetails(ValidationException exception)
         {
             ValidationProblemDetails details = new ValidationProblemDetails { Title = "Validation Failure" };
+
+            if (!string.IsNullOrEmpty(this.requestIdService?.RequestId))
+            {
+                details.Extensions[Headers.RequestId.ToLower()] = this.requestIdService.RequestId;
+            }
 
             foreach (string property in exception.Errors.Select(error => error.PropertyName).Distinct())
             {
