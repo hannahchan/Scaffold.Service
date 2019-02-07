@@ -4,6 +4,7 @@ namespace Scaffold.WebApi.Middleware
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
     using Scaffold.Application.Interfaces;
+    using Scaffold.WebApi.Constants;
 
     public class RequestIdMiddleware
     {
@@ -18,9 +19,8 @@ namespace Scaffold.WebApi.Middleware
                 throw new InvalidOperationException();
             }
 
-            service.RequestId = Guid.NewGuid().ToString();
-
-            context.Response.Headers.Add("Request-Id", service.RequestId);
+            service.RequestId = context.Request.Headers[Headers.RequestId];
+            context.Response.Headers.Add(Headers.RequestId, service.RequestId);
 
             await this.next(context);
         }
