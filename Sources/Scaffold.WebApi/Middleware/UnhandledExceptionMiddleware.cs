@@ -6,13 +6,13 @@ namespace Scaffold.WebApi.Middleware
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
 
-    public class UnhandledExceptionHandler
+    public class UnhandledExceptionMiddleware
     {
         private readonly RequestDelegate next;
 
         private readonly IHostingEnvironment env;
 
-        public UnhandledExceptionHandler(RequestDelegate next, IHostingEnvironment env)
+        public UnhandledExceptionMiddleware(RequestDelegate next, IHostingEnvironment env)
         {
             this.next = next;
             this.env = env;
