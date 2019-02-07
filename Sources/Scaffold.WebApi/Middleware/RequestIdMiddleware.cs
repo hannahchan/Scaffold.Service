@@ -16,7 +16,8 @@ namespace Scaffold.WebApi.Middleware
         {
             if (service.RequestId != null)
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException(
+                    "Make sure IRequestIdService has been registered as a 'Scoped' service.");
             }
 
             service.RequestId = context.Request.Headers[Headers.RequestId];
