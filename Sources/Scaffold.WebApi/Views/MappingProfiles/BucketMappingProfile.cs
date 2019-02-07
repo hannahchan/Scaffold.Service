@@ -8,11 +8,8 @@ namespace Scaffold.WebApi.Views.MappingProfiles
     {
         public BucketMappingProfile()
         {
-            this.CreateMap<Bucket, AddBucket.Command>()
-                .ForMember(dest => dest.RequestId, opt => opt.Ignore());
-
-            this.CreateMap<Bucket, UpdateBucket.Command>()
-                .ForMember(dest => dest.RequestId, opt => opt.Ignore());
+            this.CreateMap<Bucket, AddBucket.Command>();
+            this.CreateMap<Bucket, UpdateBucket.Command>();
         }
     }
 }

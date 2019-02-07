@@ -5,7 +5,6 @@ namespace Scaffold.Application.Features.Bucket
     using AutoMapper;
     using FluentValidation;
     using MediatR;
-    using Scaffold.Application.Context;
     using Scaffold.Application.Exceptions;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Entities;
@@ -13,7 +12,7 @@ namespace Scaffold.Application.Features.Bucket
 
     public class UpdateBucket
     {
-        public class Command : ApplicationRequest, IRequest<Response>
+        public class Command : IRequest<Response>
         {
             public int Id { get; set; }
 
@@ -24,7 +23,7 @@ namespace Scaffold.Application.Features.Bucket
             public int? Size { get; set; }
         }
 
-        public class Response : ApplicationResponse
+        public class Response
         {
             public Bucket Bucket { get; set; }
         }

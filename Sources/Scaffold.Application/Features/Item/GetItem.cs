@@ -4,21 +4,20 @@ namespace Scaffold.Application.Features.Item
     using System.Threading;
     using System.Threading.Tasks;
     using MediatR;
-    using Scaffold.Application.Context;
     using Scaffold.Application.Exceptions;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Entities;
 
     public class GetItem
     {
-        public class Query : ApplicationRequest, IRequest<Response>
+        public class Query : IRequest<Response>
         {
             public int BucketId { get; set; }
 
             public int ItemId { get; set; }
         }
 
-        public class Response : ApplicationResponse
+        public class Response
         {
             public Item Item { get; set; }
         }

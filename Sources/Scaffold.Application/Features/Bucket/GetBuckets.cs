@@ -4,17 +4,16 @@ namespace Scaffold.Application.Features.Bucket
     using System.Threading;
     using System.Threading.Tasks;
     using MediatR;
-    using Scaffold.Application.Context;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Entities;
 
     public class GetBuckets
     {
-        public class Query : ApplicationRequest, IRequest<Response>
+        public class Query : IRequest<Response>
         {
         }
 
-        public class Response : ApplicationResponse
+        public class Response
         {
             public IList<Bucket> Buckets { get; set; }
         }

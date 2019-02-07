@@ -3,13 +3,12 @@ namespace Scaffold.Application.Features.Bucket
     using System.Threading;
     using System.Threading.Tasks;
     using MediatR;
-    using Scaffold.Application.Context;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Entities;
 
     public class RemoveBucket
     {
-        public class Command : ApplicationRequest, IRequest
+        public class Command : IRequest
         {
             public int Id { get; set; }
         }

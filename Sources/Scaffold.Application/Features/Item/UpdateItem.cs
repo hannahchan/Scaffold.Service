@@ -6,7 +6,6 @@ namespace Scaffold.Application.Features.Item
     using AutoMapper;
     using FluentValidation;
     using MediatR;
-    using Scaffold.Application.Context;
     using Scaffold.Application.Exceptions;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Entities;
@@ -14,7 +13,7 @@ namespace Scaffold.Application.Features.Item
 
     public class UpdateItem
     {
-        public class Command : ApplicationRequest, IRequest<Response>
+        public class Command : IRequest<Response>
         {
             public int BucketId { get; set; }
 
@@ -25,7 +24,7 @@ namespace Scaffold.Application.Features.Item
             public string Description { get; set; }
         }
 
-        public class Response : ApplicationResponse
+        public class Response
         {
             public Item Item { get; set; }
         }

@@ -4,13 +4,12 @@ namespace Scaffold.Application.Features.Item
     using System.Threading;
     using System.Threading.Tasks;
     using MediatR;
-    using Scaffold.Application.Context;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Entities;
 
     public class RemoveItem
     {
-        public class Command : ApplicationRequest, IRequest
+        public class Command : IRequest
         {
             public int BucketId { get; set; }
 
