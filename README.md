@@ -17,8 +17,8 @@ Scaffold.WebApi aims to make developing the following features in your next Web 
 
 - Application Logging
 - Content Negotiation
-- Health Checks and Metrics
-- Request / Correlation ID Handling
+- Health Checks
+- [Request / Correlation ID Handling](Docs/RequestIdHandling.md)
 - OpenAPI (Swagger) Documentation
 - Problem Details (RFC 7807) Error Handling
 
