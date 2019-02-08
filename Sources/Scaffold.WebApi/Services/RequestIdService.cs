@@ -4,6 +4,6 @@ namespace Scaffold.WebApi.Services
 
     public class RequestIdService : IRequestIdService
     {
-        public string RequestId { get; set; }
+        public string RequestId { get; set; } = null;
     }
 }
