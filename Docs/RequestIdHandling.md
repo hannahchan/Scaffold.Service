@@ -10,8 +10,8 @@ The default request ID header for Scaffold.WebApi has been defined as a constant
 
 ## The Request ID Scheme ##
 
-The default behavior of Scaffold.WebApi is to only log interactions when a request ID has been provided. It does not automatically generate one when the request ID header is absent. This behavior can be changed by modifying the [Request ID Middleware](../Sources/Scaffold.WebApi/Middleware/RequestIdMiddleware.cs) in the [Scaffold.WebApi](../Sources/Scaffold.WebApi) project.
+The default behavior of Scaffold.WebApi is to only log interactions when a request ID has been provided. It does not automatically generate one when the request ID header is absent. This behavior can be changed by modifying [RequestIdMiddleware](../Sources/Scaffold.WebApi/Middleware/RequestIdMiddleware.cs) in the [Scaffold.WebApi](../Sources/Scaffold.WebApi) project.
 
 ## Using the Request ID ##
 
-When a request ID header is present in a HTTP request, the [Request ID Middleware](../Sources/Scaffold.WebApi/Middleware/RequestIdMiddleware.cs) copies the value of the request ID header to an instance of the [Request ID Service](../Sources/Scaffold.WebApi/Services/RequestIdService.cs). This service is intended to be dependency injected into your application to wherever you need it and is scoped to the lifetime of the HTTP request. You can then pull the request ID out of this service to be used in your application.
+When a request ID header is present in a HTTP request, the [RequestIdMiddleware](../Sources/Scaffold.WebApi/Middleware/RequestIdMiddleware.cs) copies the value of the request ID header to an instance of [RequestIdService](../Sources/Scaffold.WebApi/Services/RequestIdService.cs). This service is intended to be dependency injected into your application to wherever you need it and is scoped to the lifetime of the HTTP request. You can then pull the request ID out of this service to be used in your application.

@@ -1,5 +1,8 @@
 namespace Scaffold.WebApi.Extensions
 {
+    using System;
+    using System.IO;
+    using System.Reflection;
     using AutoMapper;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
@@ -10,9 +13,31 @@ namespace Scaffold.WebApi.Extensions
     using Scaffold.Data;
     using Scaffold.Data.Repositories;
     using Scaffold.WebApi.Services;
+    using Swashbuckle.AspNetCore.Swagger;
 
     public static class ServiceCollectionExtension
     {
+        public static IServiceCollection AddApiDocumentation(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(options =>
+            {
+                Info info = new Info
+                {
+                    Version = "v1",
+                    Title = "Scaffold.WebApi",
+                    Description = "A simple CRUD application to demonstrate Scaffold.WebApi."
+                };
+
+                options.SwaggerDoc("v1", info);
+
+                string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
+            });
+
+            return services;
+        }
+
         public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration config)
         {
             services.AddDbContext<BucketContext>(builder =>

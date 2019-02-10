@@ -17,8 +17,9 @@ Scaffold.WebApi aims to make developing the following features in your next Web 
 
 - Application Logging
 - Content Negotiation
-- Health Checks
-- [Request / Correlation ID Handling](Docs/RequestIdHandling.md)
+- Forwarded Headers Handling
+- [Health Checks](Docs/HealthChecks.md)
+- [Request ID Handling](Docs/RequestIdHandling.md)
 - OpenAPI (Swagger) Documentation
 - Problem Details (RFC 7807) Error Handling
 
@@ -30,7 +31,7 @@ Other stuff you inherit when you bootstrap with Scaffold.WebApi.
 - [Docker Support](Docs/Docker.md)
 - Entity Framework and PostgreSQL
 - [StyleCop Analyzers](Docs/StyleCopAnalyzers.md)
-- [Visual Studio Code (vscode) Support](Docs/VisualStudioCode.md)
+- [Visual Studio Code Support](Docs/VisualStudioCode.md)
 
 ### Not Included ###
 
@@ -53,4 +54,4 @@ For the best experience when developing with and running Scaffold.WebApi, it is 
 
 Scaffold.WebApi requires a PostgreSQL database before it can run and one can be stood up quickly using Docker. Alternatively you could install PostgreSQL on to your local machine. For more information about on how to run the Web API with Docker, checkout our [Docker Support](Docs/Docker.md) page in the [Docs](Docs) directory.
 
-[Visual Studio Code (vscode) Support](Docs/VisualStudioCode.md) in this project also assumes you have Docker installed.
+[Visual Studio Code Support](Docs/VisualStudioCode.md) in this project also assumes you have Docker installed.

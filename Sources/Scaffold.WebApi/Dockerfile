@@ -1,6 +1,8 @@
 FROM microsoft/dotnet:2.2-aspnetcore-runtime AS base
 WORKDIR /app
-EXPOSE 80
+ENV ASPNETCORE_HEALTHCHECKPORT=8081
+ENV ASPNETCORE_URLS=http://+:80;http://+:8081
+EXPOSE 80 8081
 
 FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /src
