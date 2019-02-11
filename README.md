@@ -16,7 +16,7 @@ To bootstrap your next WebApi project with Scaffold.WebApi.
 Scaffold.WebApi aims to make developing the following features in your next Web API or microservice a little bit more easier.
 
 - Application Logging
-- Content Negotiation
+- [Content Negotiation](Docs/ContentNegotiation.md)
 - Forwarded Headers Handling
 - [Health Checks](Docs/HealthChecks.md)
 - [Request ID Handling](Docs/RequestIdHandling.md)
