@@ -15,12 +15,12 @@ To bootstrap your next WebApi project with Scaffold.WebApi.
 
 Scaffold.WebApi aims to make developing the following features in your next Web API or microservice a little bit more easier.
 
+- [API Documentation](Docs/APIDocumentation.md)
 - Application Logging
 - [Content Negotiation](Docs/ContentNegotiation.md)
 - Forwarded Headers Handling
 - [Health Checks](Docs/HealthChecks.md)
 - [Request ID Handling](Docs/RequestIdHandling.md)
-- OpenAPI (Swagger) Documentation
 - Problem Details (RFC 7807) Error Handling
 
 ### Other Features ###

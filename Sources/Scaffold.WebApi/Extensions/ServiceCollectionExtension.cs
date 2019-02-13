@@ -8,12 +8,12 @@ namespace Scaffold.WebApi.Extensions
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.OpenApi.Models;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
     using Scaffold.Data;
     using Scaffold.Data.Repositories;
     using Scaffold.WebApi.Services;
-    using Swashbuckle.AspNetCore.Swagger;
 
     public static class ServiceCollectionExtension
     {
@@ -21,7 +21,7 @@ namespace Scaffold.WebApi.Extensions
         {
             services.AddSwaggerGen(options =>
             {
-                Info info = new Info
+                OpenApiInfo info = new OpenApiInfo
                 {
                     Version = "v1",
                     Title = "Scaffold.WebApi",
