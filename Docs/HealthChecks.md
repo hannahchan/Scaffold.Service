@@ -13,3 +13,7 @@ Health checks intended for monitoring services usually only need to be exposed i
 When you build a container image of Scaffold.WebApi and run it, the health check endpoint is exposed on port `8081` while the rest of the application remains on port `80`. Port `80` is intended to be the public port while port `8081` is the private port intended for monitoring services. You can change the ports used in the Scaffold.WebApi container image by modifying the [Dockerfile](../Sources/Scaffold.WebApi/Dockerfile) used to build it and the [docker-compose.yml](../docker-compose.yml) used to run it.
 
 When Scaffold.WebApi is run locally, the health check endpoint is exposed on the same port as the rest of the application. For example on `http://localhost:5000/health`. Change this by modifying [launchSettings.json](../Sources/Scaffold.WebApi/Properties/launchSettings.json).
+
+## Entity Framework Core DbContext Check ##
+
+As part of the health check, Scaffold.WebApi checks whether or not it can establish a connection to the database. This health check does not check the Entity Framework Migration state of the database. It is also not an indicator of whether or not the database is up or down.
