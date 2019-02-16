@@ -9,6 +9,6 @@ namespace Scaffold.Domain.Exceptions
 
         public override string Detail => this.Message;
 
-        public override string Title => "Bucket Full Exception";
+        public override string Title => "Bucket Full";
     }
 }

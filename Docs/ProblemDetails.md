@@ -6,7 +6,7 @@ The following is an example error response from the Web API in JSON;
 
 ```
 {
-    "title": "Bucket Full Exception",
+    "title": "Bucket Full",
     "status": 409,
     "detail": "Bucket '1' is full. Cannot add Item to Bucket."
 }
@@ -18,7 +18,7 @@ And the same response in XML;
 <problem xmlns="urn:ietf:rfc:7807">
     <detail>Bucket '1' is full. Cannot add Item to Bucket.</detail>
     <status>409</status>
-    <title>Bucket Full Exception</title>
+    <title>Bucket Full</title>
 </problem>
 ```
 
