@@ -18,7 +18,7 @@ Scaffold.WebApi aims to make developing the following features in your next Web 
 - [API Documentation](Docs/APIDocumentation.md)
 - Application Logging
 - [Content Negotiation](Docs/ContentNegotiation.md)
-- Forwarded Headers Handling
+- [Forwarded Headers Handling](Docs/ForwardedHeadersHandling.md)
 - [Health Checks](Docs/HealthChecks.md)
 - [Request ID Handling](Docs/RequestIdHandling.md)
 - [Problem Details (RFC 7807) Error Handling](Docs/ProblemDetails.md)

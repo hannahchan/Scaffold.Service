@@ -5,6 +5,8 @@ namespace Scaffold.WebApi.Extensions
     using System.Reflection;
     using AutoMapper;
     using MediatR;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.HttpOverrides;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -48,6 +50,9 @@ namespace Scaffold.WebApi.Extensions
 
         public static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration config)
         {
+            services
+                .Configure<ForwardedHeadersOptions>(options => options.ForwardedHeaders = ForwardedHeaders.All);
+
             return services;
         }
 

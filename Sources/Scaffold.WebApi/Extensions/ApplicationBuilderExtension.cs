@@ -11,6 +11,7 @@ namespace Scaffold.WebApi.Extensions
         {
             app
                 .UseMiddleware<UnhandledExceptionMiddleware>()
+                .UseForwardedHeaders()
                 .UseHealthChecks("/health", config["HealthCheckPort"])
                 .UseSwagger()
                 .UseSwaggerUI(options =>
