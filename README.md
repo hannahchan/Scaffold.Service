@@ -11,17 +11,19 @@ To bootstrap your next WebApi project with Scaffold.WebApi.
 3. Find and replace the words `Scaffold` and `scaffold` with the name of your project.
 4. Update `README.md` so that it makes sense.
 
+Alternatively just copy and past the parts of the project that you actually need.
+
 ## Features ##
 
 Scaffold.WebApi aims to make developing the following features in your next Web API or microservice a little bit more easier.
 
 - [API Documentation](Docs/APIDocumentation.md)
-- Application Logging
 - [Content Negotiation](Docs/ContentNegotiation.md)
 - [Forwarded Headers Handling](Docs/ForwardedHeadersHandling.md)
 - [Health Checks](Docs/HealthChecks.md)
-- [Request ID Handling](Docs/RequestIdHandling.md)
 - [Problem Details (RFC 7807) Error Handling](Docs/ProblemDetails.md)
+- [Request ID Handling](Docs/RequestIdHandling.md)
+- Structured Logging
 
 ### Other Features ###
 
@@ -29,7 +31,7 @@ Other stuff you inherit when you bootstrap with Scaffold.WebApi.
 
 - Architecture
 - [Docker Support](Docs/Docker.md)
-- Entity Framework and PostgreSQL
+- [Entity Framework Support](Docs/EntityFramework.md)
 - [StyleCop Analyzers](Docs/StyleCopAnalyzers.md)
 - [Visual Studio Code Support](Docs/VisualStudioCode.md)
 
@@ -38,7 +40,8 @@ Other stuff you inherit when you bootstrap with Scaffold.WebApi.
 Stuff you might want to add to your Web API / microservice but not included with Scaffold.WebApi.
 
 - [API Versioning](https://github.com/Microsoft/aspnet-api-versioning)
-- Authentication and Authorization
+- [Authentication](https://docs.microsoft.com/aspnet/core/security/authentication) and [Authorization](https://docs.microsoft.com/aspnet/core/security/authorization)
+- [Cross-Origin Resource Sharing (CORS)](https://docs.microsoft.com/aspnet/core/security/cors)
 
 ## Example App ##
 
