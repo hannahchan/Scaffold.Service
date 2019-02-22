@@ -10,15 +10,15 @@ namespace Scaffold.WebApi.Extensions
         public static IApplicationBuilder UseMiddleware(this IApplicationBuilder app, IConfiguration config)
         {
             app
-                .UseMiddleware<UnhandledExceptionMiddleware>()
                 .UseForwardedHeaders()
+                .UseMiddleware<RequestIdMiddleware>()
+                .UseMiddleware<RequestLoggingMiddleware>()
                 .UseHealthChecks("/health", config["HealthCheckPort"])
                 .UseSwagger()
                 .UseSwaggerUI(options =>
                 {
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "Scaffold.WebApi v1");
-                })
-                .UseMiddleware<RequestIdMiddleware>();
+                });
 
             return app;
         }
