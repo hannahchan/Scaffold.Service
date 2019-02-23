@@ -1,6 +1,7 @@
 namespace Scaffold.WebApi.Middleware
 {
     using System;
+    using System.Collections;
     using System.Diagnostics;
     using System.Linq;
     using System.Net;
@@ -44,23 +45,21 @@ namespace Scaffold.WebApi.Middleware
 
                     using (LogContext.Push(new HttpResponseStatusCodeEnricher(httpContext.Response)))
                     using (LogContext.PushProperty(nameof(Stopwatch.ElapsedMilliseconds), stopwatch.ElapsedMilliseconds))
+                    using (LogContext.Push(new HttpRequestHeadersEnricher(httpContext.Request)))
                     {
-                        if (httpContext.Response.StatusCode >= 200 && httpContext.Response.StatusCode <= 299)
+                        LogLevel logLevel = LogLevel.Information;
+
+                        if (httpContext.Response.StatusCode < 200 && httpContext.Response.StatusCode > 299)
                         {
-                            this.logger.LogInformation(this.messageTemplate);
-                            return;
+                            logLevel = LogLevel.Warning;
                         }
 
-                        using (LogContext.Push(new HttpRequestHeadersEnricher(httpContext.Request)))
+                        if (httpContext.Response.StatusCode >= 500)
                         {
-                            if (httpContext.Response.StatusCode >= 500)
-                            {
-                                this.logger.LogError(this.messageTemplate);
-                                return;
-                            }
-
-                            this.logger.LogWarning(this.messageTemplate);
+                            logLevel = LogLevel.Error;
                         }
+
+                        this.logger.Log(logLevel, this.messageTemplate);
                     }
                 }
                 catch (Exception exception)
@@ -94,11 +93,9 @@ namespace Scaffold.WebApi.Middleware
 
             public ApplicationNameEnricher(IHostingEnvironment env) => this.env = env;
 
-            public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
-            {
+            public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory) =>
                 logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty(
                     nameof(IHostingEnvironment.ApplicationName), this.env.ApplicationName));
-            }
         }
 
         private class HttpContextEnricher : ILogEventEnricher
@@ -131,17 +128,15 @@ namespace Scaffold.WebApi.Middleware
 
         private class HttpRequestHeadersEnricher : ILogEventEnricher
         {
-            private readonly IHeaderDictionary headers;
+            private readonly IDictionary headers;
 
-            public HttpRequestHeadersEnricher(HttpRequest httpRequest) => this.headers = httpRequest.Headers;
+            public HttpRequestHeadersEnricher(HttpRequest httpRequest) =>
+                this.headers = httpRequest.Headers
+                    .Where(header => !header.Key.Equals("Authorization", StringComparison.OrdinalIgnoreCase))
+                    .ToDictionary(header => header.Key, header => header.Value.ToString());
 
-            public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
-            {
-                logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty(
-                    nameof(HttpRequest.Headers),
-                    this.headers.ToDictionary(header => header.Key, header => header.Value.ToString()),
-                    true));
-            }
+            public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory) =>
+                logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty(nameof(HttpRequest.Headers), this.headers, true));
         }
 
         private class HttpResponseStatusCodeEnricher : ILogEventEnricher
@@ -150,11 +145,9 @@ namespace Scaffold.WebApi.Middleware
 
             public HttpResponseStatusCodeEnricher(HttpResponse httpResponse) => this.httpResponse = httpResponse;
 
-            public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
-            {
+            public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory) =>
                 logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty(
                     nameof(HttpResponse.StatusCode), this.httpResponse.StatusCode));
-            }
         }
     }
 }
