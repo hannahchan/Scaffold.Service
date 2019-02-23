@@ -34,7 +34,6 @@ namespace Scaffold.WebApi.Middleware
         public async Task Invoke(HttpContext httpContext)
         {
             using (LogContext.Push(new ApplicationNameEnricher(this.env)))
-            using (LogContext.Push(new HttpContextEnricher(httpContext)))
             {
                 Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -43,9 +42,10 @@ namespace Scaffold.WebApi.Middleware
                     await this.next.Invoke(httpContext);
                     stopwatch.Stop();
 
+                    using (LogContext.Push(new HttpContextEnricher(httpContext)))
+                    using (LogContext.Push(new HttpRequestHeadersEnricher(httpContext.Request)))
                     using (LogContext.Push(new HttpResponseStatusCodeEnricher(httpContext.Response)))
                     using (LogContext.PushProperty(nameof(Stopwatch.ElapsedMilliseconds), stopwatch.ElapsedMilliseconds))
-                    using (LogContext.Push(new HttpRequestHeadersEnricher(httpContext.Request)))
                     {
                         LogLevel logLevel = LogLevel.Information;
 
@@ -69,9 +69,10 @@ namespace Scaffold.WebApi.Middleware
                     httpContext.Response.ContentType = "text/plain";
                     httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
+                    using (LogContext.Push(new HttpContextEnricher(httpContext)))
+                    using (LogContext.Push(new HttpRequestHeadersEnricher(httpContext.Request)))
                     using (LogContext.Push(new HttpResponseStatusCodeEnricher(httpContext.Response)))
                     using (LogContext.PushProperty(nameof(Stopwatch.ElapsedMilliseconds), stopwatch.ElapsedMilliseconds))
-                    using (LogContext.Push(new HttpRequestHeadersEnricher(httpContext.Request)))
                     {
                         this.logger.LogCritical(exception, this.messageTemplate);
                     }
