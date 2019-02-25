@@ -21,9 +21,6 @@ namespace Scaffold.WebApi.Middleware
 
         private readonly ILogger logger;
 
-        private string messageTemplate =
-            $"HTTP {{Method}} {{Path}} responded with {{StatusCode}} in {{ElapsedMilliseconds}} ms";
-
         public RequestLoggingMiddleware(RequestDelegate next, IHostingEnvironment env, ILogger<RequestLoggingMiddleware> logger)
         {
             this.next = next;
@@ -35,6 +32,9 @@ namespace Scaffold.WebApi.Middleware
         {
             using (LogContext.Push(new ApplicationNameEnricher(this.env)))
             {
+                HttpRequest request = httpContext.Request;
+                HttpResponse response = httpContext.Response;
+
                 Stopwatch stopwatch = Stopwatch.StartNew();
 
                 try
@@ -42,48 +42,42 @@ namespace Scaffold.WebApi.Middleware
                     await this.next.Invoke(httpContext);
                     stopwatch.Stop();
 
-                    using (LogContext.Push(new HttpContextEnricher(httpContext)))
-                    using (LogContext.Push(new HttpRequestHeadersEnricher(httpContext.Request)))
-                    using (LogContext.Push(new HttpResponseStatusCodeEnricher(httpContext.Response)))
-                    using (LogContext.PushProperty(nameof(Stopwatch.ElapsedMilliseconds), stopwatch.ElapsedMilliseconds))
+                    using (LogContext.Push(new HttpContextEnricher(httpContext, stopwatch.ElapsedMilliseconds)))
                     {
                         LogLevel logLevel = LogLevel.Information;
 
-                        if (httpContext.Response.StatusCode < 200 && httpContext.Response.StatusCode > 299)
+                        if (response.StatusCode < 200 && response.StatusCode > 299)
                         {
                             logLevel = LogLevel.Warning;
                         }
 
-                        if (httpContext.Response.StatusCode >= 500)
+                        if (response.StatusCode >= 500)
                         {
                             logLevel = LogLevel.Error;
                         }
 
-                        this.logger.Log(logLevel, this.messageTemplate);
+                        this.logger.Log(logLevel, $"HTTP {request.Method} {request.Path} responded with {response.StatusCode} in {stopwatch.ElapsedMilliseconds} ms");
                     }
                 }
                 catch (Exception exception)
                 {
                     stopwatch.Stop();
 
-                    httpContext.Response.ContentType = "text/plain";
-                    httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
-                    using (LogContext.Push(new HttpContextEnricher(httpContext)))
-                    using (LogContext.Push(new HttpRequestHeadersEnricher(httpContext.Request)))
-                    using (LogContext.Push(new HttpResponseStatusCodeEnricher(httpContext.Response)))
-                    using (LogContext.PushProperty(nameof(Stopwatch.ElapsedMilliseconds), stopwatch.ElapsedMilliseconds))
+                    using (LogContext.Push(new HttpContextEnricher(httpContext, stopwatch.ElapsedMilliseconds)))
                     {
-                        this.logger.LogCritical(exception, this.messageTemplate);
+                        this.logger.LogCritical(exception, $"HTTP {request.Method} {request.Path} responded with {response.StatusCode} in {stopwatch.ElapsedMilliseconds} ms");
                     }
+
+                    response.ContentType = "text/plain";
+                    response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
                     if (this.env.IsDevelopment())
                     {
-                        await httpContext.Response.WriteAsync(exception.ToString());
+                        await response.WriteAsync(exception.ToString());
                         return;
                     }
 
-                    await httpContext.Response.WriteAsync("Oh no! Something has gone wrong.");
+                    await response.WriteAsync("Oh no! Something has gone wrong.");
                 }
             }
         }
@@ -103,52 +97,45 @@ namespace Scaffold.WebApi.Middleware
         {
             private readonly HttpContext httpContext;
 
-            public HttpContextEnricher(HttpContext httpContext) => this.httpContext = httpContext;
+            private readonly long? elapsedMilliseconds;
+
+            public HttpContextEnricher(HttpContext httpContext, long? elapsedMilliseconds = null)
+            {
+                this.httpContext = httpContext;
+                this.elapsedMilliseconds = elapsedMilliseconds;
+            }
 
             public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
             {
-                logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty(
-                    nameof(HttpContext.Connection.RemoteIpAddress), this.httpContext.Connection.RemoteIpAddress));
+                object httpConnection = new
+                {
+                    RemoteIpAddress = this.httpContext.Connection.RemoteIpAddress.ToString(),
+                    LocalIpAddress = this.httpContext.Connection.LocalIpAddress.ToString()
+                };
 
-                logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty(
-                    nameof(HttpContext.Connection.LocalIpAddress), this.httpContext.Connection.LocalIpAddress));
+                logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("HttpConnection", httpConnection, true));
 
-                logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty(
-                    nameof(HttpContext.Request.Method), this.httpContext.Request.Method));
+                object httpRequest = new
+                {
+                    Method = this.httpContext.Request.Method,
+                    Scheme = this.httpContext.Request.Scheme,
+                    Host = this.httpContext.Request.Host.ToString(),
+                    Path = this.httpContext.Request.Path.ToString(),
+                    Headers = this.httpContext.Request.Headers
+                        .Where(header => !header.Key.Equals("Authorization", StringComparison.OrdinalIgnoreCase))
+                        .ToDictionary(header => header.Key, header => header.Value.ToString())
+                };
 
-                logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty(
-                    nameof(HttpContext.Request.Scheme), this.httpContext.Request.Scheme));
+                logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("HttpRequest", httpRequest, true));
 
-                logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty(
-                    nameof(HttpContext.Request.Host), this.httpContext.Request.Host));
+                object httpResponse = new
+                {
+                    StatusCode = this.httpContext.Response.StatusCode,
+                    ElapsedMilliseconds = this.elapsedMilliseconds
+                };
 
-                logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty(
-                    nameof(HttpContext.Request.Path), this.httpContext.Request.Path));
+                logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("HttpResponse", httpResponse, true));
             }
-        }
-
-        private class HttpRequestHeadersEnricher : ILogEventEnricher
-        {
-            private readonly IDictionary headers;
-
-            public HttpRequestHeadersEnricher(HttpRequest httpRequest) =>
-                this.headers = httpRequest.Headers
-                    .Where(header => !header.Key.Equals("Authorization", StringComparison.OrdinalIgnoreCase))
-                    .ToDictionary(header => header.Key, header => header.Value.ToString());
-
-            public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory) =>
-                logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty(nameof(HttpRequest.Headers), this.headers, true));
-        }
-
-        private class HttpResponseStatusCodeEnricher : ILogEventEnricher
-        {
-            private readonly HttpResponse httpResponse;
-
-            public HttpResponseStatusCodeEnricher(HttpResponse httpResponse) => this.httpResponse = httpResponse;
-
-            public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory) =>
-                logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty(
-                    nameof(HttpResponse.StatusCode), this.httpResponse.StatusCode));
         }
     }
 }
