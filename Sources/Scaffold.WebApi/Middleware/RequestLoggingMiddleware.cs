@@ -30,7 +30,7 @@ namespace Scaffold.WebApi.Middleware
 
         public async Task Invoke(HttpContext httpContext)
         {
-            using (LogContext.Push(new ApplicationNameEnricher(this.env)))
+            using (LogContext.Push(new ApplicationDetailsEnricher(this.env)))
             {
                 HttpRequest request = httpContext.Request;
                 HttpResponse response = httpContext.Response;
@@ -82,15 +82,17 @@ namespace Scaffold.WebApi.Middleware
             }
         }
 
-        private class ApplicationNameEnricher : ILogEventEnricher
+        private class ApplicationDetailsEnricher : ILogEventEnricher
         {
             private readonly IHostingEnvironment env;
 
-            public ApplicationNameEnricher(IHostingEnvironment env) => this.env = env;
+            public ApplicationDetailsEnricher(IHostingEnvironment env) => this.env = env;
 
-            public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory) =>
-                logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty(
-                    nameof(IHostingEnvironment.ApplicationName), this.env.ApplicationName));
+            public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
+            {
+                logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("Application", this.env.ApplicationName));
+                logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("Environment", this.env.EnvironmentName));
+            }
         }
 
         private class HttpContextEnricher : ILogEventEnricher
