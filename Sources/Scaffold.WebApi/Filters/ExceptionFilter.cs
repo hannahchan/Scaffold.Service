@@ -13,7 +13,7 @@ namespace Scaffold.WebApi.Filters
 
     public class ExceptionFilter : IExceptionFilter
     {
-        private readonly IRequestIdService requestIdService;
+        private readonly IRequestTracingService tracingService;
 
         private readonly MediaTypeCollection contentTypes = new MediaTypeCollection
         {
@@ -21,25 +21,28 @@ namespace Scaffold.WebApi.Filters
             "application/problem+xml",
         };
 
-        public ExceptionFilter(IRequestIdService requestIdService) => this.requestIdService = requestIdService;
+        public ExceptionFilter(IRequestTracingService tracingService) => this.tracingService = tracingService;
 
         public void OnException(ExceptionContext context)
         {
             if (context.Exception is DomainException domainException)
             {
                 ProblemDetails details = this.GetProblemDetails(domainException);
+                details.Extensions[this.ToCamelCase(Headers.RequestId)] = context.HttpContext.TraceIdentifier;
                 context.Result = new ConflictObjectResult(details) { ContentTypes = this.contentTypes };
             }
 
             if (context.Exception is NotFoundException notFoundException)
             {
                 ProblemDetails details = this.GetProblemDetails(notFoundException);
+                details.Extensions[this.ToCamelCase(Headers.RequestId)] = context.HttpContext.TraceIdentifier;
                 context.Result = new NotFoundObjectResult(details) { ContentTypes = this.contentTypes };
             }
 
             if (context.Exception is ValidationException validationException)
             {
                 ValidationProblemDetails details = this.GetProblemDetails(validationException);
+                details.Extensions[this.ToCamelCase(Headers.RequestId)] = context.HttpContext.TraceIdentifier;
                 context.Result = new BadRequestObjectResult(details) { ContentTypes = this.contentTypes };
             }
         }
@@ -52,9 +55,9 @@ namespace Scaffold.WebApi.Filters
                 Detail = exception.Detail
             };
 
-            if (!string.IsNullOrEmpty(this.requestIdService?.RequestId))
+            if (!string.IsNullOrEmpty(this.tracingService?.CorrelationId))
             {
-                details.Extensions[Headers.RequestId.ToLower()] = this.requestIdService.RequestId;
+                details.Extensions[this.ToCamelCase(Headers.CorrelationId)] = this.tracingService.CorrelationId;
             }
 
             return details;
@@ -68,9 +71,9 @@ namespace Scaffold.WebApi.Filters
                 Detail = exception.Detail
             };
 
-            if (!string.IsNullOrEmpty(this.requestIdService?.RequestId))
+            if (!string.IsNullOrEmpty(this.tracingService?.CorrelationId))
             {
-                details.Extensions[Headers.RequestId.ToLower()] = this.requestIdService.RequestId;
+                details.Extensions[this.ToCamelCase(Headers.CorrelationId)] = this.tracingService.CorrelationId;
             }
 
             return details;
@@ -80,9 +83,9 @@ namespace Scaffold.WebApi.Filters
         {
             ValidationProblemDetails details = new ValidationProblemDetails { Title = "Validation Failure" };
 
-            if (!string.IsNullOrEmpty(this.requestIdService?.RequestId))
+            if (!string.IsNullOrEmpty(this.tracingService?.CorrelationId))
             {
-                details.Extensions[Headers.RequestId.ToLower()] = this.requestIdService.RequestId;
+                details.Extensions[this.ToCamelCase(Headers.CorrelationId)] = this.tracingService.CorrelationId;
             }
 
             foreach (string property in exception.Errors.Select(error => error.PropertyName).Distinct())
@@ -96,6 +99,15 @@ namespace Scaffold.WebApi.Filters
             }
 
             return details;
+        }
+
+        private string ToCamelCase(string text)
+        {
+            text = text.Replace(" ", string.Empty);
+            text = text.Replace("-", string.Empty);
+            text = text.Replace(".", string.Empty);
+            text = text.Replace("_", string.Empty);
+            return $"{char.ToLowerInvariant(text[0])}{text.Substring(1)}";
         }
     }
 }

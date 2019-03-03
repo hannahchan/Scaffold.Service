@@ -67,7 +67,7 @@ namespace Scaffold.WebApi.Extensions
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services
-                .AddScoped<IRequestIdService, RequestIdService>();
+                .AddScoped<IRequestTracingService, RequestTracingService>();
 
             return services;
         }
