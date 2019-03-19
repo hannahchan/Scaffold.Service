@@ -1,10 +1,10 @@
 # Structured Logging #
 
-Scaffold.WebApi uses the [Serilog](https://serilog.net) Logging Provider for structured logging. Before you can actually get structured logs, you'll need to configure a *sink* that can support structured logging. Serilog can be configured by modifying [Program.cs](../Sources/Scaffold.WebApi/Program.cs).
+Scaffold uses the [Serilog](https://serilog.net) Logging Provider for structured logging. Before you can actually get structured logs, you'll need to configure a *sink* that can support structured logging. Serilog can be configured by modifying [Program.cs](../Sources/Scaffold.WebApi/Program.cs).
 
 ## Request Logging ##
 
-Included in Scaffold.WebApi is a [Request Logging Middleware](../Sources/Scaffold.WebApi/Middleware/RequestLoggingMiddleware.cs) that does the following;
+Included in Scaffold is a [Request Logging Middleware](../Sources/Scaffold.WebApi/Middleware/RequestLoggingMiddleware.cs) that does the following;
 
 1. Defines the log scope and logging context for log events.
 2. Logs every request.

@@ -6,7 +6,7 @@ Requests sent to Web APIs are often relayed through network appliances such as p
 - `X-Forwarded-Proto`
 - `X-Forwarded-Host`
 
-When Scaffold.WebApi receives a request with any of these headers present, it sets certain values in the [HttpContext](https://docs.microsoft.com/dotnet/api/system.web.httpcontext) object to the values contained in the headers so that you can consume them in your application.
+When Scaffold receives a request with any of these headers present, it sets certain values in the [HttpContext](https://docs.microsoft.com/dotnet/api/system.web.httpcontext) object to the values contained in the headers so that you can consume them in your application.
 
 - `HttpContext.Connection.RemoteIpAddress` is set by `X-Forwarded-For`.
 - `HttpContext.Request.Scheme` is set by `X-Forwarded-Proto`.

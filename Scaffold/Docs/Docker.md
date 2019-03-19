@@ -1,6 +1,6 @@
 # Docker Support #
 
-Scaffold.WebApi has been created with [Docker](https://www.docker.com/) support in mind so that you can build a container image of the Web API to be deployed into production or run locally without installing the prerequisites .NET Core and PostgreSQL. Docker support is facilitated by the `docker-compose.yml` file included in the root of this project.
+Scaffold has been created with [Docker](https://www.docker.com/) support in mind so that you can build a container image of the Web API to be deployed into production or run locally without installing the prerequisites .NET Core and PostgreSQL. Docker support is facilitated by the `docker-compose.yml` file included in the root of this project.
 
 ## Building a Container Image of the Web API ##
 
@@ -12,7 +12,7 @@ This command produces a production ready image of the ASP.NET Core Web API.
 
 ## Running the Web API Locally in Docker ##
 
-Scaffold.WebApi can be run locally in Docker without installing the prerequisites .NET Core and PostgreSQL. To run the Web API in Docker locally and in the background, run;
+Scaffold can be run locally in Docker without installing the prerequisites .NET Core and PostgreSQL. To run the Web API in Docker locally and in the background, run;
 
 `docker-compose up -d`
 

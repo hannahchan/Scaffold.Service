@@ -1,6 +1,6 @@
 ---
 services:
-  scaffold.webapi:
+  scaffold:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
   postgres:

@@ -4,7 +4,7 @@ Request tracing is the practice of tagging interactions with an identifer to see
 
 ## The Request Identifier Scheme ##
 
-Scaffold.WebApi makes a distinction between the terms *Correlation ID* and *Request ID*.
+Scaffold makes a distinction between the terms *Correlation ID* and *Request ID*.
 
 ### Correlation ID ###
 
@@ -16,7 +16,7 @@ A Request ID is an internally generated identifer for a request that uniquely id
 
 ## Changing the Default Behavior and Header ##
 
-The default request tracing header for Scaffold.WebApi is `Correlation-Id` and has been defined as a constant in a file named [Headers.cs](../Sources/Scaffold.WebApi/Constants/Headers.cs). Changing this value will change the name of the request tracing header the that Web API will accept.
+The default request tracing header for Scaffold is `Correlation-Id` and has been defined as a constant in a file named [Headers.cs](../Sources/Scaffold.WebApi/Constants/Headers.cs). Changing this value will change the name of the request tracing header the that Web API will accept.
 
 The default request tracing behavior can be changed by modifying [RequestTracingMiddleware.cs](../Sources/Scaffold.WebApi/Middleware/RequestTracingMiddleware.cs). How request identifiers are logged can be changed by modifying [RequestLoggingMiddleware.cs](../Sources/Scaffold.WebApi/Middleware/RequestLoggingMiddleware.cs).
 

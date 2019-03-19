@@ -26,8 +26,8 @@ namespace Scaffold.WebApi.Extensions
                 OpenApiInfo info = new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "Scaffold.WebApi",
-                    Description = "A simple CRUD application to demonstrate Scaffold.WebApi."
+                    Title = "Scaffold",
+                    Description = "A simple CRUD application to demonstrate Scaffold."
                 };
 
                 options.SwaggerDoc("v1", info);
