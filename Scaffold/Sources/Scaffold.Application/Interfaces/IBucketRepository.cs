@@ -1,6 +1,8 @@
 namespace Scaffold.Application.Interfaces
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq.Expressions;
     using System.Threading.Tasks;
     using Scaffold.Domain.Entities;
 
@@ -12,11 +14,11 @@ namespace Scaffold.Application.Interfaces
 
         Bucket Get(int id);
 
-        IList<Bucket> GetAll();
-
-        Task<IList<Bucket>> GetAllAsync();
+        IList<Bucket> Get(Expression<Func<Bucket, bool>> predicate);
 
         Task<Bucket> GetAsync(int id);
+
+        Task<IList<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate);
 
         void Remove(Bucket bucket);
 

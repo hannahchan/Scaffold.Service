@@ -1,6 +1,8 @@
 namespace Scaffold.Application.Features.Bucket
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq.Expressions;
     using System.Threading;
     using System.Threading.Tasks;
     using MediatR;
@@ -11,6 +13,13 @@ namespace Scaffold.Application.Features.Bucket
     {
         public class Query : IRequest<Response>
         {
+            public Query() =>
+                this.Predicate = bucket => true;
+
+            public Query(Expression<Func<Bucket, bool>> predicate) =>
+                this.Predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
+
+            public Expression<Func<Bucket, bool>> Predicate { get; }
         }
 
         public class Response
@@ -25,7 +34,7 @@ namespace Scaffold.Application.Features.Bucket
             public Handler(IBucketRepository repository) => this.repository = repository;
 
             public async Task<Response> Handle(Query query, CancellationToken cancellationToken) =>
-                new Response { Buckets = await this.repository.GetAllAsync() };
+                new Response { Buckets = await this.repository.GetAsync(query.Predicate) };
         }
     }
 }

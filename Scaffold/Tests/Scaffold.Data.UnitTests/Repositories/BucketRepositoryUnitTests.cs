@@ -153,12 +153,9 @@ namespace Scaffold.Data.UnitTests.Repositories
                 // Assert
                 Assert.Null(result);
             }
-        }
 
-        public class GetAll : BucketRepositoryUnitTests
-        {
             [Fact]
-            public void When_GettingExistingBuckets_Expect_ExistingBuckets()
+            public void When_GettingBucketsWithPredicate_Expect_AllBuckets()
             {
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -166,7 +163,6 @@ namespace Scaffold.Data.UnitTests.Repositories
                     context.Set<Bucket>().Add(new Bucket());
                     context.Set<Bucket>().Add(new Bucket());
                     context.Set<Bucket>().Add(new Bucket());
-
                     context.SaveChanges();
                 }
 
@@ -176,7 +172,7 @@ namespace Scaffold.Data.UnitTests.Repositories
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     IBucketRepository repository = new BucketRepository(context);
-                    result = repository.GetAll();
+                    result = repository.Get(bucket => true);
                 }
 
                 // Assert
@@ -186,37 +182,43 @@ namespace Scaffold.Data.UnitTests.Repositories
             }
 
             [Fact]
-            public void When_GettingNonExistingBuckets_Expect_EmptyList()
+            public void When_GettingBucketsWithPredicate_Expect_EmptyList()
             {
                 // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(new Bucket());
+                    context.Set<Bucket>().Add(new Bucket());
+                    context.Set<Bucket>().Add(new Bucket());
+                    context.SaveChanges();
+                }
+
                 IList<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     IBucketRepository repository = new BucketRepository(context);
-                    result = repository.GetAll();
+                    result = repository.Get(bucket => false);
                 }
 
                 // Assert
                 Assert.NotNull(result);
                 Assert.Empty(result);
             }
-        }
 
-        public class GetAllAsync : BucketRepositoryUnitTests
-        {
             [Fact]
-            public async Task When_GettingExistingBuckets_Expect_ExistingBuckets()
+            public void When_GettingBucketsWithPredicate_Expect_SomeBuckets()
             {
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(new Bucket());
-                    context.Set<Bucket>().Add(new Bucket());
-                    context.Set<Bucket>().Add(new Bucket());
-
-                    await context.SaveChangesAsync();
+                    context.Set<Bucket>().Add(new Bucket { Size = 1 });
+                    context.Set<Bucket>().Add(new Bucket { Size = 2 });
+                    context.Set<Bucket>().Add(new Bucket { Size = 3 });
+                    context.Set<Bucket>().Add(new Bucket { Size = 5 });
+                    context.Set<Bucket>().Add(new Bucket { Size = 8 });
+                    context.SaveChanges();
                 }
 
                 IList<Bucket> result;
@@ -225,31 +227,13 @@ namespace Scaffold.Data.UnitTests.Repositories
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     IBucketRepository repository = new BucketRepository(context);
-                    result = await repository.GetAllAsync();
+                    result = repository.Get(bucket => bucket.Size == 2 || bucket.Size == 5);
                 }
 
                 // Assert
                 Assert.NotNull(result);
                 Assert.NotEmpty(result);
-                Assert.Equal(3, result.Count);
-            }
-
-            [Fact]
-            public async Task When_GettingNonExistingBuckets_Expect_EmptyList()
-            {
-                // Arrange
-                IList<Bucket> result;
-
-                // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
-                {
-                    IBucketRepository repository = new BucketRepository(context);
-                    result = await repository.GetAllAsync();
-                }
-
-                // Assert
-                Assert.NotNull(result);
-                Assert.Empty(result);
+                Assert.Equal(2, result.Count);
             }
         }
 
@@ -297,6 +281,102 @@ namespace Scaffold.Data.UnitTests.Repositories
 
                 // Assert
                 Assert.Null(result);
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsWithPredicate_Expect_AllBuckets()
+            {
+                // Arrange
+                Bucket bucket1 = new Bucket();
+                Bucket bucket2 = new Bucket();
+                Bucket bucket3 = new Bucket();
+
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(bucket1);
+                    context.Set<Bucket>().Add(bucket2);
+                    context.Set<Bucket>().Add(bucket3);
+                    await context.SaveChangesAsync();
+                }
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = await repository.GetAsync(bucket => true);
+                }
+
+                // Assert
+                Assert.NotNull(result);
+                Assert.NotEmpty(result);
+                Assert.Equal(3, result.Count);
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsWithPredicate_Expect_NoBuckets()
+            {
+                // Arrange
+                Bucket bucket1 = new Bucket();
+                Bucket bucket2 = new Bucket();
+                Bucket bucket3 = new Bucket();
+
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(bucket1);
+                    context.Set<Bucket>().Add(bucket2);
+                    context.Set<Bucket>().Add(bucket3);
+                    await context.SaveChangesAsync();
+                }
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = await repository.GetAsync(bucket => false);
+                }
+
+                // Assert
+                Assert.NotNull(result);
+                Assert.Empty(result);
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsWithPredicate_Expect_SomeBuckets()
+            {
+                // Arrange
+                Bucket bucket1 = new Bucket { Size = 1 };
+                Bucket bucket2 = new Bucket { Size = 2 };
+                Bucket bucket3 = new Bucket { Size = 3 };
+                Bucket bucket4 = new Bucket { Size = 5 };
+                Bucket bucket5 = new Bucket { Size = 8 };
+
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(bucket1);
+                    context.Set<Bucket>().Add(bucket2);
+                    context.Set<Bucket>().Add(bucket3);
+                    context.Set<Bucket>().Add(bucket4);
+                    context.Set<Bucket>().Add(bucket5);
+                    await context.SaveChangesAsync();
+                }
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = await repository.GetAsync(bucket => bucket.Size == 2 || bucket.Size == 5);
+                }
+
+                // Assert
+                Assert.NotNull(result);
+                Assert.NotEmpty(result);
+                Assert.Equal(2, result.Count);
             }
         }
 

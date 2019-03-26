@@ -3,6 +3,7 @@ namespace Scaffold.Data.Repositories
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Interfaces;
@@ -44,21 +45,37 @@ namespace Scaffold.Data.Repositories
                 .Include(bucket => bucket.Items)
                 .SingleOrDefault();
 
-        public IList<Bucket> GetAll() =>
-            this.context.Set<Bucket>()
+        public IList<Bucket> Get(Expression<Func<Bucket, bool>> predicate)
+        {
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            return this.context.Set<Bucket>()
+                .Where(predicate)
                 .Include(bucket => bucket.Items)
                 .ToList();
-
-        public async Task<IList<Bucket>> GetAllAsync() =>
-            await this.context.Set<Bucket>()
-                .Include(bucket => bucket.Items)
-                .ToListAsync();
+        }
 
         public async Task<Bucket> GetAsync(int id) =>
             await this.context.Set<Bucket>()
                 .Where(bucket => bucket.Id == id)
                 .Include(bucket => bucket.Items)
                 .SingleOrDefaultAsync();
+
+        public async Task<IList<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate)
+        {
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            return await this.context.Set<Bucket>()
+                .Where(predicate)
+                .Include(bucket => bucket.Items)
+                .ToListAsync();
+        }
 
         public void Remove(Bucket bucket)
         {
