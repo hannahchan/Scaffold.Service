@@ -1,11 +1,11 @@
-FROM microsoft/dotnet:2.2-aspnetcore-runtime AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2 AS base
 WORKDIR /app
 ENV ASPNETCORE_HEALTHCHECKPORT=8081
 ENV ASPNETCORE_SUPPRESSSTATUSMESSAGES=true
 ENV ASPNETCORE_URLS=http://+:80;http://+:8081
 EXPOSE 80 8081
 
-FROM microsoft/dotnet:2.2-sdk AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /src
 COPY . .
 WORKDIR /src/Sources/Scaffold.WebApi
