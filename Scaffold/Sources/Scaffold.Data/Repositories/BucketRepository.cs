@@ -45,18 +45,10 @@ namespace Scaffold.Data.Repositories
                 .Include(bucket => bucket.Items)
                 .SingleOrDefault();
 
-        public IList<Bucket> Get(Expression<Func<Bucket, bool>> predicate)
-        {
-            if (predicate == null)
-            {
-                throw new ArgumentNullException(nameof(predicate));
-            }
-
-            return this.context.Set<Bucket>()
-                .Where(predicate)
+        public IList<Bucket> Get(Expression<Func<Bucket, bool>> predicate, int limit = 0, int offset = 0) =>
+            this.BuildQuery(predicate, limit, offset)
                 .Include(bucket => bucket.Items)
                 .ToList();
-        }
 
         public async Task<Bucket> GetAsync(int id) =>
             await this.context.Set<Bucket>()
@@ -64,18 +56,10 @@ namespace Scaffold.Data.Repositories
                 .Include(bucket => bucket.Items)
                 .SingleOrDefaultAsync();
 
-        public async Task<IList<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate)
-        {
-            if (predicate == null)
-            {
-                throw new ArgumentNullException(nameof(predicate));
-            }
-
-            return await this.context.Set<Bucket>()
-                .Where(predicate)
+        public async Task<IList<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int limit = 0, int offset = 0) =>
+            await this.BuildQuery(predicate, limit, offset)
                 .Include(bucket => bucket.Items)
                 .ToListAsync();
-        }
 
         public void Remove(Bucket bucket)
         {
@@ -119,6 +103,38 @@ namespace Scaffold.Data.Repositories
 
             this.context.Set<Bucket>().Update(bucket);
             await this.context.SaveChangesAsync();
+        }
+
+        private IQueryable<Bucket> BuildQuery(Expression<Func<Bucket, bool>> predicate, int limit, int offset)
+        {
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            if (limit < 0)
+            {
+                throw new ArgumentException($"'{nameof(limit)}' cannot be less than zero.", nameof(limit));
+            }
+
+            if (offset < 0)
+            {
+                throw new ArgumentException($"'{nameof(offset)}' cannot be less than zero.", nameof(offset));
+            }
+
+            IQueryable<Bucket> query = this.context.Set<Bucket>().Where(predicate);
+
+            if (offset > 0)
+            {
+                query = query.Skip(offset);
+            }
+
+            if (limit > 0)
+            {
+                query = query.Take(offset);
+            }
+
+            return query;
         }
     }
 }
