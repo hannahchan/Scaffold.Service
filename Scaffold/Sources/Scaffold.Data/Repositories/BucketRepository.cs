@@ -112,16 +112,6 @@ namespace Scaffold.Data.Repositories
                 throw new ArgumentNullException(nameof(predicate));
             }
 
-            if (limit < 0)
-            {
-                throw new ArgumentException($"'{nameof(limit)}' cannot be less than zero.", nameof(limit));
-            }
-
-            if (offset < 0)
-            {
-                throw new ArgumentException($"'{nameof(offset)}' cannot be less than zero.", nameof(offset));
-            }
-
             IQueryable<Bucket> query = this.context.Set<Bucket>().Where(predicate);
 
             if (offset > 0)
@@ -131,7 +121,7 @@ namespace Scaffold.Data.Repositories
 
             if (limit > 0)
             {
-                query = query.Take(offset);
+                query = query.Take(limit);
             }
 
             return query;

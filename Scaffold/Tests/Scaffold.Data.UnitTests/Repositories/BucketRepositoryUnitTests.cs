@@ -235,6 +235,152 @@ namespace Scaffold.Data.UnitTests.Repositories
                 Assert.NotEmpty(result);
                 Assert.Equal(2, result.Count);
             }
+
+            [Fact]
+            public void When_GettingBucketsWithNoLimit_Expect_AllBuckets()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 1" });
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 2" });
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 3" });
+                    context.SaveChanges();
+                }
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = repository.Get(bucket => true, 0);
+                }
+
+                // Assert
+                Assert.NotNull(result);
+                Assert.NotEmpty(result);
+                Assert.Equal(3, result.Count);
+                Assert.Equal("Bucket 1", result[0].Name);
+                Assert.Equal("Bucket 2", result[1].Name);
+                Assert.Equal("Bucket 3", result[2].Name);
+            }
+
+            [Fact]
+            public void When_GettingBucketsWithLimit_Expect_LimitedBuckets()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 1" });
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 2" });
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 3" });
+                    context.SaveChanges();
+                }
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = repository.Get(bucket => true, 2);
+                }
+
+                // Assert
+                Assert.NotNull(result);
+                Assert.NotEmpty(result);
+                Assert.Equal(2, result.Count);
+                Assert.Equal("Bucket 1", result[0].Name);
+                Assert.Equal("Bucket 2", result[1].Name);
+            }
+
+            [Fact]
+            public void When_GettingBucketsWithNoOffset_Expect_AllBuckets()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 1" });
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 2" });
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 3" });
+                    context.SaveChanges();
+                }
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = repository.Get(bucket => true, 0, 0);
+                }
+
+                // Assert
+                Assert.NotNull(result);
+                Assert.NotEmpty(result);
+                Assert.Equal(3, result.Count);
+                Assert.Equal("Bucket 1", result[0].Name);
+                Assert.Equal("Bucket 2", result[1].Name);
+                Assert.Equal("Bucket 3", result[2].Name);
+            }
+
+            [Fact]
+            public void When_GettingBucketsWithOffset_Expect_OffsetBuckets()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 1" });
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 2" });
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 3" });
+                    context.SaveChanges();
+                }
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = repository.Get(bucket => true, 0, 1);
+                }
+
+                // Assert
+                Assert.NotNull(result);
+                Assert.NotEmpty(result);
+                Assert.Equal(2, result.Count);
+                Assert.Equal("Bucket 2", result[0].Name);
+                Assert.Equal("Bucket 3", result[1].Name);
+            }
+
+            [Fact]
+            public void When_GettingBucketsWithLimitAndOffset_Expect_LimitedAndOffsetBuckets()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 1" });
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 2" });
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 3" });
+                    context.SaveChanges();
+                }
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = repository.Get(bucket => true, 1, 1);
+                }
+
+                // Assert
+                Assert.NotNull(result);
+                Assert.NotEmpty(result);
+                Assert.Equal(1, result.Count);
+                Assert.Equal("Bucket 2", result[0].Name);
+            }
         }
 
         public class GetAsync : BucketRepositoryUnitTests
@@ -377,6 +523,152 @@ namespace Scaffold.Data.UnitTests.Repositories
                 Assert.NotNull(result);
                 Assert.NotEmpty(result);
                 Assert.Equal(2, result.Count);
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsWithNoLimit_Expect_AllBuckets()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 1" });
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 2" });
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 3" });
+                    await context.SaveChangesAsync();
+                }
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = await repository.GetAsync(bucket => true, 0);
+                }
+
+                // Assert
+                Assert.NotNull(result);
+                Assert.NotEmpty(result);
+                Assert.Equal(3, result.Count);
+                Assert.Equal("Bucket 1", result[0].Name);
+                Assert.Equal("Bucket 2", result[1].Name);
+                Assert.Equal("Bucket 3", result[2].Name);
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsWithLimit_Expect_LimitedBuckets()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 1" });
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 2" });
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 3" });
+                    await context.SaveChangesAsync();
+                }
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = await repository.GetAsync(bucket => true, 2);
+                }
+
+                // Assert
+                Assert.NotNull(result);
+                Assert.NotEmpty(result);
+                Assert.Equal(2, result.Count);
+                Assert.Equal("Bucket 1", result[0].Name);
+                Assert.Equal("Bucket 2", result[1].Name);
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsWithNoOffset_Expect_AllBuckets()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 1" });
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 2" });
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 3" });
+                    await context.SaveChangesAsync();
+                }
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = await repository.GetAsync(bucket => true, 0, 0);
+                }
+
+                // Assert
+                Assert.NotNull(result);
+                Assert.NotEmpty(result);
+                Assert.Equal(3, result.Count);
+                Assert.Equal("Bucket 1", result[0].Name);
+                Assert.Equal("Bucket 2", result[1].Name);
+                Assert.Equal("Bucket 3", result[2].Name);
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsWithOffset_Expect_OffsetBuckets()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 1" });
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 2" });
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 3" });
+                    await context.SaveChangesAsync();
+                }
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = await repository.GetAsync(bucket => true, 0, 1);
+                }
+
+                // Assert
+                Assert.NotNull(result);
+                Assert.NotEmpty(result);
+                Assert.Equal(2, result.Count);
+                Assert.Equal("Bucket 2", result[0].Name);
+                Assert.Equal("Bucket 3", result[1].Name);
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsWithLimitAndOffset_Expect_LimitedAndOffsetBuckets()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 1" });
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 2" });
+                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 3" });
+                    await context.SaveChangesAsync();
+                }
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = await repository.GetAsync(bucket => true, 1, 1);
+                }
+
+                // Assert
+                Assert.NotNull(result);
+                Assert.NotEmpty(result);
+                Assert.Equal(1, result.Count);
+                Assert.Equal("Bucket 2", result[0].Name);
             }
         }
 
