@@ -25,14 +25,16 @@
         }
 
         /// <summary>Retrieves a list of buckets.</summary>
+        /// <param name="limit">The maximun number of buckets to return from the result set. Defaults to 10.</param>
+        /// <param name="offset">The number of buckets to omit from the start of the result set.</param>
         /// <returns>A list of Bucket objects.</returns>
         /// <response code="default">Problem Details (RFC 7807) Response</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<IList<Bucket>>> Get()
+        public async Task<ActionResult<IList<Bucket>>> Get([FromQuery]int? limit, [FromQuery]int? offset)
         {
-            GetBuckets.Query query = new GetBuckets.Query();
+            GetBuckets.Query query = new GetBuckets.Query { Limit = limit ?? 10, Offset = offset };
             GetBuckets.Response response = await this.mediator.Send(query);
 
             return this.mapper.Map<List<Bucket>>(response.Buckets);

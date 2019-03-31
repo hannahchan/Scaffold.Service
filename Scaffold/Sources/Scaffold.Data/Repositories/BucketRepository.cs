@@ -45,7 +45,7 @@ namespace Scaffold.Data.Repositories
                 .Include(bucket => bucket.Items)
                 .SingleOrDefault();
 
-        public IList<Bucket> Get(Expression<Func<Bucket, bool>> predicate, int limit = 0, int offset = 0) =>
+        public IList<Bucket> Get(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null) =>
             this.BuildQuery(predicate, limit, offset)
                 .Include(bucket => bucket.Items)
                 .ToList();
@@ -56,7 +56,7 @@ namespace Scaffold.Data.Repositories
                 .Include(bucket => bucket.Items)
                 .SingleOrDefaultAsync();
 
-        public async Task<IList<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int limit = 0, int offset = 0) =>
+        public async Task<IList<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null) =>
             await this.BuildQuery(predicate, limit, offset)
                 .Include(bucket => bucket.Items)
                 .ToListAsync();
@@ -105,7 +105,7 @@ namespace Scaffold.Data.Repositories
             await this.context.SaveChangesAsync();
         }
 
-        private IQueryable<Bucket> BuildQuery(Expression<Func<Bucket, bool>> predicate, int limit, int offset)
+        private IQueryable<Bucket> BuildQuery(Expression<Func<Bucket, bool>> predicate, int? limit, int? offset)
         {
             if (predicate == null)
             {
@@ -114,14 +114,14 @@ namespace Scaffold.Data.Repositories
 
             IQueryable<Bucket> query = this.context.Set<Bucket>().Where(predicate);
 
-            if (offset > 0)
+            if (offset != null)
             {
-                query = query.Skip(offset);
+                query = query.Skip(offset.GetValueOrDefault());
             }
 
-            if (limit > 0)
+            if (limit != null)
             {
-                query = query.Take(limit);
+                query = query.Take(limit.GetValueOrDefault());
             }
 
             return query;

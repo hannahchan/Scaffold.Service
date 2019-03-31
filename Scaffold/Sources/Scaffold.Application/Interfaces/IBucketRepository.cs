@@ -14,11 +14,11 @@ namespace Scaffold.Application.Interfaces
 
         Bucket Get(int id);
 
-        IList<Bucket> Get(Expression<Func<Bucket, bool>> predicate, int limit = 0, int offset = 0);
+        IList<Bucket> Get(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null);
 
         Task<Bucket> GetAsync(int id);
 
-        Task<IList<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int limit = 0, int offset = 0);
+        Task<IList<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null);
 
         void Remove(Bucket bucket);
 

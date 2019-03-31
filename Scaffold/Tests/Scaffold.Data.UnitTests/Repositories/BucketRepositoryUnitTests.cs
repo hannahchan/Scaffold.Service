@@ -254,7 +254,7 @@ namespace Scaffold.Data.UnitTests.Repositories
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     IBucketRepository repository = new BucketRepository(context);
-                    result = repository.Get(bucket => true, 0);
+                    result = repository.Get(bucket => true, null);
                 }
 
                 // Assert
@@ -313,7 +313,7 @@ namespace Scaffold.Data.UnitTests.Repositories
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     IBucketRepository repository = new BucketRepository(context);
-                    result = repository.Get(bucket => true, 0, 0);
+                    result = repository.Get(bucket => true, null, null);
                 }
 
                 // Assert
@@ -343,7 +343,7 @@ namespace Scaffold.Data.UnitTests.Repositories
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     IBucketRepository repository = new BucketRepository(context);
-                    result = repository.Get(bucket => true, 0, 1);
+                    result = repository.Get(bucket => true, null, 1);
                 }
 
                 // Assert
@@ -543,7 +543,7 @@ namespace Scaffold.Data.UnitTests.Repositories
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     IBucketRepository repository = new BucketRepository(context);
-                    result = await repository.GetAsync(bucket => true, 0);
+                    result = await repository.GetAsync(bucket => true, null);
                 }
 
                 // Assert
@@ -602,7 +602,7 @@ namespace Scaffold.Data.UnitTests.Repositories
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     IBucketRepository repository = new BucketRepository(context);
-                    result = await repository.GetAsync(bucket => true, 0, 0);
+                    result = await repository.GetAsync(bucket => true, null, null);
                 }
 
                 // Assert
@@ -632,7 +632,7 @@ namespace Scaffold.Data.UnitTests.Repositories
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     IBucketRepository repository = new BucketRepository(context);
-                    result = await repository.GetAsync(bucket => true, 0, 1);
+                    result = await repository.GetAsync(bucket => true, null, 1);
                 }
 
                 // Assert

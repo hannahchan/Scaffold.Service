@@ -38,6 +38,8 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 // Assert
                 Assert.NotNull(query.Predicate);
+                Assert.Null(query.Limit);
+                Assert.Null(query.Offset);
             }
 
             [Fact]
@@ -52,6 +54,8 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 // Assert
                 Assert.Equal(predicate, query.Predicate);
+                Assert.Null(query.Limit);
+                Assert.Null(query.Offset);
             }
 
             [Fact]
@@ -126,6 +130,117 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Assert.NotNull(response.Buckets);
                 Assert.NotEmpty(response.Buckets);
                 Assert.Equal(2, response.Buckets.Count);
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsWithNoLimit_Expect_AllBuckets()
+            {
+                // Arrange
+                await this.repository.AddAsync(new Bucket { Name = "Bucket 1" });
+                await this.repository.AddAsync(new Bucket { Name = "Bucket 2" });
+                await this.repository.AddAsync(new Bucket { Name = "Bucket 3" });
+
+                GetBuckets.Query query = new GetBuckets.Query { Limit = null };
+                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
+
+                // Act
+                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+
+                // Assert
+                Assert.NotNull(response.Buckets);
+                Assert.NotEmpty(response.Buckets);
+                Assert.Equal(3, response.Buckets.Count);
+                Assert.Equal("Bucket 1", response.Buckets[0].Name);
+                Assert.Equal("Bucket 2", response.Buckets[1].Name);
+                Assert.Equal("Bucket 3", response.Buckets[2].Name);
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsWithLimit_Expect_LimitedBuckets()
+            {
+                // Arrange
+                await this.repository.AddAsync(new Bucket { Name = "Bucket 1" });
+                await this.repository.AddAsync(new Bucket { Name = "Bucket 2" });
+                await this.repository.AddAsync(new Bucket { Name = "Bucket 3" });
+
+                GetBuckets.Query query = new GetBuckets.Query { Limit = 2 };
+                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
+
+                // Act
+                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+
+                // Assert
+                Assert.NotNull(response.Buckets);
+                Assert.NotEmpty(response.Buckets);
+                Assert.Equal(2, response.Buckets.Count);
+                Assert.Equal("Bucket 1", response.Buckets[0].Name);
+                Assert.Equal("Bucket 2", response.Buckets[1].Name);
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsWithNoOffset_Expect_AllBuckets()
+            {
+                // Arrange
+                await this.repository.AddAsync(new Bucket { Name = "Bucket 1" });
+                await this.repository.AddAsync(new Bucket { Name = "Bucket 2" });
+                await this.repository.AddAsync(new Bucket { Name = "Bucket 3" });
+
+                GetBuckets.Query query = new GetBuckets.Query { Offset = null };
+                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
+
+                // Act
+                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+
+                // Assert
+                Assert.NotNull(response.Buckets);
+                Assert.NotEmpty(response.Buckets);
+                Assert.Equal(3, response.Buckets.Count);
+                Assert.Equal("Bucket 1", response.Buckets[0].Name);
+                Assert.Equal("Bucket 2", response.Buckets[1].Name);
+                Assert.Equal("Bucket 3", response.Buckets[2].Name);
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsWithOffset_Expect_OffsetBuckets()
+            {
+                // Arrange
+                await this.repository.AddAsync(new Bucket { Name = "Bucket 1" });
+                await this.repository.AddAsync(new Bucket { Name = "Bucket 2" });
+                await this.repository.AddAsync(new Bucket { Name = "Bucket 3" });
+
+                GetBuckets.Query query = new GetBuckets.Query { Offset = 1 };
+                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
+
+                // Act
+                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+
+                // Assert
+                Assert.NotNull(response.Buckets);
+                Assert.NotEmpty(response.Buckets);
+                Assert.Equal(2, response.Buckets.Count);
+                Assert.Equal("Bucket 2", response.Buckets[0].Name);
+                Assert.Equal("Bucket 3", response.Buckets[1].Name);
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsWithLimitAndOffset_Expect_LimitedAndOffsetBuckets()
+            {
+                // Arrange
+                await this.repository.AddAsync(new Bucket { Name = "Bucket 1" });
+                await this.repository.AddAsync(new Bucket { Name = "Bucket 2" });
+                await this.repository.AddAsync(new Bucket { Name = "Bucket 3" });
+
+                GetBuckets.Query query = new GetBuckets.Query { Limit = 1, Offset = 1 };
+                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
+
+                // Act
+                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+
+                // Assert
+                Assert.NotNull(response.Buckets);
+                Assert.NotEmpty(response.Buckets);
+                Assert.Equal(1, response.Buckets.Count);
+                Assert.Equal("Bucket 2", response.Buckets[0].Name);
             }
         }
     }
