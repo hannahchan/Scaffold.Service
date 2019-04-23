@@ -132,7 +132,7 @@ namespace Scaffold.WebApi.Middleware
                 object httpConnection = new
                 {
                     RemoteIpAddress = this.httpContext.Connection.RemoteIpAddress.ToString(),
-                    LocalIpAddress = this.httpContext.Connection.LocalIpAddress.ToString()
+                    LocalIpAddress = this.httpContext.Connection.LocalIpAddress?.ToString()
                 };
 
                 logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("HttpConnection", httpConnection, true));
