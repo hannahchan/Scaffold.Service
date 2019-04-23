@@ -20,9 +20,9 @@ namespace Scaffold.Application.Features.Bucket
 
         public class Handler : IRequestHandler<Query, Response>
         {
-            private readonly IBucketRepository repository;
+            private readonly IBucketReadRepository repository;
 
-            public Handler(IBucketRepository repository) => this.repository = repository;
+            public Handler(IBucketReadRepository repository) => this.repository = repository;
 
             public async Task<Response> Handle(Query query, CancellationToken cancellationToken) =>
                 new Response { Bucket = await this.repository.GetAsync(query.Id) };

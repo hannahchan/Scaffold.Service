@@ -59,6 +59,7 @@ namespace Scaffold.WebApi.Extensions
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services
+                .AddScoped<IBucketReadRepository, BucketRepository>()
                 .AddScoped<IBucketRepository, BucketRepository>();
 
             return services;
