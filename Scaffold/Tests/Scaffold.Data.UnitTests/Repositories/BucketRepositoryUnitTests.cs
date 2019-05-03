@@ -6,6 +6,7 @@ namespace Scaffold.Data.UnitTests.Repositories
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Interfaces;
+    using Scaffold.Application.Models;
     using Scaffold.Data;
     using Scaffold.Data.Repositories;
     using Scaffold.Domain.Entities;
@@ -15,11 +16,26 @@ namespace Scaffold.Data.UnitTests.Repositories
     {
         private readonly DbContextOptions<BucketContext> dbContextOptions;
 
+        private IList<Bucket> testBuckets = new List<Bucket>();
+
         public BucketRepositoryUnitTests()
         {
             this.dbContextOptions = new DbContextOptionsBuilder<BucketContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
+
+            this.testBuckets.Add(new Bucket { Name = "B", Description = "1", Size = 3 });
+            this.testBuckets.Add(new Bucket { Name = "A", Description = "3", Size = 9 });
+            this.testBuckets.Add(new Bucket { Name = "B", Description = "1", Size = 7 });
+            this.testBuckets.Add(new Bucket { Name = "B", Description = "3", Size = 10 });
+            this.testBuckets.Add(new Bucket { Name = "B", Description = "3", Size = 4 });
+            this.testBuckets.Add(new Bucket { Name = "A", Description = "3", Size = 6 });
+            this.testBuckets.Add(new Bucket { Name = "B", Description = "2", Size = 1 });
+            this.testBuckets.Add(new Bucket { Name = "A", Description = "2", Size = 11 });
+            this.testBuckets.Add(new Bucket { Name = "A", Description = "1", Size = 5 });
+            this.testBuckets.Add(new Bucket { Name = "A", Description = "2", Size = 12 });
+            this.testBuckets.Add(new Bucket { Name = "B", Description = "2", Size = 2 });
+            this.testBuckets.Add(new Bucket { Name = "A", Description = "1", Size = 8 });
         }
 
         public class Add : BucketRepositoryUnitTests
@@ -669,6 +685,782 @@ namespace Scaffold.Data.UnitTests.Repositories
                 Assert.NotEmpty(result);
                 Assert.Equal(1, result.Count);
                 Assert.Equal("Bucket 2", result[0].Name);
+            }
+        }
+
+        public class GetWithOrdering : BucketRepositoryUnitTests
+        {
+            [Fact]
+            public void When_GettingBucketsOrderedBySizeAscending_Expect_OrderedBySizeAscending()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    foreach (Bucket bucket in this.testBuckets)
+                    {
+                        context.Set<Bucket>().Add(bucket);
+                    }
+
+                    context.SaveChanges();
+                }
+
+                Ordering<Bucket> ordering = new Ordering<Bucket>();
+                ordering.Add(new OrderBy("Size", true));
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = repository.Get(bucket => true, null, null, ordering);
+                }
+
+                // Assert
+                for (int i = 1; i <= 12; i++)
+                {
+                    Assert.Equal(i, result[i - 1].Size);
+                }
+            }
+
+            [Fact]
+            public void When_GettingBucketsOrderedBySizeDescending_Expect_OrderedBySizeDescending()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    foreach (Bucket bucket in this.testBuckets)
+                    {
+                        context.Set<Bucket>().Add(bucket);
+                    }
+
+                    context.SaveChanges();
+                }
+
+                Ordering<Bucket> ordering = new Ordering<Bucket>();
+                ordering.Add(new OrderBy("Size", false));
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = repository.Get(bucket => true, null, null, ordering);
+                }
+
+                // Assert
+                for (int i = 1; i <= 12; i++)
+                {
+                    Assert.Equal(12 - (i - 1), result[i - 1].Size);
+                }
+            }
+
+            [Fact]
+            public void When_GettingBucketsOrderedBySizeWithLimit_Expect_OrderedLimitedBuckets()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    foreach (Bucket bucket in this.testBuckets)
+                    {
+                        context.Set<Bucket>().Add(bucket);
+                    }
+
+                    context.SaveChanges();
+                }
+
+                Ordering<Bucket> ordering = new Ordering<Bucket>();
+                ordering.Add(new OrderBy("Size", true));
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = repository.Get(bucket => true, 6, null, ordering);
+                }
+
+                // Assert
+                for (int i = 1; i <= 6; i++)
+                {
+                    Assert.Equal(i, result[i - 1].Size);
+                }
+            }
+
+            [Fact]
+            public void When_GettingBucketsOrderedBySizeWithOffset_Expect_OrderedOffsetBuckets()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    foreach (Bucket bucket in this.testBuckets)
+                    {
+                        context.Set<Bucket>().Add(bucket);
+                    }
+
+                    context.SaveChanges();
+                }
+
+                Ordering<Bucket> ordering = new Ordering<Bucket>();
+                ordering.Add(new OrderBy("Size", true));
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = repository.Get(bucket => true, null, 6, ordering);
+                }
+
+                // Assert
+                for (int i = 1; i <= 6; i++)
+                {
+                    Assert.Equal(i + 6, result[i - 1].Size);
+                }
+            }
+
+            [Fact]
+            public void When_GettingBucketsOrderedBySizeWithLimtAndOffset_Expect_OrderedLimitedAndOffsetBuckets()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    foreach (Bucket bucket in this.testBuckets)
+                    {
+                        context.Set<Bucket>().Add(bucket);
+                    }
+
+                    context.SaveChanges();
+                }
+
+                Ordering<Bucket> ordering = new Ordering<Bucket>();
+                ordering.Add(new OrderBy("Size", true));
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = repository.Get(bucket => true, 6, 3, ordering);
+                }
+
+                // Assert
+                for (int i = 1; i <= 6; i++)
+                {
+                    Assert.Equal(i + 3, result[i - 1].Size);
+                }
+            }
+
+            [Fact]
+            public void When_GettingBucketsOrderedByNameAscendingThenByDescriptionAscending_Expect_OrderedByNameAscendingThenByDescriptionAscending()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    foreach (Bucket bucket in this.testBuckets)
+                    {
+                        context.Set<Bucket>().Add(bucket);
+                    }
+
+                    context.SaveChanges();
+                }
+
+                Ordering<Bucket> ordering = new Ordering<Bucket>();
+                ordering.Add(new OrderBy("Name", true));
+                ordering.Add(new OrderBy("Description", true));
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = repository.Get(bucket => true, null, null, ordering);
+                }
+
+                // Assert
+                Assert.Equal("A", result[0].Name);
+                Assert.Equal("A", result[1].Name);
+                Assert.Equal("A", result[2].Name);
+                Assert.Equal("A", result[3].Name);
+                Assert.Equal("A", result[4].Name);
+                Assert.Equal("A", result[5].Name);
+                Assert.Equal("B", result[6].Name);
+                Assert.Equal("B", result[7].Name);
+                Assert.Equal("B", result[8].Name);
+                Assert.Equal("B", result[9].Name);
+                Assert.Equal("B", result[10].Name);
+                Assert.Equal("B", result[11].Name);
+
+                Assert.Equal("1", result[0].Description);
+                Assert.Equal("1", result[1].Description);
+                Assert.Equal("2", result[2].Description);
+                Assert.Equal("2", result[3].Description);
+                Assert.Equal("3", result[4].Description);
+                Assert.Equal("3", result[5].Description);
+                Assert.Equal("1", result[6].Description);
+                Assert.Equal("1", result[7].Description);
+                Assert.Equal("2", result[8].Description);
+                Assert.Equal("2", result[9].Description);
+                Assert.Equal("3", result[10].Description);
+                Assert.Equal("3", result[11].Description);
+            }
+
+            [Fact]
+            public void When_GettingBucketsOrderedByNameDescendingThenByDescriptionDescending_Expect_OrderedByNameDescendingThenByDescriptionDescending()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    foreach (Bucket bucket in this.testBuckets)
+                    {
+                        context.Set<Bucket>().Add(bucket);
+                    }
+
+                    context.SaveChanges();
+                }
+
+                Ordering<Bucket> ordering = new Ordering<Bucket>();
+                ordering.Add(new OrderBy("Name", false));
+                ordering.Add(new OrderBy("Description", false));
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = repository.Get(bucket => true, null, null, ordering);
+                }
+
+                // Assert
+                Assert.Equal("B", result[0].Name);
+                Assert.Equal("B", result[1].Name);
+                Assert.Equal("B", result[2].Name);
+                Assert.Equal("B", result[3].Name);
+                Assert.Equal("B", result[4].Name);
+                Assert.Equal("B", result[5].Name);
+                Assert.Equal("A", result[6].Name);
+                Assert.Equal("A", result[7].Name);
+                Assert.Equal("A", result[8].Name);
+                Assert.Equal("A", result[9].Name);
+                Assert.Equal("A", result[10].Name);
+                Assert.Equal("A", result[11].Name);
+
+                Assert.Equal("3", result[0].Description);
+                Assert.Equal("3", result[1].Description);
+                Assert.Equal("2", result[2].Description);
+                Assert.Equal("2", result[3].Description);
+                Assert.Equal("1", result[4].Description);
+                Assert.Equal("1", result[5].Description);
+                Assert.Equal("3", result[6].Description);
+                Assert.Equal("3", result[7].Description);
+                Assert.Equal("2", result[8].Description);
+                Assert.Equal("2", result[9].Description);
+                Assert.Equal("1", result[10].Description);
+                Assert.Equal("1", result[11].Description);
+            }
+
+            [Fact]
+            public void When_GettingBucketsOrderedByNameAscendingThenByDescriptionDescending_Expect_OrderedByNameAscendingThenByDescriptionDescending()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    foreach (Bucket bucket in this.testBuckets)
+                    {
+                        context.Set<Bucket>().Add(bucket);
+                    }
+
+                    context.SaveChanges();
+                }
+
+                Ordering<Bucket> ordering = new Ordering<Bucket>();
+                ordering.Add(new OrderBy("Name", true));
+                ordering.Add(new OrderBy("Description", false));
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = repository.Get(bucket => true, null, null, ordering);
+                }
+
+                // Assert
+                Assert.Equal("A", result[0].Name);
+                Assert.Equal("A", result[1].Name);
+                Assert.Equal("A", result[2].Name);
+                Assert.Equal("A", result[3].Name);
+                Assert.Equal("A", result[4].Name);
+                Assert.Equal("A", result[5].Name);
+                Assert.Equal("B", result[6].Name);
+                Assert.Equal("B", result[7].Name);
+                Assert.Equal("B", result[8].Name);
+                Assert.Equal("B", result[9].Name);
+                Assert.Equal("B", result[10].Name);
+                Assert.Equal("B", result[11].Name);
+
+                Assert.Equal("3", result[0].Description);
+                Assert.Equal("3", result[1].Description);
+                Assert.Equal("2", result[2].Description);
+                Assert.Equal("2", result[3].Description);
+                Assert.Equal("1", result[4].Description);
+                Assert.Equal("1", result[5].Description);
+                Assert.Equal("3", result[6].Description);
+                Assert.Equal("3", result[7].Description);
+                Assert.Equal("2", result[8].Description);
+                Assert.Equal("2", result[9].Description);
+                Assert.Equal("1", result[10].Description);
+                Assert.Equal("1", result[11].Description);
+            }
+
+            [Fact]
+            public void When_GettingBucketsOrderedByNameDescendingThenByDescriptionAscending_Expect_OrderedByNameDescendingThenByDescriptionAscending()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    foreach (Bucket bucket in this.testBuckets)
+                    {
+                        context.Set<Bucket>().Add(bucket);
+                    }
+
+                    context.SaveChanges();
+                }
+
+                Ordering<Bucket> ordering = new Ordering<Bucket>();
+                ordering.Add(new OrderBy("Name", false));
+                ordering.Add(new OrderBy("Description", true));
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = repository.Get(bucket => true, null, null, ordering);
+                }
+
+                // Assert
+                Assert.Equal("B", result[0].Name);
+                Assert.Equal("B", result[1].Name);
+                Assert.Equal("B", result[2].Name);
+                Assert.Equal("B", result[3].Name);
+                Assert.Equal("B", result[4].Name);
+                Assert.Equal("B", result[5].Name);
+                Assert.Equal("A", result[6].Name);
+                Assert.Equal("A", result[7].Name);
+                Assert.Equal("A", result[8].Name);
+                Assert.Equal("A", result[9].Name);
+                Assert.Equal("A", result[10].Name);
+                Assert.Equal("A", result[11].Name);
+
+                Assert.Equal("1", result[0].Description);
+                Assert.Equal("1", result[1].Description);
+                Assert.Equal("2", result[2].Description);
+                Assert.Equal("2", result[3].Description);
+                Assert.Equal("3", result[4].Description);
+                Assert.Equal("3", result[5].Description);
+                Assert.Equal("1", result[6].Description);
+                Assert.Equal("1", result[7].Description);
+                Assert.Equal("2", result[8].Description);
+                Assert.Equal("2", result[9].Description);
+                Assert.Equal("3", result[10].Description);
+                Assert.Equal("3", result[11].Description);
+            }
+        }
+
+        public class GetWithOrderingAsync : BucketRepositoryUnitTests
+        {
+            [Fact]
+            public async Task When_GettingBucketsOrderedBySizeAscending_Expect_OrderedBySizeAscending()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    foreach (Bucket bucket in this.testBuckets)
+                    {
+                        await context.Set<Bucket>().AddAsync(bucket);
+                    }
+
+                    await context.SaveChangesAsync();
+                }
+
+                Ordering<Bucket> ordering = new Ordering<Bucket>();
+                ordering.Add(new OrderBy("Size", true));
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = await repository.GetAsync(bucket => true, null, null, ordering);
+                }
+
+                // Assert
+                for (int i = 1; i <= 12; i++)
+                {
+                    Assert.Equal(i, result[i - 1].Size);
+                }
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsOrderedBySizeDescending_Expect_OrderedBySizeDescending()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    foreach (Bucket bucket in this.testBuckets)
+                    {
+                        await context.Set<Bucket>().AddAsync(bucket);
+                    }
+
+                    await context.SaveChangesAsync();
+                }
+
+                Ordering<Bucket> ordering = new Ordering<Bucket>();
+                ordering.Add(new OrderBy("Size", false));
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = await repository.GetAsync(bucket => true, null, null, ordering);
+                }
+
+                // Assert
+                for (int i = 1; i <= 12; i++)
+                {
+                    Assert.Equal(12 - (i - 1), result[i - 1].Size);
+                }
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsOrderedBySizeWithLimit_Expect_OrderedLimitedBuckets()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    foreach (Bucket bucket in this.testBuckets)
+                    {
+                        await context.Set<Bucket>().AddAsync(bucket);
+                    }
+
+                    await context.SaveChangesAsync();
+                }
+
+                Ordering<Bucket> ordering = new Ordering<Bucket>();
+                ordering.Add(new OrderBy("Size", true));
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = await repository.GetAsync(bucket => true, 6, null, ordering);
+                }
+
+                // Assert
+                for (int i = 1; i <= 6; i++)
+                {
+                    Assert.Equal(i, result[i - 1].Size);
+                }
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsOrderedBySizeWithOffset_Expect_OrderedOffsetBuckets()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    foreach (Bucket bucket in this.testBuckets)
+                    {
+                        await context.Set<Bucket>().AddAsync(bucket);
+                    }
+
+                    await context.SaveChangesAsync();
+                }
+
+                Ordering<Bucket> ordering = new Ordering<Bucket>();
+                ordering.Add(new OrderBy("Size", true));
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = await repository.GetAsync(bucket => true, null, 6, ordering);
+                }
+
+                // Assert
+                for (int i = 1; i <= 6; i++)
+                {
+                    Assert.Equal(i + 6, result[i - 1].Size);
+                }
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsOrderedBySizeWithLimtAndOffset_Expect_OrderedLimitedAndOffsetBuckets()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    foreach (Bucket bucket in this.testBuckets)
+                    {
+                        await context.Set<Bucket>().AddAsync(bucket);
+                    }
+
+                    await context.SaveChangesAsync();
+                }
+
+                Ordering<Bucket> ordering = new Ordering<Bucket>();
+                ordering.Add(new OrderBy("Size", true));
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = await repository.GetAsync(bucket => true, 6, 3, ordering);
+                }
+
+                // Assert
+                for (int i = 1; i <= 6; i++)
+                {
+                    Assert.Equal(i + 3, result[i - 1].Size);
+                }
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsOrderedByNameAscendingThenByDescriptionAscending_Expect_OrderedByNameAscendingThenByDescriptionAscending()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    foreach (Bucket bucket in this.testBuckets)
+                    {
+                        await context.Set<Bucket>().AddAsync(bucket);
+                    }
+
+                    await context.SaveChangesAsync();
+                }
+
+                Ordering<Bucket> ordering = new Ordering<Bucket>();
+                ordering.Add(new OrderBy("Name", true));
+                ordering.Add(new OrderBy("Description", true));
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = await repository.GetAsync(bucket => true, null, null, ordering);
+                }
+
+                // Assert
+                Assert.Equal("A", result[0].Name);
+                Assert.Equal("A", result[1].Name);
+                Assert.Equal("A", result[2].Name);
+                Assert.Equal("A", result[3].Name);
+                Assert.Equal("A", result[4].Name);
+                Assert.Equal("A", result[5].Name);
+                Assert.Equal("B", result[6].Name);
+                Assert.Equal("B", result[7].Name);
+                Assert.Equal("B", result[8].Name);
+                Assert.Equal("B", result[9].Name);
+                Assert.Equal("B", result[10].Name);
+                Assert.Equal("B", result[11].Name);
+
+                Assert.Equal("1", result[0].Description);
+                Assert.Equal("1", result[1].Description);
+                Assert.Equal("2", result[2].Description);
+                Assert.Equal("2", result[3].Description);
+                Assert.Equal("3", result[4].Description);
+                Assert.Equal("3", result[5].Description);
+                Assert.Equal("1", result[6].Description);
+                Assert.Equal("1", result[7].Description);
+                Assert.Equal("2", result[8].Description);
+                Assert.Equal("2", result[9].Description);
+                Assert.Equal("3", result[10].Description);
+                Assert.Equal("3", result[11].Description);
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsOrderedByNameDescendingThenByDescriptionDescending_Expect_OrderedByNameDescendingThenByDescriptionDescending()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    foreach (Bucket bucket in this.testBuckets)
+                    {
+                        await context.Set<Bucket>().AddAsync(bucket);
+                    }
+
+                    await context.SaveChangesAsync();
+                }
+
+                Ordering<Bucket> ordering = new Ordering<Bucket>();
+                ordering.Add(new OrderBy("Name", false));
+                ordering.Add(new OrderBy("Description", false));
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = await repository.GetAsync(bucket => true, null, null, ordering);
+                }
+
+                // Assert
+                Assert.Equal("B", result[0].Name);
+                Assert.Equal("B", result[1].Name);
+                Assert.Equal("B", result[2].Name);
+                Assert.Equal("B", result[3].Name);
+                Assert.Equal("B", result[4].Name);
+                Assert.Equal("B", result[5].Name);
+                Assert.Equal("A", result[6].Name);
+                Assert.Equal("A", result[7].Name);
+                Assert.Equal("A", result[8].Name);
+                Assert.Equal("A", result[9].Name);
+                Assert.Equal("A", result[10].Name);
+                Assert.Equal("A", result[11].Name);
+
+                Assert.Equal("3", result[0].Description);
+                Assert.Equal("3", result[1].Description);
+                Assert.Equal("2", result[2].Description);
+                Assert.Equal("2", result[3].Description);
+                Assert.Equal("1", result[4].Description);
+                Assert.Equal("1", result[5].Description);
+                Assert.Equal("3", result[6].Description);
+                Assert.Equal("3", result[7].Description);
+                Assert.Equal("2", result[8].Description);
+                Assert.Equal("2", result[9].Description);
+                Assert.Equal("1", result[10].Description);
+                Assert.Equal("1", result[11].Description);
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsOrderedByNameAscendingThenByDescriptionDescending_Expect_OrderedByNameAscendingThenByDescriptionDescending()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    foreach (Bucket bucket in this.testBuckets)
+                    {
+                        await context.Set<Bucket>().AddAsync(bucket);
+                    }
+
+                    await context.SaveChangesAsync();
+                }
+
+                Ordering<Bucket> ordering = new Ordering<Bucket>();
+                ordering.Add(new OrderBy("Name", true));
+                ordering.Add(new OrderBy("Description", false));
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = await repository.GetAsync(bucket => true, null, null, ordering);
+                }
+
+                // Assert
+                Assert.Equal("A", result[0].Name);
+                Assert.Equal("A", result[1].Name);
+                Assert.Equal("A", result[2].Name);
+                Assert.Equal("A", result[3].Name);
+                Assert.Equal("A", result[4].Name);
+                Assert.Equal("A", result[5].Name);
+                Assert.Equal("B", result[6].Name);
+                Assert.Equal("B", result[7].Name);
+                Assert.Equal("B", result[8].Name);
+                Assert.Equal("B", result[9].Name);
+                Assert.Equal("B", result[10].Name);
+                Assert.Equal("B", result[11].Name);
+
+                Assert.Equal("3", result[0].Description);
+                Assert.Equal("3", result[1].Description);
+                Assert.Equal("2", result[2].Description);
+                Assert.Equal("2", result[3].Description);
+                Assert.Equal("1", result[4].Description);
+                Assert.Equal("1", result[5].Description);
+                Assert.Equal("3", result[6].Description);
+                Assert.Equal("3", result[7].Description);
+                Assert.Equal("2", result[8].Description);
+                Assert.Equal("2", result[9].Description);
+                Assert.Equal("1", result[10].Description);
+                Assert.Equal("1", result[11].Description);
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsOrderedByNameDescendingThenByDescriptionAscending_Expect_OrderedByNameDescendingThenByDescriptionAscending()
+            {
+                // Arrange
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    foreach (Bucket bucket in this.testBuckets)
+                    {
+                        await context.Set<Bucket>().AddAsync(bucket);
+                    }
+
+                    await context.SaveChangesAsync();
+                }
+
+                Ordering<Bucket> ordering = new Ordering<Bucket>();
+                ordering.Add(new OrderBy("Name", false));
+                ordering.Add(new OrderBy("Description", true));
+
+                IList<Bucket> result;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    IBucketRepository repository = new BucketRepository(context);
+                    result = await repository.GetAsync(bucket => true, null, null, ordering);
+                }
+
+                // Assert
+                Assert.Equal("B", result[0].Name);
+                Assert.Equal("B", result[1].Name);
+                Assert.Equal("B", result[2].Name);
+                Assert.Equal("B", result[3].Name);
+                Assert.Equal("B", result[4].Name);
+                Assert.Equal("B", result[5].Name);
+                Assert.Equal("A", result[6].Name);
+                Assert.Equal("A", result[7].Name);
+                Assert.Equal("A", result[8].Name);
+                Assert.Equal("A", result[9].Name);
+                Assert.Equal("A", result[10].Name);
+                Assert.Equal("A", result[11].Name);
+
+                Assert.Equal("1", result[0].Description);
+                Assert.Equal("1", result[1].Description);
+                Assert.Equal("2", result[2].Description);
+                Assert.Equal("2", result[3].Description);
+                Assert.Equal("3", result[4].Description);
+                Assert.Equal("3", result[5].Description);
+                Assert.Equal("1", result[6].Description);
+                Assert.Equal("1", result[7].Description);
+                Assert.Equal("2", result[8].Description);
+                Assert.Equal("2", result[9].Description);
+                Assert.Equal("3", result[10].Description);
+                Assert.Equal("3", result[11].Description);
             }
         }
 

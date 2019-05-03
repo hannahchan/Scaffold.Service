@@ -7,6 +7,7 @@ namespace Scaffold.Application.Features.Bucket
     using System.Threading.Tasks;
     using MediatR;
     using Scaffold.Application.Interfaces;
+    using Scaffold.Application.Models;
     using Scaffold.Domain.Entities;
 
     public class GetBuckets
@@ -23,6 +24,8 @@ namespace Scaffold.Application.Features.Bucket
             public int? Limit { get; set; } = null;
 
             public int? Offset { get; set; } = null;
+
+            public Ordering<Bucket> Ordering { get; set; } = null;
         }
 
         public class Response
@@ -37,7 +40,7 @@ namespace Scaffold.Application.Features.Bucket
             public Handler(IBucketReadRepository repository) => this.repository = repository;
 
             public async Task<Response> Handle(Query query, CancellationToken cancellationToken) =>
-                new Response { Buckets = await this.repository.GetAsync(query.Predicate, query.Limit, query.Offset) };
+                new Response { Buckets = await this.repository.GetAsync(query.Predicate, query.Limit, query.Offset, query.Ordering) };
         }
     }
 }

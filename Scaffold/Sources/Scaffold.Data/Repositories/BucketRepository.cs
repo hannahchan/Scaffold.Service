@@ -7,6 +7,7 @@ namespace Scaffold.Data.Repositories
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Interfaces;
+    using Scaffold.Application.Models;
     using Scaffold.Data;
     using Scaffold.Domain.Entities;
 
@@ -45,8 +46,8 @@ namespace Scaffold.Data.Repositories
                 .Include(bucket => bucket.Items)
                 .SingleOrDefault();
 
-        public IList<Bucket> Get(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null) =>
-            this.BuildQuery(predicate, limit, offset)
+        public IList<Bucket> Get(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket> ordering = null) =>
+            this.BuildQuery(predicate, limit, offset, ordering)
                 .Include(bucket => bucket.Items)
                 .ToList();
 
@@ -56,8 +57,8 @@ namespace Scaffold.Data.Repositories
                 .Include(bucket => bucket.Items)
                 .SingleOrDefaultAsync();
 
-        public async Task<IList<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null) =>
-            await this.BuildQuery(predicate, limit, offset)
+        public async Task<IList<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket> ordering = null) =>
+            await this.BuildQuery(predicate, limit, offset, ordering)
                 .Include(bucket => bucket.Items)
                 .ToListAsync();
 
@@ -105,7 +106,7 @@ namespace Scaffold.Data.Repositories
             await this.context.SaveChangesAsync();
         }
 
-        private IQueryable<Bucket> BuildQuery(Expression<Func<Bucket, bool>> predicate, int? limit, int? offset)
+        private IQueryable<Bucket> BuildQuery(Expression<Func<Bucket, bool>> predicate, int? limit, int? offset, Ordering<Bucket> ordering = null)
         {
             if (predicate == null)
             {
@@ -113,6 +114,36 @@ namespace Scaffold.Data.Repositories
             }
 
             IQueryable<Bucket> query = this.context.Set<Bucket>().Where(predicate);
+
+            if (ordering != null && ordering.Count > 0)
+            {
+                IOrderedQueryable<Bucket> orderedQuery = null;
+
+                foreach (OrderBy orderBy in ordering)
+                {
+                    if (orderedQuery == null)
+                    {
+                        if (orderBy.Ascending)
+                        {
+                            orderedQuery = query.OrderBy(x => x.GetType().GetProperty(orderBy.PropertyName).GetValue(x));
+                            continue;
+                        }
+
+                        orderedQuery = query.OrderByDescending(x => x.GetType().GetProperty(orderBy.PropertyName).GetValue(x));
+                        continue;
+                    }
+
+                    if (orderBy.Ascending)
+                    {
+                        orderedQuery = orderedQuery.ThenBy(x => x.GetType().GetProperty(orderBy.PropertyName).GetValue(x));
+                        continue;
+                    }
+
+                    orderedQuery = orderedQuery.ThenByDescending(x => x.GetType().GetProperty(orderBy.PropertyName).GetValue(x));
+                }
+
+                query = orderedQuery;
+            }
 
             if (offset != null)
             {
