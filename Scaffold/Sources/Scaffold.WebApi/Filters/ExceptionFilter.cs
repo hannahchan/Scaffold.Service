@@ -52,7 +52,7 @@ namespace Scaffold.WebApi.Filters
             ProblemDetails details = new ProblemDetails
             {
                 Title = exception.Title,
-                Detail = exception.Detail
+                Detail = exception.Detail,
             };
 
             if (!string.IsNullOrEmpty(this.tracingService?.CorrelationId))
@@ -68,7 +68,7 @@ namespace Scaffold.WebApi.Filters
             ProblemDetails details = new ProblemDetails
             {
                 Title = exception.Title,
-                Detail = exception.Detail
+                Detail = exception.Detail,
             };
 
             if (!string.IsNullOrEmpty(this.tracingService?.CorrelationId))

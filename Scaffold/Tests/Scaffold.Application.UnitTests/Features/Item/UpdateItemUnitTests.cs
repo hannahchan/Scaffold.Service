@@ -73,7 +73,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
                     BucketId = bucket.Id,
                     ItemId = item.Id,
                     Name = "uvw",
-                    Description = "xyz"
+                    Description = "xyz",
                 };
 
                 UpdateItem.Handler handler = new UpdateItem.Handler(this.repository);
@@ -98,7 +98,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 {
                     BucketId = bucket.Id,
                     ItemId = new Random().Next(int.MaxValue),
-                    Name = Guid.NewGuid().ToString()
+                    Name = Guid.NewGuid().ToString(),
                 };
 
                 UpdateItem.Handler handler = new UpdateItem.Handler(this.repository);
@@ -121,7 +121,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 {
                     BucketId = new Random().Next(int.MaxValue),
                     ItemId = new Random().Next(int.MaxValue),
-                    Name = Guid.NewGuid().ToString()
+                    Name = Guid.NewGuid().ToString(),
                 };
 
                 UpdateItem.Handler handler = new UpdateItem.Handler(this.repository);

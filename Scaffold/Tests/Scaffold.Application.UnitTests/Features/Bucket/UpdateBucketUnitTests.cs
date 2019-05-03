@@ -85,7 +85,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 UpdateBucket.Command command = new UpdateBucket.Command
                 {
                     Id = new Random().Next(int.MaxValue),
-                    Name = newValue
+                    Name = newValue,
                 };
 
                 UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository);

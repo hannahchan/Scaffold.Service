@@ -57,7 +57,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 RemoveItem.Command command = new RemoveItem.Command
                 {
                     BucketId = bucket.Id,
-                    ItemId = new Random().Next(int.MaxValue)
+                    ItemId = new Random().Next(int.MaxValue),
                 };
 
                 RemoveItem.Handler handler = new RemoveItem.Handler(this.repository);
@@ -81,7 +81,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 RemoveItem.Command command = new RemoveItem.Command
                 {
                     BucketId = new Random().Next(int.MaxValue),
-                    ItemId = item.Id
+                    ItemId = item.Id,
                 };
 
                 RemoveItem.Handler handler = new RemoveItem.Handler(this.repository);

@@ -27,7 +27,7 @@ namespace Scaffold.WebApi.Extensions
                 {
                     Version = "v1",
                     Title = "Scaffold",
-                    Description = "A simple CRUD application to demonstrate Scaffold."
+                    Description = "A simple CRUD application to demonstrate Scaffold.",
                 };
 
                 options.SwaggerDoc("v1", info);

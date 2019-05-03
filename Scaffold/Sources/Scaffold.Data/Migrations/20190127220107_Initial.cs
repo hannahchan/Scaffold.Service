@@ -15,7 +15,7 @@
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    Size = table.Column<int>(nullable: false)
+                    Size = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -30,7 +30,7 @@
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    BucketId = table.Column<int>(nullable: false)
+                    BucketId = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {

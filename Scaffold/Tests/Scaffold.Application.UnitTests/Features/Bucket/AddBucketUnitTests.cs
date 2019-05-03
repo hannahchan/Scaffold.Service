@@ -99,7 +99,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 {
                     Name = Guid.NewGuid().ToString(),
                     Description = Guid.NewGuid().ToString(),
-                    Size = -1
+                    Size = -1,
                 };
                 AddBucket.Handler handler = new AddBucket.Handler(this.repository);
 
