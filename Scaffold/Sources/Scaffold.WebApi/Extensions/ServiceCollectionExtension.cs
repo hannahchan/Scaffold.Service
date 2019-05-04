@@ -76,7 +76,7 @@ namespace Scaffold.WebApi.Extensions
         public static IServiceCollection AddUtilities(this IServiceCollection services)
         {
             services
-                .AddAutoMapper()
+                .AddAutoMapper(typeof(Startup).Assembly)
                 .AddMediatR(typeof(GetBucket).Assembly);
 
             return services;
