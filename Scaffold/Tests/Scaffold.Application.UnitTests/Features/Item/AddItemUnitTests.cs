@@ -82,55 +82,6 @@ namespace Scaffold.Application.UnitTests.Features.Item
             }
 
             [Fact]
-            public async Task When_AddingItemWithId_Expect_AddedItemWithId()
-            {
-                // Arrange
-                Bucket bucket = new Bucket();
-                await this.repository.AddAsync(bucket);
-
-                AddItem.Command command = new AddItem.Command
-                {
-                    BucketId = bucket.Id,
-                    ItemId = 12345,
-                    Name = Guid.NewGuid().ToString(),
-                };
-
-                AddItem.Handler handler = new AddItem.Handler(this.repository);
-
-                // Act
-                AddItem.Response response = await handler.Handle(command, default(CancellationToken));
-
-                // Assert
-                Assert.Equal(command.ItemId, response.Item.Id);
-            }
-
-            [Fact]
-            public async Task When_AddingItemWithNonUniqueId_Expect_DuplicateIdException()
-            {
-                // Arrange
-                Bucket bucket = new Bucket();
-                await this.repository.AddAsync(bucket);
-
-                AddItem.Command command = new AddItem.Command
-                {
-                    BucketId = bucket.Id,
-                    ItemId = 12345,
-                    Name = Guid.NewGuid().ToString(),
-                };
-
-                AddItem.Handler handler = new AddItem.Handler(this.repository);
-                await handler.Handle(command, default(CancellationToken));
-
-                // Act
-                Exception exception = await Record.ExceptionAsync(() =>
-                    handler.Handle(command, default(CancellationToken)));
-
-                // Assert
-                Assert.NotNull(exception);
-                Assert.IsType<DuplicateIdException>(exception);
-            }
-
-            [Fact]
             public async Task When_AddingItemToNonExistingBucket_Expect_BucketNotFoundException()
             {
                 // Arrange

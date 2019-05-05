@@ -1,6 +1,5 @@
 namespace Scaffold.Application.Features.Item
 {
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
@@ -16,8 +15,6 @@ namespace Scaffold.Application.Features.Item
         public class Command : IRequest<Response>
         {
             public int BucketId { get; set; }
-
-            public int ItemId { get; set; }
 
             public string Name { get; set; }
 
@@ -50,11 +47,6 @@ namespace Scaffold.Application.Features.Item
                 Bucket bucket = await this.repository.GetAsync(command.BucketId) ??
                     throw new BucketNotFoundException(command.BucketId);
 
-                if (bucket.Items.Any(x => x.Id == command.ItemId))
-                {
-                    throw new DuplicateIdException($"An item with the same Id. '{command.ItemId}' has already been added.");
-                }
-
                 Response response = new Response();
 
                 try
@@ -81,8 +73,8 @@ namespace Scaffold.Application.Features.Item
             {
                 this.CreateMap<Command, Item>()
                     .AddTransform<string>(value => value == string.Empty ? null : value)
-                    .ForMember(dest => dest.Bucket, opt => opt.Ignore())
-                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ItemId));
+                    .ForMember(dest => dest.Id, opt => opt.Ignore())
+                    .ForMember(dest => dest.Bucket, opt => opt.Ignore());
             }
         }
     }

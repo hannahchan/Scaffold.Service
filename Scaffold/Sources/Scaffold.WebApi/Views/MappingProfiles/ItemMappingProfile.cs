@@ -9,8 +9,7 @@ namespace Scaffold.WebApi.Views.MappingProfiles
         public ItemMappingProfile()
         {
             this.CreateMap<Item, AddItem.Command>()
-                .ForMember(dest => dest.BucketId, opt => opt.Ignore())
-                .ForMember(dest => dest.ItemId, opt => opt.MapFrom(src => src.Id));
+                .ForMember(dest => dest.BucketId, opt => opt.Ignore());
 
             this.CreateMap<Item, UpdateItem.Command>()
                 .ForMember(dest => dest.BucketId, opt => opt.Ignore())
