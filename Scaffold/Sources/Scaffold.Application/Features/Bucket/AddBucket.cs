@@ -5,6 +5,7 @@ namespace Scaffold.Application.Features.Bucket
     using AutoMapper;
     using FluentValidation;
     using MediatR;
+    using Scaffold.Application.Exceptions;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Entities;
     using Scaffold.Domain.Exceptions;
@@ -13,6 +14,8 @@ namespace Scaffold.Application.Features.Bucket
     {
         public class Command : IRequest<Response>
         {
+            public int Id { get; set; }
+
             public string Name { get; set; }
 
             public string Description { get; set; }
@@ -43,6 +46,11 @@ namespace Scaffold.Application.Features.Bucket
             {
                 await new Validator().ValidateAndThrowAsync(command);
 
+                if (await this.repository.GetAsync(command.Id) != null)
+                {
+                    throw new DuplicateIdException($"A bucket with the same Id. '{command.Id}' has already been added.");
+                }
+
                 Response response = new Response();
 
                 try
@@ -67,7 +75,6 @@ namespace Scaffold.Application.Features.Bucket
             {
                 this.CreateMap<Command, Bucket>()
                     .AddTransform<string>(value => value == string.Empty ? null : value)
-                    .ForMember(dest => dest.Id, opt => opt.Ignore())
                     .ForMember(dest => dest.Size, opt => opt.Condition(src => src.Size != null));
             }
         }

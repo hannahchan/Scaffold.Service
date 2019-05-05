@@ -7,6 +7,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     using FluentValidation;
     using FluentValidation.TestHelper;
     using Microsoft.EntityFrameworkCore;
+    using Scaffold.Application.Exceptions;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
     using Scaffold.Data;
@@ -73,6 +74,47 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Assert.NotEqual(default(int), response.Bucket.Id);
                 Assert.Equal(command.Name, response.Bucket.Name);
                 Assert.NotNull(response.Bucket.Items);
+            }
+
+            [Fact]
+            public async Task When_AddingBucketWithId_Expect_AddedBucketWithId()
+            {
+                // Arrange
+                AddBucket.Command command = new AddBucket.Command
+                {
+                    Id = 12345,
+                    Name = Guid.NewGuid().ToString(),
+                };
+
+                AddBucket.Handler handler = new AddBucket.Handler(this.repository);
+
+                // Act
+                AddBucket.Response response = await handler.Handle(command, default(CancellationToken));
+
+                // Assert
+                Assert.Equal(command.Id, response.Bucket.Id);
+            }
+
+            [Fact]
+            public async Task When_AddingBucketWithNonUniqueId_Expect_DuplicateIdException()
+            {
+                // Arrange
+                AddBucket.Command command = new AddBucket.Command
+                {
+                    Id = 12345,
+                    Name = Guid.NewGuid().ToString(),
+                };
+
+                AddBucket.Handler handler = new AddBucket.Handler(this.repository);
+                await handler.Handle(command, default(CancellationToken));
+
+                // Act
+                Exception exception = await Record.ExceptionAsync(() =>
+                    handler.Handle(command, default(CancellationToken)));
+
+                // Assert
+                Assert.NotNull(exception);
+                Assert.IsType<DuplicateIdException>(exception);
             }
 
             [Fact]

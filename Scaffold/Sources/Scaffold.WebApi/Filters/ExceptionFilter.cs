@@ -32,6 +32,13 @@ namespace Scaffold.WebApi.Filters
                 context.Result = new ConflictObjectResult(details) { ContentTypes = this.contentTypes };
             }
 
+            if (context.Exception is DuplicateIdException duplicateIdException)
+            {
+                ProblemDetails details = this.GetProblemDetails(duplicateIdException);
+                details.Extensions[this.ToCamelCase(Headers.RequestId)] = context.HttpContext.TraceIdentifier;
+                context.Result = new ConflictObjectResult(details) { ContentTypes = this.contentTypes };
+            }
+
             if (context.Exception is NotFoundException notFoundException)
             {
                 ProblemDetails details = this.GetProblemDetails(notFoundException);
