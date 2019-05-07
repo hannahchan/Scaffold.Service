@@ -15,11 +15,11 @@ namespace Scaffold.Application.UnitTests.Features.Item
     using Scaffold.Domain.Entities;
     using Xunit;
 
-    public class UpdateItemUnitTests
+    public class ReplaceItemUnitTests
     {
         private readonly IBucketRepository repository;
 
-        public UpdateItemUnitTests()
+        public ReplaceItemUnitTests()
         {
             BucketContext context = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
@@ -34,95 +34,104 @@ namespace Scaffold.Application.UnitTests.Features.Item
             public void ShouldNotHaveValidationErrorFor()
             {
                 // Arrange
-                UpdateItem.Validator validator = new UpdateItem.Validator();
+                ReplaceItem.Validator validator = new ReplaceItem.Validator();
 
                 // Act and Assert
                 validator.ShouldNotHaveValidationErrorFor(command => command.BucketId, new Random().Next(int.MaxValue));
                 validator.ShouldNotHaveValidationErrorFor(command => command.ItemId, new Random().Next(int.MaxValue));
                 validator.ShouldNotHaveValidationErrorFor(command => command.Name, Guid.NewGuid().ToString());
-                validator.ShouldNotHaveValidationErrorFor(command => command.Name, value: null);
             }
 
             [Fact]
             public void ShouldHaveValidationErrorFor()
             {
                 // Arrange
-                UpdateItem.Validator validator = new UpdateItem.Validator();
+                ReplaceItem.Validator validator = new ReplaceItem.Validator();
 
                 // Act and Assert
                 validator.ShouldHaveValidationErrorFor(command => command.BucketId, default(int));
                 validator.ShouldHaveValidationErrorFor(command => command.ItemId, default(int));
                 validator.ShouldHaveValidationErrorFor(command => command.Name, string.Empty);
+                validator.ShouldHaveValidationErrorFor(command => command.Name, value: null);
             }
         }
 
-        public class Handler : UpdateItemUnitTests
+        public class Handler : ReplaceItemUnitTests
         {
             [Fact]
-            public async Task When_UpdatingItemFromBucket_Expect_ItemUpdated()
+            public async Task When_UpdatingItemFromBucket_Expect_ItemReplaced()
             {
                 // Arrange
                 Bucket bucket = new Bucket();
-                Item item = new Item { Name = "abc", Description = "def" };
+                Item item = new Item { Name = Guid.NewGuid().ToString(), Description = Guid.NewGuid().ToString() };
                 bucket.AddItem(item);
 
                 await this.repository.AddAsync(bucket);
 
-                UpdateItem.Command command = new UpdateItem.Command
+                ReplaceItem.Command command = new ReplaceItem.Command
                 {
                     BucketId = bucket.Id,
                     ItemId = item.Id,
-                    Name = "uvw",
-                    Description = "xyz",
+                    Name = Guid.NewGuid().ToString(),
+                    Description = Guid.NewGuid().ToString(),
                 };
 
-                UpdateItem.Handler handler = new UpdateItem.Handler(this.repository);
+                ReplaceItem.Handler handler = new ReplaceItem.Handler(this.repository);
 
                 // Act
-                UpdateItem.Response response = await handler.Handle(command, default(CancellationToken));
+                ReplaceItem.Response response = await handler.Handle(command, default(CancellationToken));
 
                 // Assert
-                Assert.Equal("uvw", response.Item.Name);
-                Assert.Equal("xyz", response.Item.Description);
+                Assert.False(response.Created);
+                Assert.True(response.Replaced);
+                Assert.Equal(bucket.Id, response.Item.Bucket.Id);
+                Assert.Equal(item.Id, response.Item.Id);
+                Assert.Equal(command.Name, response.Item.Name);
+                Assert.Equal(command.Description, response.Item.Description);
             }
 
             [Fact]
-            public async Task When_UpdatingNonExistingItemFromBucket_Expect_ItemNotFoundException()
+
+            public async Task When_UpdatingNonExistingItemFromBucket_Expect_NewItem()
             {
                 // Arrange
                 Bucket bucket = new Bucket();
                 await this.repository.AddAsync(bucket);
 
-                UpdateItem.Command command = new UpdateItem.Command
+                ReplaceItem.Command command = new ReplaceItem.Command
                 {
                     BucketId = bucket.Id,
                     ItemId = new Random().Next(int.MaxValue),
                     Name = Guid.NewGuid().ToString(),
+                    Description = Guid.NewGuid().ToString(),
                 };
 
-                UpdateItem.Handler handler = new UpdateItem.Handler(this.repository);
+                ReplaceItem.Handler handler = new ReplaceItem.Handler(this.repository);
 
                 // Act
-                Exception exception = await Record.ExceptionAsync(() =>
-                    handler.Handle(command, default(CancellationToken)));
+                ReplaceItem.Response response = await handler.Handle(command, default(CancellationToken));
 
                 // Assert
-                Assert.NotNull(exception);
-                Assert.IsType<ItemNotFoundException>(exception);
+                Assert.True(response.Created);
+                Assert.False(response.Replaced);
+                Assert.Equal(bucket.Id, response.Item.Bucket.Id);
+                Assert.Equal(command.ItemId, response.Item.Id);
+                Assert.Equal(command.Name, response.Item.Name);
+                Assert.Equal(command.Description, response.Item.Description);
             }
 
             [Fact]
             public async Task When_UpdatingItemFromNonExistingBucket_Expect_BucketNotFoundException()
             {
                 // Arrange
-                UpdateItem.Command command = new UpdateItem.Command
+                ReplaceItem.Command command = new ReplaceItem.Command
                 {
                     BucketId = new Random().Next(int.MaxValue),
                     ItemId = new Random().Next(int.MaxValue),
                     Name = Guid.NewGuid().ToString(),
                 };
 
-                UpdateItem.Handler handler = new UpdateItem.Handler(this.repository);
+                ReplaceItem.Handler handler = new ReplaceItem.Handler(this.repository);
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() =>
@@ -137,8 +146,8 @@ namespace Scaffold.Application.UnitTests.Features.Item
             public async Task When_UpdatingItemWithInvalidCommand_Expect_ValidationException()
             {
                 // Arrange
-                UpdateItem.Command command = new UpdateItem.Command { Name = string.Empty };
-                UpdateItem.Handler handler = new UpdateItem.Handler(this.repository);
+                ReplaceItem.Command command = new ReplaceItem.Command { Name = string.Empty };
+                ReplaceItem.Handler handler = new ReplaceItem.Handler(this.repository);
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() =>
@@ -154,6 +163,12 @@ namespace Scaffold.Application.UnitTests.Features.Item
             {
                 // Not Implemented
             }
+
+            [Fact(Skip = "Not Implemented")]
+            public void When_UpdatingNonExistingItemResultingInDomainConflict_Expect_DomainException()
+            {
+                // Not Implemented
+            }
         }
 
         public class MappingProfile
@@ -162,7 +177,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
             public void IsValid()
             {
                 // Arrange
-                UpdateItem.MappingProfile profile = new UpdateItem.MappingProfile();
+                ReplaceItem.MappingProfile profile = new ReplaceItem.MappingProfile();
                 MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(profile));
 
                 // Act and Assert
@@ -170,53 +185,17 @@ namespace Scaffold.Application.UnitTests.Features.Item
             }
 
             [Fact]
-            public void When_MappingCommandToItemWithOnlyNameNotNull_Expect_NameMapped()
-            {
-                // Arrange
-                Item item = new Item { Name = "abc", Description = "xyz" };
-                UpdateItem.Command command = new UpdateItem.Command { Name = "def" };
-
-                MapperConfiguration configuration = new MapperConfiguration(config =>
-                    config.AddProfile(new UpdateItem.MappingProfile()));
-
-                // Act
-                item = configuration.CreateMapper().Map<UpdateItem.Command, Item>(command, item);
-
-                // Assert
-                Assert.Equal("def", item.Name);
-                Assert.Equal("xyz", item.Description);
-            }
-
-            [Fact]
-            public void When_MappingCommandToItemWithOnlyDescriptionNotNull_Expect_DescriptionMapped()
-            {
-                // Arrange
-                Item item = new Item { Name = "abc", Description = "xyz" };
-                UpdateItem.Command command = new UpdateItem.Command { Description = "uvw" };
-
-                MapperConfiguration configuration = new MapperConfiguration(config =>
-                    config.AddProfile(new UpdateItem.MappingProfile()));
-
-                // Act
-                item = configuration.CreateMapper().Map<UpdateItem.Command, Item>(command, item);
-
-                // Assert
-                Assert.Equal("abc", item.Name);
-                Assert.Equal("uvw", item.Description);
-            }
-
-            [Fact]
             public void When_MappingCommandToItemWithEmptyStringProperties_Expect_NullMappedToStringProperties()
             {
                 // Arrange
                 Item item = new Item { Name = "abc", Description = "xyz" };
-                UpdateItem.Command command = new UpdateItem.Command { Name = string.Empty, Description = string.Empty };
+                ReplaceItem.Command command = new ReplaceItem.Command { Name = string.Empty, Description = string.Empty };
 
                 MapperConfiguration configuration = new MapperConfiguration(config =>
-                    config.AddProfile(new UpdateItem.MappingProfile()));
+                    config.AddProfile(new ReplaceItem.MappingProfile()));
 
                 // Act
-                item = configuration.CreateMapper().Map<UpdateItem.Command, Item>(command, item);
+                item = configuration.CreateMapper().Map<ReplaceItem.Command, Item>(command, item);
 
                 // Assert
                 Assert.Null(item.Name);

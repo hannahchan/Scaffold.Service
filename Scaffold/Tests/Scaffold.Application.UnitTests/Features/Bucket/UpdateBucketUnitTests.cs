@@ -58,7 +58,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
         public class Handler : UpdateBucketUnitTests
         {
             [Fact]
-            public async Task When_UpdatingBucket_Expect_Updated()
+            public async Task When_UpdatingBucket_Expect_UpdatedBucket()
             {
                 // Arrange
                 Bucket bucket = new Bucket();

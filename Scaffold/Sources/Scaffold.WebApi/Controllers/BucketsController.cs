@@ -24,6 +24,23 @@
             this.mediator = mediator;
         }
 
+        /// <summary>Creates a bucket.</summary>
+        /// <param name="bucket">A complete or partial set of key-value pairs to create the Bucket object with.</param>
+        /// <returns>The created Bucket object.</returns>
+        /// <response code="default">Problem Details (RFC 7807) Response.</response>
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<Bucket>> Post([FromBody] Bucket bucket)
+        {
+            AddBucket.Command command = this.mapper.Map<AddBucket.Command>(bucket);
+            AddBucket.Response response = await this.mediator.Send(command);
+
+            bucket = this.mapper.Map<Bucket>(response.Bucket);
+
+            return this.CreatedAtRoute("GetBucket", new { bucketId = bucket.Id }, bucket);
+        }
+
         /// <summary>Retrieves a list of buckets.</summary>
         /// <param name="limit">The maximun number of buckets to return from the result set. Defaults to 10.</param>
         /// <param name="offset">The number of buckets to omit from the start of the result set.</param>
@@ -60,21 +77,29 @@
             return this.mapper.Map<Bucket>(response.Bucket);
         }
 
-        /// <summary>Creates a bucket.</summary>
-        /// <param name="bucket">A complete or partial set of key-value pairs to create the Bucket object with.</param>
-        /// <returns>The created Bucket object.</returns>
+        /// <summary>Creates or replaces a bucket.</summary>
+        /// <param name="bucketId">The Id. of the Bucket object to be created or replaced.</param>
+        /// <param name="bucket">A complete or partial set of key-value pairs to create or replace the Bucket object with.</param>
+        /// <returns>The created or replaced Bucket object.</returns>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
-        [HttpPost]
+        [HttpPut("{bucketId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Bucket>> Post([FromBody] Bucket bucket)
+        public async Task<ActionResult<Bucket>> Put(int bucketId, [FromBody] Bucket bucket)
         {
-            AddBucket.Command command = this.mapper.Map<AddBucket.Command>(bucket);
-            AddBucket.Response response = await this.mediator.Send(command);
+            ReplaceBucket.Command command = this.mapper.Map<ReplaceBucket.Command>(bucket);
+            command.Id = bucketId;
 
+            ReplaceBucket.Response response = await this.mediator.Send(command);
             bucket = this.mapper.Map<Bucket>(response.Bucket);
 
-            return this.CreatedAtRoute("GetBucket", new { bucketId = bucket.Id }, bucket);
+            if (response.Created)
+            {
+                return this.CreatedAtRoute("GetBucket", new { bucketId = bucket.Id }, bucket);
+            }
+
+            return bucket;
         }
 
         /// <summary>Updates a bucket.</summary>

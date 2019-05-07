@@ -9,6 +9,7 @@ namespace Scaffold.WebApi.Views.MappingProfiles
         public BucketMappingProfile()
         {
             this.CreateMap<Bucket, AddBucket.Command>();
+            this.CreateMap<Bucket, ReplaceBucket.Command>();
             this.CreateMap<Bucket, UpdateBucket.Command>();
         }
     }

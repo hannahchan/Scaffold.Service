@@ -24,6 +24,25 @@
             this.mediator = mediator;
         }
 
+        /// <summary>Creates an item in a bucket.</summary>
+        /// <param name="bucketId">The Id. of the Bucket object to create the item in.</param>
+        /// <param name="item">A complete or partial set of key-value pairs to create the Item object with.</param>
+        /// <returns>The created Item object.</returns>
+        /// <response code="default">Problem Details (RFC 7807) Response.</response>
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<Item>> Post(int bucketId, [FromBody] Item item)
+        {
+            AddItem.Command command = this.mapper.Map<AddItem.Command>(item);
+            command.BucketId = bucketId;
+
+            AddItem.Response response = await this.mediator.Send(command);
+            item = this.mapper.Map<Item>(response.Item);
+
+            return this.CreatedAtRoute("GetItem", new { itemId = item.Id }, item);
+        }
+
         /// <summary>Retrieves a list of items from a bucket.</summary>
         /// <param name="bucketId">The Id. of the Bucket object to retrieve the items from.</param>
         /// <returns>A list of Item objects.</returns>
@@ -60,23 +79,31 @@
             return this.mapper.Map<Item>(response.Item);
         }
 
-        /// <summary>Creates an item in a bucket.</summary>
-        /// <param name="bucketId">The Id. of the Bucket object to create the item in.</param>
-        /// <param name="item">A complete or partial set of key-value pairs to create the Item object with.</param>
-        /// <returns>The created Item object.</returns>
+        /// <summary>Creates or replaces an item in a bucket.</summary>
+        /// <param name="bucketId">The Id. of the Bucket object to create or replace the item in.</param>
+        /// <param name="itemId">The Id. of the Item object to be created or replaced.</param>
+        /// <param name="item">A complete or partial set of key-value pairs to create or replace the Item object with.</param>
+        /// <returns>The created or replaced Item object.</returns>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
-        [HttpPost]
+        [HttpPut("{itemId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Item>> Post(int bucketId, [FromBody] Item item)
+        public async Task<ActionResult<Item>> Put(int bucketId, int itemId, [FromBody] Item item)
         {
-            AddItem.Command command = this.mapper.Map<AddItem.Command>(item);
+            ReplaceItem.Command command = this.mapper.Map<ReplaceItem.Command>(item);
             command.BucketId = bucketId;
+            command.ItemId = itemId;
 
-            AddItem.Response response = await this.mediator.Send(command);
+            ReplaceItem.Response response = await this.mediator.Send(command);
             item = this.mapper.Map<Item>(response.Item);
 
-            return this.CreatedAtRoute("GetItem", new { itemId = item.Id }, item);
+            if (response.Created)
+            {
+                return this.CreatedAtRoute("GetItem", new { itemId = item.Id }, item);
+            }
+
+            return item;
         }
 
         /// <summary>Updates an item in a bucket.</summary>
