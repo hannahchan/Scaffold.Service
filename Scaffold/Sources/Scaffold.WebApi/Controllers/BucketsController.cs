@@ -27,6 +27,7 @@
         /// <summary>Creates a bucket.</summary>
         /// <param name="bucket">A complete or partial set of key-value pairs to create the Bucket object with.</param>
         /// <returns>The created Bucket object.</returns>
+        /// <response code="201">Bucket created successfully.</response>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -45,6 +46,7 @@
         /// <param name="limit">The maximun number of buckets to return from the result set. Defaults to 10.</param>
         /// <param name="offset">The number of buckets to omit from the start of the result set.</param>
         /// <returns>A list of Bucket objects.</returns>
+        /// <response code="200">Buckets retrieved successfully.</response>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -60,6 +62,7 @@
         /// <summary>Retrieves a bucket.</summary>
         /// <param name="bucketId">The Id. of the Bucket object to be retrieved.</param>
         /// <returns>The specified Bucket object.</returns>
+        /// <response code="200">Bucket retrieved successfully.</response>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpGet("{bucketId}", Name = "GetBucket")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -77,10 +80,12 @@
             return this.mapper.Map<Bucket>(response.Bucket);
         }
 
-        /// <summary>Creates or updates a bucket.</summary>
+        /// <summary>Updates a bucket or creates one if the specified one does not exist.</summary>
         /// <param name="bucketId">The Id. of the Bucket object to be created or updated.</param>
         /// <param name="bucket">A complete set of key-value pairs to create or update the Bucket object with.</param>
         /// <returns>The created or updated Bucket object.</returns>
+        /// <response code="200">Bucket updated successfully.</response>
+        /// <response code="201">Bucket created successfully.</response>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpPut("{bucketId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -105,6 +110,7 @@
         /// <summary>Deletes a bucket.</summary>
         /// <param name="bucketId">The Id. of the Bucket object to be deleted.</param>
         /// <returns>A "No Content (204)" HTTP status response.</returns>
+        /// <response code="204">Bucket deleted successfully or bucket did not exist.</response>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpDelete("{bucketId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

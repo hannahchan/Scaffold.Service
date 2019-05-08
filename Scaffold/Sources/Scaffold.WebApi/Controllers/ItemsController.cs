@@ -28,6 +28,7 @@
         /// <param name="bucketId">The Id. of the Bucket object to create the item in.</param>
         /// <param name="item">A complete or partial set of key-value pairs to create the Item object with.</param>
         /// <returns>The created Item object.</returns>
+        /// <response code="201">Item created successfully.</response>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -46,6 +47,7 @@
         /// <summary>Retrieves a list of items from a bucket.</summary>
         /// <param name="bucketId">The Id. of the Bucket object to retrieve the items from.</param>
         /// <returns>A list of Item objects.</returns>
+        /// <response code="200">Items retrieved successfully.</response>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -62,6 +64,7 @@
         /// <param name="bucketId">The Id. of the Bucket object to retrieve the item from.</param>
         /// <param name="itemId">The Id. of the Item object to be retrieved.</param>
         /// <returns>The specified Item object.</returns>
+        /// <response code="200">Item retrieved successfully.</response>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpGet("{itemId}", Name = "GetItem")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -79,11 +82,13 @@
             return this.mapper.Map<Item>(response.Item);
         }
 
-        /// <summary>Creates or updates an item in a bucket.</summary>
+        /// <summary>Updates an item in a bucket or creates one if the specified one does not exist.</summary>
         /// <param name="bucketId">The Id. of the Bucket object to create or update the item in.</param>
         /// <param name="itemId">The Id. of the Item object to be created or updated.</param>
         /// <param name="item">A complete set of key-value pairs to create or update the Item object with.</param>
         /// <returns>The created or updated Item object.</returns>
+        /// <response code="200">Item updated successfully.</response>
+        /// <response code="201">Item created successfully.</response>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpPut("{itemId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -110,6 +115,7 @@
         /// <param name="bucketId">The Id. of the Bucket object to delete the item from.</param>
         /// <param name="itemId">The Id. of the Item object to be deleted.</param>
         /// <returns>A "No Content (204)" HTTP status response.</returns>
+        /// <response code="204">Item deleted successfully or did not exist.</response>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpDelete("{itemId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
