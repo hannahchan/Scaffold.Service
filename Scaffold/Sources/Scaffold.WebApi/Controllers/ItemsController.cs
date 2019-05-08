@@ -79,11 +79,11 @@
             return this.mapper.Map<Item>(response.Item);
         }
 
-        /// <summary>Creates or replaces an item in a bucket.</summary>
-        /// <param name="bucketId">The Id. of the Bucket object to create or replace the item in.</param>
-        /// <param name="itemId">The Id. of the Item object to be created or replaced.</param>
-        /// <param name="item">A complete or partial set of key-value pairs to create or replace the Item object with.</param>
-        /// <returns>The created or replaced Item object.</returns>
+        /// <summary>Creates or updates an item in a bucket.</summary>
+        /// <param name="bucketId">The Id. of the Bucket object to create or update the item in.</param>
+        /// <param name="itemId">The Id. of the Item object to be created or updated.</param>
+        /// <param name="item">A complete set of key-value pairs to create or update the Item object with.</param>
+        /// <returns>The created or updated Item object.</returns>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpPut("{itemId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -91,11 +91,11 @@
         [ProducesDefaultResponseType]
         public async Task<ActionResult<Item>> Put(int bucketId, int itemId, [FromBody] Item item)
         {
-            ReplaceItem.Command command = this.mapper.Map<ReplaceItem.Command>(item);
+            UpdateItem.Command command = this.mapper.Map<UpdateItem.Command>(item);
             command.BucketId = bucketId;
             command.ItemId = itemId;
 
-            ReplaceItem.Response response = await this.mediator.Send(command);
+            UpdateItem.Response response = await this.mediator.Send(command);
             item = this.mapper.Map<Item>(response.Item);
 
             if (response.Created)
@@ -104,26 +104,6 @@
             }
 
             return item;
-        }
-
-        /// <summary>Updates an item in a bucket.</summary>
-        /// <param name="bucketId">The Id. of the Bucket object to update the item in.</param>
-        /// <param name="itemId">The Id. of the Item object to be updated.</param>
-        /// <param name="item">A complete or partial set of key-value pairs to update the Item object with.</param>
-        /// <returns>The updated Item object.</returns>
-        /// <response code="default">Problem Details (RFC 7807) Response.</response>
-        [HttpPatch("{itemId}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesDefaultResponseType]
-        public async Task<ActionResult<Item>> Patch(int bucketId, int itemId, [FromBody] Item item)
-        {
-            UpdateItem.Command command = this.mapper.Map<UpdateItem.Command>(item);
-            command.BucketId = bucketId;
-            command.ItemId = itemId;
-
-            UpdateItem.Response response = await this.mediator.Send(command);
-
-            return this.mapper.Map<Item>(response.Item);
         }
 
         /// <summary>Deletes an item in a bucket.</summary>

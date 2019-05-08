@@ -26,6 +26,15 @@ namespace Scaffold.Application.Features.Bucket
         public class Response
         {
             public Bucket Bucket { get; set; }
+
+            public bool Created { get; set; } = false;
+
+            public bool Updated
+            {
+                get => !this.Created;
+
+                set => this.Created = !value;
+            }
         }
 
         public class Validator : AbstractValidator<Command>
@@ -33,7 +42,7 @@ namespace Scaffold.Application.Features.Bucket
             public Validator()
             {
                 this.RuleFor(command => command.Id).NotEmpty();
-                this.RuleFor(command => command.Name).NotEmpty().When(command => command.Name != null);
+                this.RuleFor(command => command.Name).NotEmpty().NotNull();
             }
         }
 
@@ -45,28 +54,32 @@ namespace Scaffold.Application.Features.Bucket
 
             public async Task<Response> Handle(Command command, CancellationToken cancellationToken)
             {
-                Response response = new Response { Bucket = await this.repository.GetAsync(command.Id) };
-
-                if (response.Bucket == null)
-                {
-                    throw new BucketNotFoundException(command.Id);
-                }
-
                 await new Validator().ValidateAndThrowAsync(command);
+
+                Response response = new Response { Bucket = await this.repository.GetAsync(command.Id) };
 
                 try
                 {
                     MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(new MappingProfile()));
+
+                    if (response.Bucket == null)
+                    {
+                        response.Bucket = configuration.CreateMapper().Map<Bucket>(command);
+                        await this.repository.AddAsync(response.Bucket);
+                        response.Created = true;
+
+                        return response;
+                    }
+
                     response.Bucket = configuration.CreateMapper().Map<Command, Bucket>(command, response.Bucket);
+                    await this.repository.UpdateAsync(response.Bucket);
+
+                    return response;
                 }
                 catch (AutoMapperMappingException exception) when (exception.InnerException is DomainException)
                 {
                     throw exception.InnerException;
                 }
-
-                await this.repository.UpdateAsync(response.Bucket);
-
-                return response;
             }
         }
 
@@ -75,11 +88,7 @@ namespace Scaffold.Application.Features.Bucket
             public MappingProfile()
             {
                 this.CreateMap<Command, Bucket>()
-                    .AddTransform<string>(value => value == string.Empty ? null : value)
-                    .ForMember(dest => dest.Id, opt => opt.Ignore())
-                    .ForMember(dest => dest.Name, opt => opt.Condition(src => src.Name != null))
-                    .ForMember(dest => dest.Description, opt => opt.Condition(src => src.Description != null))
-                    .ForMember(dest => dest.Size, opt => opt.Condition(src => src.Size != null));
+                    .AddTransform<string>(value => value == string.Empty ? null : value);
             }
         }
     }

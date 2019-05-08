@@ -77,10 +77,10 @@
             return this.mapper.Map<Bucket>(response.Bucket);
         }
 
-        /// <summary>Creates or replaces a bucket.</summary>
-        /// <param name="bucketId">The Id. of the Bucket object to be created or replaced.</param>
-        /// <param name="bucket">A complete or partial set of key-value pairs to create or replace the Bucket object with.</param>
-        /// <returns>The created or replaced Bucket object.</returns>
+        /// <summary>Creates or updates a bucket.</summary>
+        /// <param name="bucketId">The Id. of the Bucket object to be created or updated.</param>
+        /// <param name="bucket">A complete set of key-value pairs to create or update the Bucket object with.</param>
+        /// <returns>The created or updated Bucket object.</returns>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpPut("{bucketId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -88,10 +88,10 @@
         [ProducesDefaultResponseType]
         public async Task<ActionResult<Bucket>> Put(int bucketId, [FromBody] Bucket bucket)
         {
-            ReplaceBucket.Command command = this.mapper.Map<ReplaceBucket.Command>(bucket);
+            UpdateBucket.Command command = this.mapper.Map<UpdateBucket.Command>(bucket);
             command.Id = bucketId;
 
-            ReplaceBucket.Response response = await this.mediator.Send(command);
+            UpdateBucket.Response response = await this.mediator.Send(command);
             bucket = this.mapper.Map<Bucket>(response.Bucket);
 
             if (response.Created)
@@ -100,24 +100,6 @@
             }
 
             return bucket;
-        }
-
-        /// <summary>Updates a bucket.</summary>
-        /// <param name="bucketId">The Id. of the Bucket object to be updated.</param>
-        /// <param name="bucket">A complete or partial set of key-value pairs to update the Bucket object with.</param>
-        /// <returns>The updated Bucket object.</returns>
-        /// <response code="default">Problem Details (RFC 7807) Response.</response>
-        [HttpPatch("{bucketId}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesDefaultResponseType]
-        public async Task<ActionResult<Bucket>> Patch(int bucketId, [FromBody] Bucket bucket)
-        {
-            UpdateBucket.Command command = this.mapper.Map<UpdateBucket.Command>(bucket);
-            command.Id = bucketId;
-
-            UpdateBucket.Response response = await this.mediator.Send(command);
-
-            return this.mapper.Map<Bucket>(response.Bucket);
         }
 
         /// <summary>Deletes a bucket.</summary>
