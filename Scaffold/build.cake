@@ -1,15 +1,19 @@
+#addin nuget:?package=Cake.Coverlet
+#tool "nuget:?package=ReportGenerator"
+
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
 
-var target = Argument("target", "Default");
+string target = Argument("Target", "Default");
 
 //////////////////////////////////////////////////////////////////////
-// PREPARATION
+// GLOBAL VARIABLES
 //////////////////////////////////////////////////////////////////////
 
-var artifacts = Directory("./artifacts");
-var solution = File("./Scaffold.WebApi.sln");
+string artifacts = "./artifacts";
+string configuration = "Release";
+string solution = "./Scaffold.WebApi.sln";
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -17,65 +21,85 @@ var solution = File("./Scaffold.WebApi.sln");
 
 Task("Clean")
     .Does(() =>
-{
-    if (DirectoryExists(artifacts))
     {
-        DeleteDirectory(artifacts, new DeleteDirectorySettings
+        if (DirectoryExists(artifacts))
         {
-            Force = true,
-            Recursive = true
-        });
-    }
+            DeleteDirectory(artifacts, new DeleteDirectorySettings
+            {
+                Force = true,
+                Recursive = true
+            });
+        }
 
-    DotNetCoreClean(solution, new DotNetCoreCleanSettings
-    {
-        Configuration = "Release"
+        DotNetCoreClean(solution, new DotNetCoreCleanSettings
+        {
+            Configuration = configuration
+        });
     });
-});
 
 Task("Restore")
     .Does(() =>
-{
-    DotNetCoreRestore(solution);
-});
+    {
+        DotNetCoreRestore(solution);
+    });
 
 Task("Build")
     .IsDependentOn("Clean")
     .IsDependentOn("Restore")
     .Does(() =>
-{
-    DotNetCoreBuild(solution, new DotNetCoreBuildSettings
     {
-        Configuration = "Release",
-        NoRestore = true
+        DotNetCoreBuild(solution, new DotNetCoreBuildSettings
+        {
+            Configuration = configuration,
+            NoRestore = true
+        });
     });
-});
 
 Task("Test")
     .IsDependentOn("Build")
     .Does(() =>
-{
-    DotNetCoreTest(solution, new DotNetCoreTestSettings
     {
-        Configuration = "Release",
-        NoBuild = true
+        DotNetCoreTestSettings testSettings = new DotNetCoreTestSettings
+        {
+            Configuration = configuration,
+            NoBuild = true
+        };
+
+        string testArtifacts = $"{artifacts}/Test";
+
+        foreach (FilePath filePath in GetFiles("./Tests/**/*.UnitTests.csproj"))
+        {
+            string projectName = filePath.GetFilename().ToString().Replace(".UnitTests.csproj", string.Empty);
+
+            CoverletSettings coverletSettings = new CoverletSettings
+            {
+                CollectCoverage = true,
+                CoverletOutputDirectory = $"{testArtifacts}/OpenCover",
+                CoverletOutputFormat = CoverletOutputFormat.opencover,
+                CoverletOutputName = $"{projectName}.xml",
+                Include = new List<string>() { $"[{projectName}]*" }
+            };
+
+            DotNetCoreTest(filePath, testSettings, coverletSettings);
+        };
+
+        ReportGenerator($"{testArtifacts}/OpenCover/*.xml", $"{testArtifacts}/CoverageReport");
     });
-});
 
 Task("Publish")
     .IsDependentOn("Test")
     .Does(() =>
-{
-    var settings = new DotNetCorePublishSettings
     {
-        Configuration = "Release",
-        NoBuild = true,
-        OutputDirectory = Directory($"{artifacts}/Scaffold.WebApi")
-    };
+        DotNetCorePublishSettings settings = new DotNetCorePublishSettings
+        {
+            Configuration = configuration,
+            NoBuild = true,
+            OutputDirectory = $"{artifacts}/Build/Scaffold.WebApi"
+        };
 
-    DotNetCorePublish("./Sources/Scaffold.WebApi", settings);
-    Zip(settings.OutputDirectory, File($"{settings.OutputDirectory}.zip"));
-});
+        DotNetCorePublish("./Sources/Scaffold.WebApi", settings);
+        Zip(settings.OutputDirectory, $"{settings.OutputDirectory}.zip");
+    });
 
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
