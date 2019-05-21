@@ -9,10 +9,10 @@ FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /src
 COPY . .
 WORKDIR /src/Sources/Scaffold.WebApi
-RUN dotnet build Scaffold.WebApi.csproj -c Release -o /app
+RUN dotnet build Scaffold.WebApi.csproj --configuration Release
 
 FROM build AS publish
-RUN dotnet publish Scaffold.WebApi.csproj -c Release -o /app
+RUN dotnet publish Scaffold.WebApi.csproj --configuration Release --no-build --output /app
 
 FROM base AS final
 WORKDIR /app
