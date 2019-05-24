@@ -6,7 +6,7 @@ namespace Scaffold.WebApi.UnitTests.Services
     public class RequestTracingServiceUnitTests
     {
         [Fact]
-        public void When_InstantiatingNewRequestTracingService_Expect_CorrelationIdNull()
+        public void When_InstantiatingRequestTracingService_Expect_CorrelationIdNull()
         {
             // Arrange
             RequestTracingService service;

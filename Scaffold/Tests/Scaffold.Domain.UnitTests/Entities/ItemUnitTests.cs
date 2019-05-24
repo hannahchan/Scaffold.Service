@@ -75,6 +75,7 @@ namespace Scaffold.Domain.UnitTests.Entities
                 // Assert
                 Assert.NotNull(exception);
                 Assert.IsType<BucketFullException>(exception);
+                Assert.NotEmpty(exception.Message);
             }
 
             [Fact]
@@ -94,6 +95,57 @@ namespace Scaffold.Domain.UnitTests.Entities
                 // Assert
                 Assert.Null(exception);
                 Assert.Equal(bucket.Size, bucket.Items.Count);
+            }
+        }
+
+        public class SetDescription
+        {
+            [Fact]
+            public void When_SettingDescription_Expect_DescriptionSet()
+            {
+                // Arrange
+                Item item = new Item();
+                string value = Guid.NewGuid().ToString();
+
+                // Act
+                item.Description = value;
+
+                // Assert
+                Assert.Equal(value, item.Description);
+            }
+        }
+
+        public class SetId
+        {
+            [Fact]
+            public void When_SettingId_Expect_IdSet()
+            {
+                // Arrange
+                Item item = new Item();
+                int value = new Random().Next(int.MaxValue);
+
+                // Act
+                item.Id = value;
+
+                // Assert
+                Assert.Equal(value, item.Id);
+            }
+        }
+
+        public class SetName
+        {
+            [Fact]
+            public void When_SettingName_Expect_NameSet()
+            {
+                // Arrange
+                Item item = new Item();
+                string value = Guid.NewGuid().ToString();
+
+                // Act
+                item.Name = value;
+
+                // Assert
+                Assert.Equal(value, item.Name);
             }
         }
     }

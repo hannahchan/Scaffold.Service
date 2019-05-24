@@ -28,6 +28,65 @@ namespace Scaffold.Application.UnitTests.Features.Item
             this.repository = new BucketRepository(context);
         }
 
+        public class Response
+        {
+            [Fact]
+            public void When_SettingCreatedToTrue_Expect_CreatedTrueAndUpdatedFalse()
+            {
+                // Arrange
+                UpdateItem.Response response = new UpdateItem.Response();
+
+                // Act
+                response.Created = true;
+
+                // Assert
+                Assert.True(response.Created);
+                Assert.False(response.Updated);
+            }
+
+            [Fact]
+            public void When_SettingCreatedToFalse_Expect_CreatedFalseAndUpdatedTrue()
+            {
+                // Arrange
+                UpdateItem.Response response = new UpdateItem.Response();
+
+                // Act
+                response.Created = false;
+
+                // Assert
+                Assert.False(response.Created);
+                Assert.True(response.Updated);
+            }
+
+            [Fact]
+            public void When_SettingUpdatedToTrue_Expect_CreatedFalseAndUpdatedTrue()
+            {
+                // Arrange
+                UpdateItem.Response response = new UpdateItem.Response();
+
+                // Act
+                response.Updated = true;
+
+                // Assert
+                Assert.False(response.Created);
+                Assert.True(response.Updated);
+            }
+
+            [Fact]
+            public void When_SettingUpdatedToFalse_Expect_CreatedTrueAndUpdatedFalse()
+            {
+                // Arrange
+                UpdateItem.Response response = new UpdateItem.Response();
+
+                // Act
+                response.Updated = false;
+
+                // Assert
+                Assert.True(response.Created);
+                Assert.False(response.Updated);
+            }
+        }
+
         public class Validator
         {
             [Fact]

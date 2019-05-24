@@ -45,7 +45,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
         public class Query
         {
             [Fact]
-            public void When_InstantiatingNewQuery_Expect_PredicateNotNull()
+            public void When_InstantiatingQuery_Expect_PredicateNotNull()
             {
                 // Arrange
                 GetBuckets.Query query;
@@ -61,7 +61,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             }
 
             [Fact]
-            public void When_InstantiatingNewQueryWithPredicate_Expect_Predicate()
+            public void When_InstantiatingQueryWithPredicate_Expect_Predicate()
             {
                 // Arrange
                 Expression<Func<Bucket, bool>> predicate = bucket => false;
@@ -78,7 +78,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             }
 
             [Fact]
-            public void When_InstantiatingNewQueryWithNullPredicate_Expect_ArgumentNullException()
+            public void When_InstantiatingQueryWithNullPredicate_Expect_ArgumentNullException()
             {
                 // Arrange
                 Exception exception;

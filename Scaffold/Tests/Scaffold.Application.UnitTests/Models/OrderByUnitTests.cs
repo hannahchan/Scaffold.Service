@@ -8,7 +8,7 @@ namespace Scaffold.Application.UnitTests.Models
         public class Constructor
         {
             [Fact]
-            public void When_InstantiatingNewOrderBy_Expect_AscendingTrueAndDescendingFalse()
+            public void When_InstantiatingOrderBy_Expect_AscendingTrueAndDescendingFalse()
             {
                 // Arrange
                 OrderBy orderBy;
@@ -22,7 +22,7 @@ namespace Scaffold.Application.UnitTests.Models
             }
 
             [Fact]
-            public void When_InstantiatingNewOrderBy_Expect_AscendingFalseAndDescendingTrue()
+            public void When_InstantiatingOrderBy_Expect_AscendingFalseAndDescendingTrue()
             {
                 // Arrange
                 OrderBy orderBy;

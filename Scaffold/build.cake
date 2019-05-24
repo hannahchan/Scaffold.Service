@@ -65,6 +65,11 @@ Task("Test")
             NoBuild = true
         };
 
+        List<String> exclude = new List<string>()
+        {
+            $"[Scaffold.Data]Scaffold.Data.Migrations.*"
+        };
+
         string testArtifacts = $"{artifacts}/Test";
 
         foreach (FilePath filePath in GetFiles("./Tests/**/*.UnitTests.csproj"))
@@ -77,6 +82,7 @@ Task("Test")
                 CoverletOutputDirectory = $"{testArtifacts}/OpenCover",
                 CoverletOutputFormat = CoverletOutputFormat.opencover,
                 CoverletOutputName = $"{projectName}.xml",
+                Exclude = exclude,
                 Include = new List<string>() { $"[{projectName}]*" }
             };
 
