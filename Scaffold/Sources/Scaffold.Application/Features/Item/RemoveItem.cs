@@ -33,7 +33,7 @@ namespace Scaffold.Application.Features.Item
                     await this.repository.UpdateAsync(bucket);
                 }
 
-                return default(Unit);
+                return default;
             }
         }
     }

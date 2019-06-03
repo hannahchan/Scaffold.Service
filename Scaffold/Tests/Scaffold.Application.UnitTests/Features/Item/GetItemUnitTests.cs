@@ -40,7 +40,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 GetItem.Handler handler = new GetItem.Handler(this.repository);
 
                 // Act
-                GetItem.Response response = await handler.Handle(query, default(CancellationToken));
+                GetItem.Response response = await handler.Handle(query, default);
 
                 // Assert
                 Assert.Equal(item.Id, response.Item.Id);
@@ -63,14 +63,14 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 GetItem.Handler handler = new GetItem.Handler(this.repository);
 
                 // Act
-                GetItem.Response response = await handler.Handle(query, default(CancellationToken));
+                GetItem.Response response = await handler.Handle(query, default);
 
                 // Assert
                 Assert.Null(response.Item);
             }
 
             [Fact]
-            public async void When_GettingItemFromNonExistingBucket_Expect_BucketNotFoundException()
+            public async Task When_GettingItemFromNonExistingBucket_Expect_BucketNotFoundException()
             {
                 // Arrange
                 GetItem.Query query = new GetItem.Query
@@ -83,7 +83,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() =>
-                    handler.Handle(query, default(CancellationToken)));
+                    handler.Handle(query, default));
 
                 // Assert
                 Assert.NotNull(exception);

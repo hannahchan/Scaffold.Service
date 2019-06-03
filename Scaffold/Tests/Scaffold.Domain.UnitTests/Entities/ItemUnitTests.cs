@@ -30,9 +30,7 @@ namespace Scaffold.Domain.UnitTests.Entities
                 // Arrange
                 Bucket bucket1 = new Bucket();
                 Bucket bucket2 = new Bucket();
-                Item item = new Item();
-
-                item.Bucket = bucket1;
+                Item item = new Item { Bucket = bucket1 };
 
                 // Act
                 item.Bucket = bucket2;
@@ -48,9 +46,7 @@ namespace Scaffold.Domain.UnitTests.Entities
             {
                 // Arrange
                 Bucket bucket = new Bucket();
-                Item item = new Item();
-
-                item.Bucket = bucket;
+                Item item = new Item { Bucket = bucket };
 
                 // Act
                 item.Bucket = null;

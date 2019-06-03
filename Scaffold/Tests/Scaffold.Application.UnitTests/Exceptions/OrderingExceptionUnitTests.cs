@@ -53,7 +53,6 @@ namespace Scaffold.Application.UnitTests.Exception
         private class TestException : OrderingException
         {
             public TestException()
-                : base()
             {
             }
 

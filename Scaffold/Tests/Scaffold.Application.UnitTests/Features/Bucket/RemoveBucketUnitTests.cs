@@ -39,7 +39,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 RemoveBucket.Handler handler = new RemoveBucket.Handler(this.repository);
 
                 // Act
-                await handler.Handle(command, default(CancellationToken));
+                await handler.Handle(command, default);
 
                 // Assert
                 Assert.Null(this.repository.Get(bucket.Id));
@@ -56,7 +56,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 RemoveBucket.Handler handler = new RemoveBucket.Handler(this.repository);
 
                 // Act
-                await handler.Handle(command, default(CancellationToken));
+                await handler.Handle(command, default);
 
                 // Assert
                 Assert.NotEmpty(this.context.Buckets);

@@ -49,7 +49,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 // Act and Assert
                 validator.ShouldHaveValidationErrorFor(command => command.Name, string.Empty);
-                validator.ShouldHaveValidationErrorFor(command => command.Name, value: null);
+                validator.ShouldHaveValidationErrorFor(command => command.Name, null as string);
             }
         }
 
@@ -67,10 +67,10 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 AddBucket.Handler handler = new AddBucket.Handler(this.repository);
 
                 // Act
-                AddBucket.Response response = await handler.Handle(command, default(CancellationToken));
+                AddBucket.Response response = await handler.Handle(command, default);
 
                 // Assert
-                Assert.NotEqual(default(int), response.Bucket.Id);
+                Assert.NotEqual(default, response.Bucket.Id);
                 Assert.Equal(command.Name, response.Bucket.Name);
                 Assert.NotNull(response.Bucket.Items);
             }
@@ -84,7 +84,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() =>
-                    handler.Handle(command, default(CancellationToken)));
+                    handler.Handle(command, default));
 
                 // Assert
                 Assert.NotNull(exception);
@@ -105,7 +105,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() =>
-                    handler.Handle(command, default(CancellationToken)));
+                    handler.Handle(command, default));
 
                 // Assert
                 Assert.NotNull(exception);

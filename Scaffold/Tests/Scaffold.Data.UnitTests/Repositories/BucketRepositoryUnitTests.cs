@@ -16,7 +16,7 @@ namespace Scaffold.Data.UnitTests.Repositories
     {
         private readonly DbContextOptions<BucketContext> dbContextOptions;
 
-        private IList<Bucket> testBuckets = new List<Bucket>()
+        private readonly IList<Bucket> testBuckets = new List<Bucket>
         {
             new Bucket { Name = "B", Description = "1", Size = 3 },
             new Bucket { Name = "A", Description = "3", Size = 9 },
@@ -743,8 +743,7 @@ namespace Scaffold.Data.UnitTests.Repositories
                     context.SaveChanges();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Size", true));
+                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
 
                 IList<Bucket> result;
 
@@ -776,8 +775,7 @@ namespace Scaffold.Data.UnitTests.Repositories
                     context.SaveChanges();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Size", false));
+                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", false) };
 
                 IList<Bucket> result;
 
@@ -809,8 +807,7 @@ namespace Scaffold.Data.UnitTests.Repositories
                     context.SaveChanges();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Size", true));
+                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
 
                 IList<Bucket> result;
 
@@ -842,8 +839,7 @@ namespace Scaffold.Data.UnitTests.Repositories
                     context.SaveChanges();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Size", true));
+                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
 
                 IList<Bucket> result;
 
@@ -875,8 +871,7 @@ namespace Scaffold.Data.UnitTests.Repositories
                     context.SaveChanges();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Size", true));
+                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
 
                 IList<Bucket> result;
 
@@ -908,9 +903,11 @@ namespace Scaffold.Data.UnitTests.Repositories
                     context.SaveChanges();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Name", true));
-                ordering.Add(new OrderBy("Description", true));
+                Ordering<Bucket> ordering = new Ordering<Bucket>
+                {
+                    new OrderBy("Name", true),
+                    new OrderBy("Description", true),
+                };
 
                 IList<Bucket> result;
 
@@ -963,9 +960,11 @@ namespace Scaffold.Data.UnitTests.Repositories
                     context.SaveChanges();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Name", false));
-                ordering.Add(new OrderBy("Description", false));
+                Ordering<Bucket> ordering = new Ordering<Bucket>
+                {
+                    new OrderBy("Name", false),
+                    new OrderBy("Description", false),
+                };
 
                 IList<Bucket> result;
 
@@ -1018,9 +1017,11 @@ namespace Scaffold.Data.UnitTests.Repositories
                     context.SaveChanges();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Name", true));
-                ordering.Add(new OrderBy("Description", false));
+                Ordering<Bucket> ordering = new Ordering<Bucket>
+                {
+                    new OrderBy("Name", true),
+                    new OrderBy("Description", false),
+                };
 
                 IList<Bucket> result;
 
@@ -1073,9 +1074,11 @@ namespace Scaffold.Data.UnitTests.Repositories
                     context.SaveChanges();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Name", false));
-                ordering.Add(new OrderBy("Description", true));
+                Ordering<Bucket> ordering = new Ordering<Bucket>
+                {
+                    new OrderBy("Name", false),
+                    new OrderBy("Description", true),
+                };
 
                 IList<Bucket> result;
 
@@ -1197,8 +1200,7 @@ namespace Scaffold.Data.UnitTests.Repositories
                     await context.SaveChangesAsync();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Size", true));
+                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
 
                 IList<Bucket> result;
 
@@ -1230,8 +1232,7 @@ namespace Scaffold.Data.UnitTests.Repositories
                     await context.SaveChangesAsync();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Size", false));
+                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", false) };
 
                 IList<Bucket> result;
 
@@ -1263,8 +1264,7 @@ namespace Scaffold.Data.UnitTests.Repositories
                     await context.SaveChangesAsync();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Size", true));
+                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
 
                 IList<Bucket> result;
 
@@ -1296,8 +1296,7 @@ namespace Scaffold.Data.UnitTests.Repositories
                     await context.SaveChangesAsync();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Size", true));
+                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
 
                 IList<Bucket> result;
 
@@ -1329,8 +1328,7 @@ namespace Scaffold.Data.UnitTests.Repositories
                     await context.SaveChangesAsync();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Size", true));
+                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
 
                 IList<Bucket> result;
 
@@ -1362,9 +1360,11 @@ namespace Scaffold.Data.UnitTests.Repositories
                     await context.SaveChangesAsync();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Name", true));
-                ordering.Add(new OrderBy("Description", true));
+                Ordering<Bucket> ordering = new Ordering<Bucket>
+                {
+                    new OrderBy("Name", true),
+                    new OrderBy("Description", true),
+                };
 
                 IList<Bucket> result;
 
@@ -1417,9 +1417,11 @@ namespace Scaffold.Data.UnitTests.Repositories
                     await context.SaveChangesAsync();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Name", false));
-                ordering.Add(new OrderBy("Description", false));
+                Ordering<Bucket> ordering = new Ordering<Bucket>
+                {
+                    new OrderBy("Name", false),
+                    new OrderBy("Description", false),
+                };
 
                 IList<Bucket> result;
 
@@ -1472,9 +1474,11 @@ namespace Scaffold.Data.UnitTests.Repositories
                     await context.SaveChangesAsync();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Name", true));
-                ordering.Add(new OrderBy("Description", false));
+                Ordering<Bucket> ordering = new Ordering<Bucket>
+                {
+                    new OrderBy("Name", true),
+                    new OrderBy("Description", false),
+                };
 
                 IList<Bucket> result;
 
@@ -1527,9 +1531,11 @@ namespace Scaffold.Data.UnitTests.Repositories
                     await context.SaveChangesAsync();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Name", false));
-                ordering.Add(new OrderBy("Description", true));
+                Ordering<Bucket> ordering = new Ordering<Bucket>
+                {
+                    new OrderBy("Name", false),
+                    new OrderBy("Description", true),
+                };
 
                 IList<Bucket> result;
 

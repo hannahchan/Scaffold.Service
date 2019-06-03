@@ -90,7 +90,6 @@ namespace Scaffold.Domain.UnitTests.Exception
         private class TestException : DomainException
         {
             public TestException()
-                : base()
             {
             }
 

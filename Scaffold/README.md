@@ -21,7 +21,7 @@ Other stuff you inherit when you bootstrap with Scaffold.
 - Architecture
 - [Docker Support](Docs/Docker.md)
 - [Entity Framework Support](Docs/EntityFramework.md)
-- [StyleCop Analyzers](Docs/StyleCopAnalyzers.md)
+- [Roslyn Analyzers](Docs/RoslynAnalyzers.md)
 - [Visual Studio Code Support](Docs/VisualStudioCode.md)
 
 ### Not Included ###

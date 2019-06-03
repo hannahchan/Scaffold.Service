@@ -37,7 +37,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBucket.Handler handler = new GetBucket.Handler(this.repository);
 
                 // Act
-                GetBucket.Response response = await handler.Handle(query, default(CancellationToken));
+                GetBucket.Response response = await handler.Handle(query, default);
 
                 // Assert
                 Assert.Equal(bucket.Id, response.Bucket.Id);
@@ -52,7 +52,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBucket.Handler handler = new GetBucket.Handler(this.repository);
 
                 // Act
-                GetBucket.Response response = await handler.Handle(query, default(CancellationToken));
+                GetBucket.Response response = await handler.Handle(query, default);
 
                 // Assert
                 Assert.Null(response.Bucket);

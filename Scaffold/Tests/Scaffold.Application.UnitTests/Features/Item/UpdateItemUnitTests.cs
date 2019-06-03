@@ -111,7 +111,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 validator.ShouldHaveValidationErrorFor(command => command.BucketId, default(int));
                 validator.ShouldHaveValidationErrorFor(command => command.ItemId, default(int));
                 validator.ShouldHaveValidationErrorFor(command => command.Name, string.Empty);
-                validator.ShouldHaveValidationErrorFor(command => command.Name, value: null);
+                validator.ShouldHaveValidationErrorFor(command => command.Name, null as string);
             }
         }
 
@@ -138,7 +138,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 UpdateItem.Handler handler = new UpdateItem.Handler(this.repository);
 
                 // Act
-                UpdateItem.Response response = await handler.Handle(command, default(CancellationToken));
+                UpdateItem.Response response = await handler.Handle(command, default);
 
                 // Assert
                 Assert.False(response.Created);
@@ -168,7 +168,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 UpdateItem.Handler handler = new UpdateItem.Handler(this.repository);
 
                 // Act
-                UpdateItem.Response response = await handler.Handle(command, default(CancellationToken));
+                UpdateItem.Response response = await handler.Handle(command, default);
 
                 // Assert
                 Assert.True(response.Created);
@@ -194,7 +194,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() =>
-                    handler.Handle(command, default(CancellationToken)));
+                    handler.Handle(command, default));
 
                 // Assert
                 Assert.NotNull(exception);
@@ -210,7 +210,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() =>
-                    handler.Handle(command, default(CancellationToken)));
+                    handler.Handle(command, default));
 
                 // Assert
                 Assert.NotNull(exception);

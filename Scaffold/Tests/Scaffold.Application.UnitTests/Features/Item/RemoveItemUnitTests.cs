@@ -39,7 +39,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 RemoveItem.Handler handler = new RemoveItem.Handler(this.repository);
 
                 // Act
-                await handler.Handle(command, default(CancellationToken));
+                await handler.Handle(command, default);
 
                 // Assert
                 Assert.DoesNotContain(item, this.repository.Get(bucket.Id).Items);
@@ -63,7 +63,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 RemoveItem.Handler handler = new RemoveItem.Handler(this.repository);
 
                 // Act
-                await handler.Handle(command, default(CancellationToken));
+                await handler.Handle(command, default);
 
                 // Assert
                 Assert.NotEmpty(this.repository.Get(bucket.Id).Items);
@@ -87,7 +87,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 RemoveItem.Handler handler = new RemoveItem.Handler(this.repository);
 
                 // Act
-                await handler.Handle(command, default(CancellationToken));
+                await handler.Handle(command, default);
 
                 // Assert
                 Assert.NotEmpty(this.repository.Get(bucket.Id).Items);

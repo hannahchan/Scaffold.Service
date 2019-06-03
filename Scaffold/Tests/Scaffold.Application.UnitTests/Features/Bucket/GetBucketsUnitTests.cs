@@ -18,7 +18,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     {
         private readonly IBucketRepository repository;
 
-        private IList<Bucket> testBuckets = new List<Bucket>();
+        private readonly IList<Bucket> testBuckets = new List<Bucket>();
 
         public GetBucketsUnitTests()
         {
@@ -106,7 +106,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
-                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+                GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
                 Assert.NotNull(response.Buckets);
@@ -122,7 +122,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
-                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+                GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
                 Assert.NotNull(response.Buckets);
@@ -143,7 +143,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
-                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+                GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
                 Assert.NotNull(response.Buckets);
@@ -163,7 +163,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
-                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+                GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
                 Assert.NotNull(response.Buckets);
@@ -186,7 +186,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
-                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+                GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
                 Assert.NotNull(response.Buckets);
@@ -208,7 +208,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
-                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+                GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
                 Assert.NotNull(response.Buckets);
@@ -231,7 +231,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
-                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+                GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
                 Assert.NotNull(response.Buckets);
@@ -253,7 +253,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
-                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+                GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
                 Assert.NotNull(response.Buckets);
@@ -271,14 +271,13 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     await this.repository.AddAsync(bucket);
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Size", true));
+                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
 
                 GetBuckets.Query query = new GetBuckets.Query { Ordering = ordering };
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
-                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+                GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
                 for (int i = 1; i <= 12; i++)
@@ -296,14 +295,13 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     await this.repository.AddAsync(bucket);
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Size", false));
+                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", false) };
 
                 GetBuckets.Query query = new GetBuckets.Query { Ordering = ordering };
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
-                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+                GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
                 for (int i = 1; i <= 12; i++)
@@ -321,14 +319,13 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     await this.repository.AddAsync(bucket);
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Size", true));
+                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
 
                 GetBuckets.Query query = new GetBuckets.Query { Limit = 6, Ordering = ordering };
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
-                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+                GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
                 for (int i = 1; i <= 6; i++)
@@ -346,14 +343,13 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     await this.repository.AddAsync(bucket);
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Size", true));
+                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
 
                 GetBuckets.Query query = new GetBuckets.Query { Offset = 6, Ordering = ordering };
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
-                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+                GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
                 for (int i = 1; i <= 6; i++)
@@ -371,14 +367,13 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     await this.repository.AddAsync(bucket);
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Size", true));
+                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
 
                 GetBuckets.Query query = new GetBuckets.Query { Limit = 6, Offset = 3, Ordering = ordering };
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
-                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+                GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
                 for (int i = 1; i <= 6; i++)
@@ -396,15 +391,17 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     await this.repository.AddAsync(bucket);
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Name", true));
-                ordering.Add(new OrderBy("Description", true));
+                Ordering<Bucket> ordering = new Ordering<Bucket>
+                {
+                    new OrderBy("Name", true),
+                    new OrderBy("Description", true),
+                };
 
                 GetBuckets.Query query = new GetBuckets.Query { Ordering = ordering };
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
-                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+                GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
                 Assert.Equal("A", response.Buckets[0].Name);
@@ -443,15 +440,17 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     await this.repository.AddAsync(bucket);
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Name", false));
-                ordering.Add(new OrderBy("Description", false));
+                Ordering<Bucket> ordering = new Ordering<Bucket>
+                {
+                    new OrderBy("Name", false),
+                    new OrderBy("Description", false),
+                };
 
                 GetBuckets.Query query = new GetBuckets.Query { Ordering = ordering };
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
-                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+                GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
                 Assert.Equal("B", response.Buckets[0].Name);
@@ -490,15 +489,17 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     await this.repository.AddAsync(bucket);
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Name", true));
-                ordering.Add(new OrderBy("Description", false));
+                Ordering<Bucket> ordering = new Ordering<Bucket>
+                {
+                    new OrderBy("Name", true),
+                    new OrderBy("Description", false),
+                };
 
                 GetBuckets.Query query = new GetBuckets.Query { Ordering = ordering };
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
-                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+                GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
                 Assert.Equal("A", response.Buckets[0].Name);
@@ -537,15 +538,17 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     await this.repository.AddAsync(bucket);
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-                ordering.Add(new OrderBy("Name", false));
-                ordering.Add(new OrderBy("Description", true));
+                Ordering<Bucket> ordering = new Ordering<Bucket>
+                {
+                    new OrderBy("Name", false),
+                    new OrderBy("Description", true),
+                };
 
                 GetBuckets.Query query = new GetBuckets.Query { Ordering = ordering };
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
-                GetBuckets.Response response = await handler.Handle(query, default(CancellationToken));
+                GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
                 Assert.Equal("B", response.Buckets[0].Name);

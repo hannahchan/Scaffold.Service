@@ -90,7 +90,6 @@ namespace Scaffold.Application.UnitTests.Exception
         private class TestException : Scaffold.Application.Exceptions.ApplicationException
         {
             public TestException()
-                : base()
             {
             }
 

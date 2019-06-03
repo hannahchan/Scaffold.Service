@@ -77,11 +77,12 @@ namespace Scaffold.Application.UnitTests.Models
             public void When_ClearingList_Expect_EmptyList()
             {
                 // Arrange
-                Ordering<TestClass> ordering = new Ordering<TestClass>();
-
-                ordering.Add(new OrderBy("Property1"));
-                ordering.Add(new OrderBy("Property2"));
-                ordering.Add(new OrderBy("Property3"));
+                Ordering<TestClass> ordering = new Ordering<TestClass>
+                {
+                    new OrderBy("Property1"),
+                    new OrderBy("Property2"),
+                    new OrderBy("Property3"),
+                };
 
                 // Act
                 ordering.Clear();
@@ -129,15 +130,16 @@ namespace Scaffold.Application.UnitTests.Models
             public void When_CopyingToArray_Expect_CopiedToArray()
             {
                 // Arrange
-                Ordering<TestClass> ordering = new Ordering<TestClass>();
-
                 OrderBy orderBy1 = new OrderBy("Property1");
                 OrderBy orderBy2 = new OrderBy("Property2");
                 OrderBy orderBy3 = new OrderBy("Property3");
 
-                ordering.Add(orderBy1);
-                ordering.Add(orderBy2);
-                ordering.Add(orderBy3);
+                Ordering<TestClass> ordering = new Ordering<TestClass>
+                {
+                    orderBy1,
+                    orderBy2,
+                    orderBy3,
+                };
 
                 OrderBy[] array = new OrderBy[5];
 
@@ -159,11 +161,12 @@ namespace Scaffold.Application.UnitTests.Models
             public void When_GettingCount_Expect_Count()
             {
                 // Arrange
-                Ordering<TestClass> ordering = new Ordering<TestClass>();
-
-                ordering.Add(new OrderBy("Property1"));
-                ordering.Add(new OrderBy("Property2"));
-                ordering.Add(new OrderBy("Property3"));
+                Ordering<TestClass> ordering = new Ordering<TestClass>
+                {
+                    new OrderBy("Property1"),
+                    new OrderBy("Property2"),
+                    new OrderBy("Property3"),
+                };
 
                 // Act
                 int result = ordering.Count;
@@ -195,15 +198,16 @@ namespace Scaffold.Application.UnitTests.Models
             public void When_GettingOrderByAtIndex_Expect_OrderByAtIndex()
             {
                 // Arrange
-                Ordering<TestClass> ordering = new Ordering<TestClass>();
-
                 OrderBy orderBy1 = new OrderBy("Property1");
                 OrderBy orderBy2 = new OrderBy("Property2");
                 OrderBy orderBy3 = new OrderBy("Property3");
 
-                ordering.Add(orderBy1);
-                ordering.Add(orderBy2);
-                ordering.Add(orderBy3);
+                Ordering<TestClass> ordering = new Ordering<TestClass>
+                {
+                    orderBy1,
+                    orderBy2,
+                    orderBy3,
+                };
 
                 // Act
                 OrderBy result = ordering[1];
@@ -216,10 +220,11 @@ namespace Scaffold.Application.UnitTests.Models
             public void When_SettingOrderByAtIndex_Expect_OrderBySetAtIndex()
             {
                 // Arrange
-                Ordering<TestClass> ordering = new Ordering<TestClass>();
-
-                ordering.Add(new OrderBy("Property1"));
-                ordering.Add(new OrderBy("Property2"));
+                Ordering<TestClass> ordering = new Ordering<TestClass>
+                {
+                    new OrderBy("Property1"),
+                    new OrderBy("Property2"),
+                };
 
                 OrderBy orderBy = new OrderBy("Property3");
 
@@ -250,10 +255,11 @@ namespace Scaffold.Application.UnitTests.Models
             public void When_SettingOrderByAtIndexWithComparableProperty_Expect_OrderBySetAtIndex()
             {
                 // Arrange
-                Ordering<TestClass> ordering = new Ordering<TestClass>();
-
-                ordering.Add(new OrderBy("Property1"));
-                ordering.Add(new OrderBy("Property2"));
+                Ordering<TestClass> ordering = new Ordering<TestClass>
+                {
+                    new OrderBy("Property1"),
+                    new OrderBy("Property2"),
+                };
 
                 OrderBy orderBy1 = new OrderBy("Property4");
                 OrderBy orderBy2 = new OrderBy("Property5");
@@ -290,15 +296,16 @@ namespace Scaffold.Application.UnitTests.Models
             public void When_GettingIndexOfOrderBy_Expect_Index()
             {
                 // Arrange
-                Ordering<TestClass> ordering = new Ordering<TestClass>();
-
                 OrderBy orderBy1 = new OrderBy("Property1");
                 OrderBy orderBy2 = new OrderBy("Property2");
                 OrderBy orderBy3 = new OrderBy("Property3");
 
-                ordering.Add(orderBy1);
-                ordering.Add(orderBy2);
-                ordering.Add(orderBy3);
+                Ordering<TestClass> ordering = new Ordering<TestClass>
+                {
+                    orderBy1,
+                    orderBy2,
+                    orderBy3,
+                };
 
                 // Act
                 int result = ordering.IndexOf(orderBy3);
@@ -314,10 +321,11 @@ namespace Scaffold.Application.UnitTests.Models
             public void When_InsertingOrderByAtIndex_Expect_OrderByInsertedAtIndex()
             {
                 // Arrange
-                Ordering<TestClass> ordering = new Ordering<TestClass>();
-
-                ordering.Add(new OrderBy("Property1"));
-                ordering.Add(new OrderBy("Property3"));
+                Ordering<TestClass> ordering = new Ordering<TestClass>
+                {
+                    new OrderBy("Property1"),
+                    new OrderBy("Property3"),
+                };
 
                 // Act
                 ordering.Insert(1, new OrderBy("Property2"));
@@ -346,10 +354,11 @@ namespace Scaffold.Application.UnitTests.Models
             public void When_InsertingOrderByAtIndexWithComparableProperty_Expect_OrderByInsertedAtIndex()
             {
                 // Arrange
-                Ordering<TestClass> ordering = new Ordering<TestClass>();
-
-                ordering.Add(new OrderBy("Property1"));
-                ordering.Add(new OrderBy("Property3"));
+                Ordering<TestClass> ordering = new Ordering<TestClass>
+                {
+                    new OrderBy("Property1"),
+                    new OrderBy("Property3"),
+                };
 
                 // Act
                 ordering.Insert(1, new OrderBy("Property4"));
@@ -399,15 +408,16 @@ namespace Scaffold.Application.UnitTests.Models
             public void When_RemovingOrderBy_Expect_OrderByRemoved()
             {
                 // Arrange
-                Ordering<TestClass> ordering = new Ordering<TestClass>();
-
                 OrderBy orderBy1 = new OrderBy("Property1");
                 OrderBy orderBy2 = new OrderBy("Property2");
                 OrderBy orderBy3 = new OrderBy("Property3");
 
-                ordering.Add(orderBy1);
-                ordering.Add(orderBy2);
-                ordering.Add(orderBy3);
+                Ordering<TestClass> ordering = new Ordering<TestClass>
+                {
+                    orderBy1,
+                    orderBy2,
+                    orderBy3,
+                };
 
                 // Act
                 ordering.Remove(orderBy2);
@@ -426,15 +436,16 @@ namespace Scaffold.Application.UnitTests.Models
             public void When_RemovingOrderByAtIndex_Expect_OrderByRemovedAtIndex()
             {
                 // Arrange
-                Ordering<TestClass> ordering = new Ordering<TestClass>();
-
                 OrderBy orderBy1 = new OrderBy("Property1");
                 OrderBy orderBy2 = new OrderBy("Property2");
                 OrderBy orderBy3 = new OrderBy("Property3");
 
-                ordering.Add(orderBy1);
-                ordering.Add(orderBy2);
-                ordering.Add(orderBy3);
+                Ordering<TestClass> ordering = new Ordering<TestClass>
+                {
+                    orderBy1,
+                    orderBy2,
+                    orderBy3,
+                };
 
                 // Act
                 ordering.RemoveAt(1);

@@ -42,7 +42,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 GetItems.Handler handler = new GetItems.Handler(this.repository);
 
                 // Act
-                GetItems.Response response = await handler.Handle(query, default(CancellationToken));
+                GetItems.Response response = await handler.Handle(query, default);
 
                 // Assert
                 Assert.NotNull(response.Items);
@@ -61,7 +61,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 GetItems.Handler handler = new GetItems.Handler(this.repository);
 
                 // Act
-                GetItems.Response response = await handler.Handle(query, default(CancellationToken));
+                GetItems.Response response = await handler.Handle(query, default);
 
                 // Assert
                 Assert.NotNull(response.Items);
@@ -77,7 +77,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() =>
-                    handler.Handle(query, default(CancellationToken)));
+                    handler.Handle(query, default));
 
                 // Assert
                 Assert.NotNull(exception);

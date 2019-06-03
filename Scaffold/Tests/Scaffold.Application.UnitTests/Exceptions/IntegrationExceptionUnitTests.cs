@@ -73,7 +73,6 @@ namespace Scaffold.Application.UnitTests.Exception
         private class TestException : IntegrationException
         {
             public TestException()
-                : base()
             {
             }
 

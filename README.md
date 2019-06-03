@@ -37,7 +37,7 @@ Other stuff you inherit when you bootstrap with Scaffold.WebApi.
 - Architecture
 - [Docker Support](Scaffold/Docs/Docker.md)
 - [Entity Framework Support](Scaffold/Docs/EntityFramework.md)
-- [StyleCop Analyzers](Scaffold/Docs/StyleCopAnalyzers.md)
+- [Roslyn Analyzers](Scaffold/Docs/RoslynAnalyzers.md)
 - [Visual Studio Code Support](Scaffold/Docs/VisualStudioCode.md)
 
 ### Not Included ###

@@ -50,7 +50,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
 
                 // Act and Assert
                 validator.ShouldHaveValidationErrorFor(command => command.Name, string.Empty);
-                validator.ShouldHaveValidationErrorFor(command => command.Name, value: null);
+                validator.ShouldHaveValidationErrorFor(command => command.Name, null as string);
             }
         }
 
@@ -72,10 +72,10 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 AddItem.Handler handler = new AddItem.Handler(this.repository);
 
                 // Act
-                AddItem.Response response = await handler.Handle(command, default(CancellationToken));
+                AddItem.Response response = await handler.Handle(command, default);
 
                 // Assert
-                Assert.NotEqual(default(int), response.Item.Id);
+                Assert.NotEqual(default, response.Item.Id);
                 Assert.Equal(command.Name, response.Item.Name);
                 Assert.Equal(bucket, response.Item.Bucket);
                 Assert.Contains(response.Item, response.Item.Bucket.Items);
@@ -95,7 +95,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() =>
-                    handler.Handle(command, default(CancellationToken)));
+                    handler.Handle(command, default));
 
                 // Assert
                 Assert.NotNull(exception);
@@ -111,7 +111,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() =>
-                    handler.Handle(command, default(CancellationToken)));
+                    handler.Handle(command, default));
 
                 // Assert
                 Assert.NotNull(exception);
@@ -135,7 +135,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() =>
-                    handler.Handle(command, default(CancellationToken)));
+                    handler.Handle(command, default));
 
                 // Assert
                 Assert.NotNull(exception);

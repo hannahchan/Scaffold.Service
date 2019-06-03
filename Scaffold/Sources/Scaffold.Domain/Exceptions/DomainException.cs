@@ -5,7 +5,6 @@ namespace Scaffold.Domain.Exceptions
     public abstract class DomainException : Exception
     {
         protected DomainException()
-            : base()
         {
         }
 

@@ -28,7 +28,7 @@ namespace Scaffold.Application.Features.Bucket
                     await this.repository.RemoveAsync(bucket);
                 }
 
-                return default(Unit);
+                return default;
             }
         }
     }
