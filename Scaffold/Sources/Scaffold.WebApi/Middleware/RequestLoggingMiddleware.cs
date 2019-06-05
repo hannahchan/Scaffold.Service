@@ -129,26 +129,32 @@ namespace Scaffold.WebApi.Middleware
 
             public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
             {
-                object httpConnection = (
-                    RemoteIpAddress: this.httpContext.Connection.RemoteIpAddress.ToString(),
-                    LocalIpAddress: this.httpContext.Connection.LocalIpAddress?.ToString());
+                object httpConnection = new
+                {
+                    RemoteIpAddress = this.httpContext.Connection.RemoteIpAddress.ToString(),
+                    LocalIpAddress = this.httpContext.Connection.LocalIpAddress?.ToString(),
+                };
 
                 logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("HttpConnection", httpConnection, true));
 
-                object httpRequest = (
+                object httpRequest = new
+                {
                     this.httpContext.Request.Method,
                     this.httpContext.Request.Scheme,
-                    Host: this.httpContext.Request.Host.ToString(),
-                    Path: this.httpContext.Request.Path.ToString(),
-                    Headers: this.httpContext.Request.Headers
+                    Host = this.httpContext.Request.Host.ToString(),
+                    Path = this.httpContext.Request.Path.ToString(),
+                    Headers = this.httpContext.Request.Headers
                         .Where(header => !header.Key.Equals("Authorization", StringComparison.OrdinalIgnoreCase))
-                        .ToDictionary(header => header.Key, header => header.Value.ToString()));
+                        .ToDictionary(header => header.Key, header => header.Value.ToString()),
+                };
 
                 logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("HttpRequest", httpRequest, true));
 
-                object httpResponse = (
+                object httpResponse = new
+                {
                     this.httpContext.Response.StatusCode,
-                    ElapsedMilliseconds: this.elapsedMilliseconds);
+                    ElapsedMilliseconds = this.elapsedMilliseconds,
+                };
 
                 logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("HttpResponse", httpResponse, true));
             }
