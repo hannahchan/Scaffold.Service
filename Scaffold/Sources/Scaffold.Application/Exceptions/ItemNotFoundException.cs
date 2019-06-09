@@ -1,14 +1,19 @@
 namespace Scaffold.Application.Exceptions
 {
+    using System;
+    using System.Runtime.Serialization;
+
+    [Serializable]
     public class ItemNotFoundException : NotFoundException
     {
         public ItemNotFoundException(int itemId)
-            : base($"Item '{itemId}' not found.")
+            : base("Item Not Found", $"Item '{itemId}' not found.")
         {
         }
 
-        public override string Detail => this.Message;
-
-        public override string Title => "Item Not Found";
+        protected ItemNotFoundException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
     }
 }

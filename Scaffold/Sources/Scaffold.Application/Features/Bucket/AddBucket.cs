@@ -39,16 +39,16 @@ namespace Scaffold.Application.Features.Bucket
 
             public Handler(IBucketRepository repository) => this.repository = repository;
 
-            public async Task<Response> Handle(Command command, CancellationToken cancellationToken)
+            public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
             {
-                await new Validator().ValidateAndThrowAsync(command);
+                await new Validator().ValidateAndThrowAsync(request);
 
                 Response response = new Response();
 
                 try
                 {
                     MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(new MappingProfile()));
-                    response.Bucket = configuration.CreateMapper().Map<Bucket>(command);
+                    response.Bucket = configuration.CreateMapper().Map<Bucket>(request);
                 }
                 catch (AutoMapperMappingException exception) when (exception.InnerException is DomainException)
                 {

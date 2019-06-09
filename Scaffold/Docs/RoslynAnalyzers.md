@@ -10,6 +10,10 @@ Scaffold uses the following analyzers in some or all of the projects in the solu
 
 Web API analyzers is only used in the [Scaffold.WebApi](../Sources/Scaffold.WebApi) project. One of the analyzers in the package inspects controllers annotated with ApiControllerAttribute and identifies actions that don't entirely document their responses.
 
+### [SonarAnalyzer.CSharp](https://github.com/SonarSource/sonar-dotnet) ###
+
+This analyzer should be installed in every project in the Scaffold solution. SonarAnalyser.CSharp is used to help spot bugs and code smells.
+
 ### [StyleCop.Analyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers) ###
 
 StyleCop analyzers help enforce style and consistency when writing C# code. These analyzers should be installed in every project in the Scaffold solution.

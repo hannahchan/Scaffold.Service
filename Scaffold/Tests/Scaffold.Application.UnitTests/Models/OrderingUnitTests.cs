@@ -17,14 +17,14 @@ namespace Scaffold.Application.UnitTests.Models
                 Ordering<TestClass> ordering = new Ordering<TestClass>();
 
                 // Act
-                ordering.Add(new OrderBy("Property1"));
-                ordering.Add(new OrderBy("Property2"));
-                ordering.Add(new OrderBy("Property3"));
+                ordering.Add(new OrderBy(nameof(TestClass.Property1)));
+                ordering.Add(new OrderBy(nameof(TestClass.Property2)));
+                ordering.Add(new OrderBy(nameof(TestClass.Property3)));
 
                 // Assert
-                Assert.Equal("Property1", ordering[0].PropertyName);
-                Assert.Equal("Property2", ordering[1].PropertyName);
-                Assert.Equal("Property3", ordering[2].PropertyName);
+                Assert.Equal(nameof(TestClass.Property1), ordering[0].PropertyName);
+                Assert.Equal(nameof(TestClass.Property2), ordering[1].PropertyName);
+                Assert.Equal(nameof(TestClass.Property3), ordering[2].PropertyName);
             }
 
             [Fact]
@@ -48,12 +48,12 @@ namespace Scaffold.Application.UnitTests.Models
                 Ordering<TestClass> ordering = new Ordering<TestClass>();
 
                 // Act
-                ordering.Add(new OrderBy("Property4"));
-                ordering.Add(new OrderBy("Property5"));
+                ordering.Add(new OrderBy(nameof(TestClass.Property4)));
+                ordering.Add(new OrderBy(nameof(TestClass.Property5)));
 
                 // Assert
-                Assert.Equal("Property4", ordering[0].PropertyName);
-                Assert.Equal("Property5", ordering[1].PropertyName);
+                Assert.Equal(nameof(TestClass.Property4), ordering[0].PropertyName);
+                Assert.Equal(nameof(TestClass.Property5), ordering[1].PropertyName);
             }
 
             [Fact]
@@ -63,7 +63,7 @@ namespace Scaffold.Application.UnitTests.Models
                 Ordering<TestClass> ordering = new Ordering<TestClass>();
 
                 // Act
-                Exception exception = Record.Exception(() => ordering.Add(new OrderBy("Property6")));
+                Exception exception = Record.Exception(() => ordering.Add(new OrderBy(nameof(TestClass.Property6))));
 
                 // Assert
                 Assert.NotNull(exception);
@@ -79,9 +79,9 @@ namespace Scaffold.Application.UnitTests.Models
                 // Arrange
                 Ordering<TestClass> ordering = new Ordering<TestClass>
                 {
-                    new OrderBy("Property1"),
-                    new OrderBy("Property2"),
-                    new OrderBy("Property3"),
+                    new OrderBy(nameof(TestClass.Property1)),
+                    new OrderBy(nameof(TestClass.Property2)),
+                    new OrderBy(nameof(TestClass.Property3)),
                 };
 
                 // Act
@@ -99,7 +99,7 @@ namespace Scaffold.Application.UnitTests.Models
             {
                 // Arrange
                 Ordering<TestClass> ordering = new Ordering<TestClass>();
-                OrderBy orderby = new OrderBy("Property1");
+                OrderBy orderby = new OrderBy(nameof(TestClass.Property1));
                 ordering.Add(orderby);
 
                 // Act
@@ -114,7 +114,7 @@ namespace Scaffold.Application.UnitTests.Models
             {
                 // Arrange
                 Ordering<TestClass> ordering = new Ordering<TestClass>();
-                OrderBy orderby = new OrderBy("Property1");
+                OrderBy orderby = new OrderBy(nameof(TestClass.Property1));
 
                 // Act
                 bool result = ordering.Contains(orderby);
@@ -130,9 +130,9 @@ namespace Scaffold.Application.UnitTests.Models
             public void When_CopyingToArray_Expect_CopiedToArray()
             {
                 // Arrange
-                OrderBy orderBy1 = new OrderBy("Property1");
-                OrderBy orderBy2 = new OrderBy("Property2");
-                OrderBy orderBy3 = new OrderBy("Property3");
+                OrderBy orderBy1 = new OrderBy(nameof(TestClass.Property1));
+                OrderBy orderBy2 = new OrderBy(nameof(TestClass.Property2));
+                OrderBy orderBy3 = new OrderBy(nameof(TestClass.Property3));
 
                 Ordering<TestClass> ordering = new Ordering<TestClass>
                 {
@@ -163,9 +163,9 @@ namespace Scaffold.Application.UnitTests.Models
                 // Arrange
                 Ordering<TestClass> ordering = new Ordering<TestClass>
                 {
-                    new OrderBy("Property1"),
-                    new OrderBy("Property2"),
-                    new OrderBy("Property3"),
+                    new OrderBy(nameof(TestClass.Property1)),
+                    new OrderBy(nameof(TestClass.Property2)),
+                    new OrderBy(nameof(TestClass.Property3)),
                 };
 
                 // Act
@@ -198,9 +198,9 @@ namespace Scaffold.Application.UnitTests.Models
             public void When_GettingOrderByAtIndex_Expect_OrderByAtIndex()
             {
                 // Arrange
-                OrderBy orderBy1 = new OrderBy("Property1");
-                OrderBy orderBy2 = new OrderBy("Property2");
-                OrderBy orderBy3 = new OrderBy("Property3");
+                OrderBy orderBy1 = new OrderBy(nameof(TestClass.Property1));
+                OrderBy orderBy2 = new OrderBy(nameof(TestClass.Property2));
+                OrderBy orderBy3 = new OrderBy(nameof(TestClass.Property3));
 
                 Ordering<TestClass> ordering = new Ordering<TestClass>
                 {
@@ -222,19 +222,19 @@ namespace Scaffold.Application.UnitTests.Models
                 // Arrange
                 Ordering<TestClass> ordering = new Ordering<TestClass>
                 {
-                    new OrderBy("Property1"),
-                    new OrderBy("Property2"),
+                    new OrderBy(nameof(TestClass.Property1)),
+                    new OrderBy(nameof(TestClass.Property2)),
                 };
 
-                OrderBy orderBy = new OrderBy("Property3");
+                OrderBy orderBy = new OrderBy(nameof(TestClass.Property3));
 
                 // Act
                 ordering[1] = orderBy;
 
                 // Assert
                 Assert.Equal(orderBy, ordering[1]);
-                Assert.Equal("Property1", ordering[0].PropertyName);
-                Assert.Equal("Property3", ordering[1].PropertyName);
+                Assert.Equal(nameof(TestClass.Property1), ordering[0].PropertyName);
+                Assert.Equal(nameof(TestClass.Property3), ordering[1].PropertyName);
             }
 
             [Fact]
@@ -257,12 +257,12 @@ namespace Scaffold.Application.UnitTests.Models
                 // Arrange
                 Ordering<TestClass> ordering = new Ordering<TestClass>
                 {
-                    new OrderBy("Property1"),
-                    new OrderBy("Property2"),
+                    new OrderBy(nameof(TestClass.Property1)),
+                    new OrderBy(nameof(TestClass.Property2)),
                 };
 
-                OrderBy orderBy1 = new OrderBy("Property4");
-                OrderBy orderBy2 = new OrderBy("Property5");
+                OrderBy orderBy1 = new OrderBy(nameof(TestClass.Property4));
+                OrderBy orderBy2 = new OrderBy(nameof(TestClass.Property5));
 
                 // Act
                 ordering[0] = orderBy1;
@@ -271,8 +271,8 @@ namespace Scaffold.Application.UnitTests.Models
                 // Assert
                 Assert.Equal(orderBy1, ordering[0]);
                 Assert.Equal(orderBy2, ordering[1]);
-                Assert.Equal("Property4", ordering[0].PropertyName);
-                Assert.Equal("Property5", ordering[1].PropertyName);
+                Assert.Equal(nameof(TestClass.Property4), ordering[0].PropertyName);
+                Assert.Equal(nameof(TestClass.Property5), ordering[1].PropertyName);
             }
 
             [Fact]
@@ -282,7 +282,7 @@ namespace Scaffold.Application.UnitTests.Models
                 Ordering<TestClass> ordering = new Ordering<TestClass>();
 
                 // Act
-                Exception exception = Record.Exception(() => ordering[0] = new OrderBy("Property6"));
+                Exception exception = Record.Exception(() => ordering[0] = new OrderBy(nameof(TestClass.Property6)));
 
                 // Assert
                 Assert.NotNull(exception);
@@ -296,9 +296,9 @@ namespace Scaffold.Application.UnitTests.Models
             public void When_GettingIndexOfOrderBy_Expect_Index()
             {
                 // Arrange
-                OrderBy orderBy1 = new OrderBy("Property1");
-                OrderBy orderBy2 = new OrderBy("Property2");
-                OrderBy orderBy3 = new OrderBy("Property3");
+                OrderBy orderBy1 = new OrderBy(nameof(TestClass.Property1));
+                OrderBy orderBy2 = new OrderBy(nameof(TestClass.Property2));
+                OrderBy orderBy3 = new OrderBy(nameof(TestClass.Property3));
 
                 Ordering<TestClass> ordering = new Ordering<TestClass>
                 {
@@ -323,17 +323,17 @@ namespace Scaffold.Application.UnitTests.Models
                 // Arrange
                 Ordering<TestClass> ordering = new Ordering<TestClass>
                 {
-                    new OrderBy("Property1"),
-                    new OrderBy("Property3"),
+                    new OrderBy(nameof(TestClass.Property1)),
+                    new OrderBy(nameof(TestClass.Property3)),
                 };
 
                 // Act
-                ordering.Insert(1, new OrderBy("Property2"));
+                ordering.Insert(1, new OrderBy(nameof(TestClass.Property2)));
 
                 // Assert
-                Assert.Equal("Property1", ordering[0].PropertyName);
-                Assert.Equal("Property2", ordering[1].PropertyName);
-                Assert.Equal("Property3", ordering[2].PropertyName);
+                Assert.Equal(nameof(TestClass.Property1), ordering[0].PropertyName);
+                Assert.Equal(nameof(TestClass.Property2), ordering[1].PropertyName);
+                Assert.Equal(nameof(TestClass.Property3), ordering[2].PropertyName);
             }
 
             [Fact]
@@ -356,19 +356,19 @@ namespace Scaffold.Application.UnitTests.Models
                 // Arrange
                 Ordering<TestClass> ordering = new Ordering<TestClass>
                 {
-                    new OrderBy("Property1"),
-                    new OrderBy("Property3"),
+                    new OrderBy(nameof(TestClass.Property1)),
+                    new OrderBy(nameof(TestClass.Property3)),
                 };
 
                 // Act
-                ordering.Insert(1, new OrderBy("Property4"));
-                ordering.Insert(2, new OrderBy("Property5"));
+                ordering.Insert(1, new OrderBy(nameof(TestClass.Property4)));
+                ordering.Insert(2, new OrderBy(nameof(TestClass.Property5)));
 
                 // Assert
-                Assert.Equal("Property1", ordering[0].PropertyName);
-                Assert.Equal("Property4", ordering[1].PropertyName);
-                Assert.Equal("Property5", ordering[2].PropertyName);
-                Assert.Equal("Property3", ordering[3].PropertyName);
+                Assert.Equal(nameof(TestClass.Property1), ordering[0].PropertyName);
+                Assert.Equal(nameof(TestClass.Property4), ordering[1].PropertyName);
+                Assert.Equal(nameof(TestClass.Property5), ordering[2].PropertyName);
+                Assert.Equal(nameof(TestClass.Property3), ordering[3].PropertyName);
             }
 
             [Fact]
@@ -378,7 +378,7 @@ namespace Scaffold.Application.UnitTests.Models
                 Ordering<TestClass> ordering = new Ordering<TestClass>();
 
                 // Act
-                Exception exception = Record.Exception(() => ordering.Insert(0, new OrderBy("Property6")));
+                Exception exception = Record.Exception(() => ordering.Insert(0, new OrderBy(nameof(TestClass.Property6))));
 
                 // Assert
                 Assert.NotNull(exception);
@@ -408,9 +408,9 @@ namespace Scaffold.Application.UnitTests.Models
             public void When_RemovingOrderBy_Expect_OrderByRemoved()
             {
                 // Arrange
-                OrderBy orderBy1 = new OrderBy("Property1");
-                OrderBy orderBy2 = new OrderBy("Property2");
-                OrderBy orderBy3 = new OrderBy("Property3");
+                OrderBy orderBy1 = new OrderBy(nameof(TestClass.Property1));
+                OrderBy orderBy2 = new OrderBy(nameof(TestClass.Property2));
+                OrderBy orderBy3 = new OrderBy(nameof(TestClass.Property3));
 
                 Ordering<TestClass> ordering = new Ordering<TestClass>
                 {
@@ -436,9 +436,9 @@ namespace Scaffold.Application.UnitTests.Models
             public void When_RemovingOrderByAtIndex_Expect_OrderByRemovedAtIndex()
             {
                 // Arrange
-                OrderBy orderBy1 = new OrderBy("Property1");
-                OrderBy orderBy2 = new OrderBy("Property2");
-                OrderBy orderBy3 = new OrderBy("Property3");
+                OrderBy orderBy1 = new OrderBy(nameof(TestClass.Property1));
+                OrderBy orderBy2 = new OrderBy(nameof(TestClass.Property2));
+                OrderBy orderBy3 = new OrderBy(nameof(TestClass.Property3));
 
                 Ordering<TestClass> ordering = new Ordering<TestClass>
                 {
@@ -460,22 +460,22 @@ namespace Scaffold.Application.UnitTests.Models
 
         private class TestClass
         {
-            public int Property1 { get; set; }
+            public int Property1 { get; set; } = 0;
 
-            public string Property2 { get; set; }
+            public string Property2 { get; set; } = string.Empty;
 
-            public string Property3 { get; set; }
+            public string Property3 { get; set; } = string.Empty;
 
-            public ComparableProperty1 Property4 { get; set; }
+            public ComparableProperty1 Property4 { get; set; } = new ComparableProperty1();
 
-            public ComparableProperty2 Property5 { get; set; }
+            public ComparableProperty2 Property5 { get; set; } = new ComparableProperty2();
 
-            public NonComparableProperty Property6 { get; set; }
+            public NonComparableProperty Property6 { get; set; } = new NonComparableProperty();
         }
 
         private class ComparableProperty1 : IComparable<ComparableProperty1>
         {
-            public int Value { get; set; }
+            public int Value { get; set; } = 0;
 
             public int CompareTo(ComparableProperty1 other)
             {
@@ -485,7 +485,7 @@ namespace Scaffold.Application.UnitTests.Models
 
         private class ComparableProperty2 : IComparable
         {
-            public int Value { get; set; }
+            public int Value { get; set; } = 0;
 
             public int CompareTo(object obj)
             {
@@ -500,7 +500,6 @@ namespace Scaffold.Application.UnitTests.Models
 
         private class NonComparableProperty
         {
-            public int Value { get; set; }
         }
     }
 }

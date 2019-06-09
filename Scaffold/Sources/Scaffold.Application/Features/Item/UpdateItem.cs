@@ -54,14 +54,14 @@ namespace Scaffold.Application.Features.Item
 
             public Handler(IBucketRepository repository) => this.repository = repository;
 
-            public async Task<Response> Handle(Command command, CancellationToken cancellationToken)
+            public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
             {
-                await new Validator().ValidateAndThrowAsync(command);
+                await new Validator().ValidateAndThrowAsync(request);
 
-                Bucket bucket = await this.repository.GetAsync(command.BucketId) ??
-                    throw new BucketNotFoundException(command.BucketId);
+                Bucket bucket = await this.repository.GetAsync(request.BucketId) ??
+                    throw new BucketNotFoundException(request.BucketId);
 
-                Response response = new Response { Item = bucket.Items.SingleOrDefault(x => x.Id == command.ItemId) };
+                Response response = new Response { Item = bucket.Items.SingleOrDefault(x => x.Id == request.ItemId) };
 
                 try
                 {
@@ -69,7 +69,7 @@ namespace Scaffold.Application.Features.Item
 
                     if (response.Item == null)
                     {
-                        response.Item = configuration.CreateMapper().Map<Item>(command);
+                        response.Item = configuration.CreateMapper().Map<Item>(request);
                         bucket.AddItem(response.Item);
                         await this.repository.UpdateAsync(bucket);
                         response.Created = true;
@@ -77,7 +77,7 @@ namespace Scaffold.Application.Features.Item
                         return response;
                     }
 
-                    response.Item = configuration.CreateMapper().Map<Command, Item>(command, response.Item);
+                    response.Item = configuration.CreateMapper().Map<Command, Item>(request, response.Item);
                     await this.repository.UpdateAsync(bucket);
 
                     return response;

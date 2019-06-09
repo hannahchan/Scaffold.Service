@@ -1,14 +1,19 @@
 namespace Scaffold.Domain.Exceptions
 {
+    using System;
+    using System.Runtime.Serialization;
+
+    [Serializable]
     public class BucketFullException : DomainException
     {
         public BucketFullException(string message)
-            : base(message)
+            : base("Bucket Full", message)
         {
         }
 
-        public override string Detail => this.Message;
-
-        public override string Title => "Bucket Full";
+        protected BucketFullException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
     }
 }

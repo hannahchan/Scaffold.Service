@@ -1,14 +1,19 @@
 namespace Scaffold.Application.Exceptions
 {
+    using System;
+    using System.Runtime.Serialization;
+
+    [Serializable]
     public class PropertyNotComparableException : OrderingException
     {
         public PropertyNotComparableException(string propertyName)
-            : base($"\"{propertyName}\" is not a comparable property.")
+            : base("Property Not Comparable", $"\"{propertyName}\" is not a comparable property.")
         {
         }
 
-        public override string Detail => this.Message;
-
-        public override string Title => "Property Not Comparable";
+        protected PropertyNotComparableException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
     }
 }

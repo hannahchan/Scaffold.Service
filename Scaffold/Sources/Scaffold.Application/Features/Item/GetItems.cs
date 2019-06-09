@@ -27,10 +27,10 @@ namespace Scaffold.Application.Features.Item
 
             public Handler(IBucketReadRepository repository) => this.repository = repository;
 
-            public async Task<Response> Handle(Query query, CancellationToken cancellationToken)
+            public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                Bucket bucket = await this.repository.GetAsync(query.BucketId) ??
-                    throw new BucketNotFoundException(query.BucketId);
+                Bucket bucket = await this.repository.GetAsync(request.BucketId) ??
+                    throw new BucketNotFoundException(request.BucketId);
 
                 return new Response { Items = bucket.Items.ToList() };
             }

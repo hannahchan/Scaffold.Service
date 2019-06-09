@@ -1,14 +1,19 @@
 namespace Scaffold.Application.Exceptions
 {
+    using System;
+    using System.Runtime.Serialization;
+
+    [Serializable]
     public class PropertyNotFoundException : OrderingException
     {
         public PropertyNotFoundException(string propertyName, string type)
-            : base($"\"{propertyName}\" is not a property of \"{type}\".")
+            : base("Property Not Found", $"\"{propertyName}\" is not a property of \"{type}\".")
         {
         }
 
-        public override string Detail => this.Message;
-
-        public override string Title => "Property Not Found";
+        protected PropertyNotFoundException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
     }
 }

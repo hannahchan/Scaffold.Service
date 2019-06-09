@@ -52,11 +52,11 @@ namespace Scaffold.Application.Features.Bucket
 
             public Handler(IBucketRepository repository) => this.repository = repository;
 
-            public async Task<Response> Handle(Command command, CancellationToken cancellationToken)
+            public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
             {
-                await new Validator().ValidateAndThrowAsync(command);
+                await new Validator().ValidateAndThrowAsync(request);
 
-                Response response = new Response { Bucket = await this.repository.GetAsync(command.Id) };
+                Response response = new Response { Bucket = await this.repository.GetAsync(request.Id) };
 
                 try
                 {
@@ -64,14 +64,14 @@ namespace Scaffold.Application.Features.Bucket
 
                     if (response.Bucket == null)
                     {
-                        response.Bucket = configuration.CreateMapper().Map<Bucket>(command);
+                        response.Bucket = configuration.CreateMapper().Map<Bucket>(request);
                         await this.repository.AddAsync(response.Bucket);
                         response.Created = true;
 
                         return response;
                     }
 
-                    response.Bucket = configuration.CreateMapper().Map<Command, Bucket>(command, response.Bucket);
+                    response.Bucket = configuration.CreateMapper().Map<Command, Bucket>(request, response.Bucket);
                     await this.repository.UpdateAsync(response.Bucket);
 
                     return response;

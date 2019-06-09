@@ -19,9 +19,9 @@ namespace Scaffold.Application.Features.Bucket
 
             public Handler(IBucketRepository repository) => this.repository = repository;
 
-            public async Task<Unit> Handle(Command command, CancellationToken cancellationToken)
+            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                Bucket bucket = await this.repository.GetAsync(command.Id);
+                Bucket bucket = await this.repository.GetAsync(request.Id);
 
                 if (bucket != null)
                 {

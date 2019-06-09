@@ -22,10 +22,10 @@ namespace Scaffold.Application.Features.Item
 
             public Handler(IBucketRepository repository) => this.repository = repository;
 
-            public async Task<Unit> Handle(Command command, CancellationToken cancellationToken)
+            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                Bucket bucket = await this.repository.GetAsync(command.BucketId);
-                Item item = bucket?.Items.SingleOrDefault(x => x.Id == command.ItemId);
+                Bucket bucket = await this.repository.GetAsync(request.BucketId);
+                Item item = bucket?.Items.SingleOrDefault(x => x.Id == request.ItemId);
 
                 if (item != null)
                 {

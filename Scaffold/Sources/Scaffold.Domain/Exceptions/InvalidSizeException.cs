@@ -1,14 +1,19 @@
 namespace Scaffold.Domain.Exceptions
 {
+    using System;
+    using System.Runtime.Serialization;
+
+    [Serializable]
     public class InvalidSizeException : DomainException
     {
         public InvalidSizeException(string message)
-            : base(message)
+            : base("Invalid Size", message)
         {
         }
 
-        public override string Detail => this.Message;
-
-        public override string Title => "Invalid Size";
+        protected InvalidSizeException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
     }
 }
