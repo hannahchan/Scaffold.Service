@@ -22,6 +22,7 @@ namespace Scaffold.Domain.UnitTests.Exception
             // Assert
             Assert.Equal(message, exception.Detail);
             Assert.Equal(message, exception.Message);
+            Assert.NotEmpty(exception.Title);
         }
 
         [Fact]
@@ -39,6 +40,7 @@ namespace Scaffold.Domain.UnitTests.Exception
             // Assert
             Assert.Equal(message, exception.Detail);
             Assert.Equal(message, exception.Message);
+            Assert.NotEmpty(exception.Title);
             Assert.Equal(innerException, exception.InnerException);
         }
 
