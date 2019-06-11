@@ -29,15 +29,14 @@ namespace Scaffold.Data.Repositories
             this.context.SaveChanges();
         }
 
-        public async Task AddAsync(Bucket bucket)
+        public Task AddAsync(Bucket bucket)
         {
             if (bucket == null)
             {
                 throw new ArgumentNullException(nameof(bucket));
             }
 
-            this.context.Set<Bucket>().Add(bucket);
-            await this.context.SaveChangesAsync();
+            return this.AddAsyncInternal(bucket);
         }
 
         public Bucket Get(int id) =>
@@ -73,15 +72,14 @@ namespace Scaffold.Data.Repositories
             this.context.SaveChanges();
         }
 
-        public async Task RemoveAsync(Bucket bucket)
+        public Task RemoveAsync(Bucket bucket)
         {
             if (bucket == null)
             {
                 throw new ArgumentNullException(nameof(bucket));
             }
 
-            this.context.Set<Bucket>().Remove(bucket);
-            await this.context.SaveChangesAsync();
+            return this.RemoveAsyncInternal(bucket);
         }
 
         public void Update(Bucket bucket)
@@ -95,14 +93,19 @@ namespace Scaffold.Data.Repositories
             this.context.SaveChanges();
         }
 
-        public async Task UpdateAsync(Bucket bucket)
+        public Task UpdateAsync(Bucket bucket)
         {
             if (bucket == null)
             {
                 throw new ArgumentNullException(nameof(bucket));
             }
 
-            this.context.Set<Bucket>().Update(bucket);
+            return this.UpdateAsyncInternal(bucket);
+        }
+
+        private async Task AddAsyncInternal(Bucket bucket)
+        {
+            this.context.Set<Bucket>().Add(bucket);
             await this.context.SaveChangesAsync();
         }
 
@@ -156,6 +159,18 @@ namespace Scaffold.Data.Repositories
             }
 
             return query;
+        }
+
+        private async Task RemoveAsyncInternal(Bucket bucket)
+        {
+            this.context.Set<Bucket>().Remove(bucket);
+            await this.context.SaveChangesAsync();
+        }
+
+        private async Task UpdateAsyncInternal(Bucket bucket)
+        {
+            this.context.Set<Bucket>().Update(bucket);
+            await this.context.SaveChangesAsync();
         }
     }
 }
