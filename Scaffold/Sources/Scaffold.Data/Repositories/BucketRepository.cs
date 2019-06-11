@@ -45,7 +45,7 @@ namespace Scaffold.Data.Repositories
                 .Include(bucket => bucket.Items)
                 .SingleOrDefault();
 
-        public IList<Bucket> Get(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket> ordering = null) =>
+        public List<Bucket> Get(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket> ordering = null) =>
             this.BuildQuery(predicate, limit, offset, ordering)
                 .Include(bucket => bucket.Items)
                 .ToList();
@@ -56,8 +56,8 @@ namespace Scaffold.Data.Repositories
                 .Include(bucket => bucket.Items)
                 .SingleOrDefaultAsync();
 
-        public async Task<IList<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket> ordering = null) =>
-            await this.BuildQuery(predicate, limit, offset, ordering)
+        public Task<List<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket> ordering = null) =>
+            this.BuildQuery(predicate, limit, offset, ordering)
                 .Include(bucket => bucket.Items)
                 .ToListAsync();
 

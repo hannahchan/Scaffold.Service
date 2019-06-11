@@ -14,6 +14,8 @@ namespace Scaffold.WebApi.Views.MappingProfiles
             this.CreateMap<Item, UpdateItem.Command>()
                 .ForMember(dest => dest.BucketId, opt => opt.Ignore())
                 .ForMember(dest => dest.ItemId, opt => opt.Ignore());
+
+            this.CreateMap<Scaffold.Domain.Entities.Item, Item>();
         }
     }
 }
