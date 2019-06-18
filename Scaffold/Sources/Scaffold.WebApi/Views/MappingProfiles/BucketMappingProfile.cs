@@ -11,7 +11,7 @@ namespace Scaffold.WebApi.Views.MappingProfiles
             this.CreateMap<Bucket, AddBucket.Command>();
             this.CreateMap<Bucket, UpdateBucket.Command>();
 
-            this.CreateMap<Scaffold.Domain.Entities.Bucket, Bucket>();
+            this.CreateMap<Domain.Entities.Bucket, Bucket>();
         }
     }
 }

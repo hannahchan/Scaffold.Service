@@ -30,9 +30,9 @@
         /// <response code="201">Bucket created successfully.</response>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Bucket))]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Bucket>> Post([FromBody] Bucket bucket)
+        public async Task<ActionResult> Post([FromBody] Bucket bucket)
         {
             AddBucket.Command command = this.mapper.Map<AddBucket.Command>(bucket);
             AddBucket.Response response = await this.mediator.Send(command);
@@ -51,7 +51,7 @@
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<IList<Bucket>>> Get([FromQuery]int? limit, [FromQuery]int? offset)
+        public async Task<IList<Bucket>> Get([FromQuery]int? limit, [FromQuery]int? offset)
         {
             GetBuckets.Query query = new GetBuckets.Query { Limit = limit ?? 10, Offset = offset };
             GetBuckets.Response response = await this.mediator.Send(query);
@@ -67,7 +67,7 @@
         [HttpGet("{bucketId}", Name = "GetBucket")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Bucket>> Get(int bucketId)
+        public async Task<Bucket> Get(int bucketId)
         {
             GetBucket.Query query = new GetBucket.Query { Id = bucketId };
             GetBucket.Response response = await this.mediator.Send(query);
@@ -89,7 +89,7 @@
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpPut("{bucketId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Bucket))]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<Bucket>> Put(int bucketId, [FromBody] Bucket bucket)
         {

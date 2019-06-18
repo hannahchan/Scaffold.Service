@@ -31,9 +31,9 @@
         /// <response code="201">Item created successfully.</response>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Item))]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Item>> Post(int bucketId, [FromBody] Item item)
+        public async Task<ActionResult> Post(int bucketId, [FromBody] Item item)
         {
             AddItem.Command command = this.mapper.Map<AddItem.Command>(item);
             command.BucketId = bucketId;
@@ -52,7 +52,7 @@
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<IList<Item>>> Get(int bucketId)
+        public async Task<IList<Item>> Get(int bucketId)
         {
             GetItems.Query query = new GetItems.Query { BucketId = bucketId };
             GetItems.Response response = await this.mediator.Send(query);
@@ -69,7 +69,7 @@
         [HttpGet("{itemId}", Name = "GetItem")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Item>> Get(int bucketId, int itemId)
+        public async Task<Item> Get(int bucketId, int itemId)
         {
             GetItem.Query query = new GetItem.Query { BucketId = bucketId, ItemId = itemId };
             GetItem.Response response = await this.mediator.Send(query);
@@ -92,7 +92,7 @@
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpPut("{itemId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Item))]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<Item>> Put(int bucketId, int itemId, [FromBody] Item item)
         {
@@ -115,7 +115,7 @@
         /// <param name="bucketId">The Id. of the Bucket object to delete the item from.</param>
         /// <param name="itemId">The Id. of the Item object to be deleted.</param>
         /// <returns>A "No Content (204)" HTTP status response.</returns>
-        /// <response code="204">Item deleted successfully or did not exist.</response>
+        /// <response code="204">Item deleted successfully or item did not exist.</response>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpDelete("{itemId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
