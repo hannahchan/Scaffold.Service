@@ -1,7 +1,6 @@
 namespace Scaffold.WebApi.Middleware
 {
     using System;
-    using System.Collections;
     using System.Diagnostics;
     using System.Linq;
     using System.Net;
@@ -48,7 +47,7 @@ namespace Scaffold.WebApi.Middleware
                     {
                         LogLevel logLevel = LogLevel.Information;
 
-                        if (response.StatusCode < 200 && response.StatusCode > 299)
+                        if (response.StatusCode < 200 || response.StatusCode > 299)
                         {
                             logLevel = LogLevel.Warning;
                         }
