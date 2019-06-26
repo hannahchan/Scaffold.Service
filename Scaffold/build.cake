@@ -67,7 +67,9 @@ Task("Test")
 
         List<String> exclude = new List<string>()
         {
-            $"[Scaffold.Data]Scaffold.Data.Migrations.*"
+            $"[Scaffold.Data]Scaffold.Data.Migrations.*",
+            $"[Scaffold.WebApi]Scaffold.WebApi.Program",
+            $"[Scaffold.WebApi]Scaffold.WebApi.Startup*"
         };
 
         string testArtifacts = $"{artifacts}/Test";
