@@ -25,6 +25,7 @@
 
             services
                 .AddDbContext(this.Configuration)
+                .AddHttpClients()
                 .AddOptions(this.Configuration)
                 .AddRepositories()
                 .AddServices()

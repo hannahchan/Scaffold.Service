@@ -15,6 +15,8 @@ namespace Scaffold.WebApi.Middleware
 
     public class RequestLoggingMiddleware
     {
+        private const string MessageTemplate = "Inbound HTTP {Method} {Path} responded with {StatusCode} in {ElapsedMilliseconds}ms";
+
         private readonly RequestDelegate next;
 
         private readonly IHostingEnvironment env;
@@ -43,7 +45,7 @@ namespace Scaffold.WebApi.Middleware
                     await this.next.Invoke(httpContext);
                     stopwatch.Stop();
 
-                    using (LogContext.Push(new HttpContextEnricher(httpContext, stopwatch.ElapsedMilliseconds)))
+                    using (LogContext.Push(new HttpContextEnricher(httpContext)))
                     {
                         LogLevel logLevel = LogLevel.Information;
 
@@ -57,16 +59,28 @@ namespace Scaffold.WebApi.Middleware
                             logLevel = LogLevel.Error;
                         }
 
-                        this.logger.Log(logLevel, $"HTTP {request.Method} {request.Path} responded with {response.StatusCode} in {stopwatch.ElapsedMilliseconds} ms");
+                        this.logger.Log(
+                            logLevel,
+                            MessageTemplate,
+                            request.Method,
+                            request.Path,
+                            response.StatusCode,
+                            stopwatch.ElapsedMilliseconds);
                     }
                 }
                 catch (Exception exception)
                 {
                     stopwatch.Stop();
 
-                    using (LogContext.Push(new HttpContextEnricher(httpContext, stopwatch.ElapsedMilliseconds)))
+                    using (LogContext.Push(new HttpContextEnricher(httpContext)))
                     {
-                        this.logger.LogCritical(exception, $"HTTP {request.Method} {request.Path} responded with {response.StatusCode} in {stopwatch.ElapsedMilliseconds} ms");
+                        this.logger.LogCritical(
+                            exception,
+                            MessageTemplate,
+                            request.Method,
+                            request.Path,
+                            response.StatusCode,
+                            stopwatch.ElapsedMilliseconds);
                     }
 
                     response.ContentType = "text/plain";
@@ -118,13 +132,7 @@ namespace Scaffold.WebApi.Middleware
         {
             private readonly HttpContext httpContext;
 
-            private readonly long? elapsedMilliseconds;
-
-            public HttpContextEnricher(HttpContext httpContext, long? elapsedMilliseconds = null)
-            {
-                this.httpContext = httpContext;
-                this.elapsedMilliseconds = elapsedMilliseconds;
-            }
+            public HttpContextEnricher(HttpContext httpContext) => this.httpContext = httpContext;
 
             public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
             {
@@ -148,14 +156,6 @@ namespace Scaffold.WebApi.Middleware
                 };
 
                 logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("HttpRequest", httpRequest, true));
-
-                object httpResponse = new
-                {
-                    this.httpContext.Response.StatusCode,
-                    ElapsedMilliseconds = this.elapsedMilliseconds,
-                };
-
-                logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("HttpResponse", httpResponse, true));
             }
         }
     }

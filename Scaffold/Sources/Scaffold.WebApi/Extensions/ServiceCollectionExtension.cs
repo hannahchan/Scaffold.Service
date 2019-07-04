@@ -15,6 +15,7 @@ namespace Scaffold.WebApi.Extensions
     using Scaffold.Application.Interfaces;
     using Scaffold.Data;
     using Scaffold.Data.Repositories;
+    using Scaffold.WebApi.HttpMessageHandlers;
     using Scaffold.WebApi.Services;
 
     public static class ServiceCollectionExtension
@@ -44,6 +45,16 @@ namespace Scaffold.WebApi.Extensions
         {
             services.AddDbContext<BucketContext>(builder =>
                 builder.UseNpgsql(config.GetValue<string>("ConnectionStrings:DefaultConnection")));
+
+            return services;
+        }
+
+        public static IServiceCollection AddHttpClients(this IServiceCollection services)
+        {
+            services.AddTransient<RequestLoggingHttpMessageHandler>();
+
+            services.AddHttpClient("ExampleClient")
+                .AddHttpMessageHandler<RequestLoggingHttpMessageHandler>();
 
             return services;
         }
