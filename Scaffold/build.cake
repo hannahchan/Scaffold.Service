@@ -22,15 +22,6 @@ string solution = "./Scaffold.WebApi.sln";
 Task("Clean")
     .Does(() =>
     {
-        if (DirectoryExists(artifacts))
-        {
-            DeleteDirectory(artifacts, new DeleteDirectorySettings
-            {
-                Force = true,
-                Recursive = true
-            });
-        }
-
         DotNetCoreClean(solution, new DotNetCoreCleanSettings
         {
             Configuration = configuration
@@ -59,6 +50,18 @@ Task("Test")
     .IsDependentOn("Build")
     .Does(() =>
     {
+        string testArtifacts = $"{artifacts}/Test";
+
+        if (DirectoryExists($"{testArtifacts}/CoverageReport"))
+        {
+            DeleteDirectory($"{testArtifacts}/CoverageReport", new DeleteDirectorySettings { Force = true, Recursive = true });
+        }
+
+        if (DirectoryExists($"{testArtifacts}/OpenCover"))
+        {
+            DeleteDirectory($"{testArtifacts}/OpenCover", new DeleteDirectorySettings { Force = true, Recursive = true });
+        }
+
         DotNetCoreTestSettings testSettings = new DotNetCoreTestSettings
         {
             Configuration = configuration,
@@ -71,8 +74,6 @@ Task("Test")
             $"[Scaffold.WebApi]Scaffold.WebApi.Program",
             $"[Scaffold.WebApi]Scaffold.WebApi.Startup*"
         };
-
-        string testArtifacts = $"{artifacts}/Test";
 
         foreach (FilePath filePath in GetFiles("./Tests/**/*.UnitTests.csproj"))
         {
@@ -91,18 +92,30 @@ Task("Test")
             DotNetCoreTest(filePath, testSettings, coverletSettings);
         };
 
-        ReportGenerator($"{testArtifacts}/OpenCover/*.xml", $"{testArtifacts}/CoverageReport");
+        ReportGeneratorSettings reportGeneratorSettings = new ReportGeneratorSettings
+        {
+            HistoryDirectory = $"{testArtifacts}/CoverageHistory"
+        };
+
+        ReportGenerator($"{testArtifacts}/OpenCover/*.xml", $"{testArtifacts}/CoverageReport", reportGeneratorSettings);
     });
 
 Task("Publish")
     .IsDependentOn("Test")
     .Does(() =>
     {
+        string buildArtifacts = $"{artifacts}/Build";
+
+        if (DirectoryExists(buildArtifacts))
+        {
+            DeleteDirectory(buildArtifacts, new DeleteDirectorySettings { Force = true, Recursive = true });
+        }
+
         DotNetCorePublishSettings settings = new DotNetCorePublishSettings
         {
             Configuration = configuration,
             NoBuild = true,
-            OutputDirectory = $"{artifacts}/Build/Scaffold.WebApi"
+            OutputDirectory = $"{buildArtifacts}/Scaffold.WebApi"
         };
 
         DotNetCorePublish("./Sources/Scaffold.WebApi", settings);
