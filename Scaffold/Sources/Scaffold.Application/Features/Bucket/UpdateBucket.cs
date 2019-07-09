@@ -5,12 +5,11 @@ namespace Scaffold.Application.Features.Bucket
     using AutoMapper;
     using FluentValidation;
     using MediatR;
-    using Scaffold.Application.Exceptions;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Entities;
     using Scaffold.Domain.Exceptions;
 
-    public class UpdateBucket
+    public static class UpdateBucket
     {
         public class Command : IRequest<Response>
         {
@@ -88,7 +87,7 @@ namespace Scaffold.Application.Features.Bucket
             public MappingProfile()
             {
                 this.CreateMap<Command, Bucket>()
-                    .AddTransform<string>(value => value == string.Empty ? null : value);
+                    .AddTransform<string>(value => string.IsNullOrEmpty(value) ? null : value);
             }
         }
     }

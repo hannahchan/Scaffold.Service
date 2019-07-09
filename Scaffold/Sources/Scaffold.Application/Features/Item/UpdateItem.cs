@@ -11,7 +11,7 @@ namespace Scaffold.Application.Features.Item
     using Scaffold.Domain.Entities;
     using Scaffold.Domain.Exceptions;
 
-    public class UpdateItem
+    public static class UpdateItem
     {
         public class Command : IRequest<Response>
         {
@@ -94,7 +94,7 @@ namespace Scaffold.Application.Features.Item
             public MappingProfile()
             {
                 this.CreateMap<Command, Item>()
-                    .AddTransform<string>(value => value == string.Empty ? null : value)
+                    .AddTransform<string>(value => string.IsNullOrEmpty(value) ? null : value)
                     .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ItemId))
                     .ForMember(dest => dest.Bucket, opt => opt.Ignore());
             }

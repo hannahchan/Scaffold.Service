@@ -79,6 +79,9 @@ namespace Scaffold.Data.UnitTests.Repositories
                 Assert.NotNull(exception);
                 Assert.IsType<ArgumentNullException>(exception);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
+
+                // Clean up
+                context.Dispose();
             }
         }
 
@@ -122,6 +125,9 @@ namespace Scaffold.Data.UnitTests.Repositories
                 Assert.NotNull(exception);
                 Assert.IsType<ArgumentNullException>(exception);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
+
+                // Clean up
+                context.Dispose();
             }
         }
 
@@ -1684,6 +1690,9 @@ namespace Scaffold.Data.UnitTests.Repositories
                 Assert.NotNull(exception);
                 Assert.IsType<ArgumentNullException>(exception);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
+
+                // Clean up
+                context.Dispose();
             }
         }
 
@@ -1730,6 +1739,9 @@ namespace Scaffold.Data.UnitTests.Repositories
                 Assert.NotNull(exception);
                 Assert.IsType<ArgumentNullException>(exception);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
+
+                // Clean up
+                context.Dispose();
             }
         }
 
@@ -1784,6 +1796,9 @@ namespace Scaffold.Data.UnitTests.Repositories
                 Assert.NotNull(exception);
                 Assert.IsType<ArgumentNullException>(exception);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
+
+                // Clean up
+                context.Dispose();
             }
         }
 
@@ -1838,6 +1853,9 @@ namespace Scaffold.Data.UnitTests.Repositories
                 Assert.NotNull(exception);
                 Assert.IsType<ArgumentNullException>(exception);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
+
+                // Clean up
+                context.Dispose();
             }
         }
     }

@@ -10,7 +10,7 @@ namespace Scaffold.Application.Features.Bucket
     using Scaffold.Application.Models;
     using Scaffold.Domain.Entities;
 
-    public class GetBuckets
+    public static class GetBuckets
     {
         public class Query : IRequest<Response>
         {

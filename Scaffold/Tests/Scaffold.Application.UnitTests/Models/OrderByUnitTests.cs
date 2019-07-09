@@ -3,7 +3,7 @@ namespace Scaffold.Application.UnitTests.Models
     using Scaffold.Application.Models;
     using Xunit;
 
-    public class OrderByUnitTests
+    public static class OrderByUnitTests
     {
         public class Constructor
         {

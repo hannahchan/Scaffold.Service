@@ -6,7 +6,7 @@ namespace Scaffold.Application.Features.Bucket
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Entities;
 
-    public class RemoveBucket
+    public static class RemoveBucket
     {
         public class Command : IRequest
         {

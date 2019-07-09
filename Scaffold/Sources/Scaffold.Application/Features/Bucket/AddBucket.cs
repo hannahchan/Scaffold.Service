@@ -9,7 +9,7 @@ namespace Scaffold.Application.Features.Bucket
     using Scaffold.Domain.Entities;
     using Scaffold.Domain.Exceptions;
 
-    public class AddBucket
+    public static class AddBucket
     {
         public class Command : IRequest<Response>
         {
@@ -66,7 +66,7 @@ namespace Scaffold.Application.Features.Bucket
             public MappingProfile()
             {
                 this.CreateMap<Command, Bucket>()
-                    .AddTransform<string>(value => value == string.Empty ? null : value)
+                    .AddTransform<string>(value => string.IsNullOrEmpty(value) ? null : value)
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
                     .ForMember(dest => dest.Size, opt => opt.Condition(src => src.Size != null));
             }

@@ -1,7 +1,6 @@
 namespace Scaffold.Application.UnitTests.Features.Item
 {
     using System;
-    using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
     using FluentValidation;

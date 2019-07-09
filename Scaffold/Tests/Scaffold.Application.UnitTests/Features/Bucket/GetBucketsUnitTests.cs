@@ -3,7 +3,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     using System;
     using System.Collections.Generic;
     using System.Linq.Expressions;
-    using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Features.Bucket;

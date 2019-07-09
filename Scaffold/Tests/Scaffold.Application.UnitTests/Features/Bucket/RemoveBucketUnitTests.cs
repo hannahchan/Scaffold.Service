@@ -1,7 +1,6 @@
 namespace Scaffold.Application.UnitTests.Features.Bucket
 {
     using System;
-    using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Features.Bucket;

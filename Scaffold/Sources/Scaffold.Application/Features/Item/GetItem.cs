@@ -8,7 +8,7 @@ namespace Scaffold.Application.Features.Item
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Entities;
 
-    public class GetItem
+    public static class GetItem
     {
         public class Query : IRequest<Response>
         {

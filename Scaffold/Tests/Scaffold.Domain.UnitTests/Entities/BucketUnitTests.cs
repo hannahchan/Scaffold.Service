@@ -5,7 +5,7 @@ namespace Scaffold.Domain.UnitTests.Entities
     using Scaffold.Domain.Exceptions;
     using Xunit;
 
-    public class BucketUnitTests
+    public static class BucketUnitTests
     {
         public class AddItem
         {

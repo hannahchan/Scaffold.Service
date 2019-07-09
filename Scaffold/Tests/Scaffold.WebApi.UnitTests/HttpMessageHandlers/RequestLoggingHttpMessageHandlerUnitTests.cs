@@ -33,7 +33,7 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
             // Act
             using (HttpClient client = new HttpClient(handler))
             {
-                (await client.GetAsync("http://localhost")).Dispose();
+                (await client.GetAsync(new Uri("http://localhost"))).Dispose();
             }
 
             // Assert
@@ -45,6 +45,9 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
                     null,
                     It.IsAny<Func<object, Exception, string>>()),
                 Times.Once);
+
+            // Clean up
+            handler.Dispose();
         }
 
         private class InnerHandler : DelegatingHandler

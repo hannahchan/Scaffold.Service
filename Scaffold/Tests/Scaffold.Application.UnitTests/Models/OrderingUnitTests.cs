@@ -6,7 +6,7 @@ namespace Scaffold.Application.UnitTests.Models
     using Scaffold.Application.Models;
     using Xunit;
 
-    public class OrderingUnitTests
+    public static class OrderingUnitTests
     {
         public class Add
         {

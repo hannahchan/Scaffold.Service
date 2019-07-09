@@ -58,7 +58,7 @@ namespace Scaffold.Application.Models
 
         private void ValidateProperty(OrderBy item)
         {
-            PropertyInfo property = this.properties.SingleOrDefault(x => string.Equals(x.Name, item.PropertyName));
+            PropertyInfo property = this.properties.SingleOrDefault(x => string.Equals(x.Name, item.PropertyName, StringComparison.Ordinal));
 
             if (property == null)
             {

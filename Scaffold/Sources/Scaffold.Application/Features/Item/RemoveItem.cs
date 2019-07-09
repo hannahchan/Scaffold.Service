@@ -7,7 +7,7 @@ namespace Scaffold.Application.Features.Item
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Entities;
 
-    public class RemoveItem
+    public static class RemoveItem
     {
         public class Command : IRequest
         {

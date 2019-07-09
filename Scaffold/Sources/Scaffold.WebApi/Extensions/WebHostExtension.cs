@@ -10,6 +10,11 @@ namespace Scaffold.WebApi.Extensions
     {
         public static IWebHost EnsureCreatedDatabase(this IWebHost webHost)
         {
+            if (webHost == null)
+            {
+                throw new ArgumentNullException(nameof(webHost));
+            }
+
             using (IServiceScope serviceScope = webHost.Services.CreateScope())
             {
                 IServiceProvider serviceProvider = serviceScope.ServiceProvider;
@@ -27,6 +32,11 @@ namespace Scaffold.WebApi.Extensions
 
         public static IWebHost MigrateDatabase(this IWebHost webHost)
         {
+            if (webHost == null)
+            {
+                throw new ArgumentNullException(nameof(webHost));
+            }
+
             using (IServiceScope serviceScope = webHost.Services.CreateScope())
             {
                 IServiceProvider serviceProvider = serviceScope.ServiceProvider;
