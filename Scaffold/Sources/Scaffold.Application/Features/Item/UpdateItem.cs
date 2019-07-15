@@ -94,7 +94,6 @@ namespace Scaffold.Application.Features.Item
             public MappingProfile()
             {
                 this.CreateMap<Command, Item>()
-                    .AddTransform<string>(value => string.IsNullOrEmpty(value) ? null : value)
                     .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ItemId))
                     .ForMember(dest => dest.Bucket, opt => opt.Ignore());
             }

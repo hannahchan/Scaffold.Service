@@ -8,8 +8,11 @@ namespace Scaffold.WebApi.Views.MappingProfiles
     {
         public BucketMappingProfile()
         {
-            this.CreateMap<Bucket, AddBucket.Command>();
-            this.CreateMap<Bucket, UpdateBucket.Command>();
+            this.CreateMap<Bucket, AddBucket.Command>()
+                .AddTransform<string>(value => string.IsNullOrEmpty(value) ? null : value);
+
+            this.CreateMap<Bucket, UpdateBucket.Command>()
+                .AddTransform<string>(value => string.IsNullOrEmpty(value) ? null : value);
 
             this.CreateMap<Domain.Entities.Bucket, Bucket>();
         }

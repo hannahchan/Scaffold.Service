@@ -84,11 +84,7 @@ namespace Scaffold.Application.Features.Bucket
 
         public class MappingProfile : Profile
         {
-            public MappingProfile()
-            {
-                this.CreateMap<Command, Bucket>()
-                    .AddTransform<string>(value => string.IsNullOrEmpty(value) ? null : value);
-            }
+            public MappingProfile() => this.CreateMap<Command, Bucket>();
         }
     }
 }

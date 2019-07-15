@@ -160,24 +160,6 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 // Act and Assert
                 configuration.AssertConfigurationIsValid();
             }
-
-            [Fact]
-            public void When_MappingCommandToBucketWithEmptyStringProperties_Expect_NullMappedToStringProperties()
-            {
-                // Arrange
-                Item item = new Item { Name = "abc", Description = "xyz" };
-                AddItem.Command command = new AddItem.Command { Name = string.Empty, Description = string.Empty };
-
-                MapperConfiguration configuration = new MapperConfiguration(config =>
-                    config.AddProfile(new AddItem.MappingProfile()));
-
-                // Act
-                item = configuration.CreateMapper().Map<AddItem.Command, Item>(command, item);
-
-                // Assert
-                Assert.Null(item.Name);
-                Assert.Null(item.Description);
-            }
         }
     }
 }
