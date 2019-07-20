@@ -27,10 +27,7 @@ namespace Scaffold.Application.Features.Bucket
 
         public class Validator : AbstractValidator<Command>
         {
-            public Validator()
-            {
-                this.RuleFor(command => command.Name).NotEmpty().NotNull();
-            }
+            public Validator() => this.RuleFor(command => command.Name).NotEmpty().NotNull();
         }
 
         public class Handler : IRequestHandler<Command, Response>

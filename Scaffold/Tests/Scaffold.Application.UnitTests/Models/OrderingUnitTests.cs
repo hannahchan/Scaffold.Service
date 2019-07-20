@@ -477,10 +477,7 @@ namespace Scaffold.Application.UnitTests.Models
         {
             public int Value { get; set; } = 0;
 
-            public int CompareTo(ComparableProperty1 other)
-            {
-                return this.Value.CompareTo(other.Value);
-            }
+            public int CompareTo(ComparableProperty1 other) => this.Value.CompareTo(other.Value);
         }
 
         private class ComparableProperty2 : IComparable

@@ -7,7 +7,14 @@ namespace Scaffold.Domain.Entities
     {
         private Bucket bucket;
 
-        public int Id { get; set; }
+        public Item()
+            : this(default)
+        {
+        }
+
+        public Item(int id) => this.Id = id;
+
+        public int Id { get; private set; }
 
         public string Name { get; set; }
 

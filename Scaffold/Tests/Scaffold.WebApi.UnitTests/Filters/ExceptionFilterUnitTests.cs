@@ -282,7 +282,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
             public void When_HandlingValidationException_Expect_ValidationProblemDetailsWithErrors()
             {
                 // Arrange
-                var validationFailures = new List<ValidationFailure>
+                List<ValidationFailure> validationFailures = new List<ValidationFailure>
                 {
                     new ValidationFailure("property1", "Error Message."),
                     new ValidationFailure("property1", "Another Error Message."),

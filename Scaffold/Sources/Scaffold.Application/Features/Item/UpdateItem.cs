@@ -77,7 +77,7 @@ namespace Scaffold.Application.Features.Item
                         return response;
                     }
 
-                    response.Item = configuration.CreateMapper().Map<Command, Item>(request, response.Item);
+                    response.Item = configuration.CreateMapper().Map(request, response.Item);
                     await this.repository.UpdateAsync(bucket);
 
                     return response;

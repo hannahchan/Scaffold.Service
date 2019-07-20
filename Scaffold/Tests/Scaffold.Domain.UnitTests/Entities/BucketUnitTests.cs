@@ -7,6 +7,36 @@ namespace Scaffold.Domain.UnitTests.Entities
 
     public static class BucketUnitTests
     {
+        public class Constructor
+        {
+            [Fact]
+            public void When_InstantiatingBucket_Expect_BucketWithDefaultId()
+            {
+                // Arrange
+                Bucket bucket;
+
+                // Act
+                bucket = new Bucket();
+
+                // Assert
+                Assert.Equal(default, bucket.Id);
+            }
+
+            [Fact]
+            public void When_InstantiatingBucketWithId_Expect_BucketWithId()
+            {
+                // Arrange
+                Bucket bucket;
+                int id = new Random().Next(int.MaxValue);
+
+                // Act
+                bucket = new Bucket(id);
+
+                // Assert
+                Assert.Equal(id, bucket.Id);
+            }
+        }
+
         public class AddItem
         {
             [Fact]
@@ -163,23 +193,6 @@ namespace Scaffold.Domain.UnitTests.Entities
 
                 // Assert
                 Assert.Equal(value, bucket.Description);
-            }
-        }
-
-        public class SetId
-        {
-            [Fact]
-            public void When_SettingId_Expect_IdSet()
-            {
-                // Arrange
-                Bucket bucket = new Bucket();
-                int value = new Random().Next(int.MaxValue);
-
-                // Act
-                bucket.Id = value;
-
-                // Assert
-                Assert.Equal(value, bucket.Id);
             }
         }
 

@@ -10,9 +10,18 @@ namespace Scaffold.Domain.Entities
 
         private int size = 5;
 
-        public Bucket() => this.items = new List<Item>();
+        public Bucket()
+            : this(default)
+        {
+        }
 
-        public int Id { get; set; }
+        public Bucket(int id)
+        {
+            this.items = new List<Item>();
+            this.Id = id;
+        }
+
+        public int Id { get; private set; }
 
         public string Name { get; set; }
 

@@ -70,7 +70,7 @@ namespace Scaffold.Application.Features.Bucket
                         return response;
                     }
 
-                    response.Bucket = configuration.CreateMapper().Map<Command, Bucket>(request, response.Bucket);
+                    response.Bucket = configuration.CreateMapper().Map(request, response.Bucket);
                     await this.repository.UpdateAsync(response.Bucket);
 
                     return response;
