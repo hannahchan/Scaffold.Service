@@ -8,9 +8,12 @@ namespace Scaffold.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Item> builder)
         {
-            builder.Metadata
-                .FindNavigation(nameof(Item.Bucket))
-                .SetPropertyAccessMode(PropertyAccessMode.Field);
+            builder.Property<int>($"{nameof(Bucket)}Id");
+
+            builder.Property(item => item.Id)
+                .ValueGeneratedOnAdd();
+
+            builder.HasKey($"{nameof(Bucket)}Id", nameof(Item.Id));
 
             builder.ToTable(nameof(Item));
         }

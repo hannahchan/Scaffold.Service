@@ -51,7 +51,6 @@ namespace Scaffold.Domain.UnitTests.Entities
 
                 // Assert
                 Assert.Contains(item, bucket.Items);
-                Assert.Equal(bucket, item.Bucket);
             }
 
             [Fact]
@@ -139,7 +138,6 @@ namespace Scaffold.Domain.UnitTests.Entities
 
                 // Assert
                 Assert.DoesNotContain(item, bucket.Items);
-                Assert.Null(item.Bucket);
             }
 
             [Fact]
@@ -157,7 +155,6 @@ namespace Scaffold.Domain.UnitTests.Entities
                 // Assert
                 Assert.Contains(item, bucket.Items);
                 Assert.Equal(1, bucket.Items.Count);
-                Assert.Equal(bucket, item.Bucket);
             }
 
             [Fact]
@@ -175,7 +172,6 @@ namespace Scaffold.Domain.UnitTests.Entities
                 // Assert
                 Assert.Contains(item, bucket.Items);
                 Assert.Equal(1, bucket.Items.Count);
-                Assert.Equal(bucket, item.Bucket);
             }
         }
 

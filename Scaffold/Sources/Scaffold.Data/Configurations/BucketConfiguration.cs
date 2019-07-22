@@ -9,9 +9,7 @@ namespace Scaffold.Data.Configurations
         public void Configure(EntityTypeBuilder<Bucket> builder)
         {
             builder
-                .HasMany(bucket => bucket.Items)
-                .WithOne(item => item.Bucket)
-                .IsRequired();
+                .HasMany(bucket => bucket.Items);
 
             builder.Metadata
                 .FindNavigation(nameof(Bucket.Items))

@@ -28,13 +28,13 @@
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    BucketId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    BucketId = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Item", x => x.Id);
+                    table.PrimaryKey("PK_Item", x => new { x.BucketId, x.Id });
                     table.ForeignKey(
                         name: "FK_Item_Bucket_BucketId",
                         column: x => x.BucketId,
@@ -42,11 +42,6 @@
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Item_BucketId",
-                table: "Item",
-                column: "BucketId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

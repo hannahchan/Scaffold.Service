@@ -142,7 +142,6 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 // Assert
                 Assert.False(response.Created);
                 Assert.True(response.Updated);
-                Assert.Equal(bucket.Id, response.Item.Bucket.Id);
                 Assert.Equal(item.Id, response.Item.Id);
                 Assert.Equal(command.Name, response.Item.Name);
                 Assert.Equal(command.Description, response.Item.Description);
@@ -172,7 +171,6 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 // Assert
                 Assert.True(response.Created);
                 Assert.False(response.Updated);
-                Assert.Equal(bucket.Id, response.Item.Bucket.Id);
                 Assert.Equal(command.ItemId, response.Item.Id);
                 Assert.Equal(command.Name, response.Item.Name);
                 Assert.Equal(command.Description, response.Item.Description);
@@ -214,18 +212,6 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 // Assert
                 Assert.NotNull(exception);
                 Assert.IsType<ValidationException>(exception);
-            }
-
-            [Fact(Skip = "Not Implemented")]
-            public void When_UpdatingItemResultingInDomainConflict_Expect_DomainException()
-            {
-                // Not Implemented
-            }
-
-            [Fact(Skip = "Not Implemented")]
-            public void When_UpdatingNonExistingItemResultingInDomainConflict_Expect_DomainException()
-            {
-                // Not Implemented
             }
         }
 

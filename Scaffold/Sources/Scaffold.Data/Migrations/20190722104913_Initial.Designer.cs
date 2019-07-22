@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Scaffold.Data.Migrations
 {
     [DbContext(typeof(BucketContext))]
-    [Migration("20190127220107_Initial")]
+    [Migration("20190722104913_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -15,7 +15,7 @@ namespace Scaffold.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("Scaffold.Domain.Entities.Bucket", b =>
@@ -36,25 +36,23 @@ namespace Scaffold.Data.Migrations
 
             modelBuilder.Entity("Scaffold.Domain.Entities.Item", b =>
                 {
+                    b.Property<int>("BucketId");
+
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<int>("BucketId");
 
                     b.Property<string>("Description");
 
                     b.Property<string>("Name");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("BucketId");
+                    b.HasKey("BucketId", "Id");
 
                     b.ToTable("Item");
                 });
 
             modelBuilder.Entity("Scaffold.Domain.Entities.Item", b =>
                 {
-                    b.HasOne("Scaffold.Domain.Entities.Bucket", "Bucket")
+                    b.HasOne("Scaffold.Domain.Entities.Bucket")
                         .WithMany("Items")
                         .HasForeignKey("BucketId")
                         .OnDelete(DeleteBehavior.Cascade);

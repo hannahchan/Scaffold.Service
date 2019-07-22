@@ -8,7 +8,6 @@ namespace Scaffold.Application.Features.Item
     using Scaffold.Application.Exceptions;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Entities;
-    using Scaffold.Domain.Exceptions;
 
     public static class AddItem
     {
@@ -46,15 +45,8 @@ namespace Scaffold.Application.Features.Item
 
                 Response response = new Response();
 
-                try
-                {
-                    MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(new MappingProfile()));
-                    response.Item = configuration.CreateMapper().Map<Item>(request);
-                }
-                catch (AutoMapperMappingException exception) when (exception.InnerException is DomainException)
-                {
-                    throw exception.InnerException;
-                }
+                MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(new MappingProfile()));
+                response.Item = configuration.CreateMapper().Map<Item>(request);
 
                 bucket.AddItem(response.Item);
 
@@ -69,8 +61,7 @@ namespace Scaffold.Application.Features.Item
             public MappingProfile()
             {
                 this.CreateMap<Command, Item>()
-                    .ForMember(dest => dest.Id, opt => opt.Ignore())
-                    .ForMember(dest => dest.Bucket, opt => opt.Ignore());
+                    .ForMember(dest => dest.Id, opt => opt.Ignore());
             }
         }
     }

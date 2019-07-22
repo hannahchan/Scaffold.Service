@@ -69,7 +69,6 @@ namespace Scaffold.Domain.Entities
             }
 
             this.items.Add(item);
-            item.Bucket = this;
         }
 
         public bool IsFull() => this.items.Count >= this.size;
@@ -82,7 +81,6 @@ namespace Scaffold.Domain.Entities
             }
 
             this.items.Remove(item);
-            item.Bucket = null;
         }
     }
 }

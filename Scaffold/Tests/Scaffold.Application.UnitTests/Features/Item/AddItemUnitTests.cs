@@ -76,8 +76,6 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 // Assert
                 Assert.NotEqual(default, response.Item.Id);
                 Assert.Equal(command.Name, response.Item.Name);
-                Assert.Equal(bucket, response.Item.Bucket);
-                Assert.Contains(response.Item, response.Item.Bucket.Items);
             }
 
             [Fact]
@@ -139,12 +137,6 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 // Assert
                 Assert.NotNull(exception);
                 Assert.IsType<BucketFullException>(exception);
-            }
-
-            [Fact(Skip = "Not Implemented")]
-            public void When_AddingItemResultingInDomainConflict_Expect_DomainException()
-            {
-                // Not Implemented
             }
         }
 

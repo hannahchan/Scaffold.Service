@@ -9,7 +9,6 @@ namespace Scaffold.Application.Features.Item
     using Scaffold.Application.Exceptions;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Entities;
-    using Scaffold.Domain.Exceptions;
 
     public static class UpdateItem
     {
@@ -63,29 +62,22 @@ namespace Scaffold.Application.Features.Item
 
                 Response response = new Response { Item = bucket.Items.SingleOrDefault(x => x.Id == request.ItemId) };
 
-                try
+                MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(new MappingProfile()));
+
+                if (response.Item == null)
                 {
-                    MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(new MappingProfile()));
-
-                    if (response.Item == null)
-                    {
-                        response.Item = configuration.CreateMapper().Map<Item>(request);
-                        bucket.AddItem(response.Item);
-                        await this.repository.UpdateAsync(bucket);
-                        response.Created = true;
-
-                        return response;
-                    }
-
-                    response.Item = configuration.CreateMapper().Map(request, response.Item);
+                    response.Item = configuration.CreateMapper().Map<Item>(request);
+                    bucket.AddItem(response.Item);
                     await this.repository.UpdateAsync(bucket);
+                    response.Created = true;
 
                     return response;
                 }
-                catch (AutoMapperMappingException exception) when (exception.InnerException is DomainException)
-                {
-                    throw exception.InnerException;
-                }
+
+                response.Item = configuration.CreateMapper().Map(request, response.Item);
+                await this.repository.UpdateAsync(bucket);
+
+                return response;
             }
         }
 
@@ -94,8 +86,7 @@ namespace Scaffold.Application.Features.Item
             public MappingProfile()
             {
                 this.CreateMap<Command, Item>()
-                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ItemId))
-                    .ForMember(dest => dest.Bucket, opt => opt.Ignore());
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ItemId));
             }
         }
     }
