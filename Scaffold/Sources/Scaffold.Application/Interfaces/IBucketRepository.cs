@@ -1,7 +1,7 @@
 namespace Scaffold.Application.Interfaces
 {
     using System.Threading.Tasks;
-    using Scaffold.Domain.Entities;
+    using Scaffold.Domain.Aggregates.Bucket;
 
     public interface IBucketRepository : IBucketReadRepository
     {

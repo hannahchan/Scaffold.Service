@@ -14,7 +14,7 @@ namespace Scaffold.WebApi.Views.MappingProfiles
             this.CreateMap<Bucket, UpdateBucket.Command>()
                 .AddTransform<string>(value => string.IsNullOrEmpty(value) ? null : value);
 
-            this.CreateMap<Domain.Entities.Bucket, Bucket>();
+            this.CreateMap<Domain.Aggregates.Bucket.Bucket, Bucket>();
         }
     }
 }

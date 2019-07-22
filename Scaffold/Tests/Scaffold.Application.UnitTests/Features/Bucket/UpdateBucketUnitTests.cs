@@ -10,7 +10,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     using Scaffold.Application.Interfaces;
     using Scaffold.Data;
     using Scaffold.Data.Repositories;
-    using Scaffold.Domain.Entities;
+    using Scaffold.Domain.Aggregates.Bucket;
     using Scaffold.Domain.Exceptions;
     using Xunit;
 

@@ -2,7 +2,7 @@ namespace Scaffold.Data
 {
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Data.Configurations;
-    using Scaffold.Domain.Entities;
+    using Scaffold.Domain.Aggregates.Bucket;
 
     public class BucketContext : DbContext
     {

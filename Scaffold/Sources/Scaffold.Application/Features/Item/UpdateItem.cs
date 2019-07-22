@@ -8,7 +8,7 @@ namespace Scaffold.Application.Features.Item
     using MediatR;
     using Scaffold.Application.Exceptions;
     using Scaffold.Application.Interfaces;
-    using Scaffold.Domain.Entities;
+    using Scaffold.Domain.Aggregates.Bucket;
 
     public static class UpdateItem
     {

@@ -18,7 +18,7 @@ namespace Scaffold.Data.Migrations
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("Scaffold.Domain.Entities.Bucket", b =>
+            modelBuilder.Entity("Scaffold.Domain.Aggregates.Bucket.Bucket", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -34,7 +34,7 @@ namespace Scaffold.Data.Migrations
                     b.ToTable("Bucket");
                 });
 
-            modelBuilder.Entity("Scaffold.Domain.Entities.Item", b =>
+            modelBuilder.Entity("Scaffold.Domain.Aggregates.Bucket.Item", b =>
                 {
                     b.Property<int>("BucketId");
 
@@ -50,9 +50,9 @@ namespace Scaffold.Data.Migrations
                     b.ToTable("Item");
                 });
 
-            modelBuilder.Entity("Scaffold.Domain.Entities.Item", b =>
+            modelBuilder.Entity("Scaffold.Domain.Aggregates.Bucket.Item", b =>
                 {
-                    b.HasOne("Scaffold.Domain.Entities.Bucket")
+                    b.HasOne("Scaffold.Domain.Aggregates.Bucket.Bucket")
                         .WithMany("Items")
                         .HasForeignKey("BucketId")
                         .OnDelete(DeleteBehavior.Cascade);

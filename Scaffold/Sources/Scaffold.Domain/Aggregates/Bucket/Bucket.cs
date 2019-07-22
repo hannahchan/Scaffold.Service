@@ -1,4 +1,4 @@
-namespace Scaffold.Domain.Entities
+namespace Scaffold.Domain.Aggregates.Bucket
 {
     using System;
     using System.Collections.Generic;

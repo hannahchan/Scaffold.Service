@@ -1,7 +1,7 @@
-namespace Scaffold.Domain.UnitTests.Entities
+namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
 {
     using System;
-    using Scaffold.Domain.Entities;
+    using Scaffold.Domain.Aggregates.Bucket;
     using Xunit;
 
     public static class ItemUnitTests

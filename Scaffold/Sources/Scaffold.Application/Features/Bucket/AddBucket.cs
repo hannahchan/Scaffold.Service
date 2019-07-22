@@ -6,7 +6,7 @@ namespace Scaffold.Application.Features.Bucket
     using FluentValidation;
     using MediatR;
     using Scaffold.Application.Interfaces;
-    using Scaffold.Domain.Entities;
+    using Scaffold.Domain.Aggregates.Bucket;
     using Scaffold.Domain.Exceptions;
 
     public static class AddBucket

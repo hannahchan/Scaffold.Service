@@ -8,7 +8,7 @@ namespace Scaffold.Application.Features.Bucket
     using MediatR;
     using Scaffold.Application.Interfaces;
     using Scaffold.Application.Models;
-    using Scaffold.Domain.Entities;
+    using Scaffold.Domain.Aggregates.Bucket;
 
     public static class GetBuckets
     {

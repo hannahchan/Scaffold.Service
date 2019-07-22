@@ -2,7 +2,7 @@ namespace Scaffold.Data.Configurations
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
-    using Scaffold.Domain.Entities;
+    using Scaffold.Domain.Aggregates.Bucket;
 
     public class ItemConfiguration : IEntityTypeConfiguration<Item>
     {

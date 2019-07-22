@@ -4,7 +4,7 @@ namespace Scaffold.Application.Features.Bucket
     using System.Threading.Tasks;
     using MediatR;
     using Scaffold.Application.Interfaces;
-    using Scaffold.Domain.Entities;
+    using Scaffold.Domain.Aggregates.Bucket;
 
     public static class GetBucket
     {

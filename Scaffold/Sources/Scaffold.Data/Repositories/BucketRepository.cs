@@ -9,7 +9,7 @@ namespace Scaffold.Data.Repositories
     using Scaffold.Application.Interfaces;
     using Scaffold.Application.Models;
     using Scaffold.Data;
-    using Scaffold.Domain.Entities;
+    using Scaffold.Domain.Aggregates.Bucket;
 
     public class BucketRepository : IBucketRepository
     {

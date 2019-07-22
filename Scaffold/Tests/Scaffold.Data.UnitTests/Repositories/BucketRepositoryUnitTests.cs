@@ -9,7 +9,7 @@ namespace Scaffold.Data.UnitTests.Repositories
     using Scaffold.Application.Models;
     using Scaffold.Data;
     using Scaffold.Data.Repositories;
-    using Scaffold.Domain.Entities;
+    using Scaffold.Domain.Aggregates.Bucket;
     using Xunit;
 
     public class BucketRepositoryUnitTests

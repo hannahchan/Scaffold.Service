@@ -5,7 +5,7 @@ namespace Scaffold.Application.Features.Item
     using System.Threading.Tasks;
     using MediatR;
     using Scaffold.Application.Interfaces;
-    using Scaffold.Domain.Entities;
+    using Scaffold.Domain.Aggregates.Bucket;
 
     public static class RemoveItem
     {

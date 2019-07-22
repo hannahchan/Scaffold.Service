@@ -34,7 +34,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 // Arrange
                 Mock<IMediator> mock = new Mock<IMediator>();
                 mock.Setup(m => m.Send(It.IsAny<AddBucket.Command>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new AddBucket.Response { Bucket = new Domain.Entities.Bucket() });
+                    .ReturnsAsync(new AddBucket.Response { Bucket = new Domain.Aggregates.Bucket.Bucket() });
 
                 BucketsController controller = new BucketsController(this.mapper, mock.Object);
 
@@ -61,7 +61,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 // Arrange
                 Mock<IMediator> mock = new Mock<IMediator>();
                 mock.Setup(m => m.Send(It.IsAny<GetBuckets.Query>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new GetBuckets.Response { Buckets = new List<Domain.Entities.Bucket>() });
+                    .ReturnsAsync(new GetBuckets.Response { Buckets = new List<Domain.Aggregates.Bucket.Bucket>() });
 
                 BucketsController controller = new BucketsController(this.mapper, mock.Object);
 
@@ -80,7 +80,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 // Arrange
                 Mock<IMediator> mock = new Mock<IMediator>();
                 mock.Setup(m => m.Send(It.IsAny<GetBucket.Query>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new GetBucket.Response { Bucket = new Domain.Entities.Bucket() });
+                    .ReturnsAsync(new GetBucket.Response { Bucket = new Domain.Aggregates.Bucket.Bucket() });
 
                 BucketsController controller = new BucketsController(this.mapper, mock.Object);
 
@@ -124,7 +124,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 mock.Setup(m => m.Send(It.IsAny<UpdateBucket.Command>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(new UpdateBucket.Response
                     {
-                        Bucket = new Domain.Entities.Bucket(),
+                        Bucket = new Domain.Aggregates.Bucket.Bucket(),
                         Created = false,
                     });
 
@@ -148,7 +148,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 mock.Setup(m => m.Send(It.IsAny<UpdateBucket.Command>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(new UpdateBucket.Response
                     {
-                        Bucket = new Domain.Entities.Bucket(),
+                        Bucket = new Domain.Aggregates.Bucket.Bucket(),
                         Created = true,
                     });
 
