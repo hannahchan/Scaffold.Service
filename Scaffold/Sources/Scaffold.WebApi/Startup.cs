@@ -4,7 +4,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Scaffold.Data;
+    using Scaffold.Repositories.EntityFrameworkCore;
     using Scaffold.WebApi.Extensions;
     using Scaffold.WebApi.Filters;
 

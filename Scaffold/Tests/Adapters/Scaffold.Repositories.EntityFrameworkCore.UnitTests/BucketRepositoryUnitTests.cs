@@ -1,4 +1,4 @@
-namespace Scaffold.Data.UnitTests.Repositories
+namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
 {
     using System;
     using System.Collections.Generic;
@@ -7,9 +7,8 @@ namespace Scaffold.Data.UnitTests.Repositories
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Interfaces;
     using Scaffold.Application.Models;
-    using Scaffold.Data;
-    using Scaffold.Data.Repositories;
     using Scaffold.Domain.Aggregates.Bucket;
+    using Scaffold.Repositories.EntityFrameworkCore;
     using Xunit;
 
     public class BucketRepositoryUnitTests

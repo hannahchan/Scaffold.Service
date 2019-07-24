@@ -1,4 +1,4 @@
-namespace Scaffold.Data.Repositories
+namespace Scaffold.Repositories.EntityFrameworkCore
 {
     using System;
     using System.Collections.Generic;
@@ -8,7 +8,6 @@ namespace Scaffold.Data.Repositories
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Interfaces;
     using Scaffold.Application.Models;
-    using Scaffold.Data;
     using Scaffold.Domain.Aggregates.Bucket;
 
     public class BucketRepository : IBucketRepository

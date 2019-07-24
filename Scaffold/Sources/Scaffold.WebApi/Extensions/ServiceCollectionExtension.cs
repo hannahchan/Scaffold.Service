@@ -13,8 +13,7 @@ namespace Scaffold.WebApi.Extensions
     using Microsoft.OpenApi.Models;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
-    using Scaffold.Data;
-    using Scaffold.Data.Repositories;
+    using Scaffold.Repositories.EntityFrameworkCore;
     using Scaffold.WebApi.HttpMessageHandlers;
     using Scaffold.WebApi.Services;
 

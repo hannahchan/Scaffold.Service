@@ -1,6 +1,6 @@
 # Entity Framework Support #
 
-The example app included with Scaffold uses a PostgreSQL database with [Entity Framework Core](https://docs.microsoft.com/ef). When starting the example app for the first time, you will need to perform a Entity Framework migration to create the schema required by the app in the PostgreSQL database. The Entity Framework migrations are located in the [Scaffold.Data](../Sources/Scaffold.Data) project.
+The example app included with Scaffold uses a PostgreSQL database with [Entity Framework Core](https://docs.microsoft.com/ef). When starting the example app for the first time, you will need to perform a Entity Framework migration to create the schema required by the app in the PostgreSQL database. The Entity Framework migrations are located in the [Scaffold.Repositories.EntityFrameworkCore](../Sources/Adapters/Scaffold.Repositories.EntityFrameworkCore) project.
 
 ## Automatic Migrations ##
 

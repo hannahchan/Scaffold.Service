@@ -4,7 +4,7 @@ namespace Scaffold.WebApi.Extensions
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
-    using Scaffold.Data;
+    using Scaffold.Repositories.EntityFrameworkCore;
 
     public static class WebHostExtension
     {

@@ -8,9 +8,8 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
-    using Scaffold.Data;
-    using Scaffold.Data.Repositories;
     using Scaffold.Domain.Exceptions;
+    using Scaffold.Repositories.EntityFrameworkCore;
     using Xunit;
 
     public class AddBucketUnitTests

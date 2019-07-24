@@ -1,8 +1,8 @@
-namespace Scaffold.Data
+namespace Scaffold.Repositories.EntityFrameworkCore
 {
     using Microsoft.EntityFrameworkCore;
-    using Scaffold.Data.Configurations;
     using Scaffold.Domain.Aggregates.Bucket;
+    using Scaffold.Repositories.EntityFrameworkCore.Configurations;
 
     public class BucketContext : DbContext
     {

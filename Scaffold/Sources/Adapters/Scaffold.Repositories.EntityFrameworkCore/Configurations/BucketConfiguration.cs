@@ -1,4 +1,4 @@
-namespace Scaffold.Data.Configurations
+namespace Scaffold.Repositories.EntityFrameworkCore.Configurations
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;

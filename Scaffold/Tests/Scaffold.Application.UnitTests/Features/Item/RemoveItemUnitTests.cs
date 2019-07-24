@@ -5,9 +5,8 @@ namespace Scaffold.Application.UnitTests.Features.Item
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Features.Item;
     using Scaffold.Application.Interfaces;
-    using Scaffold.Data;
-    using Scaffold.Data.Repositories;
     using Scaffold.Domain.Aggregates.Bucket;
+    using Scaffold.Repositories.EntityFrameworkCore;
     using Xunit;
 
     public class RemoveItemUnitTests
