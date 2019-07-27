@@ -31,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Adapters\Scaffold.HttpClients\Scaffold.HttpClients.csproj" />
     <ProjectReference Include="..\Adapters\Scaffold.Repositories.EntityFrameworkCore\Scaffold.Repositories.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\Scaffold.Application\Scaffold.Application.csproj" />
     <ProjectReference Include="..\Scaffold.Domain\Scaffold.Domain.csproj" />

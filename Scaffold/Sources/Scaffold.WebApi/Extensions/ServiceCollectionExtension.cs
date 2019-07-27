@@ -13,6 +13,7 @@ namespace Scaffold.WebApi.Extensions
     using Microsoft.OpenApi.Models;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
+    using Scaffold.HttpClients;
     using Scaffold.Repositories.EntityFrameworkCore;
     using Scaffold.WebApi.HttpMessageHandlers;
     using Scaffold.WebApi.Services;
@@ -52,7 +53,7 @@ namespace Scaffold.WebApi.Extensions
         {
             services.AddTransient<RequestLoggingHttpMessageHandler>();
 
-            services.AddHttpClient("ExampleClient")
+            services.AddHttpClient<IExampleHttpClient, ExampleHttpClient>()
                 .AddHttpMessageHandler<RequestLoggingHttpMessageHandler>();
 
             return services;

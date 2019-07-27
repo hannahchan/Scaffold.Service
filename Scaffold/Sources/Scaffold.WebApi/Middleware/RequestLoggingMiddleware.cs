@@ -15,7 +15,7 @@ namespace Scaffold.WebApi.Middleware
 
     public class RequestLoggingMiddleware
     {
-        private const string MessageTemplate = "Inbound HTTP {Method} {Path} responded with {StatusCode} in {ElapsedMilliseconds}ms";
+        private const string MessageTemplate = "Inbound HTTP {HttpMethod} {Path} responded with {StatusCode} in {ElapsedMilliseconds}ms";
 
         private readonly RequestDelegate next;
 
@@ -57,6 +57,11 @@ namespace Scaffold.WebApi.Middleware
                         if (response.StatusCode >= 500)
                         {
                             logLevel = LogLevel.Error;
+                        }
+
+                        if (request.Path.Equals("/health", StringComparison.OrdinalIgnoreCase))
+                        {
+                            logLevel = LogLevel.Debug;
                         }
 
                         this.logger.Log(
