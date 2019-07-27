@@ -18,6 +18,6 @@
         }
 
         public Task<HttpResponseMessage> Get(string path) =>
-            this.httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, $"/api{path}"));
+            this.httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, new Uri(path, UriKind.Relative)));
     }
 }
