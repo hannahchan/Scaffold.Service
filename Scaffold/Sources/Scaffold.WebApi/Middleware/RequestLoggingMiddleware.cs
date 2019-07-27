@@ -77,6 +77,9 @@ namespace Scaffold.WebApi.Middleware
                 {
                     stopwatch.Stop();
 
+                    response.ContentType = "text/plain";
+                    response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
                     using (LogContext.Push(new HttpContextEnricher(httpContext)))
                     {
                         this.logger.LogCritical(
@@ -87,9 +90,6 @@ namespace Scaffold.WebApi.Middleware
                             response.StatusCode,
                             stopwatch.ElapsedMilliseconds);
                     }
-
-                    response.ContentType = "text/plain";
-                    response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
                     if (this.env.IsDevelopment())
                     {
