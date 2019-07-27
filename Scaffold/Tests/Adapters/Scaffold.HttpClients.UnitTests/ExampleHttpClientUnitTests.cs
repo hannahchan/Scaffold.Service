@@ -10,10 +10,9 @@ namespace Scaffold.HttpClients.UnitTests
     public class ExampleHttpClientUnitTests
     {
         [Theory]
-        [InlineData(null)]
         [InlineData("")]
-        [InlineData("ip")]
-        [InlineData("/ip")]
+        [InlineData("test")]
+        [InlineData("/test")]
         public async Task When_InvokingGetWithPath_Expect_RequestUri(string path)
         {
             // Arrange
@@ -37,8 +36,6 @@ namespace Scaffold.HttpClients.UnitTests
             }
 
             // Assert
-            path = path ?? string.Empty;
-
             Assert.Equal(HttpMethod.Get, result.RequestMessage.Method);
             Assert.EndsWith(path, result.RequestMessage.RequestUri.ToString());
             Assert.Equal(content, await result.Content.ReadAsStringAsync());
