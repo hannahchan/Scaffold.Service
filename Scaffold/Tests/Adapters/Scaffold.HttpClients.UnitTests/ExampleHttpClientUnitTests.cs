@@ -10,6 +10,7 @@ namespace Scaffold.HttpClients.UnitTests
     public class ExampleHttpClientUnitTests
     {
         [Theory]
+        [InlineData(null)]
         [InlineData("")]
         [InlineData("test")]
         [InlineData("/test")]
@@ -37,7 +38,7 @@ namespace Scaffold.HttpClients.UnitTests
 
             // Assert
             Assert.Equal(HttpMethod.Get, result.RequestMessage.Method);
-            Assert.EndsWith(path, result.RequestMessage.RequestUri.ToString());
+            Assert.EndsWith(path ?? string.Empty, result.RequestMessage.RequestUri.ToString());
             Assert.Equal(content, await result.Content.ReadAsStringAsync());
 
             // Clean up
