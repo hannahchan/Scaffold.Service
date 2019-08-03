@@ -1,6 +1,6 @@
 namespace Scaffold.WebApi.Constants
 {
-    public static class Headers
+    public static class CustomHeaderNames
     {
         public const string CorrelationId = "Correlation-Id";
 

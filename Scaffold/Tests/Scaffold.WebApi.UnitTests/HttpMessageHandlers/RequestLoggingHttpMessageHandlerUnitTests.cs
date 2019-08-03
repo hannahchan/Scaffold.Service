@@ -25,12 +25,11 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
             // Arrange
             Mock<ILogger<RequestLoggingHttpMessageHandler>> mock = new Mock<ILogger<RequestLoggingHttpMessageHandler>>();
 
-            RequestLoggingHttpMessageHandler handler = new RequestLoggingHttpMessageHandler(mock.Object)
+            // Act
+            using (RequestLoggingHttpMessageHandler handler = new RequestLoggingHttpMessageHandler(mock.Object)
             {
                 InnerHandler = new InnerHandler(statusCode),
-            };
-
-            // Act
+            })
             using (HttpClient client = new HttpClient(handler))
             {
                 (await client.GetAsync(new Uri("http://localhost"))).Dispose();
@@ -45,9 +44,6 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
                     null,
                     It.IsAny<Func<object, Exception, string>>()),
                 Times.Once);
-
-            // Clean up
-            handler.Dispose();
         }
 
         private class InnerHandler : DelegatingHandler

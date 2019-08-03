@@ -124,7 +124,7 @@ namespace Scaffold.WebApi.Middleware
             public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
             {
                 // Attempt to read the Correlation ID from the request.
-                string correlationId = this.httpContext.Request.Headers[Headers.CorrelationId];
+                string correlationId = this.httpContext.Request.Headers[CustomHeaderNames.CorrelationId];
 
                 // Use the Request ID as the Correlation ID if no Correlation ID exists.
                 correlationId = correlationId ?? this.httpContext.TraceIdentifier;

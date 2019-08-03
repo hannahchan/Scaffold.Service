@@ -36,7 +36,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
             string correlationId = Guid.NewGuid().ToString();
 
             HttpContext context = new DefaultHttpContext();
-            context.Request.Headers.Add(Headers.CorrelationId, correlationId);
+            context.Request.Headers.Add(CustomHeaderNames.CorrelationId, correlationId);
 
             RequestTracingService tracingService = new RequestTracingService();
 
@@ -45,8 +45,8 @@ namespace Scaffold.WebApi.UnitTests.Middleware
 
             // Assert
             Assert.Equal(correlationId, tracingService.CorrelationId);
-            Assert.Equal(correlationId, context.Response.Headers[Headers.CorrelationId]);
-            Assert.Equal(context.TraceIdentifier, context.Response.Headers[Headers.RequestId]);
+            Assert.Equal(correlationId, context.Response.Headers[CustomHeaderNames.CorrelationId]);
+            Assert.Equal(context.TraceIdentifier, context.Response.Headers[CustomHeaderNames.RequestId]);
         }
 
         [Fact]
@@ -63,8 +63,8 @@ namespace Scaffold.WebApi.UnitTests.Middleware
 
             // Assert
             Assert.Equal(context.TraceIdentifier, tracingService.CorrelationId);
-            Assert.Equal(context.TraceIdentifier, context.Response.Headers[Headers.CorrelationId]);
-            Assert.Equal(context.TraceIdentifier, context.Response.Headers[Headers.RequestId]);
+            Assert.Equal(context.TraceIdentifier, context.Response.Headers[CustomHeaderNames.CorrelationId]);
+            Assert.Equal(context.TraceIdentifier, context.Response.Headers[CustomHeaderNames.RequestId]);
         }
     }
 }
