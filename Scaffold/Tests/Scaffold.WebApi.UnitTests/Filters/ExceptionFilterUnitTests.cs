@@ -315,6 +315,27 @@ namespace Scaffold.WebApi.UnitTests.Filters
             }
         }
 
+        public class OnUncaughtException : ExceptionFilterUnitTests
+        {
+            [Fact]
+            public void When_HandlingUncaughtException_Expect_NullResult()
+            {
+                // Arrange
+                ExceptionContext exceptionContext = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
+                {
+                    Exception = new Exception(),
+                };
+
+                ExceptionFilter exceptionFilter = new ExceptionFilter(null);
+
+                // Act
+                exceptionFilter.OnException(exceptionContext);
+
+                // Assert
+                Assert.Null(exceptionContext.Result);
+            }
+        }
+
         [Serializable]
         private class TestDomainException : DomainException
         {
