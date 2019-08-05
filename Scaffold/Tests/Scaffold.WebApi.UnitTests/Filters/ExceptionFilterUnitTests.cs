@@ -11,7 +11,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
     using Microsoft.AspNetCore.Mvc.Filters;
     using Microsoft.AspNetCore.Routing;
     using Scaffold.Application.Exceptions;
-    using Scaffold.Domain.Exceptions;
+    using Scaffold.Domain.Base;
     using Scaffold.WebApi.Filters;
     using Scaffold.WebApi.Services;
     using Xunit;

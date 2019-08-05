@@ -1,10 +1,10 @@
-namespace Scaffold.Domain.UnitTests.Exception
+namespace Scaffold.Domain.UnitTests.Base
 {
     using System;
     using System.IO;
     using System.Runtime.Serialization;
     using System.Runtime.Serialization.Formatters.Binary;
-    using Scaffold.Domain.Exceptions;
+    using Scaffold.Domain.Base;
     using Xunit;
 
     public class DomainExceptionUnitTests

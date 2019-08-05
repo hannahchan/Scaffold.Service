@@ -1,4 +1,4 @@
-namespace Scaffold.Domain.Exceptions
+namespace Scaffold.Domain.Base
 {
     using System;
     using System.Runtime.Serialization;

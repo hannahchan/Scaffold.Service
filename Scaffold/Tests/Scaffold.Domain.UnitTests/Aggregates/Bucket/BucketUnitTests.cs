@@ -2,7 +2,6 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
 {
     using System;
     using Scaffold.Domain.Aggregates.Bucket;
-    using Scaffold.Domain.Exceptions;
     using Xunit;
 
     public static class BucketUnitTests

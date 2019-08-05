@@ -1,7 +1,8 @@
-namespace Scaffold.Domain.Exceptions
+namespace Scaffold.Domain.Aggregates.Bucket
 {
     using System;
     using System.Runtime.Serialization;
+    using Scaffold.Domain.Base;
 
     [Serializable]
     public class BucketFullException : DomainException

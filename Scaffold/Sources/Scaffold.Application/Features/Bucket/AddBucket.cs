@@ -7,7 +7,7 @@ namespace Scaffold.Application.Features.Bucket
     using MediatR;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
-    using Scaffold.Domain.Exceptions;
+    using Scaffold.Domain.Base;
 
     public static class AddBucket
     {
