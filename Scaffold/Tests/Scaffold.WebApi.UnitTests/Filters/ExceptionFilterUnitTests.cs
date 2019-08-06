@@ -30,65 +30,57 @@ namespace Scaffold.WebApi.UnitTests.Filters
             };
         }
 
-        public class OnDomainException : ExceptionFilterUnitTests
+        public class OnActionExecuted : ExceptionFilterUnitTests
         {
             [Fact]
-            public void When_HandlingDomainExceptionWithNullRequestTracingService_Expect_ConflictObjectResult()
+            public void When_HandlingObjectResultWithProblemDetailsWithNullRequestTracingService_Expect_ProblemDetailsWithRequestId()
             {
                 // Arrange
-                ExceptionContext exceptionContext = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
+                ActionExecutedContext context = new ActionExecutedContext(this.actionContext, new List<IFilterMetadata>(), null)
                 {
-                    Exception = new TestDomainException(Guid.NewGuid().ToString()),
+                    Result = new ObjectResult(new ProblemDetails()),
                 };
 
                 ExceptionFilter exceptionFilter = new ExceptionFilter(null);
 
                 // Act
-                exceptionFilter.OnException(exceptionContext);
+                exceptionFilter.OnActionExecuted(context);
 
                 // Assert
-                Assert.IsType<ConflictObjectResult>(exceptionContext.Result);
-
-                ConflictObjectResult objectResult = exceptionContext.Result as ConflictObjectResult;
-                Assert.IsType<ProblemDetails>(objectResult.Value);
-
+                ObjectResult objectResult = context.Result as ObjectResult;
                 ProblemDetails problemDetails = objectResult.Value as ProblemDetails;
                 Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlationId"]));
-                Assert.Equal(exceptionContext.HttpContext.TraceIdentifier, problemDetails.Extensions["requestId"]);
+                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["requestId"]);
             }
 
             [Fact]
-            public void When_HandlingDomainExceptionWithNullCorrelationId_Expect_ConflictObjectResult()
+            public void When_HandlingObjectResultWithProblemDetailsWithNullCorrelationId_Expect_ProblemDetailsWithRequestId()
             {
                 // Arrange
-                ExceptionContext exceptionContext = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
+                ActionExecutedContext context = new ActionExecutedContext(this.actionContext, new List<IFilterMetadata>(), null)
                 {
-                    Exception = new TestDomainException(Guid.NewGuid().ToString()),
+                    Result = new ObjectResult(new ProblemDetails()),
                 };
 
                 ExceptionFilter exceptionFilter = new ExceptionFilter(new RequestTracingService());
 
                 // Act
-                exceptionFilter.OnException(exceptionContext);
+                exceptionFilter.OnActionExecuted(context);
 
                 // Assert
-                Assert.IsType<ConflictObjectResult>(exceptionContext.Result);
-
-                ConflictObjectResult objectResult = exceptionContext.Result as ConflictObjectResult;
-                Assert.IsType<ProblemDetails>(objectResult.Value);
-
+                ObjectResult objectResult = context.Result as ObjectResult;
                 ProblemDetails problemDetails = objectResult.Value as ProblemDetails;
                 Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlationId"]));
-                Assert.Equal(exceptionContext.HttpContext.TraceIdentifier, problemDetails.Extensions["requestId"]);
+                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["requestId"]);
             }
 
             [Fact]
-            public void When_HandlingDomainExceptionWithCorrelationId_Expect_ConflictObjectResult()
+            public void When_HandlingObjectResultWithProblemDetailsWithCorrelationId_Expect_ProblemDetailsWithCorrelationIdAndRequestId()
             {
                 // Arrange
-                ExceptionContext exceptionContext = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
+                ActionExecutedContext context = new ActionExecutedContext(this.actionContext, new List<IFilterMetadata>(), null)
                 {
-                    Exception = new TestDomainException(Guid.NewGuid().ToString()),
+                    Result = new ObjectResult(new ProblemDetails()),
                 };
 
                 string correlationId = Guid.NewGuid().ToString();
@@ -99,187 +91,87 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 });
 
                 // Act
-                exceptionFilter.OnException(exceptionContext);
+                exceptionFilter.OnActionExecuted(context);
 
                 // Assert
-                Assert.IsType<ConflictObjectResult>(exceptionContext.Result);
-
-                ConflictObjectResult objectResult = exceptionContext.Result as ConflictObjectResult;
-                Assert.IsType<ProblemDetails>(objectResult.Value);
-
+                ObjectResult objectResult = context.Result as ObjectResult;
                 ProblemDetails problemDetails = objectResult.Value as ProblemDetails;
                 Assert.Equal(correlationId, problemDetails.Extensions["correlationId"]);
-                Assert.Equal(exceptionContext.HttpContext.TraceIdentifier, problemDetails.Extensions["requestId"]);
+                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["requestId"]);
             }
         }
 
-        public class OnNotFoundException : ExceptionFilterUnitTests
+        public class OnActionExecuting : ExceptionFilterUnitTests
         {
             [Fact]
-            public void When_HandlingNotFoundExceptionWithNullRequestTracingService_Expect_NotFoundObjectResult()
+            public void When_ActionExecuting_Expect_NullContextResult()
             {
                 // Arrange
-                ExceptionContext exceptionContext = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
-                {
-                    Exception = new TestNotFoundException(Guid.NewGuid().ToString()),
-                };
+                ActionExecutingContext context = new ActionExecutingContext(
+                    this.actionContext,
+                    new List<IFilterMetadata>(),
+                    new Dictionary<string, object>(),
+                    null);
 
                 ExceptionFilter exceptionFilter = new ExceptionFilter(null);
 
                 // Act
-                exceptionFilter.OnException(exceptionContext);
+                exceptionFilter.OnActionExecuting(context);
 
                 // Assert
-                Assert.IsType<NotFoundObjectResult>(exceptionContext.Result);
-
-                NotFoundObjectResult objectResult = exceptionContext.Result as NotFoundObjectResult;
-                Assert.IsType<ProblemDetails>(objectResult.Value);
-
-                ProblemDetails problemDetails = objectResult.Value as ProblemDetails;
-                Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlationId"]));
-                Assert.Equal(exceptionContext.HttpContext.TraceIdentifier, problemDetails.Extensions["requestId"]);
-            }
-
-            [Fact]
-            public void When_HandlingNotFoundExceptionWithNullCorrelationId_Expect_NotFoundObjectResult()
-            {
-                // Arrange
-                ExceptionContext exceptionContext = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
-                {
-                    Exception = new TestNotFoundException(Guid.NewGuid().ToString()),
-                };
-
-                ExceptionFilter exceptionFilter = new ExceptionFilter(new RequestTracingService());
-
-                // Act
-                exceptionFilter.OnException(exceptionContext);
-
-                // Assert
-                Assert.IsType<NotFoundObjectResult>(exceptionContext.Result);
-
-                NotFoundObjectResult objectResult = exceptionContext.Result as NotFoundObjectResult;
-                Assert.IsType<ProblemDetails>(objectResult.Value);
-
-                ProblemDetails problemDetails = objectResult.Value as ProblemDetails;
-                Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlationId"]));
-                Assert.Equal(exceptionContext.HttpContext.TraceIdentifier, problemDetails.Extensions["requestId"]);
-            }
-
-            [Fact]
-            public void When_HandlingNotFoundExceptionWithCorrelationId_Expect_NotFoundObjectResult()
-            {
-                // Arrange
-                ExceptionContext exceptionContext = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
-                {
-                    Exception = new TestNotFoundException(Guid.NewGuid().ToString()),
-                };
-
-                string correlationId = Guid.NewGuid().ToString();
-
-                ExceptionFilter exceptionFilter = new ExceptionFilter(new RequestTracingService
-                {
-                    CorrelationId = correlationId,
-                });
-
-                // Act
-                exceptionFilter.OnException(exceptionContext);
-
-                // Assert
-                Assert.IsType<NotFoundObjectResult>(exceptionContext.Result);
-
-                NotFoundObjectResult objectResult = exceptionContext.Result as NotFoundObjectResult;
-                Assert.IsType<ProblemDetails>(objectResult.Value);
-
-                ProblemDetails problemDetails = objectResult.Value as ProblemDetails;
-                Assert.Equal(correlationId, problemDetails.Extensions["correlationId"]);
-                Assert.Equal(exceptionContext.HttpContext.TraceIdentifier, problemDetails.Extensions["requestId"]);
+                Assert.Empty(context.ActionArguments);
+                Assert.Null(context.Controller);
+                Assert.Empty(context.Filters);
+                Assert.Null(context.Result);
             }
         }
 
-        public class OnValidationException : ExceptionFilterUnitTests
+        public class OnException : ExceptionFilterUnitTests
         {
             [Fact]
-            public void When_HandlingValidationExceptionWithNullRequestTracingService_Expect_BadRequestObjectResult()
+            public void When_HandlingDomainException_Expect_ConflictObjectResult()
             {
                 // Arrange
-                ExceptionContext exceptionContext = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
+                ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
                 {
-                    Exception = new ValidationException(Guid.NewGuid().ToString()),
+                    Exception = new TestDomainException(Guid.NewGuid().ToString()),
                 };
 
                 ExceptionFilter exceptionFilter = new ExceptionFilter(null);
 
                 // Act
-                exceptionFilter.OnException(exceptionContext);
+                exceptionFilter.OnException(context);
 
                 // Assert
-                Assert.IsType<BadRequestObjectResult>(exceptionContext.Result);
+                Assert.IsType<ConflictObjectResult>(context.Result);
 
-                BadRequestObjectResult objectResult = exceptionContext.Result as BadRequestObjectResult;
-                Assert.IsType<ValidationProblemDetails>(objectResult.Value);
-
-                ValidationProblemDetails problemDetails = objectResult.Value as ValidationProblemDetails;
-                Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlationId"]));
-                Assert.Equal(exceptionContext.HttpContext.TraceIdentifier, problemDetails.Extensions["requestId"]);
+                ConflictObjectResult objectResult = context.Result as ConflictObjectResult;
+                Assert.IsType<ProblemDetails>(objectResult.Value);
             }
 
             [Fact]
-            public void When_HandlingValidationExceptionWithNullCorrelationId_Expect_BadRequestObjectResult()
+            public void When_HandlingNotFoundException_Expect_NotFoundObjectResult()
             {
                 // Arrange
-                ExceptionContext exceptionContext = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
+                ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
                 {
-                    Exception = new ValidationException(Guid.NewGuid().ToString()),
+                    Exception = new TestNotFoundException(Guid.NewGuid().ToString()),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter(new RequestTracingService());
+                ExceptionFilter exceptionFilter = new ExceptionFilter(null);
 
                 // Act
-                exceptionFilter.OnException(exceptionContext);
+                exceptionFilter.OnException(context);
 
                 // Assert
-                Assert.IsType<BadRequestObjectResult>(exceptionContext.Result);
+                Assert.IsType<NotFoundObjectResult>(context.Result);
 
-                BadRequestObjectResult objectResult = exceptionContext.Result as BadRequestObjectResult;
-                Assert.IsType<ValidationProblemDetails>(objectResult.Value);
-
-                ValidationProblemDetails problemDetails = objectResult.Value as ValidationProblemDetails;
-                Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlationId"]));
-                Assert.Equal(exceptionContext.HttpContext.TraceIdentifier, problemDetails.Extensions["requestId"]);
+                NotFoundObjectResult objectResult = context.Result as NotFoundObjectResult;
+                Assert.IsType<ProblemDetails>(objectResult.Value);
             }
 
             [Fact]
-            public void When_HandlingValidationExceptionWithCorrelationId_Expect_BadRequestObjectResult()
-            {
-                // Arrange
-                ExceptionContext exceptionContext = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
-                {
-                    Exception = new ValidationException(Guid.NewGuid().ToString()),
-                };
-
-                string correlationId = Guid.NewGuid().ToString();
-
-                ExceptionFilter exceptionFilter = new ExceptionFilter(new RequestTracingService
-                {
-                    CorrelationId = correlationId,
-                });
-
-                // Act
-                exceptionFilter.OnException(exceptionContext);
-
-                // Assert
-                Assert.IsType<BadRequestObjectResult>(exceptionContext.Result);
-
-                BadRequestObjectResult objectResult = exceptionContext.Result as BadRequestObjectResult;
-                Assert.IsType<ValidationProblemDetails>(objectResult.Value);
-
-                ValidationProblemDetails problemDetails = objectResult.Value as ValidationProblemDetails;
-                Assert.Equal(correlationId, problemDetails.Extensions["correlationId"]);
-                Assert.Equal(exceptionContext.HttpContext.TraceIdentifier, problemDetails.Extensions["requestId"]);
-            }
-
-            [Fact]
-            public void When_HandlingValidationException_Expect_ValidationProblemDetailsWithErrors()
+            public void When_HandlingValidationException_Expect_BadRequestObjectResult()
             {
                 // Arrange
                 List<ValidationFailure> validationFailures = new List<ValidationFailure>
@@ -291,7 +183,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     new ValidationFailure("property3", "Error Message."),
                 };
 
-                ExceptionContext exceptionContext = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
+                ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
                 {
                     Exception = new ValidationException(Guid.NewGuid().ToString(), validationFailures),
                 };
@@ -299,12 +191,12 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 ExceptionFilter exceptionFilter = new ExceptionFilter(null);
 
                 // Act
-                exceptionFilter.OnException(exceptionContext);
+                exceptionFilter.OnException(context);
 
                 // Assert
-                Assert.IsType<BadRequestObjectResult>(exceptionContext.Result);
+                Assert.IsType<BadRequestObjectResult>(context.Result);
 
-                BadRequestObjectResult objectResult = exceptionContext.Result as BadRequestObjectResult;
+                BadRequestObjectResult objectResult = context.Result as BadRequestObjectResult;
                 Assert.IsType<ValidationProblemDetails>(objectResult.Value);
 
                 ValidationProblemDetails problemDetails = objectResult.Value as ValidationProblemDetails;
@@ -313,15 +205,12 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 Assert.Single(problemDetails.Errors["property2"]);
                 Assert.Single(problemDetails.Errors["property3"]);
             }
-        }
 
-        public class OnUncaughtException : ExceptionFilterUnitTests
-        {
             [Fact]
-            public void When_HandlingUncaughtException_Expect_NullResult()
+            public void When_HandlingUnhandledException_Expect_NullContextResult()
             {
                 // Arrange
-                ExceptionContext exceptionContext = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
+                ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
                 {
                     Exception = new Exception(),
                 };
@@ -329,10 +218,78 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 ExceptionFilter exceptionFilter = new ExceptionFilter(null);
 
                 // Act
-                exceptionFilter.OnException(exceptionContext);
+                exceptionFilter.OnException(context);
 
                 // Assert
-                Assert.Null(exceptionContext.Result);
+                Assert.Null(context.Result);
+            }
+
+            [Fact]
+            public void When_HandlingExceptionWithNullRequestTracingService_Expect_ProblemDetailsWithRequestId()
+            {
+                // Arrange
+                ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
+                {
+                    Exception = new TestDomainException(Guid.NewGuid().ToString()),
+                };
+
+                ExceptionFilter exceptionFilter = new ExceptionFilter(null);
+
+                // Act
+                exceptionFilter.OnException(context);
+
+                // Assert
+                ObjectResult objectResult = context.Result as ObjectResult;
+                ProblemDetails problemDetails = objectResult.Value as ProblemDetails;
+                Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlationId"]));
+                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["requestId"]);
+            }
+
+            [Fact]
+            public void When_HandlingExceptionWithNullCorrelationId_Expect_ProblemDetailsWithRequestId()
+            {
+                // Arrange
+                ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
+                {
+                    Exception = new TestDomainException(Guid.NewGuid().ToString()),
+                };
+
+                ExceptionFilter exceptionFilter = new ExceptionFilter(new RequestTracingService());
+
+                // Act
+                exceptionFilter.OnException(context);
+
+                // Assert
+                ObjectResult objectResult = context.Result as ObjectResult;
+                ProblemDetails problemDetails = objectResult.Value as ProblemDetails;
+                Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlationId"]));
+                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["requestId"]);
+            }
+
+            [Fact]
+            public void When_HandlingExceptionWithCorrelationId_Expect_ProblemDetailsWithCorrelationIdAndRequestId()
+            {
+                // Arrange
+                ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
+                {
+                    Exception = new TestDomainException(Guid.NewGuid().ToString()),
+                };
+
+                string correlationId = Guid.NewGuid().ToString();
+
+                ExceptionFilter exceptionFilter = new ExceptionFilter(new RequestTracingService
+                {
+                    CorrelationId = correlationId,
+                });
+
+                // Act
+                exceptionFilter.OnException(context);
+
+                // Assert
+                ObjectResult objectResult = context.Result as ObjectResult;
+                ProblemDetails problemDetails = objectResult.Value as ProblemDetails;
+                Assert.Equal(correlationId, problemDetails.Extensions["correlationId"]);
+                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["requestId"]);
             }
         }
 

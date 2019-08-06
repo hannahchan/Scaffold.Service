@@ -11,7 +11,7 @@ namespace Scaffold.WebApi.Filters
     using Scaffold.WebApi.Constants;
     using Scaffold.WebApi.Services;
 
-    public class ExceptionFilter : IExceptionFilter
+    public class ExceptionFilter : IActionFilter, IExceptionFilter
     {
         private readonly RequestTracingService tracingService;
 
@@ -23,30 +23,47 @@ namespace Scaffold.WebApi.Filters
 
         public ExceptionFilter(RequestTracingService tracingService) => this.tracingService = tracingService;
 
+        public void OnActionExecuted(ActionExecutedContext context)
+        {
+            if (context.Result is ObjectResult result && result.Value is ProblemDetails details)
+            {
+                result.ContentTypes = this.contentTypes;
+
+                if (!string.IsNullOrEmpty(this.tracingService?.CorrelationId))
+                {
+                    details.Extensions[this.ToCamelCase(CustomHeaderNames.CorrelationId)] = this.tracingService.CorrelationId;
+                }
+
+                details.Extensions[this.ToCamelCase(CustomHeaderNames.RequestId)] = context.HttpContext.TraceIdentifier;
+            }
+        }
+
+        public void OnActionExecuting(ActionExecutingContext context)
+        {
+            // Not Used
+        }
+
         public void OnException(ExceptionContext context)
         {
-            ProblemDetails details = null;
-
             if (context.Exception is DomainException domainException)
             {
-                details = this.GetProblemDetails(domainException);
-                context.Result = new ConflictObjectResult(details) { ContentTypes = this.contentTypes };
+                context.Result = new ConflictObjectResult(this.GetProblemDetails(domainException));
             }
 
             if (context.Exception is NotFoundException notFoundException)
             {
-                details = this.GetProblemDetails(notFoundException);
-                context.Result = new NotFoundObjectResult(details) { ContentTypes = this.contentTypes };
+                context.Result = new NotFoundObjectResult(this.GetProblemDetails(notFoundException));
             }
 
             if (context.Exception is ValidationException validationException)
             {
-                details = this.GetProblemDetails(validationException);
-                context.Result = new BadRequestObjectResult(details) { ContentTypes = this.contentTypes };
+                context.Result = new BadRequestObjectResult(this.GetProblemDetails(validationException));
             }
 
-            if (details != null)
+            if (context.Result is ObjectResult result && result.Value is ProblemDetails details)
             {
+                result.ContentTypes = this.contentTypes;
+
                 if (!string.IsNullOrEmpty(this.tracingService?.CorrelationId))
                 {
                     details.Extensions[this.ToCamelCase(CustomHeaderNames.CorrelationId)] = this.tracingService.CorrelationId;
