@@ -8,7 +8,6 @@ namespace Scaffold.WebApi.UnitTests.Controllers
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Moq;
-    using Scaffold.Application.Exceptions;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.WebApi.Controllers;
     using Scaffold.WebApi.Views;
@@ -91,26 +90,6 @@ namespace Scaffold.WebApi.UnitTests.Controllers
 
                 // Assert
                 Assert.NotNull(result);
-            }
-
-            [Fact]
-            public async Task When_GettingNonExistingBucket_Expect_BucketNotFoundException()
-            {
-                // Arrange
-                Mock<IMediator> mock = new Mock<IMediator>();
-                mock.Setup(m => m.Send(It.IsAny<GetBucket.Query>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new GetBucket.Response());
-
-                BucketsController controller = new BucketsController(this.mapper, mock.Object);
-
-                Exception exception;
-
-                // Act
-                exception = await Record.ExceptionAsync(() => controller.Get(new Random().Next(int.MaxValue)));
-
-                // Assert
-                Assert.NotNull(exception);
-                Assert.IsType<BucketNotFoundException>(exception);
             }
         }
 

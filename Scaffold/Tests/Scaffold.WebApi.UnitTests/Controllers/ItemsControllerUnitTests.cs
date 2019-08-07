@@ -8,7 +8,6 @@ namespace Scaffold.WebApi.UnitTests.Controllers
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Moq;
-    using Scaffold.Application.Exceptions;
     using Scaffold.Application.Features.Item;
     using Scaffold.WebApi.Controllers;
     using Scaffold.WebApi.Views;
@@ -91,27 +90,6 @@ namespace Scaffold.WebApi.UnitTests.Controllers
 
                 // Assert
                 Assert.NotNull(result);
-            }
-
-            [Fact]
-            public async Task When_GettingNonExistingItem_Expect_ItemNotFoundException()
-            {
-                // Arrange
-                Mock<IMediator> mock = new Mock<IMediator>();
-                mock.Setup(m => m.Send(It.IsAny<GetItem.Query>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new GetItem.Response());
-
-                ItemsController controller = new ItemsController(this.mapper, mock.Object);
-
-                Exception exception;
-
-                // Act
-                exception = await Record.ExceptionAsync(() =>
-                    controller.Get(new Random().Next(int.MaxValue), new Random().Next(int.MaxValue)));
-
-                // Assert
-                Assert.NotNull(exception);
-                Assert.IsType<ItemNotFoundException>(exception);
             }
         }
 

@@ -6,7 +6,6 @@
     using MediatR;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Scaffold.Application.Exceptions;
     using Scaffold.Application.Features.Item;
     using Scaffold.WebApi.Views;
 
@@ -73,11 +72,6 @@
         {
             GetItem.Query query = new GetItem.Query { BucketId = bucketId, ItemId = itemId };
             GetItem.Response response = await this.mediator.Send(query);
-
-            if (response.Item == null)
-            {
-                throw new ItemNotFoundException(itemId);
-            }
 
             return this.mapper.Map<Item>(response.Item);
         }

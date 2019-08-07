@@ -46,7 +46,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
             }
 
             [Fact]
-            public async Task When_GettingNonExistingItemFromBucket_Expect_Null()
+            public async Task When_GettingNonExistingItemFromBucket_Expect_ItemNotFoundException()
             {
                 // Arrange
                 Bucket bucket = new Bucket();
@@ -61,10 +61,12 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 GetItem.Handler handler = new GetItem.Handler(this.repository);
 
                 // Act
-                GetItem.Response response = await handler.Handle(query, default);
+                Exception exception = await Record.ExceptionAsync(() =>
+                    handler.Handle(query, default));
 
                 // Assert
-                Assert.Null(response.Item);
+                Assert.NotNull(exception);
+                Assert.IsType<ItemNotFoundException>(exception);
             }
 
             [Fact]

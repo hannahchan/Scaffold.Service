@@ -33,7 +33,11 @@ namespace Scaffold.Application.Features.Item
                 Bucket bucket = await this.repository.GetAsync(request.BucketId) ??
                     throw new BucketNotFoundException(request.BucketId);
 
-                return new Response { Item = bucket.Items.SingleOrDefault(x => x.Id == request.ItemId) };
+                return new Response
+                {
+                    Item = bucket.Items.SingleOrDefault(x => x.Id == request.ItemId) ??
+                        throw new ItemNotFoundException(request.ItemId),
+                };
             }
         }
     }
