@@ -8,7 +8,6 @@ namespace Scaffold.WebApi.UnitTests.Controllers
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Moq;
-    using Scaffold.Application.Exceptions;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.WebApi.Controllers;
     using Scaffold.WebApi.Views;
@@ -84,17 +83,18 @@ namespace Scaffold.WebApi.UnitTests.Controllers
 
                 BucketsController controller = new BucketsController(this.mapper, mock.Object);
 
-                Bucket result;
+                ActionResult<Bucket> result;
 
                 // Act
                 result = await controller.Get(new Random().Next(int.MaxValue));
 
                 // Assert
-                Assert.NotNull(result);
+                Assert.Null(result.Result);
+                Assert.IsType<Bucket>(result.Value);
             }
 
             [Fact]
-            public async Task When_GettingNonExistingBucket_Expect_BucketNotFoundException()
+            public async Task When_GettingNonExistingBucket_Expect_NotFoundObjectResult()
             {
                 // Arrange
                 Mock<IMediator> mock = new Mock<IMediator>();
@@ -103,14 +103,17 @@ namespace Scaffold.WebApi.UnitTests.Controllers
 
                 BucketsController controller = new BucketsController(this.mapper, mock.Object);
 
-                Exception exception;
+                ActionResult<Bucket> result;
 
                 // Act
-                exception = await Record.ExceptionAsync(() => controller.Get(new Random().Next(int.MaxValue)));
+                result = await controller.Get(new Random().Next(int.MaxValue));
 
                 // Assert
-                Assert.NotNull(exception);
-                Assert.IsType<BucketNotFoundException>(exception);
+                Assert.IsType<NotFoundObjectResult>(result.Result);
+                Assert.Null(result.Value);
+
+                NotFoundObjectResult actionResult = result.Result as NotFoundObjectResult;
+                Assert.IsType<ProblemDetails>(actionResult.Value);
             }
         }
 

@@ -8,7 +8,6 @@ namespace Scaffold.WebApi.UnitTests.Controllers
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Moq;
-    using Scaffold.Application.Exceptions;
     using Scaffold.Application.Features.Item;
     using Scaffold.WebApi.Controllers;
     using Scaffold.WebApi.Views;
@@ -84,17 +83,18 @@ namespace Scaffold.WebApi.UnitTests.Controllers
 
                 ItemsController controller = new ItemsController(this.mapper, mock.Object);
 
-                Item result;
+                ActionResult<Item> result;
 
                 // Act
                 result = await controller.Get(new Random().Next(int.MaxValue), new Random().Next(int.MaxValue));
 
                 // Assert
-                Assert.NotNull(result);
+                Assert.Null(result.Result);
+                Assert.IsType<Item>(result.Value);
             }
 
             [Fact]
-            public async Task When_GettingNonExistingItem_Expect_ItemNotFoundException()
+            public async Task When_GettingNonExistingItem_Expect_NotFoundObjectResult()
             {
                 // Arrange
                 Mock<IMediator> mock = new Mock<IMediator>();
@@ -103,15 +103,17 @@ namespace Scaffold.WebApi.UnitTests.Controllers
 
                 ItemsController controller = new ItemsController(this.mapper, mock.Object);
 
-                Exception exception;
+                ActionResult<Item> result;
 
                 // Act
-                exception = await Record.ExceptionAsync(() =>
-                    controller.Get(new Random().Next(int.MaxValue), new Random().Next(int.MaxValue)));
+                result = await controller.Get(new Random().Next(int.MaxValue), new Random().Next(int.MaxValue));
 
                 // Assert
-                Assert.NotNull(exception);
-                Assert.IsType<ItemNotFoundException>(exception);
+                Assert.IsType<NotFoundObjectResult>(result.Result);
+                Assert.Null(result.Value);
+
+                NotFoundObjectResult actionResult = result.Result as NotFoundObjectResult;
+                Assert.IsType<ProblemDetails>(actionResult.Value);
             }
         }
 
@@ -165,7 +167,6 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 Assert.Null(result.Value);
 
                 CreatedAtRouteResult actionResult = result.Result as CreatedAtRouteResult;
-
                 Assert.NotEmpty(actionResult.RouteName);
                 Assert.IsType<Item>(actionResult.Value);
             }
