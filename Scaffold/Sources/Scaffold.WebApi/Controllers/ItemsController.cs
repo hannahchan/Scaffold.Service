@@ -6,6 +6,7 @@
     using MediatR;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Scaffold.Application.Exceptions;
     using Scaffold.Application.Features.Item;
     using Scaffold.WebApi.Views;
 
@@ -68,18 +69,14 @@
         [HttpGet("{itemId}", Name = "GetItem")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Item>> Get(int bucketId, int itemId)
+        public async Task<Item> Get(int bucketId, int itemId)
         {
             GetItem.Query query = new GetItem.Query { BucketId = bucketId, ItemId = itemId };
             GetItem.Response response = await this.mediator.Send(query);
 
             if (response.Item == null)
             {
-                return this.NotFound(new ProblemDetails
-                {
-                    Title = "Item Not Found",
-                    Detail = $"Item '{itemId}' not found.",
-                });
+                throw new ItemNotFoundException(itemId);
             }
 
             return this.mapper.Map<Item>(response.Item);
