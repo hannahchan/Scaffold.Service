@@ -10,9 +10,9 @@ namespace Scaffold.WebApi.Extensions
         {
             app
                 .UseForwardedHeaders()
-                .UseMiddleware<RequestTracingMiddleware>()
-                .UseMiddleware<RequestLoggingMiddleware>()
                 .UseHealthChecks("/health", config["HealthCheckPort"])
+                .UseMiddleware<RequestLoggingMiddleware>()
+                .UseMiddleware<RequestTracingMiddleware>()
                 .UseSwagger()
                 .UseSwaggerUI(options =>
                 {

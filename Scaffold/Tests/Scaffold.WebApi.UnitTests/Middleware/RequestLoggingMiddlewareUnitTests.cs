@@ -48,38 +48,6 @@ namespace Scaffold.WebApi.UnitTests.Middleware
                 Times.Once);
         }
 
-        [Theory]
-        [InlineData("/health")]
-        [InlineData("/HEALTH")]
-        [InlineData("/hEaLtH")]
-        public async Task When_InvokingMiddlewareWithHealthCheckRequestPath_Expect_LogLevelDebug(string path)
-        {
-            // Arrange
-            Mock<ILogger<RequestLoggingMiddleware>> mock = new Mock<ILogger<RequestLoggingMiddleware>>();
-
-            RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
-                (httpContext) => Task.CompletedTask,
-                new TestHostingEnvironment { ApplicationName = "Unit Test", EnvironmentName = "Production" },
-                mock.Object);
-
-            HttpContext context = new DefaultHttpContext();
-            context.Request.Path = path;
-            context.Response.StatusCode = new Random().Next(100, 512);
-
-            // Act
-            await middleware.Invoke(context);
-
-            // Assert
-            mock.Verify(
-                m => m.Log(
-                    LogLevel.Debug,
-                    It.IsAny<EventId>(),
-                    It.IsAny<object>(),
-                    null,
-                    It.IsAny<Func<object, Exception, string>>()),
-                Times.Once);
-        }
-
         [Fact]
         public async Task When_InvokingMiddlewareInDevelopmentWithException_Expect_LogLevelCritical()
         {
