@@ -42,14 +42,6 @@ namespace Scaffold.WebApi.Extensions
             return services;
         }
 
-        public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration config)
-        {
-            services.AddDbContext<BucketContext>(builder =>
-                builder.UseNpgsql(config.GetValue<string>("ConnectionStrings:DefaultConnection")));
-
-            return services;
-        }
-
         public static IServiceCollection AddHttpClients(this IServiceCollection services)
         {
             services
@@ -72,8 +64,11 @@ namespace Scaffold.WebApi.Extensions
             return services;
         }
 
-        public static IServiceCollection AddRepositories(this IServiceCollection services)
+        public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration config)
         {
+            services.AddDbContext<BucketContext>(builder =>
+                builder.UseNpgsql(config.GetValue<string>("ConnectionStrings:DefaultConnection")));
+
             services
                 .AddScoped<IBucketReadRepository, BucketRepository>()
                 .AddScoped<IBucketRepository, BucketRepository>();
@@ -84,16 +79,9 @@ namespace Scaffold.WebApi.Extensions
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services
-                .AddScoped<RequestTracingService>();
-
-            return services;
-        }
-
-        public static IServiceCollection AddUtilities(this IServiceCollection services)
-        {
-            services
                 .AddAutoMapper(typeof(Startup).Assembly)
-                .AddMediatR(typeof(GetBucket).Assembly);
+                .AddMediatR(typeof(GetBucket).Assembly)
+                .AddScoped<RequestTracingService>();
 
             return services;
         }

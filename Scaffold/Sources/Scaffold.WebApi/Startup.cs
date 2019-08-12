@@ -21,12 +21,10 @@
                 .AddDbContextCheck<BucketContext>();
 
             services
-                .AddDbContext(this.Configuration)
                 .AddHttpClients()
                 .AddOptions(this.Configuration)
-                .AddRepositories()
-                .AddServices()
-                .AddUtilities();
+                .AddRepositories(this.Configuration)
+                .AddServices();
 
             services.AddMvcCore(options => options.Filters.Add<ExceptionFilter>())
                 .AddApiExplorer()
