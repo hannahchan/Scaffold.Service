@@ -41,11 +41,8 @@ namespace Scaffold.Application.UnitTests.Models
             [Fact]
             public void When_SettingAscendingToTrue_Expect_AscendingTrueAndDescendingFalse()
             {
-                // Arrange
-                OrderBy orderBy = new OrderBy(string.Empty);
-
                 // Act
-                orderBy.Ascending = true;
+                OrderBy orderBy = new OrderBy(string.Empty) { Ascending = true };
 
                 // Assert
                 Assert.True(orderBy.Ascending);
@@ -55,11 +52,8 @@ namespace Scaffold.Application.UnitTests.Models
             [Fact]
             public void When_SettingAscendingToFalse_Expect_AscendingFalseAndDescendingTrue()
             {
-                // Arrange
-                OrderBy orderBy = new OrderBy(string.Empty);
-
                 // Act
-                orderBy.Ascending = false;
+                OrderBy orderBy = new OrderBy(string.Empty) { Ascending = false };
 
                 // Assert
                 Assert.False(orderBy.Ascending);
@@ -72,11 +66,8 @@ namespace Scaffold.Application.UnitTests.Models
             [Fact]
             public void When_SettingDescendingToTrue_Expect_AscendingFalseAndDescendingTrue()
             {
-                // Arrange
-                OrderBy orderBy = new OrderBy(string.Empty);
-
                 // Act
-                orderBy.Descending = true;
+                OrderBy orderBy = new OrderBy(string.Empty) { Descending = true };
 
                 // Assert
                 Assert.False(orderBy.Ascending);
@@ -86,11 +77,8 @@ namespace Scaffold.Application.UnitTests.Models
             [Fact]
             public void When_SettingDescendingToFalse_Expect_AscendingTrueAndDescendingFalse()
             {
-                // Arrange
-                OrderBy orderBy = new OrderBy(string.Empty);
-
                 // Act
-                orderBy.Descending = false;
+                OrderBy orderBy = new OrderBy(string.Empty) { Descending = false };
 
                 // Assert
                 Assert.True(orderBy.Ascending);

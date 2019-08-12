@@ -31,11 +31,8 @@ namespace Scaffold.Application.UnitTests.Features.Item
             [Fact]
             public void When_SettingCreatedToTrue_Expect_CreatedTrueAndUpdatedFalse()
             {
-                // Arrange
-                UpdateItem.Response response = new UpdateItem.Response();
-
                 // Act
-                response.Created = true;
+                UpdateItem.Response response = new UpdateItem.Response { Created = true };
 
                 // Assert
                 Assert.True(response.Created);
@@ -45,11 +42,8 @@ namespace Scaffold.Application.UnitTests.Features.Item
             [Fact]
             public void When_SettingCreatedToFalse_Expect_CreatedFalseAndUpdatedTrue()
             {
-                // Arrange
-                UpdateItem.Response response = new UpdateItem.Response();
-
                 // Act
-                response.Created = false;
+                UpdateItem.Response response = new UpdateItem.Response { Created = false };
 
                 // Assert
                 Assert.False(response.Created);
@@ -59,11 +53,8 @@ namespace Scaffold.Application.UnitTests.Features.Item
             [Fact]
             public void When_SettingUpdatedToTrue_Expect_CreatedFalseAndUpdatedTrue()
             {
-                // Arrange
-                UpdateItem.Response response = new UpdateItem.Response();
-
                 // Act
-                response.Updated = true;
+                UpdateItem.Response response = new UpdateItem.Response { Updated = true };
 
                 // Assert
                 Assert.False(response.Created);
@@ -73,11 +64,8 @@ namespace Scaffold.Application.UnitTests.Features.Item
             [Fact]
             public void When_SettingUpdatedToFalse_Expect_CreatedTrueAndUpdatedFalse()
             {
-                // Arrange
-                UpdateItem.Response response = new UpdateItem.Response();
-
                 // Act
-                response.Updated = false;
+                UpdateItem.Response response = new UpdateItem.Response { Updated = false };
 
                 // Assert
                 Assert.True(response.Created);

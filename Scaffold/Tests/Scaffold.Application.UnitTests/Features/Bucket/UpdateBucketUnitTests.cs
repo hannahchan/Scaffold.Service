@@ -31,11 +31,8 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             [Fact]
             public void When_SettingCreatedToTrue_Expect_CreatedTrueAndUpdatedFalse()
             {
-                // Arrange
-                UpdateBucket.Response response = new UpdateBucket.Response();
-
                 // Act
-                response.Created = true;
+                UpdateBucket.Response response = new UpdateBucket.Response { Created = true };
 
                 // Assert
                 Assert.True(response.Created);
@@ -45,11 +42,8 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             [Fact]
             public void When_SettingCreatedToFalse_Expect_CreatedFalseAndUpdatedTrue()
             {
-                // Arrange
-                UpdateBucket.Response response = new UpdateBucket.Response();
-
                 // Act
-                response.Created = false;
+                UpdateBucket.Response response = new UpdateBucket.Response { Created = false };
 
                 // Assert
                 Assert.False(response.Created);
@@ -59,11 +53,8 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             [Fact]
             public void When_SettingUpdatedToTrue_Expect_CreatedFalseAndUpdatedTrue()
             {
-                // Arrange
-                UpdateBucket.Response response = new UpdateBucket.Response();
-
                 // Act
-                response.Updated = true;
+                UpdateBucket.Response response = new UpdateBucket.Response { Updated = true };
 
                 // Assert
                 Assert.False(response.Created);
@@ -73,11 +64,8 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             [Fact]
             public void When_SettingUpdatedToFalse_Expect_CreatedTrueAndUpdatedFalse()
             {
-                // Arrange
-                UpdateBucket.Response response = new UpdateBucket.Response();
-
                 // Act
-                response.Updated = false;
+                UpdateBucket.Response response = new UpdateBucket.Response { Updated = false };
 
                 // Assert
                 Assert.True(response.Created);

@@ -13,13 +13,13 @@ namespace Scaffold.Application.UnitTests.Models
             [Fact]
             public void When_AddingOrderBy_Expect_OrderByAdded()
             {
-                // Arrange
-                Ordering<TestClass> ordering = new Ordering<TestClass>();
-
                 // Act
-                ordering.Add(new OrderBy(nameof(TestClass.Property1)));
-                ordering.Add(new OrderBy(nameof(TestClass.Property2)));
-                ordering.Add(new OrderBy(nameof(TestClass.Property3)));
+                Ordering<TestClass> ordering = new Ordering<TestClass>
+                {
+                    new OrderBy(nameof(TestClass.Property1)),
+                    new OrderBy(nameof(TestClass.Property2)),
+                    new OrderBy(nameof(TestClass.Property3)),
+                };
 
                 // Assert
                 Assert.Equal(nameof(TestClass.Property1), ordering[0].PropertyName);
@@ -44,12 +44,12 @@ namespace Scaffold.Application.UnitTests.Models
             [Fact]
             public void When_AddingOrderByWithComparableProperty_Expect_OrderByAdded()
             {
-                // Arrange
-                Ordering<TestClass> ordering = new Ordering<TestClass>();
-
                 // Act
-                ordering.Add(new OrderBy(nameof(TestClass.Property4)));
-                ordering.Add(new OrderBy(nameof(TestClass.Property5)));
+                Ordering<TestClass> ordering = new Ordering<TestClass>
+                {
+                    new OrderBy(nameof(TestClass.Property4)),
+                    new OrderBy(nameof(TestClass.Property5)),
+                };
 
                 // Assert
                 Assert.Equal(nameof(TestClass.Property4), ordering[0].PropertyName);
