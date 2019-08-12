@@ -28,10 +28,10 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
 
             IServiceProvider serviceProvider = services.BuildServiceProvider();
 
-            IHostingEnvironment hostingEnvironment = serviceProvider.GetService(typeof(IHostingEnvironment)) as IHostingEnvironment;
+            IHostingEnvironment hostingEnvironment = serviceProvider.GetRequiredService<IHostingEnvironment>();
             hostingEnvironment.ApplicationName = applicationName;
 
-            RequestTracingService tracingService = serviceProvider.GetService(typeof(RequestTracingService)) as RequestTracingService;
+            RequestTracingService tracingService = serviceProvider.GetRequiredService<RequestTracingService>();
             tracingService.CorrelationId = correlationId;
 
             IHttpContextAccessor httpContextAccessor = new HttpContextAccessor
