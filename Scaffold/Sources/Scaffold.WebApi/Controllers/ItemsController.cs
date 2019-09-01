@@ -40,7 +40,7 @@
             AddItem.Response response = await this.mediator.Send(command);
             item = this.mapper.Map<Item>(response.Item);
 
-            return this.CreatedAtRoute("GetItem", new { itemId = item.Id }, item);
+            return this.CreatedAtRoute("GetItem", new { bucketId, itemId = item.Id }, item);
         }
 
         /// <summary>Retrieves a list of items from a bucket.</summary>

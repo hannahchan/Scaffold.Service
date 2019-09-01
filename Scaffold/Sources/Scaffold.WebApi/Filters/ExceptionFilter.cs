@@ -9,6 +9,7 @@ namespace Scaffold.WebApi.Filters
     using Scaffold.Application.Exceptions;
     using Scaffold.Domain.Base;
     using Scaffold.WebApi.Constants;
+    using Scaffold.WebApi.Extensions;
     using Scaffold.WebApi.Services;
 
     public class ExceptionFilter : IActionFilter, IExceptionFilter
@@ -31,10 +32,10 @@ namespace Scaffold.WebApi.Filters
 
                 if (!string.IsNullOrEmpty(this.tracingService?.CorrelationId))
                 {
-                    details.Extensions[this.ToCamelCase(CustomHeaderNames.CorrelationId)] = this.tracingService.CorrelationId;
+                    details.Extensions[CustomHeaderNames.CorrelationId.ToCamelCase()] = this.tracingService.CorrelationId;
                 }
 
-                details.Extensions[this.ToCamelCase(CustomHeaderNames.RequestId)] = context.HttpContext.TraceIdentifier;
+                details.Extensions[CustomHeaderNames.RequestId.ToCamelCase()] = context.HttpContext.TraceIdentifier;
             }
         }
 
@@ -66,10 +67,10 @@ namespace Scaffold.WebApi.Filters
 
                 if (!string.IsNullOrEmpty(this.tracingService?.CorrelationId))
                 {
-                    details.Extensions[this.ToCamelCase(CustomHeaderNames.CorrelationId)] = this.tracingService.CorrelationId;
+                    details.Extensions[CustomHeaderNames.CorrelationId.ToCamelCase()] = this.tracingService.CorrelationId;
                 }
 
-                details.Extensions[this.ToCamelCase(CustomHeaderNames.RequestId)] = context.HttpContext.TraceIdentifier;
+                details.Extensions[CustomHeaderNames.RequestId.ToCamelCase()] = context.HttpContext.TraceIdentifier;
             }
         }
 
@@ -110,15 +111,6 @@ namespace Scaffold.WebApi.Filters
             }
 
             return details;
-        }
-
-        private string ToCamelCase(string text)
-        {
-            text = text.Replace(" ", string.Empty);
-            text = text.Replace("-", string.Empty);
-            text = text.Replace(".", string.Empty);
-            text = text.Replace("_", string.Empty);
-            return $"{char.ToLowerInvariant(text[0])}{text.Substring(1)}";
         }
     }
 }

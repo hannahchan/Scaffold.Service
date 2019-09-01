@@ -49,8 +49,8 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 // Assert
                 ObjectResult objectResult = context.Result as ObjectResult;
                 ProblemDetails problemDetails = objectResult.Value as ProblemDetails;
-                Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlationId"]));
-                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["requestId"]);
+                Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlation-Id"]));
+                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["request-Id"]);
             }
 
             [Fact]
@@ -70,8 +70,8 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 // Assert
                 ObjectResult objectResult = context.Result as ObjectResult;
                 ProblemDetails problemDetails = objectResult.Value as ProblemDetails;
-                Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlationId"]));
-                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["requestId"]);
+                Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlation-Id"]));
+                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["request-Id"]);
             }
 
             [Fact]
@@ -96,8 +96,8 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 // Assert
                 ObjectResult objectResult = context.Result as ObjectResult;
                 ProblemDetails problemDetails = objectResult.Value as ProblemDetails;
-                Assert.Equal(correlationId, problemDetails.Extensions["correlationId"]);
-                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["requestId"]);
+                Assert.Equal(correlationId, problemDetails.Extensions["correlation-Id"]);
+                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["request-Id"]);
             }
         }
 
@@ -241,8 +241,8 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 // Assert
                 ObjectResult objectResult = context.Result as ObjectResult;
                 ProblemDetails problemDetails = objectResult.Value as ProblemDetails;
-                Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlationId"]));
-                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["requestId"]);
+                Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlation-Id"]));
+                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["request-Id"]);
             }
 
             [Fact]
@@ -262,8 +262,8 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 // Assert
                 ObjectResult objectResult = context.Result as ObjectResult;
                 ProblemDetails problemDetails = objectResult.Value as ProblemDetails;
-                Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlationId"]));
-                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["requestId"]);
+                Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlation-Id"]));
+                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["request-Id"]);
             }
 
             [Fact]
@@ -288,8 +288,8 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 // Assert
                 ObjectResult objectResult = context.Result as ObjectResult;
                 ProblemDetails problemDetails = objectResult.Value as ProblemDetails;
-                Assert.Equal(correlationId, problemDetails.Extensions["correlationId"]);
-                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["requestId"]);
+                Assert.Equal(correlationId, problemDetails.Extensions["correlation-Id"]);
+                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["request-Id"]);
             }
         }
 
