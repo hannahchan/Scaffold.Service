@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="Code Analysis Rule Set" Description="Code Analysis Rules for Scaffold" ToolsVersion="15.0">
   <Rules AnalyzerId="Microsoft.CodeAnalysis.Diagnostics" RuleNamespace="Microsoft.CodeAnalysis.Diagnostics">
+    <Rule Id="IDE0003" Action="None" />
+    <Rule Id="IDE0065" Action="None" />
   </Rules>
   <Rules AnalyzerId="Microsoft.CodeQuality.Analyzers" RuleNamespace="Microsoft.CodeQuality.Analyzers">
   </Rules>
@@ -8,7 +10,6 @@
   </Rules>
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
     <Rule Id="SA0001" Action="None" />
-    <Rule Id="SA1200" Action="None" />
     <Rule Id="SA1600" Action="None" />
     <Rule Id="SA1601" Action="None" />
     <Rule Id="SA1633" Action="None" />
