@@ -39,10 +39,10 @@ namespace Scaffold.WebApi.UnitTests.Middleware
 
             // Assert
             mock.Verify(
-                m => m.Log(
+                m => m.Log<It.IsAnyType>(
                     expectedLogLevel,
                     It.IsAny<EventId>(),
-                    It.IsAny<object>(),
+                    It.IsAny<It.IsAnyType>(),
                     null,
                     It.IsAny<Func<object, Exception, string>>()),
                 Times.Once);
@@ -69,10 +69,10 @@ namespace Scaffold.WebApi.UnitTests.Middleware
 
             // Assert
             mock.Verify(
-                m => m.Log(
+                m => m.Log<It.IsAnyType>(
                     LogLevel.Critical,
                     It.IsAny<EventId>(),
-                    It.IsAny<object>(),
+                    It.IsAny<It.IsAnyType>(),
                     exception,
                     It.IsAny<Func<object, Exception, string>>()),
                 Times.Once);
@@ -108,10 +108,10 @@ namespace Scaffold.WebApi.UnitTests.Middleware
 
             // Assert
             mock.Verify(
-                m => m.Log(
+                m => m.Log<It.IsAnyType>(
                     LogLevel.Critical,
                     It.IsAny<EventId>(),
-                    It.IsAny<object>(),
+                    It.IsAny<It.IsAnyType>(),
                     exception,
                     It.IsAny<Func<object, Exception, string>>()),
                 Times.Once);
