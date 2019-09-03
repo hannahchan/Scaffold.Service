@@ -37,12 +37,12 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
 
             // Assert
             mock.Verify(
-                m => m.Log<It.IsAnyType>(
+                m => m.Log(
                     expectedLogLevel,
                     It.IsAny<EventId>(),
                     It.IsAny<It.IsAnyType>(),
                     null,
-                    It.IsAny<Func<object, Exception, string>>()),
+                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
                 Times.Once);
         }
 

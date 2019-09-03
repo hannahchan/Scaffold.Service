@@ -39,12 +39,12 @@ namespace Scaffold.WebApi.UnitTests.Middleware
 
             // Assert
             mock.Verify(
-                m => m.Log<It.IsAnyType>(
+                m => m.Log(
                     expectedLogLevel,
                     It.IsAny<EventId>(),
                     It.IsAny<It.IsAnyType>(),
                     null,
-                    It.IsAny<Func<object, Exception, string>>()),
+                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
                 Times.Once);
         }
 
@@ -69,12 +69,12 @@ namespace Scaffold.WebApi.UnitTests.Middleware
 
             // Assert
             mock.Verify(
-                m => m.Log<It.IsAnyType>(
+                m => m.Log(
                     LogLevel.Critical,
                     It.IsAny<EventId>(),
                     It.IsAny<It.IsAnyType>(),
                     exception,
-                    It.IsAny<Func<object, Exception, string>>()),
+                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
                 Times.Once);
 
             Assert.Equal("text/plain", context.Response.ContentType);
@@ -108,12 +108,12 @@ namespace Scaffold.WebApi.UnitTests.Middleware
 
             // Assert
             mock.Verify(
-                m => m.Log<It.IsAnyType>(
+                m => m.Log(
                     LogLevel.Critical,
                     It.IsAny<EventId>(),
                     It.IsAny<It.IsAnyType>(),
                     exception,
-                    It.IsAny<Func<object, Exception, string>>()),
+                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
                 Times.Once);
 
             Assert.Equal("text/plain", context.Response.ContentType);
