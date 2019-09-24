@@ -60,6 +60,11 @@ namespace Scaffold.WebApi.Middleware
                             logLevel = LogLevel.Error;
                         }
 
+                        if (request.Path.Equals("/health", StringComparison.OrdinalIgnoreCase))
+                        {
+                            logLevel = LogLevel.Debug;
+                        }
+
                         this.logger.Log(
                             logLevel,
                             MessageTemplate,
