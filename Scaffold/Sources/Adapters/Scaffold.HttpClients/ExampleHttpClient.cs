@@ -17,7 +17,9 @@
             this.httpClient = httpClient;
         }
 
-        public Task<HttpResponseMessage> Get(string path) =>
-            this.httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, new Uri(path ?? string.Empty, UriKind.Relative)));
+        public Task<HttpResponseMessage> Get(string path)
+        {
+            return this.httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, new Uri(path ?? string.Empty, UriKind.Relative)));
+        }
     }
 }

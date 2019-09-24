@@ -61,8 +61,10 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
 
         private class InnerHandler : DelegatingHandler
         {
-            protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) =>
-                await Task.FromResult(new HttpResponseMessage { RequestMessage = request });
+            protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            {
+                return await Task.FromResult(new HttpResponseMessage { RequestMessage = request });
+            }
         }
 
         private class TestWebHostEnvironment : IWebHostEnvironment

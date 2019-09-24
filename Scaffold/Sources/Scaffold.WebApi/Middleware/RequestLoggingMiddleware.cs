@@ -102,7 +102,10 @@ namespace Scaffold.WebApi.Middleware
         {
             private readonly IWebHostEnvironment env;
 
-            public ApplicationDetailsEnricher(IWebHostEnvironment env) => this.env = env;
+            public ApplicationDetailsEnricher(IWebHostEnvironment env)
+            {
+                this.env = env;
+            }
 
             public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
             {
@@ -115,7 +118,10 @@ namespace Scaffold.WebApi.Middleware
         {
             private readonly HttpContext httpContext;
 
-            public CorrelationIdEnricher(HttpContext httpContext) => this.httpContext = httpContext;
+            public CorrelationIdEnricher(HttpContext httpContext)
+            {
+                this.httpContext = httpContext;
+            }
 
             public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
             {
@@ -123,7 +129,7 @@ namespace Scaffold.WebApi.Middleware
                 string correlationId = this.httpContext.Request.Headers[CustomHeaderNames.CorrelationId];
 
                 // Use the Request ID as the Correlation ID if no Correlation ID exists.
-                correlationId = correlationId ?? this.httpContext.TraceIdentifier;
+                correlationId ??= this.httpContext.TraceIdentifier;
 
                 logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("CorrelationId", correlationId));
             }
@@ -133,7 +139,10 @@ namespace Scaffold.WebApi.Middleware
         {
             private readonly HttpContext httpContext;
 
-            public HttpContextEnricher(HttpContext httpContext) => this.httpContext = httpContext;
+            public HttpContextEnricher(HttpContext httpContext)
+            {
+                this.httpContext = httpContext;
+            }
 
             public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
             {

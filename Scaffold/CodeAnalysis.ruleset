@@ -3,6 +3,8 @@
 
   <Rules AnalyzerId="Microsoft.CodeAnalysis.Diagnostics" RuleNamespace="Microsoft.CodeAnalysis.Diagnostics">
     <Rule Id="IDE0003" Action="None" />
+    <Rule Id="IDE0021" Action="Info" />
+    <Rule Id="IDE0022" Action="Info" />
     <Rule Id="IDE0065" Action="None" />
   </Rules>
 

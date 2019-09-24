@@ -7,7 +7,10 @@ namespace Scaffold.Domain.Aggregates.Bucket
         {
         }
 
-        public Item(int id) => this.Id = id;
+        public Item(int id)
+        {
+            this.Id = id;
+        }
 
         public int Id { get; private set; }
 

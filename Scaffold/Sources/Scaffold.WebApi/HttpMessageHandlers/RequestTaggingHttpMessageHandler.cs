@@ -15,8 +15,10 @@ namespace Scaffold.WebApi.HttpMessageHandlers
     {
         private readonly IHttpContextAccessor httpContextAccessor;
 
-        public RequestTaggingHttpMessageHandler(IHttpContextAccessor httpContextAccessor) =>
+        public RequestTaggingHttpMessageHandler(IHttpContextAccessor httpContextAccessor)
+        {
             this.httpContextAccessor = httpContextAccessor;
+        }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {

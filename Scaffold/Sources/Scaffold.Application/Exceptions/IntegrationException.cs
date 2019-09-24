@@ -6,19 +6,34 @@ namespace Scaffold.Application.Exceptions
     public abstract class IntegrationException : ApplicationException
     {
         protected IntegrationException(string message, int status)
-            : base(message) => this.Status = status;
+            : base(message)
+        {
+            this.Status = status;
+        }
 
         protected IntegrationException(string message, int status, Exception innerException)
-            : base(message, innerException) => this.Status = status;
+            : base(message, innerException)
+        {
+            this.Status = status;
+        }
 
         protected IntegrationException(string title, string message, int status)
-            : base(title, message) => this.Status = status;
+            : base(title, message)
+        {
+            this.Status = status;
+        }
 
         protected IntegrationException(string title, string message, int status, Exception innerException)
-            : base(title, message, innerException) => this.Status = status;
+            : base(title, message, innerException)
+        {
+            this.Status = status;
+        }
 
         protected IntegrationException(SerializationInfo info, StreamingContext context)
-            : base(info, context) => this.Status = info.GetInt32(nameof(this.Status));
+            : base(info, context)
+        {
+            this.Status = info.GetInt32(nameof(this.Status));
+        }
 
         public virtual int Status { get; private set; }
 

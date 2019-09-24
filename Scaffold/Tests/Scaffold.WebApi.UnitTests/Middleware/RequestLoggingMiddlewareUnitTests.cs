@@ -80,11 +80,9 @@ namespace Scaffold.WebApi.UnitTests.Middleware
             Assert.Equal("text/plain", context.Response.ContentType);
             Assert.Equal(500, context.Response.StatusCode);
 
-            using (StreamReader reader = new StreamReader(context.Response.Body))
-            {
-                context.Response.Body.Position = 0;
-                Assert.Equal(exception.ToString(), reader.ReadToEnd());
-            }
+            using StreamReader reader = new StreamReader(context.Response.Body);
+            context.Response.Body.Position = 0;
+            Assert.Equal(exception.ToString(), reader.ReadToEnd());
         }
 
         [Fact]
@@ -119,11 +117,9 @@ namespace Scaffold.WebApi.UnitTests.Middleware
             Assert.Equal("text/plain", context.Response.ContentType);
             Assert.Equal(500, context.Response.StatusCode);
 
-            using (StreamReader reader = new StreamReader(context.Response.Body))
-            {
-                context.Response.Body.Position = 0;
-                Assert.Equal("Oh no! Something has gone wrong.", reader.ReadToEnd());
-            }
+            using StreamReader reader = new StreamReader(context.Response.Body);
+            context.Response.Body.Position = 0;
+            Assert.Equal("Oh no! Something has gone wrong.", reader.ReadToEnd());
         }
 
         private class TestWebHostEnvironment : IWebHostEnvironment

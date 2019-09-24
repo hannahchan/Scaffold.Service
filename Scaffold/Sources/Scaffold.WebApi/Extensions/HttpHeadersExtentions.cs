@@ -6,7 +6,9 @@ namespace Scaffold.WebApi.Extensions
 
     public static class HttpHeadersExtentions
     {
-        public static Dictionary<string, string> ToDictionary(this HttpHeaders headers) =>
-            headers.ToDictionary(header => header.Key, header => string.Join(", ", header.Value));
+        public static Dictionary<string, string> ToDictionary(this HttpHeaders headers)
+        {
+            return headers.ToDictionary(header => header.Key, header => string.Join(", ", header.Value));
+        }
     }
 }

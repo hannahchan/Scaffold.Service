@@ -25,7 +25,10 @@ namespace Scaffold.Application.Features.Item
         {
             private readonly IBucketReadRepository repository;
 
-            public Handler(IBucketReadRepository repository) => this.repository = repository;
+            public Handler(IBucketReadRepository repository)
+            {
+                this.repository = repository;
+            }
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {

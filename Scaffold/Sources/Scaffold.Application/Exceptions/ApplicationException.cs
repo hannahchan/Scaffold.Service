@@ -16,13 +16,22 @@ namespace Scaffold.Application.Exceptions
         }
 
         protected ApplicationException(string title, string message)
-            : base(message) => this.Title = title;
+            : base(message)
+        {
+            this.Title = title;
+        }
 
         protected ApplicationException(string title, string message, Exception innerException)
-            : base(message, innerException) => this.Title = title;
+            : base(message, innerException)
+        {
+            this.Title = title;
+        }
 
         protected ApplicationException(SerializationInfo info, StreamingContext context)
-            : base(info, context) => this.Title = info.GetString(nameof(this.Title));
+            : base(info, context)
+        {
+            this.Title = info.GetString(nameof(this.Title));
+        }
 
         public virtual string Detail => this.Message;
 

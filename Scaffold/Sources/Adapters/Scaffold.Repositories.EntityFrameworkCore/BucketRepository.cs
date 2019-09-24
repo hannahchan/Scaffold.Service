@@ -14,8 +14,10 @@ namespace Scaffold.Repositories.EntityFrameworkCore
     {
         private readonly BucketContext context;
 
-        public BucketRepository(BucketContext context) =>
+        public BucketRepository(BucketContext context)
+        {
             this.context = context;
+        }
 
         public void Add(Bucket bucket)
         {
@@ -38,27 +40,35 @@ namespace Scaffold.Repositories.EntityFrameworkCore
             return this.AddAsyncInternal(bucket);
         }
 
-        public Bucket Get(int id) =>
-            this.context.Set<Bucket>()
+        public Bucket Get(int id)
+        {
+            return this.context.Set<Bucket>()
                 .Where(bucket => bucket.Id == id)
                 .Include(bucket => bucket.Items)
                 .SingleOrDefault();
+        }
 
-        public List<Bucket> Get(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket> ordering = null) =>
-            this.BuildQuery(predicate, limit, offset, ordering)
+        public List<Bucket> Get(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket> ordering = null)
+        {
+            return this.BuildQuery(predicate, limit, offset, ordering)
                 .Include(bucket => bucket.Items)
                 .ToList();
+        }
 
-        public async Task<Bucket> GetAsync(int id) =>
-            await this.context.Set<Bucket>()
+        public async Task<Bucket> GetAsync(int id)
+        {
+            return await this.context.Set<Bucket>()
                 .Where(bucket => bucket.Id == id)
                 .Include(bucket => bucket.Items)
                 .SingleOrDefaultAsync();
+        }
 
-        public Task<List<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket> ordering = null) =>
-            this.BuildQuery(predicate, limit, offset, ordering)
+        public Task<List<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket> ordering = null)
+        {
+            return this.BuildQuery(predicate, limit, offset, ordering)
                 .Include(bucket => bucket.Items)
                 .ToListAsync();
+        }
 
         public void Remove(Bucket bucket)
         {

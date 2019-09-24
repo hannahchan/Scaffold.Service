@@ -27,14 +27,20 @@ namespace Scaffold.Application.Features.Bucket
 
         public class Validator : AbstractValidator<Command>
         {
-            public Validator() => this.RuleFor(command => command.Name).NotEmpty().NotNull();
+            public Validator()
+            {
+                this.RuleFor(command => command.Name).NotEmpty().NotNull();
+            }
         }
 
         public class Handler : IRequestHandler<Command, Response>
         {
             private readonly IBucketRepository repository;
 
-            public Handler(IBucketRepository repository) => this.repository = repository;
+            public Handler(IBucketRepository repository)
+            {
+                this.repository = repository;
+            }
 
             public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
             {

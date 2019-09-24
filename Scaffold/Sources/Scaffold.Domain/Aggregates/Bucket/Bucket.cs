@@ -70,7 +70,10 @@ namespace Scaffold.Domain.Aggregates.Bucket
             this.items.Add(item);
         }
 
-        public bool IsFull() => this.items.Count >= this.size;
+        public bool IsFull()
+        {
+            return this.items.Count >= this.size;
+        }
 
         public void RemoveItem(Item item)
         {

@@ -49,7 +49,10 @@ namespace Scaffold.Application.Features.Bucket
         {
             private readonly IBucketRepository repository;
 
-            public Handler(IBucketRepository repository) => this.repository = repository;
+            public Handler(IBucketRepository repository)
+            {
+                this.repository = repository;
+            }
 
             public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
             {
@@ -84,7 +87,10 @@ namespace Scaffold.Application.Features.Bucket
 
         public class MappingProfile : Profile
         {
-            public MappingProfile() => this.CreateMap<Command, Bucket>();
+            public MappingProfile()
+            {
+                this.CreateMap<Command, Bucket>();
+            }
         }
     }
 }

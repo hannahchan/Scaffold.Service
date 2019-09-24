@@ -10,7 +10,10 @@ namespace Scaffold.WebApi.Middleware
     {
         private readonly RequestDelegate next;
 
-        public RequestTracingMiddleware(RequestDelegate next) => this.next = next;
+        public RequestTracingMiddleware(RequestDelegate next)
+        {
+            this.next = next;
+        }
 
         public async Task InvokeAsync(HttpContext context, RequestTracingService tracingService)
         {
@@ -24,7 +27,7 @@ namespace Scaffold.WebApi.Middleware
             tracingService.CorrelationId = context.Request.Headers[CustomHeaderNames.CorrelationId];
 
             // Use the Request ID as the Correlation ID if no Correlation ID exists.
-            tracingService.CorrelationId = tracingService.CorrelationId ?? context.TraceIdentifier;
+            tracingService.CorrelationId ??= context.TraceIdentifier;
 
             // Add request tracing headers to response.
             context.Response.Headers.Add(CustomHeaderNames.CorrelationId, tracingService.CorrelationId);

@@ -22,7 +22,10 @@ namespace Scaffold.WebApi.Filters
             CustomMediaTypeNames.Application.ProblemXml,
         };
 
-        public ExceptionFilter(RequestTracingService tracingService) => this.tracingService = tracingService;
+        public ExceptionFilter(RequestTracingService tracingService)
+        {
+            this.tracingService = tracingService;
+        }
 
         public void OnActionExecuted(ActionExecutedContext context)
         {

@@ -49,7 +49,10 @@ namespace Scaffold.HttpClients.UnitTests
         {
             private readonly HttpResponseMessage response;
 
-            public HttpRequestHandler(HttpResponseMessage response) => this.response = response;
+            public HttpRequestHandler(HttpResponseMessage response)
+            {
+                this.response = response;
+            }
 
             protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
             {

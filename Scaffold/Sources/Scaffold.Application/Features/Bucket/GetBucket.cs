@@ -23,14 +23,18 @@ namespace Scaffold.Application.Features.Bucket
         {
             private readonly IBucketReadRepository repository;
 
-            public Handler(IBucketReadRepository repository) => this.repository = repository;
+            public Handler(IBucketReadRepository repository)
+            {
+                this.repository = repository;
+            }
 
-            public async Task<Response> Handle(Query request, CancellationToken cancellationToken) =>
-                new Response
+            public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
+            {
+                return new Response
                 {
-                    Bucket = await this.repository.GetAsync(request.Id) ??
-                        throw new BucketNotFoundException(request.Id),
+                    Bucket = await this.repository.GetAsync(request.Id) ?? throw new BucketNotFoundException(request.Id),
                 };
+            }
         }
     }
 }

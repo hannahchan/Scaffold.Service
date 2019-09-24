@@ -34,15 +34,30 @@ namespace Scaffold.Application.Models
             this.ordering.Add(item);
         }
 
-        public void Clear() => this.ordering.Clear();
+        public void Clear()
+        {
+            this.ordering.Clear();
+        }
 
-        public bool Contains(OrderBy item) => this.ordering.Contains(item);
+        public bool Contains(OrderBy item)
+        {
+            return this.ordering.Contains(item);
+        }
 
-        public void CopyTo(OrderBy[] array, int arrayIndex) => this.ordering.CopyTo(array, arrayIndex);
+        public void CopyTo(OrderBy[] array, int arrayIndex)
+        {
+            this.ordering.CopyTo(array, arrayIndex);
+        }
 
-        public IEnumerator<OrderBy> GetEnumerator() => this.ordering.GetEnumerator();
+        public IEnumerator<OrderBy> GetEnumerator()
+        {
+            return this.ordering.GetEnumerator();
+        }
 
-        public int IndexOf(OrderBy item) => this.ordering.IndexOf(item);
+        public int IndexOf(OrderBy item)
+        {
+            return this.ordering.IndexOf(item);
+        }
 
         public void Insert(int index, OrderBy item)
         {
@@ -50,11 +65,20 @@ namespace Scaffold.Application.Models
             this.ordering.Insert(index, item);
         }
 
-        public bool Remove(OrderBy item) => this.ordering.Remove(item);
+        public bool Remove(OrderBy item)
+        {
+            return this.ordering.Remove(item);
+        }
 
-        public void RemoveAt(int index) => this.ordering.RemoveAt(index);
+        public void RemoveAt(int index)
+        {
+            this.ordering.RemoveAt(index);
+        }
 
-        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
 
         private void ValidateProperty(OrderBy item)
         {

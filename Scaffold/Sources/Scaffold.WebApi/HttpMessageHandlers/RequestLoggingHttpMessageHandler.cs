@@ -17,7 +17,10 @@ namespace Scaffold.WebApi.HttpMessageHandlers
 
         private readonly ILogger logger;
 
-        public RequestLoggingHttpMessageHandler(ILogger<RequestLoggingHttpMessageHandler> logger) => this.logger = logger;
+        public RequestLoggingHttpMessageHandler(ILogger<RequestLoggingHttpMessageHandler> logger)
+        {
+            this.logger = logger;
+        }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
@@ -56,7 +59,10 @@ namespace Scaffold.WebApi.HttpMessageHandlers
         {
             private readonly HttpResponseMessage response;
 
-            public HttpResponseMessageEnricher(HttpResponseMessage response) => this.response = response;
+            public HttpResponseMessageEnricher(HttpResponseMessage response)
+            {
+                this.response = response;
+            }
 
             public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
             {

@@ -14,10 +14,15 @@ namespace Scaffold.Application.Features.Bucket
     {
         public class Query : IRequest<Response>
         {
-            public Query() => this.Predicate = bucket => true;
+            public Query()
+            {
+                this.Predicate = bucket => true;
+            }
 
-            public Query(Expression<Func<Bucket, bool>> predicate) =>
+            public Query(Expression<Func<Bucket, bool>> predicate)
+            {
                 this.Predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
+            }
 
             public Expression<Func<Bucket, bool>> Predicate { get; }
 
@@ -37,10 +42,15 @@ namespace Scaffold.Application.Features.Bucket
         {
             private readonly IBucketReadRepository repository;
 
-            public Handler(IBucketReadRepository repository) => this.repository = repository;
+            public Handler(IBucketReadRepository repository)
+            {
+                this.repository = repository;
+            }
 
-            public async Task<Response> Handle(Query request, CancellationToken cancellationToken) =>
-                new Response { Buckets = await this.repository.GetAsync(request.Predicate, request.Limit, request.Offset, request.Ordering) };
+            public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
+            {
+                return new Response { Buckets = await this.repository.GetAsync(request.Predicate, request.Limit, request.Offset, request.Ordering) };
+            }
         }
     }
 }

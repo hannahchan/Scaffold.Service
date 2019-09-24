@@ -50,10 +50,15 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
         {
             private readonly int statusCode;
 
-            public InnerHandler(int statusCode) => this.statusCode = statusCode;
+            public InnerHandler(int statusCode)
+            {
+                this.statusCode = statusCode;
+            }
 
-            protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) =>
-                await Task.FromResult(new HttpResponseMessage { StatusCode = (HttpStatusCode)this.statusCode });
+            protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            {
+                return await Task.FromResult(new HttpResponseMessage { StatusCode = (HttpStatusCode)this.statusCode });
+            }
         }
     }
 }
