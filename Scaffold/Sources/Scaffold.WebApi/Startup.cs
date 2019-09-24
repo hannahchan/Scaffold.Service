@@ -1,12 +1,12 @@
 ﻿namespace Scaffold.WebApi
 {
     using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Scaffold.Repositories.EntityFrameworkCore;
     using Scaffold.WebApi.Extensions;
     using Scaffold.WebApi.Filters;
+    using Scaffold.WebApi.Middleware;
 
     public class Startup
     {
@@ -26,11 +26,9 @@
                 .AddRepositories(this.Configuration)
                 .AddServices();
 
-            services.AddMvcCore(options => options.Filters.Add<ExceptionFilter>())
-                .AddApiExplorer()
-                .AddCustomJsonFormatters()
-                .AddCustomXmlFormatters()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddControllers(options => options.Filters.Add<ExceptionFilter>())
+                .AddCustomJsonOptions()
+                .AddCustomXmlFormatters();
 
             services.AddApiDocumentation();
         }
@@ -39,8 +37,25 @@
         public void Configure(IApplicationBuilder app)
         {
             app
-                .UseMiddleware(this.Configuration)
-                .UseMvc();
+                .UseForwardedHeaders()
+                .UseMiddleware<RequestLoggingMiddleware>()
+                .UseMiddleware<RequestTracingMiddleware>()
+                .UseSwagger()
+                .UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Scaffold.WebApi v1");
+                });
+
+            app
+                .UseRouting()
+                .UseAuthorization()
+                .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapHealthChecks("/health")
+                        .RequireHost($"*:{this.Configuration["HealthCheckPort"]}");
+
+                    endpoints.MapControllers();
+                });
         }
     }
 }

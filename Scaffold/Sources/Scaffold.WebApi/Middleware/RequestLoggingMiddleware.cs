@@ -7,6 +7,7 @@ namespace Scaffold.WebApi.Middleware
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using Scaffold.WebApi.Constants;
     using Serilog.Context;
@@ -19,11 +20,11 @@ namespace Scaffold.WebApi.Middleware
 
         private readonly RequestDelegate next;
 
-        private readonly IHostingEnvironment env;
+        private readonly IWebHostEnvironment env;
 
         private readonly ILogger logger;
 
-        public RequestLoggingMiddleware(RequestDelegate next, IHostingEnvironment env, ILogger<RequestLoggingMiddleware> logger)
+        public RequestLoggingMiddleware(RequestDelegate next, IWebHostEnvironment env, ILogger<RequestLoggingMiddleware> logger)
         {
             this.next = next;
             this.env = env;
@@ -99,9 +100,9 @@ namespace Scaffold.WebApi.Middleware
 
         private class ApplicationDetailsEnricher : ILogEventEnricher
         {
-            private readonly IHostingEnvironment env;
+            private readonly IWebHostEnvironment env;
 
-            public ApplicationDetailsEnricher(IHostingEnvironment env) => this.env = env;
+            public ApplicationDetailsEnricher(IWebHostEnvironment env) => this.env = env;
 
             public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
             {

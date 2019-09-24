@@ -28,7 +28,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
 
             RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
                 (httpContext) => Task.CompletedTask,
-                new TestHostingEnvironment { ApplicationName = "Unit Test", EnvironmentName = "Production" },
+                new TestWebHostEnvironment { ApplicationName = "Unit Test", EnvironmentName = "Production" },
                 mock.Object);
 
             HttpContext context = new DefaultHttpContext();
@@ -58,7 +58,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
 
             RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
                 (httpContext) => throw exception,
-                new TestHostingEnvironment { ApplicationName = "Unit Test", EnvironmentName = "Development" },
+                new TestWebHostEnvironment { ApplicationName = "Unit Test", EnvironmentName = "Development" },
                 mock.Object);
 
             HttpContext context = new DefaultHttpContext();
@@ -97,7 +97,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
 
             RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
                 (httpContext) => throw exception,
-                new TestHostingEnvironment { ApplicationName = "Unit Test", EnvironmentName = "Production" },
+                new TestWebHostEnvironment { ApplicationName = "Unit Test", EnvironmentName = "Production" },
                 mock.Object);
 
             HttpContext context = new DefaultHttpContext();
@@ -126,7 +126,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
             }
         }
 
-        private class TestHostingEnvironment : IHostingEnvironment
+        private class TestWebHostEnvironment : IWebHostEnvironment
         {
             public string EnvironmentName { get; set; }
 

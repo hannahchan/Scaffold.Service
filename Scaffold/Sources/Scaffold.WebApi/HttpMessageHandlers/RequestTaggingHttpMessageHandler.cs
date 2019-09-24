@@ -25,8 +25,8 @@ namespace Scaffold.WebApi.HttpMessageHandlers
             RequestTracingService tracingService = serviceProvider.GetRequiredService<RequestTracingService>();
             request.Headers.Add(CustomHeaderNames.CorrelationId, tracingService.CorrelationId);
 
-            IHostingEnvironment hostingEnvironment = serviceProvider.GetRequiredService<IHostingEnvironment>();
-            request.Headers.Add(HeaderNames.UserAgent, hostingEnvironment.ApplicationName);
+            IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
+            request.Headers.Add(HeaderNames.UserAgent, webHostEnvironment.ApplicationName);
 
             return base.SendAsync(request, cancellationToken);
         }

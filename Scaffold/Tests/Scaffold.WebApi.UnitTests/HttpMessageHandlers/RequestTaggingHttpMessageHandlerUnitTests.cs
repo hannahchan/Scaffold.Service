@@ -23,13 +23,13 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
             string correlationId = Guid.NewGuid().ToString();
 
             ServiceCollection services = new ServiceCollection();
-            services.AddScoped<IHostingEnvironment, TestHostingEnvironment>();
+            services.AddScoped<IWebHostEnvironment, TestWebHostEnvironment>();
             services.AddScoped<RequestTracingService>();
 
             IServiceProvider serviceProvider = services.BuildServiceProvider();
 
-            IHostingEnvironment hostingEnvironment = serviceProvider.GetRequiredService<IHostingEnvironment>();
-            hostingEnvironment.ApplicationName = applicationName;
+            IWebHostEnvironment webHostEnvironment = serviceProvider.GetRequiredService<IWebHostEnvironment>();
+            webHostEnvironment.ApplicationName = applicationName;
 
             RequestTracingService tracingService = serviceProvider.GetRequiredService<RequestTracingService>();
             tracingService.CorrelationId = correlationId;
@@ -65,7 +65,7 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
                 await Task.FromResult(new HttpResponseMessage { RequestMessage = request });
         }
 
-        private class TestHostingEnvironment : IHostingEnvironment
+        private class TestWebHostEnvironment : IWebHostEnvironment
         {
             public string EnvironmentName { get; set; }
 
