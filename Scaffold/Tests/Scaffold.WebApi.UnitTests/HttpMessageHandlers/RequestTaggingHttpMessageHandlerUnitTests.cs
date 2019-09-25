@@ -39,16 +39,17 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
                 HttpContext = new DefaultHttpContext { RequestServices = serviceProvider },
             };
 
+            RequestTaggingHttpMessageHandler handler = new RequestTaggingHttpMessageHandler(httpContextAccessor)
+            {
+                InnerHandler = new InnerHandler(),
+            };
+
             HttpRequestHeaders result;
 
             // Act
-            using (RequestTaggingHttpMessageHandler handler = new RequestTaggingHttpMessageHandler(httpContextAccessor)
-            {
-                InnerHandler = new InnerHandler(),
-            })
             using (HttpClient client = new HttpClient(handler))
-            using (HttpResponseMessage response = await client.GetAsync(new Uri("http://localhost")))
             {
+                HttpResponseMessage response = await client.GetAsync(new Uri("http://localhost"));
                 result = response.RequestMessage.Headers;
             }
 

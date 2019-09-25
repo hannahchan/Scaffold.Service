@@ -40,9 +40,6 @@ namespace Scaffold.HttpClients.UnitTests
             Assert.Equal(HttpMethod.Get, result.RequestMessage.Method);
             Assert.EndsWith(path ?? string.Empty, result.RequestMessage.RequestUri.ToString());
             Assert.Equal(content, await result.Content.ReadAsStringAsync());
-
-            // Clean up
-            result.Dispose();
         }
 
         private class HttpRequestHandler : DelegatingHandler

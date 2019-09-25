@@ -25,14 +25,15 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
             // Arrange
             Mock<ILogger<RequestLoggingHttpMessageHandler>> mock = new Mock<ILogger<RequestLoggingHttpMessageHandler>>();
 
-            // Act
-            using (RequestLoggingHttpMessageHandler handler = new RequestLoggingHttpMessageHandler(mock.Object)
+            RequestLoggingHttpMessageHandler handler = new RequestLoggingHttpMessageHandler(mock.Object)
             {
                 InnerHandler = new InnerHandler(statusCode),
-            })
+            };
+
+            // Act
             using (HttpClient client = new HttpClient(handler))
             {
-                (await client.GetAsync(new Uri("http://localhost"))).Dispose();
+                await client.GetAsync(new Uri("http://localhost"));
             }
 
             // Assert
