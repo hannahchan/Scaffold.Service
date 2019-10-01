@@ -127,34 +127,28 @@ namespace Scaffold.Repositories.EntityFrameworkCore
 
             IQueryable<Bucket> query = this.context.Set<Bucket>().Where(predicate);
 
-            if (ordering != null && ordering.Count > 0)
+            if (ordering != null)
             {
-                IOrderedQueryable<Bucket> orderedQuery = null;
-
                 foreach (OrderBy orderBy in ordering)
                 {
-                    if (orderedQuery == null)
-                    {
-                        if (orderBy.Ascending)
-                        {
-                            orderedQuery = query.OrderBy(x => x.GetType().GetProperty(orderBy.PropertyName).GetValue(x));
-                            continue;
-                        }
+                    string methodName = orderBy.Ascending ? nameof(Queryable.ThenBy) : nameof(Queryable.ThenByDescending);
 
-                        orderedQuery = query.OrderByDescending(x => x.GetType().GetProperty(orderBy.PropertyName).GetValue(x));
-                        continue;
+                    if (orderBy == ordering.First())
+                    {
+                        methodName = orderBy.Ascending ? nameof(Queryable.OrderBy) : nameof(Queryable.OrderByDescending);
                     }
 
-                    if (orderBy.Ascending)
-                    {
-                        orderedQuery = orderedQuery.ThenBy(x => x.GetType().GetProperty(orderBy.PropertyName).GetValue(x));
-                        continue;
-                    }
+                    ParameterExpression parameterExpression = Expression.Parameter(typeof(Bucket));
+                    MemberExpression memberExpression = Expression.Property(parameterExpression, typeof(Bucket).GetProperty(orderBy.PropertyName));
+                    LambdaExpression lambdaExpression = Expression.Lambda(memberExpression, new ParameterExpression[] { parameterExpression });
 
-                    orderedQuery = orderedQuery.ThenByDescending(x => x.GetType().GetProperty(orderBy.PropertyName).GetValue(x));
+                    query = query.Provider.CreateQuery<Bucket>(Expression.Call(
+                        typeof(Queryable),
+                        methodName,
+                        new Type[] { typeof(Bucket), lambdaExpression.ReturnType },
+                        query.Expression,
+                        Expression.Quote(lambdaExpression)));
                 }
-
-                query = orderedQuery;
             }
 
             if (offset != null)
