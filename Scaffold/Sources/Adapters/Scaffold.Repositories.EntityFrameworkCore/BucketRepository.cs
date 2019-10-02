@@ -4,6 +4,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Reflection;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Interfaces;
@@ -12,6 +13,8 @@ namespace Scaffold.Repositories.EntityFrameworkCore
 
     public class BucketRepository : IBucketRepository
     {
+        private static readonly Dictionary<string, LambdaExpression> KeySelectors = InitializeKeySelectors();
+
         private readonly BucketContext context;
 
         public BucketRepository(BucketContext context)
@@ -112,6 +115,23 @@ namespace Scaffold.Repositories.EntityFrameworkCore
             return this.UpdateAsyncInternal(bucket);
         }
 
+        private static Dictionary<string, LambdaExpression> InitializeKeySelectors()
+        {
+            Dictionary<string, LambdaExpression> keySelectors = new Dictionary<string, LambdaExpression>();
+
+            ParameterExpression parameterExpression = Expression.Parameter(typeof(Bucket));
+
+            foreach (PropertyInfo property in typeof(Bucket).GetProperties())
+            {
+                MemberExpression memberExpression = Expression.Property(parameterExpression, typeof(Bucket).GetProperty(property.Name));
+                LambdaExpression lambdaExpression = Expression.Lambda(memberExpression, new ParameterExpression[] { parameterExpression });
+
+                keySelectors.Add(property.Name, lambdaExpression);
+            }
+
+            return keySelectors;
+        }
+
         private async Task AddAsyncInternal(Bucket bucket)
         {
             this.context.Set<Bucket>().Add(bucket);
@@ -138,16 +158,12 @@ namespace Scaffold.Repositories.EntityFrameworkCore
                         methodName = orderBy.Ascending ? nameof(Queryable.OrderBy) : nameof(Queryable.OrderByDescending);
                     }
 
-                    ParameterExpression parameterExpression = Expression.Parameter(typeof(Bucket));
-                    MemberExpression memberExpression = Expression.Property(parameterExpression, typeof(Bucket).GetProperty(orderBy.PropertyName));
-                    LambdaExpression lambdaExpression = Expression.Lambda(memberExpression, new ParameterExpression[] { parameterExpression });
-
                     query = query.Provider.CreateQuery<Bucket>(Expression.Call(
                         typeof(Queryable),
                         methodName,
-                        new Type[] { typeof(Bucket), lambdaExpression.ReturnType },
+                        new Type[] { typeof(Bucket), KeySelectors[orderBy.PropertyName].ReturnType },
                         query.Expression,
-                        Expression.Quote(lambdaExpression)));
+                        Expression.Quote(KeySelectors[orderBy.PropertyName])));
                 }
             }
 

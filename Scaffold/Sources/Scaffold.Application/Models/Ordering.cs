@@ -9,7 +9,7 @@ namespace Scaffold.Application.Models
 
     public class Ordering<T> : IList<OrderBy>
     {
-        private readonly PropertyInfo[] properties = typeof(T).GetProperties();
+        private static readonly PropertyInfo[] Properties = typeof(T).GetProperties();
 
         private readonly IList<OrderBy> ordering = new List<OrderBy>();
 
@@ -82,7 +82,7 @@ namespace Scaffold.Application.Models
 
         private void ValidateProperty(OrderBy item)
         {
-            PropertyInfo property = this.properties.SingleOrDefault(x => string.Equals(x.Name, item.PropertyName, StringComparison.Ordinal));
+            PropertyInfo property = Properties.SingleOrDefault(x => string.Equals(x.Name, item.PropertyName, StringComparison.Ordinal));
 
             if (property == null)
             {
