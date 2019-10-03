@@ -34,7 +34,7 @@ Scaffold.WebApi aims to make developing the following features in your next Web 
 
 Other stuff you inherit when you bootstrap with Scaffold.WebApi.
 
-- Architecture
+- [Architecture](Scaffold/Docs/Architecture.md)
 - [Docker Support](Scaffold/Docs/Docker.md)
 - [Entity Framework Support](Scaffold/Docs/EntityFramework.md)
 - [Roslyn Analyzers](Scaffold/Docs/RoslynAnalyzers.md)

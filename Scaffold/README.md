@@ -18,7 +18,7 @@ Scaffold aims to make developing the following features in your next Web API or 
 
 Other stuff you inherit when you bootstrap with Scaffold.
 
-- Architecture
+- [Architecture](Docs/Architecture.md)
 - [Docker Support](Docs/Docker.md)
 - [Entity Framework Support](Docs/EntityFramework.md)
 - [Roslyn Analyzers](Docs/RoslynAnalyzers.md)
