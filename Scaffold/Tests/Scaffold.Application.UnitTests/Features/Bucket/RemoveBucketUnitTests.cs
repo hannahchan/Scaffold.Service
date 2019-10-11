@@ -3,6 +3,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     using System;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
+    using Scaffold.Application.Exceptions;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
@@ -44,7 +45,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             }
 
             [Fact]
-            public async Task When_RemovingNonExistingBucket_Expect_NoChange()
+            public async Task When_RemovingNonExistingBucket_Expect_BucketNotFoundException()
             {
                 // Arrange
                 Bucket bucket = new Bucket();
@@ -54,9 +55,11 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 RemoveBucket.Handler handler = new RemoveBucket.Handler(this.repository);
 
                 // Act
-                await handler.Handle(command, default);
+                Exception exception = await Record.ExceptionAsync(() => handler.Handle(command, default));
 
                 // Assert
+                Assert.NotNull(exception);
+                Assert.IsType<BucketNotFoundException>(exception);
                 Assert.NotEmpty(this.context.Buckets);
             }
         }

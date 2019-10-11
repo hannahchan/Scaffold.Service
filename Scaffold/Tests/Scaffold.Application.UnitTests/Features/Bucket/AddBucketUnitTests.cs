@@ -8,6 +8,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
+    using Scaffold.Domain.Aggregates.Bucket;
     using Scaffold.Domain.Base;
     using Scaffold.Repositories.EntityFrameworkCore;
     using Xunit;
@@ -23,6 +24,33 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 .Options);
 
             this.repository = new BucketRepository(context);
+        }
+
+        public class Response
+        {
+            [Fact]
+            public void When_InstantiatingResponseWithBucket_Expect_ResponseWithBucket()
+            {
+                // Arrange
+                Bucket bucket = new Bucket();
+
+                // Act
+                AddBucket.Response response = new AddBucket.Response(bucket);
+
+                // Assert
+                Assert.Equal(bucket, response.Bucket);
+            }
+
+            [Fact]
+            public void When_InstantiatingResponseWithNull_Expect_ArgumentNullException()
+            {
+                // Act
+                Exception exception = Record.Exception(() => new AddBucket.Response(null!));
+
+                // Assert
+                Assert.NotNull(exception);
+                Assert.IsType<ArgumentNullException>(exception);
+            }
         }
 
         public class Validator

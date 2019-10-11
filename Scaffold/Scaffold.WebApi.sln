@@ -1,34 +1,35 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29403.142
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sources", "Sources", "{663CE500-61DB-4162-BF6B-F2BF62747C07}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Adapters", "Adapters", "{1948DE99-6348-4A4A-BF78-2CED1C2EB81A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.HttpClients", "Sources\Adapters\Scaffold.HttpClients\Scaffold.HttpClients.csproj", "{3862C669-F499-4C2F-8362-B34ADEFD1420}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.HttpClients", "Sources\Adapters\Scaffold.HttpClients\Scaffold.HttpClients.csproj", "{3862C669-F499-4C2F-8362-B34ADEFD1420}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.Repositories.EntityFrameworkCore", "Sources\Adapters\Scaffold.Repositories.EntityFrameworkCore\Scaffold.Repositories.EntityFrameworkCore.csproj", "{0242E51C-7D2C-4115-AA15-482B60A87462}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Repositories.EntityFrameworkCore", "Sources\Adapters\Scaffold.Repositories.EntityFrameworkCore\Scaffold.Repositories.EntityFrameworkCore.csproj", "{0242E51C-7D2C-4115-AA15-482B60A87462}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.Application", "Sources\Scaffold.Application\Scaffold.Application.csproj", "{FBC2420B-D720-4EB0-919E-CDF8FD113402}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Application", "Sources\Scaffold.Application\Scaffold.Application.csproj", "{FBC2420B-D720-4EB0-919E-CDF8FD113402}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.Domain", "Sources\Scaffold.Domain\Scaffold.Domain.csproj", "{37155653-A39A-41C9-A25B-CE9BE1E4F6CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Domain", "Sources\Scaffold.Domain\Scaffold.Domain.csproj", "{37155653-A39A-41C9-A25B-CE9BE1E4F6CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.WebApi", "Sources\Scaffold.WebApi\Scaffold.WebApi.csproj", "{F6047A24-6320-486B-9197-164790C37ED2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.WebApi", "Sources\Scaffold.WebApi\Scaffold.WebApi.csproj", "{F6047A24-6320-486B-9197-164790C37ED2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9F400FEE-FC9B-4599-A2E2-C9FAAA487C34}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Adapters", "Adapters", "{0B3709FD-4ABD-4FA8-AF48-BFFC7115DD18}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.HttpClients.UnitTests", "Tests\Adapters\Scaffold.HttpClients.UnitTests\Scaffold.HttpClients.UnitTests.csproj", "{A5D88DA8-0FBC-4E88-911C-4F5E75A9197C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.HttpClients.UnitTests", "Tests\Adapters\Scaffold.HttpClients.UnitTests\Scaffold.HttpClients.UnitTests.csproj", "{A5D88DA8-0FBC-4E88-911C-4F5E75A9197C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.Repositories.EntityFrameworkCore.UnitTests", "Tests\Adapters\Scaffold.Repositories.EntityFrameworkCore.UnitTests\Scaffold.Repositories.EntityFrameworkCore.UnitTests.csproj", "{51928588-D830-4AAE-85CC-A560006AE75B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Repositories.EntityFrameworkCore.UnitTests", "Tests\Adapters\Scaffold.Repositories.EntityFrameworkCore.UnitTests\Scaffold.Repositories.EntityFrameworkCore.UnitTests.csproj", "{51928588-D830-4AAE-85CC-A560006AE75B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.Application.UnitTests", "Tests\Scaffold.Application.UnitTests\Scaffold.Application.UnitTests.csproj", "{6FFD29F1-FD3E-46FC-9D61-9B528FC95AA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Application.UnitTests", "Tests\Scaffold.Application.UnitTests\Scaffold.Application.UnitTests.csproj", "{6FFD29F1-FD3E-46FC-9D61-9B528FC95AA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.Domain.UnitTests", "Tests\Scaffold.Domain.UnitTests\Scaffold.Domain.UnitTests.csproj", "{806619A6-F068-40A6-97C5-FDE19EC06AB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Domain.UnitTests", "Tests\Scaffold.Domain.UnitTests\Scaffold.Domain.UnitTests.csproj", "{806619A6-F068-40A6-97C5-FDE19EC06AB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.WebApi.UnitTests", "Tests\Scaffold.WebApi.UnitTests\Scaffold.WebApi.UnitTests.csproj", "{B6D5E86C-D6E6-498B-8A2E-A0BDD51D0187}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.WebApi.UnitTests", "Tests\Scaffold.WebApi.UnitTests\Scaffold.WebApi.UnitTests.csproj", "{B6D5E86C-D6E6-498B-8A2E-A0BDD51D0187}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,9 +39,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{3862C669-F499-4C2F-8362-B34ADEFD1420}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -164,6 +162,9 @@ Global
 		{B6D5E86C-D6E6-498B-8A2E-A0BDD51D0187}.Release|x86.ActiveCfg = Release|Any CPU
 		{B6D5E86C-D6E6-498B-8A2E-A0BDD51D0187}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1948DE99-6348-4A4A-BF78-2CED1C2EB81A} = {663CE500-61DB-4162-BF6B-F2BF62747C07}
 		{3862C669-F499-4C2F-8362-B34ADEFD1420} = {1948DE99-6348-4A4A-BF78-2CED1C2EB81A}
@@ -177,5 +178,8 @@ Global
 		{6FFD29F1-FD3E-46FC-9D61-9B528FC95AA5} = {9F400FEE-FC9B-4599-A2E2-C9FAAA487C34}
 		{806619A6-F068-40A6-97C5-FDE19EC06AB2} = {9F400FEE-FC9B-4599-A2E2-C9FAAA487C34}
 		{B6D5E86C-D6E6-498B-8A2E-A0BDD51D0187} = {9F400FEE-FC9B-4599-A2E2-C9FAAA487C34}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8E34A899-140C-4267-9660-A7F49202E2DF}
 	EndGlobalSection
 EndGlobal

@@ -3,6 +3,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
     using System;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
+    using Scaffold.Application.Exceptions;
     using Scaffold.Application.Features.Item;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
@@ -44,7 +45,7 @@ namespace Scaffold.Application.UnitTests.Features.Item
             }
 
             [Fact]
-            public async Task When_RemovingNonExistingItemFromBucket_Expect_NoChange()
+            public async Task When_RemovingNonExistingItemFromBucket_Expect_ItemNotFoundException()
             {
                 // Arrange
                 Bucket bucket = new Bucket();
@@ -61,14 +62,16 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 RemoveItem.Handler handler = new RemoveItem.Handler(this.repository);
 
                 // Act
-                await handler.Handle(command, default);
+                Exception exception = await Record.ExceptionAsync(() => handler.Handle(command, default));
 
                 // Assert
+                Assert.NotNull(exception);
+                Assert.IsType<ItemNotFoundException>(exception);
                 Assert.NotEmpty(this.repository.Get(bucket.Id).Items);
             }
 
             [Fact]
-            public async Task When_RemovingItemFromNonExistingBucket_Expect_NoChange()
+            public async Task When_RemovingItemFromNonExistingBucket_Expect_BucketNotFoundException()
             {
                 // Arrange
                 Bucket bucket = new Bucket();
@@ -85,9 +88,11 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 RemoveItem.Handler handler = new RemoveItem.Handler(this.repository);
 
                 // Act
-                await handler.Handle(command, default);
+                Exception exception = await Record.ExceptionAsync(() => handler.Handle(command, default));
 
                 // Assert
+                Assert.NotNull(exception);
+                Assert.IsType<BucketNotFoundException>(exception);
                 Assert.NotEmpty(this.repository.Get(bucket.Id).Items);
             }
         }

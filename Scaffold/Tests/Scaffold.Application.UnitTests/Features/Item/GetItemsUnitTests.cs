@@ -1,6 +1,7 @@
 namespace Scaffold.Application.UnitTests.Features.Item
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Exceptions;
@@ -21,6 +22,33 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 .Options);
 
             this.repository = new BucketRepository(context);
+        }
+
+        public class Response
+        {
+            [Fact]
+            public void When_InstantiatingResponseWithItems_Expect_ResponseWithItems()
+            {
+                // Arrange
+                List<Item> items = new List<Item>();
+
+                // Act
+                GetItems.Response response = new GetItems.Response(items);
+
+                // Assert
+                Assert.Equal(items, response.Items);
+            }
+
+            [Fact]
+            public void When_InstantiatingResponseWithNull_Expect_ArgumentNullException()
+            {
+                // Act
+                Exception exception = Record.Exception(() => new GetItems.Response(null!));
+
+                // Assert
+                Assert.NotNull(exception);
+                Assert.IsType<ArgumentNullException>(exception);
+            }
         }
 
         public class Handler : GetItemsUnitTests

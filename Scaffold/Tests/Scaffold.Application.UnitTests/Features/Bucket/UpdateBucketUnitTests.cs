@@ -29,47 +29,59 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
         public class Response
         {
             [Fact]
-            public void When_SettingCreatedToTrue_Expect_CreatedTrueAndUpdatedFalse()
+            public void When_InstantiatingResponseWithBucket_Expect_ResponseWithBucket()
             {
+                // Arrange
+                Bucket bucket = new Bucket();
+
                 // Act
-                UpdateBucket.Response response = new UpdateBucket.Response { Created = true };
+                UpdateBucket.Response response = new UpdateBucket.Response(bucket);
 
                 // Assert
-                Assert.True(response.Created);
-                Assert.False(response.Updated);
-            }
-
-            [Fact]
-            public void When_SettingCreatedToFalse_Expect_CreatedFalseAndUpdatedTrue()
-            {
-                // Act
-                UpdateBucket.Response response = new UpdateBucket.Response { Created = false };
-
-                // Assert
+                Assert.Equal(bucket, response.Bucket);
                 Assert.False(response.Created);
                 Assert.True(response.Updated);
             }
 
             [Fact]
-            public void When_SettingUpdatedToTrue_Expect_CreatedFalseAndUpdatedTrue()
+            public void When_InstantiatingResponseWithCreatedSetToTrue_Expect_CreatedTrue()
             {
+                // Arrange
+                Bucket bucket = new Bucket();
+
                 // Act
-                UpdateBucket.Response response = new UpdateBucket.Response { Updated = true };
+                UpdateBucket.Response response = new UpdateBucket.Response(bucket, true);
 
                 // Assert
+                Assert.Equal(bucket, response.Bucket);
+                Assert.True(response.Created);
+                Assert.False(response.Updated);
+            }
+
+            [Fact]
+            public void When_InstantiatingResponseWithCreatedSetToFalse_Expect_CreatedFalse()
+            {
+                // Arrange
+                Bucket bucket = new Bucket();
+
+                // Act
+                UpdateBucket.Response response = new UpdateBucket.Response(bucket, false);
+
+                // Assert
+                Assert.Equal(bucket, response.Bucket);
                 Assert.False(response.Created);
                 Assert.True(response.Updated);
             }
 
             [Fact]
-            public void When_SettingUpdatedToFalse_Expect_CreatedTrueAndUpdatedFalse()
+            public void When_InstantiatingResponseWithNull_Expect_ArgumentNullException()
             {
                 // Act
-                UpdateBucket.Response response = new UpdateBucket.Response { Updated = false };
+                Exception exception = Record.Exception(() => new UpdateBucket.Response(null!));
 
                 // Assert
-                Assert.True(response.Created);
-                Assert.False(response.Updated);
+                Assert.NotNull(exception);
+                Assert.IsType<ArgumentNullException>(exception);
             }
         }
 

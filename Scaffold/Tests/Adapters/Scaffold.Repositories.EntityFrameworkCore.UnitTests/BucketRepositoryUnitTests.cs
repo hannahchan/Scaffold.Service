@@ -8,7 +8,6 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
     using Scaffold.Application.Interfaces;
     using Scaffold.Application.Models;
     using Scaffold.Domain.Aggregates.Bucket;
-    using Scaffold.Repositories.EntityFrameworkCore;
     using Xunit;
 
     public class BucketRepositoryUnitTests
@@ -72,7 +71,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 IBucketRepository repository = new BucketRepository(context);
 
                 // Act
-                Exception exception = Record.Exception(() => repository.Add(null));
+                Exception exception = Record.Exception(() => repository.Add(null!));
 
                 // Assert
                 Assert.NotNull(exception);
@@ -115,7 +114,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 IBucketRepository repository = new BucketRepository(context);
 
                 // Act
-                Exception exception = await Record.ExceptionAsync(() => repository.AddAsync(null));
+                Exception exception = await Record.ExceptionAsync(() => repository.AddAsync(null!));
 
                 // Assert
                 Assert.NotNull(exception);
@@ -262,7 +261,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     IBucketRepository repository = new BucketRepository(context);
-                    exception = Record.Exception(() => repository.Get(null));
+                    exception = Record.Exception(() => repository.Get(null!));
                 }
 
                 // Assert
@@ -570,7 +569,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     IBucketRepository repository = new BucketRepository(context);
-                    exception = await Record.ExceptionAsync(() => repository.GetAsync(null));
+                    exception = await Record.ExceptionAsync(() => repository.GetAsync(null!));
                 }
 
                 // Assert
@@ -1677,7 +1676,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 IBucketRepository repository = new BucketRepository(context);
 
                 // Act
-                Exception exception = Record.Exception(() => repository.Remove(null));
+                Exception exception = Record.Exception(() => repository.Remove(null!));
 
                 // Assert
                 Assert.NotNull(exception);
@@ -1723,7 +1722,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 IBucketRepository repository = new BucketRepository(context);
 
                 // Act
-                Exception exception = await Record.ExceptionAsync(() => repository.RemoveAsync(null));
+                Exception exception = await Record.ExceptionAsync(() => repository.RemoveAsync(null!));
 
                 // Assert
                 Assert.NotNull(exception);
@@ -1777,7 +1776,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 IBucketRepository repository = new BucketRepository(context);
 
                 // Act
-                Exception exception = Record.Exception(() => repository.Update(null));
+                Exception exception = Record.Exception(() => repository.Update(null!));
 
                 // Assert
                 Assert.NotNull(exception);
@@ -1831,7 +1830,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 IBucketRepository repository = new BucketRepository(context);
 
                 // Act
-                Exception exception = await Record.ExceptionAsync(() => repository.UpdateAsync(null));
+                Exception exception = await Record.ExceptionAsync(() => repository.UpdateAsync(null!));
 
                 // Assert
                 Assert.NotNull(exception);

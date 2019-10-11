@@ -487,7 +487,7 @@ namespace Scaffold.Application.UnitTests.Models
         {
             public int Value { get; set; } = 0;
 
-            public int CompareTo(object obj)
+            public int CompareTo(object? obj)
             {
                 if (obj is ComparableProperty2 other)
                 {

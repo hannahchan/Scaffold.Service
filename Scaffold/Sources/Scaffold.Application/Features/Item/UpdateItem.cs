@@ -1,5 +1,6 @@
 namespace Scaffold.Application.Features.Item
 {
+    using System;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -18,23 +19,24 @@ namespace Scaffold.Application.Features.Item
 
             public int ItemId { get; set; }
 
-            public string Name { get; set; }
+            public string? Name { get; set; }
 
-            public string Description { get; set; }
+            public string? Description { get; set; }
         }
 
         public class Response
         {
-            public Item Item { get; set; }
-
-            public bool Created { get; set; } = false;
-
-            public bool Updated
+            public Response(Item item, bool created = false)
             {
-                get => !this.Created;
-
-                set => this.Created = !value;
+                this.Item = item ?? throw new ArgumentNullException(nameof(item));
+                this.Created = created;
             }
+
+            public Item Item { get; private set; }
+
+            public bool Created { get; private set; }
+
+            public bool Updated { get => !this.Created; }
         }
 
         public class Validator : AbstractValidator<Command>
@@ -63,24 +65,23 @@ namespace Scaffold.Application.Features.Item
                 Bucket bucket = await this.repository.GetAsync(request.BucketId) ??
                     throw new BucketNotFoundException(request.BucketId);
 
-                Response response = new Response { Item = bucket.Items.SingleOrDefault(x => x.Id == request.ItemId) };
+                Item item = bucket.Items.SingleOrDefault(x => x.Id == request.ItemId);
 
                 MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(new MappingProfile()));
 
-                if (response.Item == null)
+                if (item is null)
                 {
-                    response.Item = configuration.CreateMapper().Map<Item>(request);
-                    bucket.AddItem(response.Item);
+                    item = configuration.CreateMapper().Map<Item>(request);
+                    bucket.AddItem(item);
                     await this.repository.UpdateAsync(bucket);
-                    response.Created = true;
 
-                    return response;
+                    return new Response(item, true);
                 }
 
-                response.Item = configuration.CreateMapper().Map(request, response.Item);
+                item = configuration.CreateMapper().Map(request, item);
                 await this.repository.UpdateAsync(bucket);
 
-                return response;
+                return new Response(item);
             }
         }
 

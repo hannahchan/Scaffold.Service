@@ -22,9 +22,9 @@ namespace Scaffold.Domain.Aggregates.Bucket
 
         public int Id { get; private set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public int Size
         {
@@ -52,14 +52,14 @@ namespace Scaffold.Domain.Aggregates.Bucket
 
         public void AddItem(Item item)
         {
+            if (item is null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
             if (this.items.Contains(item))
             {
                 return;
-            }
-
-            if (item == null)
-            {
-                throw new ArgumentNullException(nameof(item));
             }
 
             if (this.IsFull())
@@ -77,6 +77,11 @@ namespace Scaffold.Domain.Aggregates.Bucket
 
         public void RemoveItem(Item item)
         {
+            if (item is null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
             if (!this.items.Contains(item))
             {
                 return;

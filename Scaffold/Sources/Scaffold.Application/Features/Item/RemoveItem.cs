@@ -4,6 +4,7 @@ namespace Scaffold.Application.Features.Item
     using System.Threading;
     using System.Threading.Tasks;
     using MediatR;
+    using Scaffold.Application.Exceptions;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
 
@@ -27,14 +28,11 @@ namespace Scaffold.Application.Features.Item
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                Bucket bucket = await this.repository.GetAsync(request.BucketId);
-                Item item = bucket?.Items.SingleOrDefault(x => x.Id == request.ItemId);
+                Bucket bucket = await this.repository.GetAsync(request.BucketId) ?? throw new BucketNotFoundException(request.BucketId);
+                Item item = bucket.Items.SingleOrDefault(x => x.Id == request.ItemId) ?? throw new ItemNotFoundException(request.ItemId);
 
-                if (item != null)
-                {
-                    bucket.RemoveItem(item);
-                    await this.repository.UpdateAsync(bucket);
-                }
+                bucket.RemoveItem(item);
+                await this.repository.UpdateAsync(bucket);
 
                 return default;
             }

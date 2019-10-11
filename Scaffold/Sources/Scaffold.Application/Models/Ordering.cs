@@ -84,7 +84,7 @@ namespace Scaffold.Application.Models
         {
             PropertyInfo property = Properties.SingleOrDefault(x => string.Equals(x.Name, item.PropertyName, StringComparison.Ordinal));
 
-            if (property == null)
+            if (property is null)
             {
                 throw new PropertyNotFoundException(item.PropertyName, typeof(T).Name);
             }

@@ -33,7 +33,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 // Arrange
                 Mock<IMediator> mock = new Mock<IMediator>();
                 mock.Setup(m => m.Send(It.IsAny<AddBucket.Command>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new AddBucket.Response { Bucket = new Domain.Aggregates.Bucket.Bucket() });
+                    .ReturnsAsync(new AddBucket.Response(new Domain.Aggregates.Bucket.Bucket()));
 
                 BucketsController controller = new BucketsController(this.mapper, mock.Object);
 
@@ -43,9 +43,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 result = await controller.Post(new Bucket());
 
                 // Assert
-                Assert.IsType<CreatedAtRouteResult>(result);
-
-                CreatedAtRouteResult actionResult = result as CreatedAtRouteResult;
+                CreatedAtRouteResult actionResult = Assert.IsType<CreatedAtRouteResult>(result);
 
                 Assert.NotEmpty(actionResult.RouteName);
                 Assert.IsType<Bucket>(actionResult.Value);
@@ -60,7 +58,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 // Arrange
                 Mock<IMediator> mock = new Mock<IMediator>();
                 mock.Setup(m => m.Send(It.IsAny<GetBuckets.Query>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new GetBuckets.Response { Buckets = new List<Domain.Aggregates.Bucket.Bucket>() });
+                    .ReturnsAsync(new GetBuckets.Response(new List<Domain.Aggregates.Bucket.Bucket>()));
 
                 BucketsController controller = new BucketsController(this.mapper, mock.Object);
 
@@ -79,7 +77,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 // Arrange
                 Mock<IMediator> mock = new Mock<IMediator>();
                 mock.Setup(m => m.Send(It.IsAny<GetBucket.Query>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new GetBucket.Response { Bucket = new Domain.Aggregates.Bucket.Bucket() });
+                    .ReturnsAsync(new GetBucket.Response(new Domain.Aggregates.Bucket.Bucket()));
 
                 BucketsController controller = new BucketsController(this.mapper, mock.Object);
 
@@ -101,11 +99,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 // Arrange
                 Mock<IMediator> mock = new Mock<IMediator>();
                 mock.Setup(m => m.Send(It.IsAny<UpdateBucket.Command>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new UpdateBucket.Response
-                    {
-                        Bucket = new Domain.Aggregates.Bucket.Bucket(),
-                        Created = false,
-                    });
+                    .ReturnsAsync(new UpdateBucket.Response(new Domain.Aggregates.Bucket.Bucket(), false));
 
                 BucketsController controller = new BucketsController(this.mapper, mock.Object);
 
@@ -125,11 +119,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 // Arrange
                 Mock<IMediator> mock = new Mock<IMediator>();
                 mock.Setup(m => m.Send(It.IsAny<UpdateBucket.Command>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new UpdateBucket.Response
-                    {
-                        Bucket = new Domain.Aggregates.Bucket.Bucket(),
-                        Created = true,
-                    });
+                    .ReturnsAsync(new UpdateBucket.Response(new Domain.Aggregates.Bucket.Bucket(), true));
 
                 BucketsController controller = new BucketsController(this.mapper, mock.Object);
 
@@ -139,10 +129,8 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 result = await controller.Put(new Random().Next(int.MaxValue), new Bucket());
 
                 // Assert
-                Assert.IsType<CreatedAtRouteResult>(result.Result);
+                CreatedAtRouteResult actionResult = Assert.IsType<CreatedAtRouteResult>(result.Result);
                 Assert.Null(result.Value);
-
-                CreatedAtRouteResult actionResult = result.Result as CreatedAtRouteResult;
 
                 Assert.NotEmpty(actionResult.RouteName);
                 Assert.IsType<Bucket>(actionResult.Value);

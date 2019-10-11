@@ -100,10 +100,13 @@ namespace Scaffold.Application.UnitTests.Exception
             }
 
             // Assert
-            Assert.Equal(exception.Title, result.Title);
-            Assert.Equal(exception.Detail, result.Detail);
+            Assert.NotEqual(exception, result);
             Assert.Equal(exception.Message, result.Message);
-            Assert.Equal(exception.InnerException.Message, result.InnerException.Message);
+            Assert.Equal(exception.Detail, result.Detail);
+            Assert.Equal(exception.Title, result.Title);
+
+            Assert.NotEqual(exception.InnerException, result.InnerException);
+            Assert.Equal(exception.InnerException!.Message, result.InnerException?.Message);
         }
 
         [Serializable]

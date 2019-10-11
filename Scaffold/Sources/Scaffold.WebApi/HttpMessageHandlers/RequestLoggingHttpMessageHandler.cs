@@ -78,7 +78,7 @@ namespace Scaffold.WebApi.HttpMessageHandlers
                         }
                     }
 
-                    string body = this.response.Content?.ReadAsStringAsync().Result;
+                    string? body = this.response.Content?.ReadAsStringAsync().Result;
 
                     object httpResponse = new
                     {

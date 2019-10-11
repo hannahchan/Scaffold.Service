@@ -24,7 +24,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore
 
         public void Add(Bucket bucket)
         {
-            if (bucket == null)
+            if (bucket is null)
             {
                 throw new ArgumentNullException(nameof(bucket));
             }
@@ -35,12 +35,13 @@ namespace Scaffold.Repositories.EntityFrameworkCore
 
         public Task AddAsync(Bucket bucket)
         {
-            if (bucket == null)
+            if (bucket is null)
             {
                 throw new ArgumentNullException(nameof(bucket));
             }
 
-            return this.AddAsyncInternal(bucket);
+            this.context.Set<Bucket>().Add(bucket);
+            return this.context.SaveChangesAsync();
         }
 
         public Bucket Get(int id)
@@ -51,22 +52,22 @@ namespace Scaffold.Repositories.EntityFrameworkCore
                 .SingleOrDefault();
         }
 
-        public List<Bucket> Get(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket> ordering = null)
+        public List<Bucket> Get(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket>? ordering = null)
         {
             return this.BuildQuery(predicate, limit, offset, ordering)
                 .Include(bucket => bucket.Items)
                 .ToList();
         }
 
-        public async Task<Bucket> GetAsync(int id)
+        public Task<Bucket> GetAsync(int id)
         {
-            return await this.context.Set<Bucket>()
+            return this.context.Set<Bucket>()
                 .Where(bucket => bucket.Id == id)
                 .Include(bucket => bucket.Items)
                 .SingleOrDefaultAsync();
         }
 
-        public Task<List<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket> ordering = null)
+        public Task<List<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket>? ordering = null)
         {
             return this.BuildQuery(predicate, limit, offset, ordering)
                 .Include(bucket => bucket.Items)
@@ -75,7 +76,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore
 
         public void Remove(Bucket bucket)
         {
-            if (bucket == null)
+            if (bucket is null)
             {
                 throw new ArgumentNullException(nameof(bucket));
             }
@@ -86,17 +87,18 @@ namespace Scaffold.Repositories.EntityFrameworkCore
 
         public Task RemoveAsync(Bucket bucket)
         {
-            if (bucket == null)
+            if (bucket is null)
             {
                 throw new ArgumentNullException(nameof(bucket));
             }
 
-            return this.RemoveAsyncInternal(bucket);
+            this.context.Set<Bucket>().Remove(bucket);
+            return this.context.SaveChangesAsync();
         }
 
         public void Update(Bucket bucket)
         {
-            if (bucket == null)
+            if (bucket is null)
             {
                 throw new ArgumentNullException(nameof(bucket));
             }
@@ -107,12 +109,13 @@ namespace Scaffold.Repositories.EntityFrameworkCore
 
         public Task UpdateAsync(Bucket bucket)
         {
-            if (bucket == null)
+            if (bucket is null)
             {
                 throw new ArgumentNullException(nameof(bucket));
             }
 
-            return this.UpdateAsyncInternal(bucket);
+            this.context.Set<Bucket>().Update(bucket);
+            return this.context.SaveChangesAsync();
         }
 
         private static Dictionary<string, LambdaExpression> InitializeKeySelectors()
@@ -132,15 +135,9 @@ namespace Scaffold.Repositories.EntityFrameworkCore
             return keySelectors;
         }
 
-        private async Task AddAsyncInternal(Bucket bucket)
+        private IQueryable<Bucket> BuildQuery(Expression<Func<Bucket, bool>> predicate, int? limit, int? offset, Ordering<Bucket>? ordering = null)
         {
-            this.context.Set<Bucket>().Add(bucket);
-            await this.context.SaveChangesAsync();
-        }
-
-        private IQueryable<Bucket> BuildQuery(Expression<Func<Bucket, bool>> predicate, int? limit, int? offset, Ordering<Bucket> ordering = null)
-        {
-            if (predicate == null)
+            if (predicate is null)
             {
                 throw new ArgumentNullException(nameof(predicate));
             }
@@ -178,18 +175,6 @@ namespace Scaffold.Repositories.EntityFrameworkCore
             }
 
             return query;
-        }
-
-        private async Task RemoveAsyncInternal(Bucket bucket)
-        {
-            this.context.Set<Bucket>().Remove(bucket);
-            await this.context.SaveChangesAsync();
-        }
-
-        private async Task UpdateAsyncInternal(Bucket bucket)
-        {
-            this.context.Set<Bucket>().Update(bucket);
-            await this.context.SaveChangesAsync();
         }
     }
 }

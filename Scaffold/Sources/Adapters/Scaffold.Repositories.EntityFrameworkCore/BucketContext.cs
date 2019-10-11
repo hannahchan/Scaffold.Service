@@ -11,9 +11,9 @@ namespace Scaffold.Repositories.EntityFrameworkCore
         {
         }
 
-        public DbSet<Bucket> Buckets { get; set; }
+        public DbSet<Bucket> Buckets { get; set; } = null!;
 
-        public DbSet<Item> Items { get; set; }
+        public DbSet<Item> Items { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

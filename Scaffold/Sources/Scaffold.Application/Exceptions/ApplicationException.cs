@@ -5,37 +5,39 @@ namespace Scaffold.Application.Exceptions
 
     public abstract class ApplicationException : Exception
     {
-        protected ApplicationException(string message)
+        private readonly string? title;
+
+        protected ApplicationException(string? message)
             : base(message)
         {
         }
 
-        protected ApplicationException(string message, Exception innerException)
+        protected ApplicationException(string? message, Exception? innerException)
             : base(message, innerException)
         {
         }
 
-        protected ApplicationException(string title, string message)
+        protected ApplicationException(string? title, string? message)
             : base(message)
         {
-            this.Title = title;
+            this.title = title;
         }
 
-        protected ApplicationException(string title, string message, Exception innerException)
+        protected ApplicationException(string? title, string? message, Exception? innerException)
             : base(message, innerException)
         {
-            this.Title = title;
+            this.title = title;
         }
 
         protected ApplicationException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            this.Title = info.GetString(nameof(this.Title));
+            this.title = info.GetString(nameof(this.Title));
         }
 
         public virtual string Detail => this.Message;
 
-        public virtual string Title { get; private set; } = "Application Exception";
+        public virtual string Title => this.title ?? "Application Exception";
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {

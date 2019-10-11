@@ -74,7 +74,7 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
                 Bucket bucket = new Bucket();
 
                 // Act
-                Exception exception = Record.Exception(() => bucket.AddItem(null));
+                Exception exception = Record.Exception(() => bucket.AddItem(null!));
 
                 // Assert
                 Assert.NotNull(exception);
@@ -157,7 +157,7 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
             }
 
             [Fact]
-            public void When_RemovingNull_Expect_NoChange()
+            public void When_RemovingNull_Expect_ArgumentNullException()
             {
                 // Arrange
                 Bucket bucket = new Bucket();
@@ -166,9 +166,11 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
                 bucket.AddItem(item);
 
                 // Act
-                bucket.RemoveItem(null);
+                Exception exception = Record.Exception(() => bucket.RemoveItem(null!));
 
                 // Assert
+                Assert.NotNull(exception);
+                Assert.IsType<ArgumentNullException>(exception);
                 Assert.Contains(item, bucket.Items);
                 Assert.Equal(1, bucket.Items.Count);
             }

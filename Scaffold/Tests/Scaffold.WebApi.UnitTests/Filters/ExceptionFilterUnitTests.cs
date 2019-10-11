@@ -41,14 +41,14 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     Result = new ObjectResult(new ProblemDetails()),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter(null);
+                ExceptionFilter exceptionFilter = new ExceptionFilter(null!);
 
                 // Act
                 exceptionFilter.OnActionExecuted(context);
 
                 // Assert
-                ObjectResult objectResult = context.Result as ObjectResult;
-                ProblemDetails problemDetails = objectResult.Value as ProblemDetails;
+                ObjectResult objectResult = Assert.IsAssignableFrom<ObjectResult>(context.Result);
+                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
                 Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlation-Id"]));
                 Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["request-Id"]);
             }
@@ -68,8 +68,8 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 exceptionFilter.OnActionExecuted(context);
 
                 // Assert
-                ObjectResult objectResult = context.Result as ObjectResult;
-                ProblemDetails problemDetails = objectResult.Value as ProblemDetails;
+                ObjectResult objectResult = Assert.IsAssignableFrom<ObjectResult>(context.Result);
+                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
                 Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlation-Id"]));
                 Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["request-Id"]);
             }
@@ -94,8 +94,8 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 exceptionFilter.OnActionExecuted(context);
 
                 // Assert
-                ObjectResult objectResult = context.Result as ObjectResult;
-                ProblemDetails problemDetails = objectResult.Value as ProblemDetails;
+                ObjectResult objectResult = Assert.IsAssignableFrom<ObjectResult>(context.Result);
+                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
                 Assert.Equal(correlationId, problemDetails.Extensions["correlation-Id"]);
                 Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["request-Id"]);
             }
@@ -113,7 +113,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     new Dictionary<string, object>(),
                     null);
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter(null);
+                ExceptionFilter exceptionFilter = new ExceptionFilter(null!);
 
                 // Act
                 exceptionFilter.OnActionExecuting(context);
@@ -137,15 +137,13 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     Exception = new TestDomainException(Guid.NewGuid().ToString()),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter(null);
+                ExceptionFilter exceptionFilter = new ExceptionFilter(null!);
 
                 // Act
                 exceptionFilter.OnException(context);
 
                 // Assert
-                Assert.IsType<ConflictObjectResult>(context.Result);
-
-                ConflictObjectResult objectResult = context.Result as ConflictObjectResult;
+                ConflictObjectResult objectResult = Assert.IsType<ConflictObjectResult>(context.Result);
                 Assert.IsType<ProblemDetails>(objectResult.Value);
             }
 
@@ -158,15 +156,13 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     Exception = new TestNotFoundException(Guid.NewGuid().ToString()),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter(null);
+                ExceptionFilter exceptionFilter = new ExceptionFilter(null!);
 
                 // Act
                 exceptionFilter.OnException(context);
 
                 // Assert
-                Assert.IsType<NotFoundObjectResult>(context.Result);
-
-                NotFoundObjectResult objectResult = context.Result as NotFoundObjectResult;
+                NotFoundObjectResult objectResult = Assert.IsType<NotFoundObjectResult>(context.Result);
                 Assert.IsType<ProblemDetails>(objectResult.Value);
             }
 
@@ -188,18 +184,15 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     Exception = new ValidationException(Guid.NewGuid().ToString(), validationFailures),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter(null);
+                ExceptionFilter exceptionFilter = new ExceptionFilter(null!);
 
                 // Act
                 exceptionFilter.OnException(context);
 
                 // Assert
-                Assert.IsType<BadRequestObjectResult>(context.Result);
+                BadRequestObjectResult objectResult = Assert.IsType<BadRequestObjectResult>(context.Result);
+                ValidationProblemDetails problemDetails = Assert.IsType<ValidationProblemDetails>(objectResult.Value);
 
-                BadRequestObjectResult objectResult = context.Result as BadRequestObjectResult;
-                Assert.IsType<ValidationProblemDetails>(objectResult.Value);
-
-                ValidationProblemDetails problemDetails = objectResult.Value as ValidationProblemDetails;
                 Assert.Equal(3, problemDetails.Errors.Count);
                 Assert.Equal(3, problemDetails.Errors["property1"].Length);
                 Assert.Single(problemDetails.Errors["property2"]);
@@ -215,7 +208,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     Exception = new Exception(),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter(null);
+                ExceptionFilter exceptionFilter = new ExceptionFilter(null!);
 
                 // Act
                 exceptionFilter.OnException(context);
@@ -233,14 +226,14 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     Exception = new TestDomainException(Guid.NewGuid().ToString()),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter(null);
+                ExceptionFilter exceptionFilter = new ExceptionFilter(null!);
 
                 // Act
                 exceptionFilter.OnException(context);
 
                 // Assert
-                ObjectResult objectResult = context.Result as ObjectResult;
-                ProblemDetails problemDetails = objectResult.Value as ProblemDetails;
+                ObjectResult objectResult = Assert.IsAssignableFrom<ObjectResult>(context.Result);
+                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
                 Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlation-Id"]));
                 Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["request-Id"]);
             }
@@ -260,8 +253,8 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 exceptionFilter.OnException(context);
 
                 // Assert
-                ObjectResult objectResult = context.Result as ObjectResult;
-                ProblemDetails problemDetails = objectResult.Value as ProblemDetails;
+                ObjectResult objectResult = Assert.IsAssignableFrom<ObjectResult>(context.Result);
+                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
                 Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlation-Id"]));
                 Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["request-Id"]);
             }
@@ -286,8 +279,8 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 exceptionFilter.OnException(context);
 
                 // Assert
-                ObjectResult objectResult = context.Result as ObjectResult;
-                ProblemDetails problemDetails = objectResult.Value as ProblemDetails;
+                ObjectResult objectResult = Assert.IsAssignableFrom<ObjectResult>(context.Result);
+                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
                 Assert.Equal(correlationId, problemDetails.Extensions["correlation-Id"]);
                 Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["request-Id"]);
             }

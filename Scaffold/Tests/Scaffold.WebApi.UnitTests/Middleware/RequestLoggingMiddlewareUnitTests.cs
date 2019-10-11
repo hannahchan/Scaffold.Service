@@ -155,17 +155,17 @@ namespace Scaffold.WebApi.UnitTests.Middleware
 
         private class TestWebHostEnvironment : IWebHostEnvironment
         {
-            public string EnvironmentName { get; set; }
+            public string EnvironmentName { get; set; } = null!;
 
-            public string ApplicationName { get; set; }
+            public string ApplicationName { get; set; } = null!;
 
-            public string WebRootPath { get; set; }
+            public string WebRootPath { get; set; } = null!;
 
-            public IFileProvider WebRootFileProvider { get; set; }
+            public IFileProvider WebRootFileProvider { get; set; } = null!;
 
-            public string ContentRootPath { get; set; }
+            public string ContentRootPath { get; set; } = null!;
 
-            public IFileProvider ContentRootFileProvider { get; set; }
+            public IFileProvider ContentRootFileProvider { get; set; } = null!;
         }
     }
 }

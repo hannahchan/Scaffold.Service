@@ -30,12 +30,17 @@ namespace Scaffold.Application.Features.Bucket
 
             public int? Offset { get; set; } = null;
 
-            public Ordering<Bucket> Ordering { get; set; } = null;
+            public Ordering<Bucket>? Ordering { get; set; } = null;
         }
 
         public class Response
         {
-            public IList<Bucket> Buckets { get; set; }
+            public Response(IList<Bucket> buckets)
+            {
+                this.Buckets = buckets ?? throw new ArgumentNullException(nameof(buckets));
+            }
+
+            public IList<Bucket> Buckets { get; private set; }
         }
 
         public class Handler : IRequestHandler<Query, Response>
@@ -49,7 +54,7 @@ namespace Scaffold.Application.Features.Bucket
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                return new Response { Buckets = await this.repository.GetAsync(request.Predicate, request.Limit, request.Offset, request.Ordering) };
+                return new Response(await this.repository.GetAsync(request.Predicate, request.Limit, request.Offset, request.Ordering));
             }
         }
     }

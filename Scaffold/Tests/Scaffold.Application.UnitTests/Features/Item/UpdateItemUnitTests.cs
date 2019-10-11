@@ -29,47 +29,59 @@ namespace Scaffold.Application.UnitTests.Features.Item
         public class Response
         {
             [Fact]
-            public void When_SettingCreatedToTrue_Expect_CreatedTrueAndUpdatedFalse()
+            public void When_InstantiatingResponseWithItem_Expect_ResponseWithItem()
             {
+                // Arrange
+                Item item = new Item();
+
                 // Act
-                UpdateItem.Response response = new UpdateItem.Response { Created = true };
+                UpdateItem.Response response = new UpdateItem.Response(item);
 
                 // Assert
-                Assert.True(response.Created);
-                Assert.False(response.Updated);
-            }
-
-            [Fact]
-            public void When_SettingCreatedToFalse_Expect_CreatedFalseAndUpdatedTrue()
-            {
-                // Act
-                UpdateItem.Response response = new UpdateItem.Response { Created = false };
-
-                // Assert
+                Assert.Equal(item, response.Item);
                 Assert.False(response.Created);
                 Assert.True(response.Updated);
             }
 
             [Fact]
-            public void When_SettingUpdatedToTrue_Expect_CreatedFalseAndUpdatedTrue()
+            public void When_InstantiatingResponseWithCreatedSetToTrue_Expect_CreatedTrue()
             {
+                // Arrange
+                Item item = new Item();
+
                 // Act
-                UpdateItem.Response response = new UpdateItem.Response { Updated = true };
+                UpdateItem.Response response = new UpdateItem.Response(item, true);
 
                 // Assert
+                Assert.Equal(item, response.Item);
+                Assert.True(response.Created);
+                Assert.False(response.Updated);
+            }
+
+            [Fact]
+            public void When_InstantiatingResponseWithCreatedSetToFalse_Expect_CreatedFalse()
+            {
+                // Arrange
+                Item item = new Item();
+
+                // Act
+                UpdateItem.Response response = new UpdateItem.Response(item, false);
+
+                // Assert
+                Assert.Equal(item, response.Item);
                 Assert.False(response.Created);
                 Assert.True(response.Updated);
             }
 
             [Fact]
-            public void When_SettingUpdatedToFalse_Expect_CreatedTrueAndUpdatedFalse()
+            public void When_InstantiatingResponseWithNull_Expect_ArgumentNullException()
             {
                 // Act
-                UpdateItem.Response response = new UpdateItem.Response { Updated = false };
+                Exception exception = Record.Exception(() => new UpdateItem.Response(null!));
 
                 // Assert
-                Assert.True(response.Created);
-                Assert.False(response.Updated);
+                Assert.NotNull(exception);
+                Assert.IsType<ArgumentNullException>(exception);
             }
         }
 

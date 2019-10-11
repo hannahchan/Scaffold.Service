@@ -1,5 +1,6 @@
 namespace Scaffold.Application.Features.Item
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
@@ -15,14 +16,19 @@ namespace Scaffold.Application.Features.Item
         {
             public int BucketId { get; set; }
 
-            public string Name { get; set; }
+            public string? Name { get; set; }
 
-            public string Description { get; set; }
+            public string? Description { get; set; }
         }
 
         public class Response
         {
-            public Item Item { get; set; }
+            public Response(Item item)
+            {
+                this.Item = item ?? throw new ArgumentNullException(nameof(item));
+            }
+
+            public Item Item { get; private set; }
         }
 
         public class Validator : AbstractValidator<Command>
@@ -49,16 +55,14 @@ namespace Scaffold.Application.Features.Item
                 Bucket bucket = await this.repository.GetAsync(request.BucketId) ??
                     throw new BucketNotFoundException(request.BucketId);
 
-                Response response = new Response();
-
                 MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(new MappingProfile()));
-                response.Item = configuration.CreateMapper().Map<Item>(request);
+                Item item = configuration.CreateMapper().Map<Item>(request);
 
-                bucket.AddItem(response.Item);
+                bucket.AddItem(item);
 
                 await this.repository.UpdateAsync(bucket);
 
-                return response;
+                return new Response(item);
             }
         }
 

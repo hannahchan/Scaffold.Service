@@ -1,5 +1,6 @@
 namespace Scaffold.Application.Features.Bucket
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
@@ -13,16 +14,21 @@ namespace Scaffold.Application.Features.Bucket
     {
         public class Command : IRequest<Response>
         {
-            public string Name { get; set; }
+            public string? Name { get; set; }
 
-            public string Description { get; set; }
+            public string? Description { get; set; }
 
             public int? Size { get; set; }
         }
 
         public class Response
         {
-            public Bucket Bucket { get; set; }
+            public Response(Bucket bucket)
+            {
+                this.Bucket = bucket ?? throw new ArgumentNullException(nameof(bucket));
+            }
+
+            public Bucket Bucket { get; private set; }
         }
 
         public class Validator : AbstractValidator<Command>
@@ -46,21 +52,21 @@ namespace Scaffold.Application.Features.Bucket
             {
                 await new Validator().ValidateAndThrowAsync(request);
 
-                Response response = new Response();
+                Bucket bucket;
 
                 try
                 {
                     MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(new MappingProfile()));
-                    response.Bucket = configuration.CreateMapper().Map<Bucket>(request);
+                    bucket = configuration.CreateMapper().Map<Bucket>(request);
                 }
                 catch (AutoMapperMappingException exception) when (exception.InnerException is DomainException)
                 {
                     throw exception.InnerException;
                 }
 
-                await this.repository.AddAsync(response.Bucket);
+                await this.repository.AddAsync(bucket);
 
-                return response;
+                return new Response(bucket);
             }
         }
 

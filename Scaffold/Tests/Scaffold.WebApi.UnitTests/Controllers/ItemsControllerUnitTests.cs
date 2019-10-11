@@ -33,7 +33,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 // Arrange
                 Mock<IMediator> mock = new Mock<IMediator>();
                 mock.Setup(m => m.Send(It.IsAny<AddItem.Command>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new AddItem.Response { Item = new Domain.Aggregates.Bucket.Item() });
+                    .ReturnsAsync(new AddItem.Response(new Domain.Aggregates.Bucket.Item()));
 
                 ItemsController controller = new ItemsController(this.mapper, mock.Object);
 
@@ -43,9 +43,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 result = await controller.Post(new Random().Next(int.MaxValue), new Item());
 
                 // Assert
-                Assert.IsType<CreatedAtRouteResult>(result);
-
-                CreatedAtRouteResult actionResult = result as CreatedAtRouteResult;
+                CreatedAtRouteResult actionResult = Assert.IsType<CreatedAtRouteResult>(result);
 
                 Assert.NotEmpty(actionResult.RouteName);
                 Assert.IsType<Item>(actionResult.Value);
@@ -60,7 +58,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 // Arrange
                 Mock<IMediator> mock = new Mock<IMediator>();
                 mock.Setup(m => m.Send(It.IsAny<GetItems.Query>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new GetItems.Response { Items = new List<Domain.Aggregates.Bucket.Item>() });
+                    .ReturnsAsync(new GetItems.Response(new List<Domain.Aggregates.Bucket.Item>()));
 
                 ItemsController controller = new ItemsController(this.mapper, mock.Object);
 
@@ -79,7 +77,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 // Arrange
                 Mock<IMediator> mock = new Mock<IMediator>();
                 mock.Setup(m => m.Send(It.IsAny<GetItem.Query>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new GetItem.Response { Item = new Domain.Aggregates.Bucket.Item() });
+                    .ReturnsAsync(new GetItem.Response(new Domain.Aggregates.Bucket.Item()));
 
                 ItemsController controller = new ItemsController(this.mapper, mock.Object);
 
@@ -101,11 +99,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 // Arrange
                 Mock<IMediator> mock = new Mock<IMediator>();
                 mock.Setup(m => m.Send(It.IsAny<UpdateItem.Command>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new UpdateItem.Response
-                    {
-                        Item = new Domain.Aggregates.Bucket.Item(),
-                        Created = false,
-                    });
+                    .ReturnsAsync(new UpdateItem.Response(new Domain.Aggregates.Bucket.Item(), false));
 
                 ItemsController controller = new ItemsController(this.mapper, mock.Object);
 
@@ -125,11 +119,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 // Arrange
                 Mock<IMediator> mock = new Mock<IMediator>();
                 mock.Setup(m => m.Send(It.IsAny<UpdateItem.Command>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new UpdateItem.Response
-                    {
-                        Item = new Domain.Aggregates.Bucket.Item(),
-                        Created = true,
-                    });
+                    .ReturnsAsync(new UpdateItem.Response(new Domain.Aggregates.Bucket.Item(), true));
 
                 ItemsController controller = new ItemsController(this.mapper, mock.Object);
 
@@ -139,10 +129,8 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 result = await controller.Put(new Random().Next(int.MaxValue), new Random().Next(int.MaxValue), new Item());
 
                 // Assert
-                Assert.IsType<CreatedAtRouteResult>(result.Result);
+                CreatedAtRouteResult actionResult = Assert.IsType<CreatedAtRouteResult>(result.Result);
                 Assert.Null(result.Value);
-
-                CreatedAtRouteResult actionResult = result.Result as CreatedAtRouteResult;
 
                 Assert.NotEmpty(actionResult.RouteName);
                 Assert.IsType<Item>(actionResult.Value);

@@ -1,5 +1,6 @@
 namespace Scaffold.Application.Features.Item
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
@@ -18,7 +19,12 @@ namespace Scaffold.Application.Features.Item
 
         public class Response
         {
-            public IList<Item> Items { get; set; }
+            public Response(IList<Item> items)
+            {
+                this.Items = items ?? throw new ArgumentNullException(nameof(items));
+            }
+
+            public IList<Item> Items { get; private set; }
         }
 
         public class Handler : IRequestHandler<Query, Response>
@@ -35,7 +41,7 @@ namespace Scaffold.Application.Features.Item
                 Bucket bucket = await this.repository.GetAsync(request.BucketId) ??
                     throw new BucketNotFoundException(request.BucketId);
 
-                return new Response { Items = bucket.Items.ToList() };
+                return new Response(bucket.Items.ToList());
             }
         }
     }

@@ -1,5 +1,6 @@
 namespace Scaffold.Application.Features.Bucket
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
@@ -15,25 +16,26 @@ namespace Scaffold.Application.Features.Bucket
         {
             public int Id { get; set; }
 
-            public string Name { get; set; }
+            public string? Name { get; set; }
 
-            public string Description { get; set; }
+            public string? Description { get; set; }
 
             public int? Size { get; set; }
         }
 
         public class Response
         {
-            public Bucket Bucket { get; set; }
-
-            public bool Created { get; set; } = false;
-
-            public bool Updated
+            public Response(Bucket bucket, bool created = false)
             {
-                get => !this.Created;
-
-                set => this.Created = !value;
+                this.Bucket = bucket ?? throw new ArgumentNullException(nameof(bucket));
+                this.Created = created;
             }
+
+            public Bucket Bucket { get; private set; }
+
+            public bool Created { get; private set; }
+
+            public bool Updated { get => !this.Created; }
         }
 
         public class Validator : AbstractValidator<Command>
@@ -58,25 +60,24 @@ namespace Scaffold.Application.Features.Bucket
             {
                 await new Validator().ValidateAndThrowAsync(request);
 
-                Response response = new Response { Bucket = await this.repository.GetAsync(request.Id) };
+                Bucket bucket = await this.repository.GetAsync(request.Id);
 
                 try
                 {
                     MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(new MappingProfile()));
 
-                    if (response.Bucket == null)
+                    if (bucket is null)
                     {
-                        response.Bucket = configuration.CreateMapper().Map<Bucket>(request);
-                        await this.repository.AddAsync(response.Bucket);
-                        response.Created = true;
+                        bucket = configuration.CreateMapper().Map<Bucket>(request);
+                        await this.repository.AddAsync(bucket);
 
-                        return response;
+                        return new Response(bucket, true);
                     }
 
-                    response.Bucket = configuration.CreateMapper().Map(request, response.Bucket);
-                    await this.repository.UpdateAsync(response.Bucket);
+                    bucket = configuration.CreateMapper().Map(request, bucket);
+                    await this.repository.UpdateAsync(bucket);
 
-                    return response;
+                    return new Response(bucket);
                 }
                 catch (AutoMapperMappingException exception) when (exception.InnerException is DomainException)
                 {

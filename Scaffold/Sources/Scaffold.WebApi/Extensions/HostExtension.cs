@@ -1,7 +1,6 @@
 namespace Scaffold.WebApi.Extensions
 {
     using System;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -11,7 +10,7 @@ namespace Scaffold.WebApi.Extensions
     {
         public static IHost EnsureCreatedDatabase(this IHost host)
         {
-            if (host == null)
+            if (host is null)
             {
                 throw new ArgumentNullException(nameof(host));
             }
@@ -33,7 +32,7 @@ namespace Scaffold.WebApi.Extensions
 
         public static IHost MigrateDatabase(this IHost host)
         {
-            if (host == null)
+            if (host is null)
             {
                 throw new ArgumentNullException(nameof(host));
             }

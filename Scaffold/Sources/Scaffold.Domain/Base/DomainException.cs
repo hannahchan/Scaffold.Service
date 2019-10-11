@@ -5,37 +5,39 @@ namespace Scaffold.Domain.Base
 
     public abstract class DomainException : Exception
     {
-        protected DomainException(string message)
+        private readonly string? title;
+
+        protected DomainException(string? message)
             : base(message)
         {
         }
 
-        protected DomainException(string message, Exception innerException)
+        protected DomainException(string? message, Exception? innerException)
             : base(message, innerException)
         {
         }
 
-        protected DomainException(string title, string message)
+        protected DomainException(string? title, string? message)
             : base(message)
         {
-            this.Title = title;
+            this.title = title;
         }
 
-        protected DomainException(string title, string message, Exception innerException)
+        protected DomainException(string? title, string? message, Exception? innerException)
             : base(message, innerException)
         {
-            this.Title = title;
+            this.title = title;
         }
 
         protected DomainException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            this.Title = info.GetString(nameof(this.Title));
+            this.title = info.GetString(nameof(this.Title));
         }
 
         public virtual string Detail => this.Message;
 
-        public virtual string Title { get; private set; } = "Domain Exception";
+        public virtual string Title => this.title ?? "Domain Exception";
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {

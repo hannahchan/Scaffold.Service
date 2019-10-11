@@ -1,5 +1,6 @@
 namespace Scaffold.Application.Features.Bucket
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using MediatR;
@@ -16,7 +17,12 @@ namespace Scaffold.Application.Features.Bucket
 
         public class Response
         {
-            public Bucket Bucket { get; set; }
+            public Response(Bucket bucket)
+            {
+                this.Bucket = bucket ?? throw new ArgumentNullException(nameof(bucket));
+            }
+
+            public Bucket Bucket { get; private set; }
         }
 
         public class Handler : IRequestHandler<Query, Response>
@@ -30,10 +36,7 @@ namespace Scaffold.Application.Features.Bucket
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                return new Response
-                {
-                    Bucket = await this.repository.GetAsync(request.Id) ?? throw new BucketNotFoundException(request.Id),
-                };
+                return new Response(await this.repository.GetAsync(request.Id) ?? throw new BucketNotFoundException(request.Id));
             }
         }
     }

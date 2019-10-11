@@ -82,7 +82,34 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Exception exception;
 
                 // Act
-                exception = Record.Exception(() => new GetBuckets.Query(null));
+                exception = Record.Exception(() => new GetBuckets.Query(null!));
+
+                // Assert
+                Assert.NotNull(exception);
+                Assert.IsType<ArgumentNullException>(exception);
+            }
+        }
+
+        public class Response
+        {
+            [Fact]
+            public void When_InstantiatingResponseWithBuckets_Expect_ResponseWithBuckets()
+            {
+                // Arrange
+                List<Bucket> buckets = new List<Bucket>();
+
+                // Act
+                GetBuckets.Response response = new GetBuckets.Response(buckets);
+
+                // Assert
+                Assert.Equal(buckets, response.Buckets);
+            }
+
+            [Fact]
+            public void When_InstantiatingResponseWithNull_Expect_ArgumentNullException()
+            {
+                // Act
+                Exception exception = Record.Exception(() => new GetBuckets.Response(null!));
 
                 // Assert
                 Assert.NotNull(exception);
