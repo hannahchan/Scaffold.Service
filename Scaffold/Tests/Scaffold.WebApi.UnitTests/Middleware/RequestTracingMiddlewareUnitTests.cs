@@ -23,7 +23,6 @@ namespace Scaffold.WebApi.UnitTests.Middleware
             Exception exception = await Record.ExceptionAsync(() => middleware.InvokeAsync(context, tracingService));
 
             // Assert
-            Assert.NotNull(exception);
             Assert.IsType<InvalidOperationException>(exception);
         }
 

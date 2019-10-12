@@ -65,7 +65,6 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 Exception exception = await Record.ExceptionAsync(() => handler.Handle(command, default));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<ItemNotFoundException>(exception);
                 Assert.NotEmpty(this.repository.Get(bucket.Id).Items);
             }
@@ -91,7 +90,6 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 Exception exception = await Record.ExceptionAsync(() => handler.Handle(command, default));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<BucketNotFoundException>(exception);
                 Assert.NotEmpty(this.repository.Get(bucket.Id).Items);
             }

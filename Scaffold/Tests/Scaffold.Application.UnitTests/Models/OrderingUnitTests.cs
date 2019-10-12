@@ -37,7 +37,6 @@ namespace Scaffold.Application.UnitTests.Models
                 Exception exception = Record.Exception(() => ordering.Add(new OrderBy("property1")));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<PropertyNotFoundException>(exception);
             }
 
@@ -66,7 +65,6 @@ namespace Scaffold.Application.UnitTests.Models
                 Exception exception = Record.Exception(() => ordering.Add(new OrderBy(nameof(TestClass.Property6))));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<PropertyNotComparableException>(exception);
             }
         }
@@ -247,7 +245,6 @@ namespace Scaffold.Application.UnitTests.Models
                 Exception exception = Record.Exception(() => ordering[0] = new OrderBy("property1"));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<PropertyNotFoundException>(exception);
             }
 
@@ -285,7 +282,6 @@ namespace Scaffold.Application.UnitTests.Models
                 Exception exception = Record.Exception(() => ordering[0] = new OrderBy(nameof(TestClass.Property6)));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<PropertyNotComparableException>(exception);
             }
         }
@@ -346,7 +342,6 @@ namespace Scaffold.Application.UnitTests.Models
                 Exception exception = Record.Exception(() => ordering.Insert(0, new OrderBy("property1")));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<PropertyNotFoundException>(exception);
             }
 
@@ -381,7 +376,6 @@ namespace Scaffold.Application.UnitTests.Models
                 Exception exception = Record.Exception(() => ordering.Insert(0, new OrderBy(nameof(TestClass.Property6))));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<PropertyNotComparableException>(exception);
             }
         }

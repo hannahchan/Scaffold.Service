@@ -85,7 +85,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 exception = Record.Exception(() => new GetBuckets.Query(null!));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<ArgumentNullException>(exception);
             }
         }
@@ -112,7 +111,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Exception exception = Record.Exception(() => new GetBuckets.Response(null!));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<ArgumentNullException>(exception);
             }
         }

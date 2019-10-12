@@ -48,7 +48,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Exception exception = Record.Exception(() => new AddBucket.Response(null!));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<ArgumentNullException>(exception);
             }
         }
@@ -112,7 +111,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     handler.Handle(command, default));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<ValidationException>(exception);
             }
 
@@ -133,7 +131,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     handler.Handle(command, default));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsAssignableFrom<DomainException>(exception);
             }
         }

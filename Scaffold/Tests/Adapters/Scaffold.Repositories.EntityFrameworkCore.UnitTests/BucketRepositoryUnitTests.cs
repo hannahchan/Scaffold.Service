@@ -74,7 +74,6 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 Exception exception = Record.Exception(() => repository.Add(null!));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<ArgumentNullException>(exception);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
@@ -117,7 +116,6 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 Exception exception = await Record.ExceptionAsync(() => repository.AddAsync(null!));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<ArgumentNullException>(exception);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
@@ -265,7 +263,6 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 }
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<ArgumentNullException>(exception);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
@@ -573,7 +570,6 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 }
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<ArgumentNullException>(exception);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
@@ -1679,7 +1675,6 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 Exception exception = Record.Exception(() => repository.Remove(null!));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<ArgumentNullException>(exception);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
@@ -1725,7 +1720,6 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 Exception exception = await Record.ExceptionAsync(() => repository.RemoveAsync(null!));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<ArgumentNullException>(exception);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
@@ -1779,7 +1773,6 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 Exception exception = Record.Exception(() => repository.Update(null!));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<ArgumentNullException>(exception);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
@@ -1833,7 +1826,6 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 Exception exception = await Record.ExceptionAsync(() => repository.UpdateAsync(null!));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<ArgumentNullException>(exception);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }

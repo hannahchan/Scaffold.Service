@@ -45,7 +45,6 @@ namespace Scaffold.Application.UnitTests.Features.Item
                 Exception exception = Record.Exception(() => new GetItem.Response(null!));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<ArgumentNullException>(exception);
             }
         }
@@ -92,7 +91,6 @@ namespace Scaffold.Application.UnitTests.Features.Item
                     handler.Handle(query, default));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<ItemNotFoundException>(exception);
             }
 
@@ -113,7 +111,6 @@ namespace Scaffold.Application.UnitTests.Features.Item
                     handler.Handle(query, default));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<BucketNotFoundException>(exception);
             }
         }

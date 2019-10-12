@@ -77,7 +77,6 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
                 Exception exception = Record.Exception(() => bucket.AddItem(null!));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<ArgumentNullException>(exception);
                 Assert.Empty(bucket.Items);
             }
@@ -95,7 +94,6 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
                 Exception exception = Record.Exception(() => bucket.AddItem(new Item()));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<BucketFullException>(exception);
                 Assert.Equal(bucket.Size, bucket.Items.Count);
                 Assert.NotEmpty(exception.Message);
@@ -169,7 +167,6 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
                 Exception exception = Record.Exception(() => bucket.RemoveItem(null!));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<ArgumentNullException>(exception);
                 Assert.Contains(item, bucket.Items);
                 Assert.Equal(1, bucket.Items.Count);
@@ -265,7 +262,6 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
                 Exception exception = Record.Exception(() => bucket.Size = -1);
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<InvalidSizeException>(exception);
                 Assert.NotEmpty(exception.Message);
             }
@@ -281,7 +277,6 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
                 Exception exception = Record.Exception(() => bucket.Size = 0);
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<InvalidSizeException>(exception);
                 Assert.NotEmpty(exception.Message);
             }

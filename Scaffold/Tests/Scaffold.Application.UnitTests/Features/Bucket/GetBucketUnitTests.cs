@@ -45,7 +45,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Exception exception = Record.Exception(() => new GetBucket.Response(null!));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<ArgumentNullException>(exception);
             }
         }
@@ -82,7 +81,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     handler.Handle(query, default));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<BucketNotFoundException>(exception);
             }
         }

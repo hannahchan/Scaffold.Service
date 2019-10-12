@@ -58,7 +58,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Exception exception = await Record.ExceptionAsync(() => handler.Handle(command, default));
 
                 // Assert
-                Assert.NotNull(exception);
                 Assert.IsType<BucketNotFoundException>(exception);
                 Assert.NotEmpty(this.context.Buckets);
             }
