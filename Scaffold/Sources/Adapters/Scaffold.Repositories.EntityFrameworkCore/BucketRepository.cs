@@ -44,7 +44,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore
             return this.context.SaveChangesAsync();
         }
 
-        public Bucket Get(int id)
+        public Bucket? Get(int id)
         {
             return this.context.Set<Bucket>()
                 .Where(bucket => bucket.Id == id)
@@ -59,7 +59,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore
                 .ToList();
         }
 
-        public Task<Bucket> GetAsync(int id)
+        public Task<Bucket?> GetAsync(int id)
         {
             return this.context.Set<Bucket>()
                 .Where(bucket => bucket.Id == id)

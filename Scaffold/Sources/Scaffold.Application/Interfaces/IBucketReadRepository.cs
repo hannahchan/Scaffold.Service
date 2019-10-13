@@ -9,11 +9,11 @@ namespace Scaffold.Application.Interfaces
 
     public interface IBucketReadRepository
     {
-        Bucket Get(int id);
+        Bucket? Get(int id);
 
         List<Bucket> Get(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket>? ordering = null);
 
-        Task<Bucket> GetAsync(int id);
+        Task<Bucket?> GetAsync(int id);
 
         Task<List<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket>? ordering = null);
     }

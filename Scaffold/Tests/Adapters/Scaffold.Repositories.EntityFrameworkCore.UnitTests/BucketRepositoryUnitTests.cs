@@ -5,7 +5,6 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
-    using Scaffold.Application.Interfaces;
     using Scaffold.Application.Models;
     using Scaffold.Domain.Aggregates.Bucket;
     using Xunit;
@@ -48,7 +47,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     repository.Add(bucket);
                 }
 
@@ -68,7 +67,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
             {
                 // Arrange
                 BucketContext context = new BucketContext(this.dbContextOptions);
-                IBucketRepository repository = new BucketRepository(context);
+                BucketRepository repository = new BucketRepository(context);
 
                 // Act
                 Exception exception = Record.Exception(() => repository.Add(null!));
@@ -90,7 +89,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     await repository.AddAsync(bucket);
                 }
 
@@ -110,7 +109,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
             {
                 // Arrange
                 BucketContext context = new BucketContext(this.dbContextOptions);
-                IBucketRepository repository = new BucketRepository(context);
+                BucketRepository repository = new BucketRepository(context);
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() => repository.AddAsync(null!));
@@ -135,31 +134,31 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                     context.SaveChanges();
                 }
 
-                Bucket result;
+                Bucket? result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = repository.Get(bucket.Id);
                 }
 
                 // Assert
                 Assert.NotEqual(bucket, result);
-                Assert.Equal(bucket.Id, result.Id);
-                Assert.Equal(bucket.Name, result.Name);
+                Assert.Equal(bucket.Id, result?.Id);
+                Assert.Equal(bucket.Name, result?.Name);
             }
 
             [Fact]
             public void When_GettingNonExistingBucket_Expect_Null()
             {
                 // Arrange
-                Bucket result;
+                Bucket? result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = repository.Get(new Random().Next(int.MaxValue));
                 }
 
@@ -184,7 +183,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = repository.Get(bucket => true);
                 }
 
@@ -211,7 +210,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = repository.Get(bucket => false);
                 }
 
@@ -239,7 +238,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = repository.Get(bucket => bucket.Size == 2 || bucket.Size == 5);
                 }
 
@@ -258,7 +257,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     exception = Record.Exception(() => repository.Get(null!));
                 }
 
@@ -284,7 +283,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = repository.Get(bucket => true, null);
                 }
 
@@ -314,7 +313,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = repository.Get(bucket => true, 2);
                 }
 
@@ -343,7 +342,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = repository.Get(bucket => true, null, null);
                 }
 
@@ -373,7 +372,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = repository.Get(bucket => true, null, 1);
                 }
 
@@ -402,7 +401,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = repository.Get(bucket => true, 1, 1);
                 }
 
@@ -428,31 +427,31 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                     await context.SaveChangesAsync();
                 }
 
-                Bucket result;
+                Bucket? result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = await repository.GetAsync(bucket.Id);
                 }
 
                 // Assert
                 Assert.NotEqual(bucket, result);
-                Assert.Equal(bucket.Id, result.Id);
-                Assert.Equal(bucket.Name, result.Name);
+                Assert.Equal(bucket.Id, result?.Id);
+                Assert.Equal(bucket.Name, result?.Name);
             }
 
             [Fact]
             public async Task When_GettingNonExistingBucket_Expect_Null()
             {
                 // Arrange
-                Bucket result;
+                Bucket? result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = await repository.GetAsync(new Random().Next(int.MaxValue));
                 }
 
@@ -481,7 +480,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = await repository.GetAsync(bucket => true);
                 }
 
@@ -512,7 +511,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = await repository.GetAsync(bucket => false);
                 }
 
@@ -546,7 +545,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = await repository.GetAsync(bucket => bucket.Size == 2 || bucket.Size == 5);
                 }
 
@@ -565,7 +564,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     exception = await Record.ExceptionAsync(() => repository.GetAsync(null!));
                 }
 
@@ -591,7 +590,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = await repository.GetAsync(bucket => true, null);
                 }
 
@@ -621,7 +620,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = await repository.GetAsync(bucket => true, 2);
                 }
 
@@ -650,7 +649,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null);
                 }
 
@@ -680,7 +679,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = await repository.GetAsync(bucket => true, null, 1);
                 }
 
@@ -709,7 +708,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = await repository.GetAsync(bucket => true, 1, 1);
                 }
 
@@ -744,7 +743,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = repository.Get(bucket => true, null, null, ordering);
                 }
 
@@ -776,7 +775,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = repository.Get(bucket => true, null, null, ordering);
                 }
 
@@ -808,7 +807,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = repository.Get(bucket => true, 6, null, ordering);
                 }
 
@@ -840,7 +839,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = repository.Get(bucket => true, null, 6, ordering);
                 }
 
@@ -872,7 +871,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = repository.Get(bucket => true, 6, 3, ordering);
                 }
 
@@ -908,7 +907,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = repository.Get(bucket => true, null, null, ordering);
                 }
 
@@ -965,7 +964,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = repository.Get(bucket => true, null, null, ordering);
                 }
 
@@ -1022,7 +1021,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = repository.Get(bucket => true, null, null, ordering);
                 }
 
@@ -1079,7 +1078,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = repository.Get(bucket => true, null, null, ordering);
                 }
 
@@ -1132,7 +1131,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = repository.Get(bucket => true, null, null, ordering);
                 }
 
@@ -1201,7 +1200,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null, ordering);
                 }
 
@@ -1233,7 +1232,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null, ordering);
                 }
 
@@ -1265,7 +1264,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = await repository.GetAsync(bucket => true, 6, null, ordering);
                 }
 
@@ -1297,7 +1296,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = await repository.GetAsync(bucket => true, null, 6, ordering);
                 }
 
@@ -1329,7 +1328,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = await repository.GetAsync(bucket => true, 6, 3, ordering);
                 }
 
@@ -1365,7 +1364,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null, ordering);
                 }
 
@@ -1422,7 +1421,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null, ordering);
                 }
 
@@ -1479,7 +1478,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null, ordering);
                 }
 
@@ -1536,7 +1535,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null, ordering);
                 }
 
@@ -1589,7 +1588,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null, ordering);
                 }
 
@@ -1652,7 +1651,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     repository.Remove(bucket);
                 }
 
@@ -1669,7 +1668,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
             {
                 // Arrange
                 BucketContext context = new BucketContext(this.dbContextOptions);
-                IBucketRepository repository = new BucketRepository(context);
+                BucketRepository repository = new BucketRepository(context);
 
                 // Act
                 Exception exception = Record.Exception(() => repository.Remove(null!));
@@ -1697,7 +1696,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     await repository.RemoveAsync(bucket);
                 }
 
@@ -1714,7 +1713,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
             {
                 // Arrange
                 BucketContext context = new BucketContext(this.dbContextOptions);
-                IBucketRepository repository = new BucketRepository(context);
+                BucketRepository repository = new BucketRepository(context);
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() => repository.RemoveAsync(null!));
@@ -1744,7 +1743,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     bucket.Name = newValue;
                     repository.Update(bucket);
                 }
@@ -1767,7 +1766,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
             {
                 // Arrange
                 BucketContext context = new BucketContext(this.dbContextOptions);
-                IBucketRepository repository = new BucketRepository(context);
+                BucketRepository repository = new BucketRepository(context);
 
                 // Act
                 Exception exception = Record.Exception(() => repository.Update(null!));
@@ -1797,7 +1796,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    IBucketRepository repository = new BucketRepository(context);
+                    BucketRepository repository = new BucketRepository(context);
                     bucket.Name = newValue;
                     await repository.UpdateAsync(bucket);
                 }
@@ -1820,7 +1819,7 @@ namespace Scaffold.Repositories.EntityFrameworkCore.UnitTests
             {
                 // Arrange
                 BucketContext context = new BucketContext(this.dbContextOptions);
-                IBucketRepository repository = new BucketRepository(context);
+                BucketRepository repository = new BucketRepository(context);
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() => repository.UpdateAsync(null!));

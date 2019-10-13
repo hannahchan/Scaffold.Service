@@ -60,7 +60,7 @@ namespace Scaffold.Application.Features.Bucket
             {
                 await new Validator().ValidateAndThrowAsync(request);
 
-                Bucket bucket = await this.repository.GetAsync(request.Id);
+                Bucket? bucket = await this.repository.GetAsync(request.Id);
 
                 try
                 {
