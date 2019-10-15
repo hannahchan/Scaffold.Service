@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Adapters", "Adapters", "{19
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.HttpClients", "Sources\Adapters\Scaffold.HttpClients\Scaffold.HttpClients.csproj", "{3862C669-F499-4C2F-8362-B34ADEFD1420}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Repositories.EntityFrameworkCore", "Sources\Adapters\Scaffold.Repositories.EntityFrameworkCore\Scaffold.Repositories.EntityFrameworkCore.csproj", "{0242E51C-7D2C-4115-AA15-482B60A87462}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Repositories.PostgreSQL", "Sources\Adapters\Scaffold.Repositories.PostgreSQL\Scaffold.Repositories.PostgreSQL.csproj", "{0242E51C-7D2C-4115-AA15-482B60A87462}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Application", "Sources\Scaffold.Application\Scaffold.Application.csproj", "{FBC2420B-D720-4EB0-919E-CDF8FD113402}"
 EndProject
@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Adapters", "Adapters", "{0B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.HttpClients.UnitTests", "Tests\Adapters\Scaffold.HttpClients.UnitTests\Scaffold.HttpClients.UnitTests.csproj", "{A5D88DA8-0FBC-4E88-911C-4F5E75A9197C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Repositories.EntityFrameworkCore.UnitTests", "Tests\Adapters\Scaffold.Repositories.EntityFrameworkCore.UnitTests\Scaffold.Repositories.EntityFrameworkCore.UnitTests.csproj", "{51928588-D830-4AAE-85CC-A560006AE75B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Repositories.PostgreSQL.UnitTests", "Tests\Adapters\Scaffold.Repositories.PostgreSQL.UnitTests\Scaffold.Repositories.PostgreSQL.UnitTests.csproj", "{51928588-D830-4AAE-85CC-A560006AE75B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Application.UnitTests", "Tests\Scaffold.Application.UnitTests\Scaffold.Application.UnitTests.csproj", "{6FFD29F1-FD3E-46FC-9D61-9B528FC95AA5}"
 EndProject

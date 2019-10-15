@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Scaffold.Repositories.EntityFrameworkCore.Migrations
+namespace Scaffold.Repositories.PostgreSQL.Migrations
 {
     [DbContext(typeof(BucketContext))]
     [Migration("20191010140632_Initial")]

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Scaffold.Repositories.EntityFrameworkCore.Migrations
+namespace Scaffold.Repositories.PostgreSQL.Migrations
 {
     [DbContext(typeof(BucketContext))]
     partial class BucketContextModelSnapshot : ModelSnapshot

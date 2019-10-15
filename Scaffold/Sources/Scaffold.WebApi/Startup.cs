@@ -3,7 +3,7 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Scaffold.Repositories.EntityFrameworkCore;
+    using Scaffold.Repositories.PostgreSQL;
     using Scaffold.WebApi.Extensions;
     using Scaffold.WebApi.Filters;
     using Scaffold.WebApi.Middleware;

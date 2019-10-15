@@ -15,7 +15,7 @@ namespace Scaffold.WebApi.Extensions
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
     using Scaffold.HttpClients;
-    using Scaffold.Repositories.EntityFrameworkCore;
+    using Scaffold.Repositories.PostgreSQL;
     using Scaffold.WebApi.HttpMessageHandlers;
     using Scaffold.WebApi.Services;
 

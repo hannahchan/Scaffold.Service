@@ -7,7 +7,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
-    using Scaffold.Repositories.EntityFrameworkCore;
+    using Scaffold.Repositories.PostgreSQL;
     using Xunit;
 
     public class RemoveBucketUnitTests

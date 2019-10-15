@@ -1,4 +1,4 @@
-﻿namespace Scaffold.Repositories.EntityFrameworkCore.Migrations
+﻿namespace Scaffold.Repositories.PostgreSQL.Migrations
 {
     using Microsoft.EntityFrameworkCore.Migrations;
     using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;

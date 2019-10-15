@@ -4,7 +4,7 @@ namespace Scaffold.WebApi.Extensions
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Scaffold.Repositories.EntityFrameworkCore;
+    using Scaffold.Repositories.PostgreSQL;
 
     public static class HostExtension
     {

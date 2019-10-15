@@ -9,7 +9,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     using Scaffold.Application.Interfaces;
     using Scaffold.Application.Models;
     using Scaffold.Domain.Aggregates.Bucket;
-    using Scaffold.Repositories.EntityFrameworkCore;
+    using Scaffold.Repositories.PostgreSQL;
     using Xunit;
 
     public class GetBucketsUnitTests

@@ -70,7 +70,7 @@ Task("Test")
 
         List<String> exclude = new List<string>()
         {
-            $"[Scaffold.Repositories.EntityFrameworkCore]Scaffold.Repositories.EntityFrameworkCore.Migrations.*",
+            $"[Scaffold.Repositories.PostgreSQL]Scaffold.Repositories.PostgreSQL.Migrations.*",
             $"[Scaffold.WebApi]Scaffold.WebApi.Program",
             $"[Scaffold.WebApi]Scaffold.WebApi.Startup*"
         };
