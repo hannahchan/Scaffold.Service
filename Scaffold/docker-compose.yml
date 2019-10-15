@@ -21,7 +21,7 @@ services:
         published: 8081
         target: 8081
   postgres:
-    image: "postgres:latest"
+    image: "postgres:alpine"
     volumes:
       -
         source: postgres_pgdata
