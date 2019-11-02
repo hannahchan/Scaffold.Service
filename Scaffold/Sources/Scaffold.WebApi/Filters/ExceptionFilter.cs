@@ -6,7 +6,7 @@ namespace Scaffold.WebApi.Filters
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
     using Microsoft.AspNetCore.Mvc.Formatters;
-    using Scaffold.Application.Exceptions;
+    using Scaffold.Application.Base;
     using Scaffold.Domain.Base;
     using Scaffold.WebApi.Constants;
     using Scaffold.WebApi.Extensions;

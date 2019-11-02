@@ -1,4 +1,4 @@
-namespace Scaffold.Application.UnitTests.Exception
+namespace Scaffold.Application.UnitTests.Base
 {
     using System;
     using System.IO;

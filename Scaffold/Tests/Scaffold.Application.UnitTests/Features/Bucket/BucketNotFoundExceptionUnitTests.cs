@@ -1,9 +1,9 @@
-namespace Scaffold.Application.UnitTests.Exception
+namespace Scaffold.Application.UnitTests.Features.Bucket
 {
     using System;
     using System.IO;
     using System.Runtime.Serialization.Formatters.Binary;
-    using Scaffold.Application.Exceptions;
+    using Scaffold.Application.Features.Bucket;
     using Xunit;
 
     public class BucketNotFoundExceptionUnitTests

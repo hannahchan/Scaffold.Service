@@ -1,7 +1,8 @@
-namespace Scaffold.Application.Exceptions
+namespace Scaffold.Application.Features.Bucket
 {
     using System;
     using System.Runtime.Serialization;
+    using Scaffold.Application.Base;
 
     [Serializable]
     public class ItemNotFoundException : NotFoundException

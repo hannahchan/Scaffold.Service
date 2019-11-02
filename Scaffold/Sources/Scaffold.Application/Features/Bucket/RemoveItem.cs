@@ -1,10 +1,9 @@
-namespace Scaffold.Application.Features.Item
+namespace Scaffold.Application.Features.Bucket
 {
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using MediatR;
-    using Scaffold.Application.Exceptions;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
 

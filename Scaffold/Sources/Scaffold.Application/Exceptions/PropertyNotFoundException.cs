@@ -2,6 +2,7 @@ namespace Scaffold.Application.Exceptions
 {
     using System;
     using System.Runtime.Serialization;
+    using Scaffold.Application.Base;
 
     [Serializable]
     public class PropertyNotFoundException : OrderingException

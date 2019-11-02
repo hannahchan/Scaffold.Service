@@ -1,31 +1,29 @@
-namespace Scaffold.Application.Features.Item
+namespace Scaffold.Application.Features.Bucket
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using MediatR;
-    using Scaffold.Application.Exceptions;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
 
-    public static class GetItem
+    public static class GetItems
     {
         public class Query : IRequest<Response>
         {
             public int BucketId { get; set; }
-
-            public int ItemId { get; set; }
         }
 
         public class Response
         {
-            public Response(Item item)
+            public Response(IList<Item> items)
             {
-                this.Item = item ?? throw new ArgumentNullException(nameof(item));
+                this.Items = items ?? throw new ArgumentNullException(nameof(items));
             }
 
-            public Item Item { get; private set; }
+            public IList<Item> Items { get; private set; }
         }
 
         public class Handler : IRequestHandler<Query, Response>
@@ -42,8 +40,7 @@ namespace Scaffold.Application.Features.Item
                 Bucket bucket = await this.repository.GetAsync(request.BucketId) ??
                     throw new BucketNotFoundException(request.BucketId);
 
-                return new Response(bucket.Items.SingleOrDefault(x => x.Id == request.ItemId) ??
-                    throw new ItemNotFoundException(request.ItemId));
+                return new Response(bucket.Items.ToList());
             }
         }
     }

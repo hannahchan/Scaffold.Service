@@ -1,10 +1,9 @@
-namespace Scaffold.Application.UnitTests.Features.Item
+namespace Scaffold.Application.UnitTests.Features.Bucket
 {
     using System;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
-    using Scaffold.Application.Exceptions;
-    using Scaffold.Application.Features.Item;
+    using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
     using Scaffold.Repositories.PostgreSQL;

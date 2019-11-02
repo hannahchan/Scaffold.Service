@@ -1,100 +1,91 @@
-namespace Scaffold.Application.UnitTests.Exception
+namespace Scaffold.Application.UnitTests.Base
 {
     using System;
     using System.IO;
     using System.Runtime.Serialization;
     using System.Runtime.Serialization.Formatters.Binary;
-    using Scaffold.Application.Exceptions;
+    using Scaffold.Application.Base;
     using Xunit;
 
-    public class IntegrationExceptionUnitTests
+    public class OrderingExceptionUnitTests
     {
         [Fact]
-        public void When_InstantiatingIntegrationExceptionWithMessageAndStatus_Expect_IntegrationExceptionWithMessageAndStatus()
+        public void When_InstantiatingOrderingExceptionWithMessage_Expect_OrderingExceptionWithMessage()
         {
             // Arrange
             TestException exception;
             string message = Guid.NewGuid().ToString();
-            int status = new Random().Next(int.MaxValue);
 
             // Act
-            exception = new TestException(message, status);
+            exception = new TestException(message);
 
             // Assert
             Assert.Equal(message, exception.Detail);
             Assert.Equal(message, exception.Message);
-            Assert.Equal(status, exception.Status);
         }
 
         [Fact]
-        public void When_InstantiatingIntegrationExceptionWithMessageAndStatusAndInnerException_Expect_IntegrationExceptionWithMessageAndStatusAndInnerException()
+        public void When_InstantiatingOrderingExceptionWithMessageAndInnerException_Expect_OrderingExceptionWithMessageAndInnerException()
         {
             // Arrange
             TestException exception;
 
             string message = Guid.NewGuid().ToString();
             Exception innerException = new Exception();
-            int status = new Random().Next(int.MaxValue);
 
             // Act
-            exception = new TestException(message, status, innerException);
+            exception = new TestException(message, innerException);
 
             // Assert
             Assert.Equal(message, exception.Detail);
             Assert.Equal(message, exception.Message);
             Assert.Equal(innerException, exception.InnerException);
-            Assert.Equal(status, exception.Status);
         }
 
         [Fact]
-        public void When_InstantiatingIntegrationExceptionWithTitleAndMessageAndStatus_Expect_IntegrationExceptionWithTitleAndMessageAndStatus()
+        public void When_InstantiatingOrderingExceptionWithTitleAndMessage_Expect_OrderingExceptionWithTitleAndMessage()
         {
             // Arrange
             TestException exception;
             string title = Guid.NewGuid().ToString();
             string message = Guid.NewGuid().ToString();
-            int status = new Random().Next(int.MaxValue);
 
             // Act
-            exception = new TestException(title, message, status);
+            exception = new TestException(title, message);
 
             // Assert
             Assert.Equal(message, exception.Detail);
             Assert.Equal(message, exception.Message);
             Assert.Equal(title, exception.Title);
-            Assert.Equal(status, exception.Status);
         }
 
         [Fact]
-        public void When_InstantiatingIntegrationExceptionWithTitleAndMessageAndStatusAndInnerException_Expect_IntegrationExceptionWithTitleAndMessageAndStatusAndInnerException()
+        public void When_InstantiatingOrderingExceptionWithTitleAndMessageAndInnerException_Expect_OrderingExceptionWithTitleAndMessageAndInnerException()
         {
             // Arrange
             TestException exception;
 
             string title = Guid.NewGuid().ToString();
             string message = Guid.NewGuid().ToString();
-            int status = new Random().Next(int.MaxValue);
             Exception innerException = new Exception();
 
             // Act
-            exception = new TestException(title, message, status, innerException);
+            exception = new TestException(title, message, innerException);
 
             // Assert
+            Assert.Equal(title, exception.Title);
             Assert.Equal(message, exception.Detail);
             Assert.Equal(message, exception.Message);
-            Assert.Equal(title, exception.Title);
             Assert.Equal(innerException, exception.InnerException);
-            Assert.Equal(status, exception.Status);
         }
 
         [Fact]
-        public void When_DeserializingIntegrationException_Expect_SerializedIntegrationException()
+        public void When_DeserializingOrderingException_Expect_SerializedOrderingException()
         {
             // Arrange
             TestException exception = new TestException(
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
-                new Random().Next(int.MaxValue),
                 new Exception(Guid.NewGuid().ToString()));
 
             TestException result;
@@ -119,25 +110,25 @@ namespace Scaffold.Application.UnitTests.Exception
         }
 
         [Serializable]
-        private class TestException : IntegrationException
+        private class TestException : OrderingException
         {
-            public TestException(string message, int status)
-                : base(message, status)
+            public TestException(string message)
+                : base(message)
             {
             }
 
-            public TestException(string message, int status, Exception innerException)
-                : base(message, status, innerException)
+            public TestException(string message, Exception innerException)
+                : base(message, innerException)
             {
             }
 
-            public TestException(string title, string message, int status)
-                : base(title, message, status)
+            public TestException(string title, string message)
+                : base(title, message)
             {
             }
 
-            public TestException(string title, string message, int status, Exception innerException)
-                : base(title, message, status, innerException)
+            public TestException(string title, string message, Exception innerException)
+                : base(title, message, innerException)
             {
             }
 

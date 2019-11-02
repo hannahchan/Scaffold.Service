@@ -6,7 +6,7 @@
     using MediatR;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Scaffold.Application.Features.Item;
+    using Scaffold.Application.Features.Bucket;
     using Scaffold.WebApi.Views;
 
     [ApiController]

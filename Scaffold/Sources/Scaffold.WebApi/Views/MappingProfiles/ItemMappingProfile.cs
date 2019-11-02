@@ -1,7 +1,7 @@
 namespace Scaffold.WebApi.Views.MappingProfiles
 {
     using AutoMapper;
-    using Scaffold.Application.Features.Item;
+    using Scaffold.Application.Features.Bucket;
 
     public class ItemMappingProfile : Profile
     {
