@@ -42,7 +42,6 @@
             app
                 .UseForwardedHeaders()
                 .UseMiddleware<RequestLoggingMiddleware>()
-                .UseMiddleware<RequestTracingMiddleware>()
                 .UseSwagger()
                 .UseSwaggerUI(options =>
                 {

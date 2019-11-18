@@ -6,7 +6,6 @@ namespace Scaffold.WebApi.Extensions
     using AutoMapper;
     using MediatR;
     using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.HttpOverrides;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -17,7 +16,6 @@ namespace Scaffold.WebApi.Extensions
     using Scaffold.HttpClients;
     using Scaffold.Repositories.PostgreSQL;
     using Scaffold.WebApi.HttpMessageHandlers;
-    using Scaffold.WebApi.Services;
 
     public static class ServiceCollectionExtension
     {
@@ -45,12 +43,9 @@ namespace Scaffold.WebApi.Extensions
         public static IServiceCollection AddHttpClients(this IServiceCollection services)
         {
             services
-                .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
-                .AddTransient<RequestTaggingHttpMessageHandler>()
                 .AddTransient<RequestLoggingHttpMessageHandler>();
 
             services.AddHttpClient<IExampleHttpClient, ExampleHttpClient>()
-                .AddHttpMessageHandler<RequestTaggingHttpMessageHandler>()
                 .AddHttpMessageHandler<RequestLoggingHttpMessageHandler>();
 
             return services;
@@ -80,8 +75,7 @@ namespace Scaffold.WebApi.Extensions
         {
             services
                 .AddAutoMapper(typeof(Startup).Assembly)
-                .AddMediatR(typeof(GetBucket).Assembly)
-                .AddScoped<RequestTracingService>();
+                .AddMediatR(typeof(GetBucket).Assembly);
 
             return services;
         }

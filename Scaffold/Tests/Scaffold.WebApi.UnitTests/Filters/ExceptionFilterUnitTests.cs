@@ -13,7 +13,6 @@ namespace Scaffold.WebApi.UnitTests.Filters
     using Scaffold.Application.Base;
     using Scaffold.Domain.Base;
     using Scaffold.WebApi.Filters;
-    using Scaffold.WebApi.Services;
     using Xunit;
 
     public class ExceptionFilterUnitTests
@@ -30,102 +29,6 @@ namespace Scaffold.WebApi.UnitTests.Filters
             };
         }
 
-        public class OnActionExecuted : ExceptionFilterUnitTests
-        {
-            [Fact]
-            public void When_HandlingObjectResultWithProblemDetailsWithNullRequestTracingService_Expect_ProblemDetailsWithRequestId()
-            {
-                // Arrange
-                ActionExecutedContext context = new ActionExecutedContext(this.actionContext, new List<IFilterMetadata>(), null)
-                {
-                    Result = new ObjectResult(new ProblemDetails()),
-                };
-
-                ExceptionFilter exceptionFilter = new ExceptionFilter(null!);
-
-                // Act
-                exceptionFilter.OnActionExecuted(context);
-
-                // Assert
-                ObjectResult objectResult = Assert.IsAssignableFrom<ObjectResult>(context.Result);
-                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
-                Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlation-Id"]));
-                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["request-Id"]);
-            }
-
-            [Fact]
-            public void When_HandlingObjectResultWithProblemDetailsWithNullCorrelationId_Expect_ProblemDetailsWithRequestId()
-            {
-                // Arrange
-                ActionExecutedContext context = new ActionExecutedContext(this.actionContext, new List<IFilterMetadata>(), null)
-                {
-                    Result = new ObjectResult(new ProblemDetails()),
-                };
-
-                ExceptionFilter exceptionFilter = new ExceptionFilter(new RequestTracingService());
-
-                // Act
-                exceptionFilter.OnActionExecuted(context);
-
-                // Assert
-                ObjectResult objectResult = Assert.IsAssignableFrom<ObjectResult>(context.Result);
-                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
-                Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlation-Id"]));
-                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["request-Id"]);
-            }
-
-            [Fact]
-            public void When_HandlingObjectResultWithProblemDetailsWithCorrelationId_Expect_ProblemDetailsWithCorrelationIdAndRequestId()
-            {
-                // Arrange
-                ActionExecutedContext context = new ActionExecutedContext(this.actionContext, new List<IFilterMetadata>(), null)
-                {
-                    Result = new ObjectResult(new ProblemDetails()),
-                };
-
-                string correlationId = Guid.NewGuid().ToString();
-
-                ExceptionFilter exceptionFilter = new ExceptionFilter(new RequestTracingService
-                {
-                    CorrelationId = correlationId,
-                });
-
-                // Act
-                exceptionFilter.OnActionExecuted(context);
-
-                // Assert
-                ObjectResult objectResult = Assert.IsAssignableFrom<ObjectResult>(context.Result);
-                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
-                Assert.Equal(correlationId, problemDetails.Extensions["correlation-Id"]);
-                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["request-Id"]);
-            }
-        }
-
-        public class OnActionExecuting : ExceptionFilterUnitTests
-        {
-            [Fact]
-            public void When_ActionExecuting_Expect_NullContextResult()
-            {
-                // Arrange
-                ActionExecutingContext context = new ActionExecutingContext(
-                    this.actionContext,
-                    new List<IFilterMetadata>(),
-                    new Dictionary<string, object>(),
-                    null);
-
-                ExceptionFilter exceptionFilter = new ExceptionFilter(null!);
-
-                // Act
-                exceptionFilter.OnActionExecuting(context);
-
-                // Assert
-                Assert.Empty(context.ActionArguments);
-                Assert.Null(context.Controller);
-                Assert.Empty(context.Filters);
-                Assert.Null(context.Result);
-            }
-        }
-
         public class OnException : ExceptionFilterUnitTests
         {
             [Fact]
@@ -137,7 +40,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     Exception = new TestDomainException(Guid.NewGuid().ToString()),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter(null!);
+                ExceptionFilter exceptionFilter = new ExceptionFilter();
 
                 // Act
                 exceptionFilter.OnException(context);
@@ -156,7 +59,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     Exception = new TestNotFoundException(Guid.NewGuid().ToString()),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter(null!);
+                ExceptionFilter exceptionFilter = new ExceptionFilter();
 
                 // Act
                 exceptionFilter.OnException(context);
@@ -184,7 +87,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     Exception = new ValidationException(Guid.NewGuid().ToString(), validationFailures),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter(null!);
+                ExceptionFilter exceptionFilter = new ExceptionFilter();
 
                 // Act
                 exceptionFilter.OnException(context);
@@ -208,81 +111,13 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     Exception = new Exception(),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter(null!);
+                ExceptionFilter exceptionFilter = new ExceptionFilter();
 
                 // Act
                 exceptionFilter.OnException(context);
 
                 // Assert
                 Assert.Null(context.Result);
-            }
-
-            [Fact]
-            public void When_HandlingExceptionWithNullRequestTracingService_Expect_ProblemDetailsWithRequestId()
-            {
-                // Arrange
-                ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
-                {
-                    Exception = new TestDomainException(Guid.NewGuid().ToString()),
-                };
-
-                ExceptionFilter exceptionFilter = new ExceptionFilter(null!);
-
-                // Act
-                exceptionFilter.OnException(context);
-
-                // Assert
-                ObjectResult objectResult = Assert.IsAssignableFrom<ObjectResult>(context.Result);
-                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
-                Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlation-Id"]));
-                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["request-Id"]);
-            }
-
-            [Fact]
-            public void When_HandlingExceptionWithNullCorrelationId_Expect_ProblemDetailsWithRequestId()
-            {
-                // Arrange
-                ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
-                {
-                    Exception = new TestDomainException(Guid.NewGuid().ToString()),
-                };
-
-                ExceptionFilter exceptionFilter = new ExceptionFilter(new RequestTracingService());
-
-                // Act
-                exceptionFilter.OnException(context);
-
-                // Assert
-                ObjectResult objectResult = Assert.IsAssignableFrom<ObjectResult>(context.Result);
-                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
-                Assert.NotNull(Record.Exception(() => problemDetails.Extensions["correlation-Id"]));
-                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["request-Id"]);
-            }
-
-            [Fact]
-            public void When_HandlingExceptionWithCorrelationId_Expect_ProblemDetailsWithCorrelationIdAndRequestId()
-            {
-                // Arrange
-                ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
-                {
-                    Exception = new TestDomainException(Guid.NewGuid().ToString()),
-                };
-
-                string correlationId = Guid.NewGuid().ToString();
-
-                ExceptionFilter exceptionFilter = new ExceptionFilter(new RequestTracingService
-                {
-                    CorrelationId = correlationId,
-                });
-
-                // Act
-                exceptionFilter.OnException(context);
-
-                // Assert
-                ObjectResult objectResult = Assert.IsAssignableFrom<ObjectResult>(context.Result);
-                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
-                Assert.Equal(correlationId, problemDetails.Extensions["correlation-Id"]);
-                Assert.Equal(context.HttpContext.TraceIdentifier, problemDetails.Extensions["request-Id"]);
             }
         }
 

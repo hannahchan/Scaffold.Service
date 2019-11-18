@@ -9,7 +9,6 @@ namespace Scaffold.WebApi.Middleware
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
-    using Scaffold.WebApi.Constants;
     using Serilog.Context;
     using Serilog.Core;
     using Serilog.Events;
@@ -34,7 +33,6 @@ namespace Scaffold.WebApi.Middleware
         public async Task Invoke(HttpContext httpContext)
         {
             using (LogContext.Push(new ApplicationDetailsEnricher(this.env)))
-            using (LogContext.Push(new CorrelationIdEnricher(httpContext)))
             {
                 HttpRequest request = httpContext.Request;
                 HttpResponse response = httpContext.Response;
@@ -116,27 +114,6 @@ namespace Scaffold.WebApi.Middleware
             {
                 logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("Application", this.env.ApplicationName));
                 logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("Environment", this.env.EnvironmentName));
-            }
-        }
-
-        private class CorrelationIdEnricher : ILogEventEnricher
-        {
-            private readonly HttpContext httpContext;
-
-            public CorrelationIdEnricher(HttpContext httpContext)
-            {
-                this.httpContext = httpContext;
-            }
-
-            public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
-            {
-                // Attempt to read the Correlation ID from the request.
-                string correlationId = this.httpContext.Request.Headers[CustomHeaderNames.CorrelationId];
-
-                // Use the Request ID as the Correlation ID if no Correlation ID exists.
-                correlationId ??= this.httpContext.TraceIdentifier;
-
-                logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("CorrelationId", correlationId));
             }
         }
 
