@@ -15,6 +15,7 @@ namespace Scaffold.WebApi.Extensions
     using Scaffold.Application.Interfaces;
     using Scaffold.HttpClients;
     using Scaffold.Repositories.PostgreSQL;
+    using Scaffold.WebApi.Controllers;
     using Scaffold.WebApi.HttpMessageHandlers;
 
     public static class ServiceCollectionExtension
@@ -46,6 +47,9 @@ namespace Scaffold.WebApi.Extensions
                 .AddTransient<RequestLoggingHttpMessageHandler>();
 
             services.AddHttpClient<IExampleHttpClient, ExampleHttpClient>()
+                .AddHttpMessageHandler<RequestLoggingHttpMessageHandler>();
+
+            services.AddHttpClient<TracingDemoController.Client>()
                 .AddHttpMessageHandler<RequestLoggingHttpMessageHandler>();
 
             return services;
