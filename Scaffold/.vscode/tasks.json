@@ -4,20 +4,20 @@
         {
             "label": "preLaunch",
             "dependsOn": [
-                "build",
-                "startPostgres"
+                "Build",
+                "Start Infrastructure"
             ],
             "problemMatcher": []
         },
         {
             "label": "postDebug",
             "dependsOn": [
-                "stopPostgres"
+                "Stop Infrastructure"
             ],
             "problemMatcher": []
         },
         {
-            "label": "build",
+            "label": "Build",
             "command": "dotnet",
             "type": "process",
             "args": [
@@ -26,7 +26,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "clean",
+            "label": "Clean",
             "command": "dotnet",
             "type": "process",
             "args": [
@@ -35,7 +35,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "restore",
+            "label": "Restore",
             "command": "dotnet",
             "type": "process",
             "args": [
@@ -44,10 +44,10 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "startPostgres",
+            "label": "Start Infrastructure",
             "command": "docker-compose",
             "dependsOn": [
-                "stopPostgres"
+                "Stop Infrastructure"
             ],
             "type": "process",
             "args": [
@@ -65,7 +65,7 @@
             "problemMatcher": []
         },
         {
-            "label": "stopPostgres",
+            "label": "Stop Infrastructure",
             "command": "docker-compose",
             "type": "process",
             "args": [
