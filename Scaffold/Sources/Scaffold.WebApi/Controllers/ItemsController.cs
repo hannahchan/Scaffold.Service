@@ -109,7 +109,7 @@
         /// <param name="bucketId">The Id. of the Bucket object to delete the item from.</param>
         /// <param name="itemId">The Id. of the Item object to be deleted.</param>
         /// <returns>A "No Content (204)" HTTP status response.</returns>
-        /// <response code="204">Item deleted successfully or item did not exist.</response>
+        /// <response code="204">Item deleted successfully.</response>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpDelete("{itemId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

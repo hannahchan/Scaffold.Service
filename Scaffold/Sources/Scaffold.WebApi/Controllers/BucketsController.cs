@@ -104,7 +104,7 @@
         /// <summary>Deletes a bucket.</summary>
         /// <param name="bucketId">The Id. of the Bucket object to be deleted.</param>
         /// <returns>A "No Content (204)" HTTP status response.</returns>
-        /// <response code="204">Bucket deleted successfully or bucket did not exist.</response>
+        /// <response code="204">Bucket deleted successfully.</response>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpDelete("{bucketId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
