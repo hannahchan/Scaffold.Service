@@ -2,7 +2,6 @@ namespace Scaffold.WebApi.Controllers
 {
     using System;
     using System.Net.Http;
-    using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -28,8 +27,6 @@ namespace Scaffold.WebApi.Controllers
         [ProducesDefaultResponseType]
         public async Task<string> Proxy([FromQuery]string? name)
         {
-            Thread.Sleep(new Random().Next(1000));
-
             HttpRequest request = this.HttpContext.Request;
             Uri uri = new Uri($"{request.Scheme}://{request.Host}/api/tracingdemo/hello?name={name ?? "random"}", UriKind.Absolute);
 
@@ -48,8 +45,6 @@ namespace Scaffold.WebApi.Controllers
         [ProducesDefaultResponseType]
         public string Hello([FromQuery]string? name)
         {
-            Thread.Sleep(new Random().Next(1000));
-
             return $"Hello, {name ?? "random"}!";
         }
 
