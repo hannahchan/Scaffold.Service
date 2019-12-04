@@ -14,6 +14,7 @@
 
             CreateHostBuilder(args).Build()
                 .MigrateDatabase()
+                .RegisterGlobalTracer()
                 .Run();
         }
 

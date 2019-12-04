@@ -79,7 +79,8 @@ namespace Scaffold.WebApi.Extensions
         {
             services
                 .AddAutoMapper(typeof(Startup).Assembly)
-                .AddMediatR(typeof(GetBucket).Assembly);
+                .AddMediatR(typeof(GetBucket).Assembly)
+                .AddOpenTracing();
 
             return services;
         }

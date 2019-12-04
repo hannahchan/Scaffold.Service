@@ -10,4 +10,26 @@ services:
         protocol: tcp
         published: 5432
         target: 5432
+  jaeger:
+    ports:
+      -
+        mode: ingress
+        protocol: udp
+        published: 6831
+        target: 6831
+      -
+        mode: ingress
+        protocol: udp
+        published: 6832
+        target: 6832
+      -
+        mode: ingress
+        protocol: tcp
+        published: 5778
+        target: 5778
+      -
+        mode: ingress
+        protocol: tcp
+        published: 14268
+        target: 14268
 version: "3.5"

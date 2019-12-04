@@ -53,7 +53,8 @@
             "args": [
                 "up",
                 "-d",
-                "postgres"
+                "postgres",
+                "jaeger"
             ],
             "presentation": {
                 "echo": true,

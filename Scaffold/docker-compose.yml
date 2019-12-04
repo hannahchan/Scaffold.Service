@@ -6,8 +6,11 @@ services:
       dockerfile: Sources/Scaffold.WebApi/Dockerfile
     depends_on:
       - postgres
+      - jaeger
     environment:
       ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=postgres;Username=postgres;
+      JAEGER_SERVICE_NAME: Scaffold
+      JAEGER_AGENT_HOST: jaeger
     image: "${DOCKER_REGISTRY}scaffold"
     ports:
       -
@@ -27,6 +30,20 @@ services:
         source: postgres_pgdata
         target: /var/lib/postgresql/data
         type: volume
+  jaeger:
+    image: "jaegertracing/all-in-one:latest"
+    ports:
+      -
+        mode: ingress
+        protocol: tcp
+        published: 16686
+        target: 16686
+    volumes:
+      -
+        source: jaeger_tmp
+        target: /tmp
+        type: volume
 version: "3.5"
 volumes:
   postgres_pgdata: ~
+  jaeger_tmp: ~
