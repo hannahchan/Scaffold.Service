@@ -8,7 +8,7 @@ Scaffold aims to make developing the following features in your next Web API or 
 
 - [API Documentation](Docs/APIDocumentation.md)
 - [Content Negotiation](Docs/ContentNegotiation.md)
-- Distributed Tracing
+- [Distributed Tracing](Docs/DistributedTracing.md)
 - [Forwarded Headers Handling](Docs/ForwardedHeadersHandling.md)
 - [Health Checks](Docs/HealthChecks.md)
 - [Problem Details (RFC 7807) Error Handling](Docs/ProblemDetails.md)

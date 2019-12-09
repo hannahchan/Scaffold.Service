@@ -24,7 +24,7 @@ Scaffold.WebApi aims to make developing the following features in your next Web 
 
 - [API Documentation](Scaffold/Docs/APIDocumentation.md)
 - [Content Negotiation](Scaffold/Docs/ContentNegotiation.md)
-- Distributed Tracing
+- [Distributed Tracing](Scaffold/Docs/DistributedTracing.md)
 - [Forwarded Headers Handling](Scaffold/Docs/ForwardedHeadersHandling.md)
 - [Health Checks](Scaffold/Docs/HealthChecks.md)
 - [Problem Details (RFC 7807) Error Handling](Scaffold/Docs/ProblemDetails.md)
