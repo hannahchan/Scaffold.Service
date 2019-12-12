@@ -7,9 +7,23 @@ namespace Scaffold.WebApi.Filters
     using Microsoft.AspNetCore.Mvc.Filters;
     using Scaffold.Application.Base;
     using Scaffold.Domain.Base;
+    using Scaffold.WebApi.Extensions;
 
-    public class ExceptionFilter : IExceptionFilter
+    public class ExceptionFilter : IActionFilter, IExceptionFilter
     {
+        public void OnActionExecuted(ActionExecutedContext context)
+        {
+            if (context.Result is ObjectResult result && result.Value is ProblemDetails details)
+            {
+                details.AddW3cTraceId();
+            }
+        }
+
+        public void OnActionExecuting(ActionExecutingContext context)
+        {
+            // Not Used
+        }
+
         public void OnException(ExceptionContext context)
         {
             if (context.Exception is DomainException domainException)
@@ -25,6 +39,11 @@ namespace Scaffold.WebApi.Filters
             if (context.Exception is ValidationException validationException)
             {
                 context.Result = new BadRequestObjectResult(this.GetProblemDetails(validationException));
+            }
+
+            if (context.Result is ObjectResult result && result.Value is ProblemDetails details)
+            {
+                details.AddW3cTraceId();
             }
         }
 

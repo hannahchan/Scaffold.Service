@@ -2,6 +2,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Runtime.Serialization;
     using FluentValidation;
     using FluentValidation.Results;
@@ -27,6 +28,60 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 HttpContext = new DefaultHttpContext(),
                 RouteData = new RouteData(),
             };
+        }
+
+        public class OnActionExecuted : ExceptionFilterUnitTests
+        {
+            [Fact]
+            public void When_HandlingObjectResultWithProblemDetails_Expect_ProblemDetailsWithTraceId()
+            {
+                // Arrange
+                ActionExecutedContext context = new ActionExecutedContext(this.actionContext, new List<IFilterMetadata>(), null)
+                {
+                    Result = new ObjectResult(new ProblemDetails()),
+                };
+
+                ExceptionFilter exceptionFilter = new ExceptionFilter();
+
+                // Act
+                Activity activity = new Activity("Unit Test")
+                    .SetIdFormat(ActivityIdFormat.W3C)
+                    .Start();
+
+                exceptionFilter.OnActionExecuted(context);
+
+                activity.Stop();
+
+                // Assert
+                ObjectResult objectResult = Assert.IsType<ObjectResult>(context.Result);
+                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
+                Assert.Equal(activity.TraceId.ToString(), problemDetails.Extensions["traceId"]);
+            }
+        }
+
+        public class OnActionExecuting : ExceptionFilterUnitTests
+        {
+            [Fact]
+            public void When_ActionExecuting_Expect_NullContextResult()
+            {
+                // Arrange
+                ActionExecutingContext context = new ActionExecutingContext(
+                    this.actionContext,
+                    new List<IFilterMetadata>(),
+                    new Dictionary<string, object>(),
+                    null);
+
+                ExceptionFilter exceptionFilter = new ExceptionFilter();
+
+                // Act
+                exceptionFilter.OnActionExecuting(context);
+
+                // Assert
+                Assert.Empty(context.ActionArguments);
+                Assert.Null(context.Controller);
+                Assert.Empty(context.Filters);
+                Assert.Null(context.Result);
+            }
         }
 
         public class OnException : ExceptionFilterUnitTests
@@ -118,6 +173,32 @@ namespace Scaffold.WebApi.UnitTests.Filters
 
                 // Assert
                 Assert.Null(context.Result);
+            }
+
+            [Fact]
+            public void When_HandlingExpectionWithActivity_Expect_ProblemDetailsWithTraceId()
+            {
+                // Arrange
+                ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
+                {
+                    Result = new ObjectResult(new ProblemDetails()),
+                };
+
+                ExceptionFilter exceptionFilter = new ExceptionFilter();
+
+                // Act
+                Activity activity = new Activity("Unit Test")
+                    .SetIdFormat(ActivityIdFormat.W3C)
+                    .Start();
+
+                exceptionFilter.OnException(context);
+
+                activity.Stop();
+
+                // Assert
+                ObjectResult objectResult = Assert.IsType<ObjectResult>(context.Result);
+                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
+                Assert.Equal(activity.TraceId.ToString(), problemDetails.Extensions["traceId"]);
             }
         }
 
