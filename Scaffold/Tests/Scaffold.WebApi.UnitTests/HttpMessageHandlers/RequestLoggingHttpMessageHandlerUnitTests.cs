@@ -24,6 +24,7 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
         {
             // Arrange
             Mock<ILogger<RequestLoggingHttpMessageHandler>> mock = new Mock<ILogger<RequestLoggingHttpMessageHandler>>();
+            mock.Setup(m => m.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
 
             RequestLoggingHttpMessageHandler handler = new RequestLoggingHttpMessageHandler(mock.Object)
             {

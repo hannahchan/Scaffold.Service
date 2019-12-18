@@ -1,5 +1,6 @@
 namespace Scaffold.WebApi.HttpMessageHandlers
 {
+    using System;
     using System.Diagnostics;
     using System.Net.Http;
     using System.Threading;
@@ -9,6 +10,15 @@ namespace Scaffold.WebApi.HttpMessageHandlers
     public class RequestLoggingHttpMessageHandler : DelegatingHandler
     {
         private const string MessageTemplate = "Outbound HTTP {HttpMethod} {Uri} responded with {StatusCode} in {ElapsedMilliseconds}ms";
+
+        private static readonly Action<ILogger, HttpMethod, Uri, int, long, Exception?> LogError =
+            LoggerMessage.Define<HttpMethod, Uri, int, long>(LogLevel.Error, default, MessageTemplate);
+
+        private static readonly Action<ILogger, HttpMethod, Uri, int, long, Exception?> LogInformation =
+            LoggerMessage.Define<HttpMethod, Uri, int, long>(LogLevel.Information, default, MessageTemplate);
+
+        private static readonly Action<ILogger, HttpMethod, Uri, int, long, Exception?> LogWarning =
+            LoggerMessage.Define<HttpMethod, Uri, int, long>(LogLevel.Warning, default, MessageTemplate);
 
         private readonly ILogger logger;
 
@@ -24,25 +34,20 @@ namespace Scaffold.WebApi.HttpMessageHandlers
             stopwatch.Stop();
 
             int statusCode = (int)response.StatusCode;
-            LogLevel logLevel = LogLevel.Information;
 
-            if (statusCode < 200 || statusCode > 299)
+            if (statusCode >= 200 && statusCode <= 299)
             {
-                logLevel = LogLevel.Warning;
+                LogInformation(this.logger, request.Method, request.RequestUri, statusCode, stopwatch.ElapsedMilliseconds, null);
+                return response;
             }
 
             if (statusCode >= 500)
             {
-                logLevel = LogLevel.Error;
+                LogError(this.logger, request.Method, request.RequestUri, statusCode, stopwatch.ElapsedMilliseconds, null);
+                return response;
             }
 
-            this.logger.Log(
-                logLevel,
-                MessageTemplate,
-                request.Method,
-                request.RequestUri,
-                statusCode,
-                stopwatch.ElapsedMilliseconds);
+            LogWarning(this.logger, request.Method, request.RequestUri, statusCode, stopwatch.ElapsedMilliseconds, null);
 
             return response;
         }

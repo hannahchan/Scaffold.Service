@@ -25,6 +25,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
         {
             // Arrange
             Mock<ILogger<RequestLoggingMiddleware>> mock = new Mock<ILogger<RequestLoggingMiddleware>>();
+            mock.Setup(m => m.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
 
             RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
                 (httpContext) => Task.CompletedTask,
@@ -56,6 +57,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
         {
             // Arrange
             Mock<ILogger<RequestLoggingMiddleware>> mock = new Mock<ILogger<RequestLoggingMiddleware>>();
+            mock.Setup(m => m.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
 
             RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
                 (httpContext) => Task.CompletedTask,
@@ -86,6 +88,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
             Exception exception = new Exception("Unit Test");
 
             Mock<ILogger<RequestLoggingMiddleware>> mock = new Mock<ILogger<RequestLoggingMiddleware>>();
+            mock.Setup(m => m.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
 
             RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
                 (httpContext) => throw exception,
@@ -123,6 +126,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
             Exception exception = new Exception("Unit Test");
 
             Mock<ILogger<RequestLoggingMiddleware>> mock = new Mock<ILogger<RequestLoggingMiddleware>>();
+            mock.Setup(m => m.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
 
             RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
                 (httpContext) => throw exception,
