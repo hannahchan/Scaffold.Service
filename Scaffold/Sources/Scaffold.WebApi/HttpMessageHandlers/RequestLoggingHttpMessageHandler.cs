@@ -16,13 +16,13 @@ namespace Scaffold.WebApi.HttpMessageHandlers
         private static readonly Action<ILogger, HttpMethod, Uri, Exception?> LogRequestStarted =
             LoggerMessage.Define<HttpMethod, Uri>(LogLevel.Information, default, RequestStartedMessageTemplate);
 
-        private static readonly Action<ILogger, HttpMethod, Uri, long, int, Exception?> LogInformation =
+        private static readonly Action<ILogger, HttpMethod, Uri, long, int, Exception?> LogRequestFinishedInformation =
             LoggerMessage.Define<HttpMethod, Uri, long, int>(LogLevel.Information, default, RequestFinishedMessageTemplate);
 
-        private static readonly Action<ILogger, HttpMethod, Uri, long, int, Exception?> LogWarning =
+        private static readonly Action<ILogger, HttpMethod, Uri, long, int, Exception?> LogRequestFinishedWarning =
             LoggerMessage.Define<HttpMethod, Uri, long, int>(LogLevel.Warning, default, RequestFinishedMessageTemplate);
 
-        private static readonly Action<ILogger, HttpMethod, Uri, long, int, Exception?> LogError =
+        private static readonly Action<ILogger, HttpMethod, Uri, long, int, Exception?> LogRequestFinishedError =
             LoggerMessage.Define<HttpMethod, Uri, long, int>(LogLevel.Error, default, RequestFinishedMessageTemplate);
 
         private readonly ILogger logger;
@@ -44,17 +44,17 @@ namespace Scaffold.WebApi.HttpMessageHandlers
 
             if (statusCode >= 200 && statusCode <= 299)
             {
-                LogInformation(this.logger, request.Method, request.RequestUri, stopwatch.ElapsedMilliseconds, statusCode, null);
+                LogRequestFinishedInformation(this.logger, request.Method, request.RequestUri, stopwatch.ElapsedMilliseconds, statusCode, null);
                 return response;
             }
 
             if (statusCode >= 500)
             {
-                LogError(this.logger, request.Method, request.RequestUri, stopwatch.ElapsedMilliseconds, statusCode, null);
+                LogRequestFinishedError(this.logger, request.Method, request.RequestUri, stopwatch.ElapsedMilliseconds, statusCode, null);
                 return response;
             }
 
-            LogWarning(this.logger, request.Method, request.RequestUri, stopwatch.ElapsedMilliseconds, statusCode, null);
+            LogRequestFinishedWarning(this.logger, request.Method, request.RequestUri, stopwatch.ElapsedMilliseconds, statusCode, null);
 
             return response;
         }
