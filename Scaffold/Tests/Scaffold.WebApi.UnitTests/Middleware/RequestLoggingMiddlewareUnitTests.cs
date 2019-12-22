@@ -41,12 +41,21 @@ namespace Scaffold.WebApi.UnitTests.Middleware
             // Assert
             mock.Verify(
                 m => m.Log(
+                    LogLevel.Information,
+                    It.IsAny<EventId>(),
+                    It.IsAny<It.IsAnyType>(),
+                    null,
+                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
+                Times.Exactly(expectedLogLevel == LogLevel.Information ? 2 : 1));
+
+            mock.Verify(
+                m => m.Log(
                     expectedLogLevel,
                     It.IsAny<EventId>(),
                     It.IsAny<It.IsAnyType>(),
                     null,
                     (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
-                Times.Once);
+                Times.Exactly(expectedLogLevel == LogLevel.Information ? 2 : 1));
         }
 
         [Theory]
@@ -78,7 +87,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
                     It.IsAny<It.IsAnyType>(),
                     null,
                     (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
-                Times.Once);
+                Times.Exactly(2));
         }
 
         [Fact]
@@ -102,6 +111,15 @@ namespace Scaffold.WebApi.UnitTests.Middleware
             await middleware.Invoke(context);
 
             // Assert
+            mock.Verify(
+                m => m.Log(
+                    LogLevel.Information,
+                    It.IsAny<EventId>(),
+                    It.IsAny<It.IsAnyType>(),
+                    null,
+                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
+                Times.Once);
+
             mock.Verify(
                 m => m.Log(
                     LogLevel.Critical,
@@ -140,6 +158,15 @@ namespace Scaffold.WebApi.UnitTests.Middleware
             await middleware.Invoke(context);
 
             // Assert
+            mock.Verify(
+                m => m.Log(
+                    LogLevel.Information,
+                    It.IsAny<EventId>(),
+                    It.IsAny<It.IsAnyType>(),
+                    null,
+                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
+                Times.Once);
+
             mock.Verify(
                 m => m.Log(
                     LogLevel.Critical,
