@@ -15,26 +15,20 @@ namespace Scaffold.WebApi.Middleware
 
         private const string RequestFinishedMessageTemplate = "Inbound HTTP {HttpMethod} {Path} finished in {ElapsedMilliseconds}ms - {StatusCode}";
 
-        private static readonly Action<ILogger, string, PathString, Exception?> LogRequestStartedDebug =
-            LoggerMessage.Define<string, PathString>(LogLevel.Debug, default, RequestStartedMessageTemplate);
-
-        private static readonly Action<ILogger, string, PathString, Exception?> LogRequestStartedInformation =
+        private static readonly Action<ILogger, string, PathString, Exception?> LogRequestStarted =
             LoggerMessage.Define<string, PathString>(LogLevel.Information, default, RequestStartedMessageTemplate);
-
-        private static readonly Action<ILogger, string, PathString, long, int, Exception?> LogRequestFinishedCritical =
-            LoggerMessage.Define<string, PathString, long, int>(LogLevel.Critical, default, RequestFinishedMessageTemplate);
-
-        private static readonly Action<ILogger, string, PathString, long, int, Exception?> LogRequestFinishedDebug =
-            LoggerMessage.Define<string, PathString, long, int>(LogLevel.Debug, default, RequestFinishedMessageTemplate);
-
-        private static readonly Action<ILogger, string, PathString, long, int, Exception?> LogRequestFinishedError =
-            LoggerMessage.Define<string, PathString, long, int>(LogLevel.Error, default, RequestFinishedMessageTemplate);
 
         private static readonly Action<ILogger, string, PathString, long, int, Exception?> LogRequestFinishedInformation =
             LoggerMessage.Define<string, PathString, long, int>(LogLevel.Information, default, RequestFinishedMessageTemplate);
 
         private static readonly Action<ILogger, string, PathString, long, int, Exception?> LogRequestFinishedWarning =
             LoggerMessage.Define<string, PathString, long, int>(LogLevel.Warning, default, RequestFinishedMessageTemplate);
+
+        private static readonly Action<ILogger, string, PathString, long, int, Exception?> LogRequestFinishedError =
+            LoggerMessage.Define<string, PathString, long, int>(LogLevel.Error, default, RequestFinishedMessageTemplate);
+
+        private static readonly Action<ILogger, string, PathString, long, int, Exception?> LogRequestFinishedCritical =
+            LoggerMessage.Define<string, PathString, long, int>(LogLevel.Critical, default, RequestFinishedMessageTemplate);
 
         private readonly RequestDelegate next;
 
@@ -54,14 +48,7 @@ namespace Scaffold.WebApi.Middleware
             HttpRequest request = httpContext.Request;
             HttpResponse response = httpContext.Response;
 
-            if (request.Path.Equals("/health", StringComparison.OrdinalIgnoreCase))
-            {
-                LogRequestStartedDebug(this.logger, request.Method, request.Path, null);
-            }
-            else
-            {
-                LogRequestStartedInformation(this.logger, request.Method, request.Path, null);
-            }
+            LogRequestStarted(this.logger, request.Method, request.Path, null);
 
             Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -69,12 +56,6 @@ namespace Scaffold.WebApi.Middleware
             {
                 await this.next.Invoke(httpContext);
                 stopwatch.Stop();
-
-                if (request.Path.Equals("/health", StringComparison.OrdinalIgnoreCase))
-                {
-                    LogRequestFinishedDebug(this.logger, request.Method, request.Path, stopwatch.ElapsedMilliseconds, response.StatusCode, null);
-                    return;
-                }
 
                 if (response.StatusCode >= 200 && response.StatusCode <= 299)
                 {
