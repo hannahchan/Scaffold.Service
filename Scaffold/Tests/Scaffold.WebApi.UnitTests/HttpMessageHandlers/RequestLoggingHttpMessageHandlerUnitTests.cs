@@ -40,12 +40,21 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
             // Assert
             mock.Verify(
                 m => m.Log(
+                    LogLevel.Information,
+                    It.IsAny<EventId>(),
+                    It.IsAny<It.IsAnyType>(),
+                    null,
+                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
+                Times.Exactly(expectedLogLevel == LogLevel.Information ? 2 : 1));
+
+            mock.Verify(
+                m => m.Log(
                     expectedLogLevel,
                     It.IsAny<EventId>(),
                     It.IsAny<It.IsAnyType>(),
                     null,
                     (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
-                Times.Once);
+                Times.Exactly(expectedLogLevel == LogLevel.Information ? 2 : 1));
         }
 
         private class InnerHandler : DelegatingHandler

@@ -9,16 +9,21 @@ namespace Scaffold.WebApi.HttpMessageHandlers
 
     public class RequestLoggingHttpMessageHandler : DelegatingHandler
     {
-        private const string MessageTemplate = "Outbound HTTP {HttpMethod} {Uri} responded with {StatusCode} in {ElapsedMilliseconds}ms";
+        private const string RequestStartedMessageTemplate = "Outbound HTTP {HttpMethod} {Uri} started";
 
-        private static readonly Action<ILogger, HttpMethod, Uri, int, long, Exception?> LogError =
-            LoggerMessage.Define<HttpMethod, Uri, int, long>(LogLevel.Error, default, MessageTemplate);
+        private const string RequestFinishedMessageTemplate = "Outbound HTTP {HttpMethod} {Uri} finished in {ElapsedMilliseconds}ms - {StatusCode}";
 
-        private static readonly Action<ILogger, HttpMethod, Uri, int, long, Exception?> LogInformation =
-            LoggerMessage.Define<HttpMethod, Uri, int, long>(LogLevel.Information, default, MessageTemplate);
+        private static readonly Action<ILogger, HttpMethod, Uri, Exception?> LogRequestStarted =
+            LoggerMessage.Define<HttpMethod, Uri>(LogLevel.Information, default, RequestStartedMessageTemplate);
 
-        private static readonly Action<ILogger, HttpMethod, Uri, int, long, Exception?> LogWarning =
-            LoggerMessage.Define<HttpMethod, Uri, int, long>(LogLevel.Warning, default, MessageTemplate);
+        private static readonly Action<ILogger, HttpMethod, Uri, long, int, Exception?> LogInformation =
+            LoggerMessage.Define<HttpMethod, Uri, long, int>(LogLevel.Information, default, RequestFinishedMessageTemplate);
+
+        private static readonly Action<ILogger, HttpMethod, Uri, long, int, Exception?> LogWarning =
+            LoggerMessage.Define<HttpMethod, Uri, long, int>(LogLevel.Warning, default, RequestFinishedMessageTemplate);
+
+        private static readonly Action<ILogger, HttpMethod, Uri, long, int, Exception?> LogError =
+            LoggerMessage.Define<HttpMethod, Uri, long, int>(LogLevel.Error, default, RequestFinishedMessageTemplate);
 
         private readonly ILogger logger;
 
@@ -29,6 +34,8 @@ namespace Scaffold.WebApi.HttpMessageHandlers
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            LogRequestStarted(this.logger, request.Method, request.RequestUri, null);
+
             Stopwatch stopwatch = Stopwatch.StartNew();
             HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
             stopwatch.Stop();
@@ -37,17 +44,17 @@ namespace Scaffold.WebApi.HttpMessageHandlers
 
             if (statusCode >= 200 && statusCode <= 299)
             {
-                LogInformation(this.logger, request.Method, request.RequestUri, statusCode, stopwatch.ElapsedMilliseconds, null);
+                LogInformation(this.logger, request.Method, request.RequestUri, stopwatch.ElapsedMilliseconds, statusCode, null);
                 return response;
             }
 
             if (statusCode >= 500)
             {
-                LogError(this.logger, request.Method, request.RequestUri, statusCode, stopwatch.ElapsedMilliseconds, null);
+                LogError(this.logger, request.Method, request.RequestUri, stopwatch.ElapsedMilliseconds, statusCode, null);
                 return response;
             }
 
-            LogWarning(this.logger, request.Method, request.RequestUri, statusCode, stopwatch.ElapsedMilliseconds, null);
+            LogWarning(this.logger, request.Method, request.RequestUri, stopwatch.ElapsedMilliseconds, statusCode, null);
 
             return response;
         }
