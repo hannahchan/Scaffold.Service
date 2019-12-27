@@ -6,6 +6,7 @@ namespace Scaffold.WebApi.Extensions
     using AutoMapper;
     using MediatR;
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.HttpOverrides;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -44,12 +45,16 @@ namespace Scaffold.WebApi.Extensions
         public static IServiceCollection AddHttpClients(this IServiceCollection services)
         {
             services
+                .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
+                .AddTransient<OpenTracingSpanTaggingHttpMessageHandler>()
                 .AddTransient<RequestLoggingHttpMessageHandler>();
 
             services.AddHttpClient<IExampleHttpClient, ExampleHttpClient>()
+                .AddHttpMessageHandler<OpenTracingSpanTaggingHttpMessageHandler>()
                 .AddHttpMessageHandler<RequestLoggingHttpMessageHandler>();
 
             services.AddHttpClient<TracingDemoController.Client>()
+                .AddHttpMessageHandler<OpenTracingSpanTaggingHttpMessageHandler>()
                 .AddHttpMessageHandler<RequestLoggingHttpMessageHandler>();
 
             return services;
