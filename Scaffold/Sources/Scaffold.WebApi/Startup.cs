@@ -41,8 +41,8 @@
         {
             app
                 .UseForwardedHeaders()
-                .UseMiddleware<RequestLoggingMiddleware>()
                 .UseMiddleware<OpenTracingSpanTaggingMiddleware>()
+                .UseMiddleware<RequestLoggingMiddleware>()
                 .UseSwagger()
                 .UseSwaggerUI(options =>
                 {
