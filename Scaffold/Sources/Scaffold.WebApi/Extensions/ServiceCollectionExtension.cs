@@ -23,6 +23,11 @@ namespace Scaffold.WebApi.Extensions
     {
         public static IServiceCollection AddApiDocumentation(this IServiceCollection services)
         {
+            if (services is null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
             services.AddSwaggerGen(options =>
             {
                 OpenApiInfo info = new OpenApiInfo
@@ -44,6 +49,11 @@ namespace Scaffold.WebApi.Extensions
 
         public static IServiceCollection AddHttpClients(this IServiceCollection services)
         {
+            if (services is null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
             services
                 .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
                 .AddTransient<OpenTracingSpanTaggingHttpMessageHandler>()
@@ -62,6 +72,16 @@ namespace Scaffold.WebApi.Extensions
 
         public static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration config)
         {
+            if (services is null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
+            if (config is null)
+            {
+                throw new ArgumentNullException(nameof(config));
+            }
+
             services
                 .Configure<ForwardedHeadersOptions>(options => options.ForwardedHeaders = ForwardedHeaders.All);
 
@@ -70,6 +90,16 @@ namespace Scaffold.WebApi.Extensions
 
         public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration config)
         {
+            if (services is null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
+            if (config is null)
+            {
+                throw new ArgumentNullException(nameof(config));
+            }
+
             services.AddDbContext<BucketContext>(builder =>
                 builder.UseNpgsql(config.GetValue<string>("ConnectionStrings:DefaultConnection")));
 

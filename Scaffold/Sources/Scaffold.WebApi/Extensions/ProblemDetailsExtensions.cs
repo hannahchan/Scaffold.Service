@@ -1,15 +1,26 @@
 namespace Scaffold.WebApi.Extensions
 {
-    using System.Diagnostics;
+    using System;
     using Microsoft.AspNetCore.Mvc;
+    using OpenTracing;
 
     public static class ProblemDetailsExtensions
     {
-        public static ProblemDetails AddW3cTraceId(this ProblemDetails details)
+        public static ProblemDetails AddOpenTracingTraceId(this ProblemDetails details, ITracer tracer)
         {
-            if (Activity.Current is Activity activity && activity.IdFormat == ActivityIdFormat.W3C)
+            if (details is null)
             {
-                details.Extensions["traceId"] = activity.TraceId.ToString();
+                throw new ArgumentNullException(nameof(details));
+            }
+
+            if (tracer is null)
+            {
+                throw new ArgumentNullException(nameof(tracer));
+            }
+
+            if (tracer.ActiveSpan is ISpan span)
+            {
+                details.Extensions["traceId"] = span.Context.TraceId;
             }
 
             return details;

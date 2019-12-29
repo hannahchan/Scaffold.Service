@@ -1,21 +1,30 @@
 namespace Scaffold.WebApi.Filters
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using FluentValidation;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
+    using OpenTracing;
     using Scaffold.Application.Base;
     using Scaffold.Domain.Base;
     using Scaffold.WebApi.Extensions;
 
     public class ExceptionFilter : IActionFilter, IExceptionFilter
     {
+        private readonly ITracer tracer;
+
+        public ExceptionFilter(ITracer tracer)
+        {
+            this.tracer = tracer ?? throw new ArgumentNullException(nameof(tracer));
+        }
+
         public void OnActionExecuted(ActionExecutedContext context)
         {
             if (context.Result is ObjectResult result && result.Value is ProblemDetails details)
             {
-                details.AddW3cTraceId();
+                details.AddOpenTracingTraceId(this.tracer);
             }
         }
 
@@ -43,11 +52,11 @@ namespace Scaffold.WebApi.Filters
 
             if (context.Result is ObjectResult result && result.Value is ProblemDetails details)
             {
-                details.AddW3cTraceId();
+                details.AddOpenTracingTraceId(this.tracer);
             }
         }
 
-        private ProblemDetails GetProblemDetails(ApplicationException exception)
+        private ProblemDetails GetProblemDetails(Application.Base.ApplicationException exception)
         {
             ProblemDetails details = new ProblemDetails
             {

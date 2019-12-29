@@ -2,7 +2,6 @@ namespace Scaffold.WebApi.UnitTests.Filters
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Runtime.Serialization;
     using FluentValidation;
     using FluentValidation.Results;
@@ -11,6 +10,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
     using Microsoft.AspNetCore.Mvc.Abstractions;
     using Microsoft.AspNetCore.Mvc.Filters;
     using Microsoft.AspNetCore.Routing;
+    using OpenTracing.Mock;
     using Scaffold.Application.Base;
     using Scaffold.Domain.Base;
     using Scaffold.WebApi.Filters;
@@ -30,32 +30,45 @@ namespace Scaffold.WebApi.UnitTests.Filters
             };
         }
 
+        public class Constructor
+        {
+            [Fact]
+            public void When_InstantiatingExceptionFilterWithNullTracer_Expect_ArgumentNullException()
+            {
+                // Act
+                Exception exception = Record.Exception(() => new ExceptionFilter(null!));
+
+                // Assert
+                Assert.IsType<ArgumentNullException>(exception);
+            }
+        }
+
         public class OnActionExecuted : ExceptionFilterUnitTests
         {
             [Fact]
             public void When_HandlingObjectResultWithProblemDetails_Expect_ProblemDetailsWithTraceId()
             {
                 // Arrange
+                MockTracer mockTracer = new MockTracer();
+
                 ActionExecutedContext context = new ActionExecutedContext(this.actionContext, new List<IFilterMetadata>(), null)
                 {
                     Result = new ObjectResult(new ProblemDetails()),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter();
+                ExceptionFilter exceptionFilter = new ExceptionFilter(mockTracer);
 
                 // Act
-                Activity activity = new Activity("Unit Test")
-                    .SetIdFormat(ActivityIdFormat.W3C)
-                    .Start();
-
-                exceptionFilter.OnActionExecuted(context);
-
-                activity.Stop();
+                using (mockTracer.BuildSpan("Unit Test").StartActive())
+                {
+                    exceptionFilter.OnActionExecuted(context);
+                }
 
                 // Assert
                 ObjectResult objectResult = Assert.IsType<ObjectResult>(context.Result);
                 ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
-                Assert.Equal(activity.TraceId.ToString(), problemDetails.Extensions["traceId"]);
+                MockSpan mockSpan = Assert.Single(mockTracer.FinishedSpans());
+                Assert.Equal(mockSpan.Context.TraceId, problemDetails.Extensions["traceId"]);
             }
         }
 
@@ -71,7 +84,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     new Dictionary<string, object>(),
                     null);
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter();
+                ExceptionFilter exceptionFilter = new ExceptionFilter(new MockTracer());
 
                 // Act
                 exceptionFilter.OnActionExecuting(context);
@@ -95,7 +108,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     Exception = new TestDomainException(Guid.NewGuid().ToString()),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter();
+                ExceptionFilter exceptionFilter = new ExceptionFilter(new MockTracer());
 
                 // Act
                 exceptionFilter.OnException(context);
@@ -114,7 +127,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     Exception = new TestNotFoundException(Guid.NewGuid().ToString()),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter();
+                ExceptionFilter exceptionFilter = new ExceptionFilter(new MockTracer());
 
                 // Act
                 exceptionFilter.OnException(context);
@@ -142,7 +155,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     Exception = new ValidationException(Guid.NewGuid().ToString(), validationFailures),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter();
+                ExceptionFilter exceptionFilter = new ExceptionFilter(new MockTracer());
 
                 // Act
                 exceptionFilter.OnException(context);
@@ -166,7 +179,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     Exception = new Exception(),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter();
+                ExceptionFilter exceptionFilter = new ExceptionFilter(new MockTracer());
 
                 // Act
                 exceptionFilter.OnException(context);
@@ -176,29 +189,29 @@ namespace Scaffold.WebApi.UnitTests.Filters
             }
 
             [Fact]
-            public void When_HandlingExpectionWithActivity_Expect_ProblemDetailsWithTraceId()
+            public void When_HandlingExpection_Expect_ProblemDetailsWithTraceId()
             {
                 // Arrange
+                MockTracer mockTracer = new MockTracer();
+
                 ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
                 {
                     Result = new ObjectResult(new ProblemDetails()),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter();
+                ExceptionFilter exceptionFilter = new ExceptionFilter(mockTracer);
 
                 // Act
-                Activity activity = new Activity("Unit Test")
-                    .SetIdFormat(ActivityIdFormat.W3C)
-                    .Start();
-
-                exceptionFilter.OnException(context);
-
-                activity.Stop();
+                using (mockTracer.BuildSpan("Unit Test").StartActive())
+                {
+                    exceptionFilter.OnException(context);
+                }
 
                 // Assert
                 ObjectResult objectResult = Assert.IsType<ObjectResult>(context.Result);
                 ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
-                Assert.Equal(activity.TraceId.ToString(), problemDetails.Extensions["traceId"]);
+                MockSpan mockSpan = Assert.Single(mockTracer.FinishedSpans());
+                Assert.Equal(mockSpan.Context.TraceId, problemDetails.Extensions["traceId"]);
             }
         }
 

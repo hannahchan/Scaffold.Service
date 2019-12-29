@@ -38,7 +38,7 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
             };
 
             // Act
-            using (tracer.BuildSpan("SomeWork").StartActive())
+            using (tracer.BuildSpan("Unit Test").StartActive())
             using (HttpClient client = new HttpClient(handler))
             {
                 await client.GetAsync(new Uri("http://localhost"));

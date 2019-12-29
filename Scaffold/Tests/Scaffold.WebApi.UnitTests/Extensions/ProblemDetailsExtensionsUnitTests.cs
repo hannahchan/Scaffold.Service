@@ -1,64 +1,71 @@
 namespace Scaffold.WebApi.UnitTests.Extensions
 {
-    using System.Diagnostics;
+    using System;
     using Microsoft.AspNetCore.Mvc;
+    using OpenTracing.Mock;
     using Scaffold.WebApi.Extensions;
     using Xunit;
 
     public class ProblemDetailsExtensionsUnitTests
     {
-        public class AddTraceId
+        public class AddOpenTracingTraceId
         {
             [Fact]
             public void When_AddingTraceId_Expect_TraceIdAdded()
             {
                 // Arrange
+                MockTracer mockTracer = new MockTracer();
                 ProblemDetails details = new ProblemDetails();
 
                 // Act
-                Activity activity = new Activity("Unit Test")
-                    .SetIdFormat(ActivityIdFormat.W3C)
-                    .Start();
-
-                details.AddW3cTraceId();
-
-                activity.Stop();
+                using (mockTracer.BuildSpan("Unit Test").StartActive())
+                {
+                    details.AddOpenTracingTraceId(mockTracer);
+                }
 
                 // Assert
-                Assert.Equal(activity.TraceId.ToString(), details.Extensions["traceId"]);
+                MockSpan mockSpan = Assert.Single(mockTracer.FinishedSpans());
+                Assert.Equal(mockSpan.Context.TraceId, details.Extensions["traceId"]);
             }
 
             [Fact]
-            public void When_AddingTraceIdWithNullActivity_Expect_NoTraceIdAdded()
+            public void When_AddingTraceIdWithNullProblemDetails_Expect_ArgumentNullException()
             {
                 // Arrange
-                Activity.Current = null;
-
-                ProblemDetails details = new ProblemDetails();
+                ProblemDetails? details = null;
 
                 // Act
-                details.AddW3cTraceId();
+                Exception exception = Record.Exception(() => details!.AddOpenTracingTraceId(new MockTracer()));
 
                 // Assert
-                Assert.Empty(details.Extensions);
+                Assert.IsType<ArgumentNullException>(exception);
             }
 
             [Fact]
-            public void When_AddingTraceIdWithNonW3cFormatId_Expect_NoTraceIdAdded()
+            public void When_AddingTraceIdWithNullTracer_Expect_ArgumentNullException()
             {
                 // Arrange
                 ProblemDetails details = new ProblemDetails();
 
                 // Act
-                Activity activity = new Activity("Unit Test")
-                    .SetIdFormat(ActivityIdFormat.Hierarchical)
-                    .Start();
-
-                details.AddW3cTraceId();
-
-                activity.Stop();
+                Exception exception = Record.Exception(() => details.AddOpenTracingTraceId(null!));
 
                 // Assert
+                Assert.IsType<ArgumentNullException>(exception);
+            }
+
+            [Fact]
+            public void When_AddingTraceIdWithNullActiveSpan_Expect_NoTraceIdAdded()
+            {
+                // Arrange
+                MockTracer mockTracer = new MockTracer();
+                ProblemDetails details = new ProblemDetails();
+
+                // Act
+                details.AddOpenTracingTraceId(mockTracer);
+
+                // Assert
+                Assert.Empty(mockTracer.FinishedSpans());
                 Assert.Empty(details.Extensions);
             }
         }

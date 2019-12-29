@@ -25,7 +25,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
             context.Response.StatusCode = statusCode;
 
             // Act
-            using (mockTracer.BuildSpan("SomeWork").StartActive())
+            using (mockTracer.BuildSpan("Unit Test").StartActive())
             {
                 await middleware.Invoke(context);
             }
