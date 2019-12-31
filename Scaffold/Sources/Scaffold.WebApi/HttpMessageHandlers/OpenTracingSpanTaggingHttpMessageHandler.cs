@@ -20,16 +20,26 @@ namespace Scaffold.WebApi.HttpMessageHandlers
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
+            IServiceProvider serviceProvider = this.httpContextAccessor.HttpContext.RequestServices;
+            ITracer tracer = serviceProvider.GetRequiredService<ITracer>();
 
-            if ((int)response.StatusCode >= 500)
+            try
             {
-                IServiceProvider serviceProvider = this.httpContextAccessor.HttpContext.RequestServices;
-                ITracer tracer = serviceProvider.GetRequiredService<ITracer>();
-                Tags.Error.Set(tracer.ActiveSpan, true);
-            }
+                HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
 
-            return response;
+                if ((int)response.StatusCode >= 500)
+                {
+                    Tags.Error.Set(tracer.ActiveSpan, true);
+                }
+
+                return response;
+            }
+            catch
+            {
+                Tags.Error.Set(tracer.ActiveSpan, true);
+
+                throw;
+            }
         }
     }
 }

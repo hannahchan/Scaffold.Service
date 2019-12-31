@@ -20,7 +20,7 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
         [InlineData(499, LogLevel.Warning)]
         [InlineData(500, LogLevel.Error)]
         [InlineData(501, LogLevel.Error)]
-        public async Task When_SendingAsync_Expect_LogLevel(int statusCode, LogLevel expectedLogLevel)
+        public async Task When_SendingAsyncRespondsWithStatusCode_Expect_LogLevel(int statusCode, LogLevel expectedLogLevel)
         {
             // Arrange
             Mock<ILogger<RequestLoggingHttpMessageHandler>> mock = new Mock<ILogger<RequestLoggingHttpMessageHandler>>();
@@ -28,7 +28,7 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
 
             RequestLoggingHttpMessageHandler handler = new RequestLoggingHttpMessageHandler(mock.Object)
             {
-                InnerHandler = new InnerHandler(statusCode),
+                InnerHandler = new MockResponseReturningInnerHandler(statusCode),
             };
 
             // Act
@@ -57,11 +57,56 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
                 Times.Exactly(expectedLogLevel == LogLevel.Information ? 2 : 1));
         }
 
-        private class InnerHandler : DelegatingHandler
+        [Fact]
+        public async Task When_SendingAsyncRespondsWithStatusCode_Expect_LogLevelCritical()
+        {
+            // Arrange
+            Mock<ILogger<RequestLoggingHttpMessageHandler>> mock = new Mock<ILogger<RequestLoggingHttpMessageHandler>>();
+            mock.Setup(m => m.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
+
+            Exception exception = new Exception();
+
+            RequestLoggingHttpMessageHandler handler = new RequestLoggingHttpMessageHandler(mock.Object)
+            {
+                InnerHandler = new MockExceptionThrowingInnerHandler(exception),
+            };
+
+            Exception result;
+
+            // Act
+            using (HttpClient client = new HttpClient(handler))
+            {
+                result = await Record.ExceptionAsync(() => client.GetAsync(new Uri("http://localhost")));
+            }
+
+            // Assert
+            mock.Verify(
+                m => m.Log(
+                    LogLevel.Information,
+                    It.IsAny<EventId>(),
+                    It.IsAny<It.IsAnyType>(),
+                    null,
+                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
+                Times.Once);
+
+            mock.Verify(
+                m => m.Log(
+                    LogLevel.Critical,
+                    It.IsAny<EventId>(),
+                    It.IsAny<It.IsAnyType>(),
+                    exception,
+                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
+                Times.Once);
+
+            Assert.NotNull(result);
+            Assert.Equal(exception, result);
+        }
+
+        private class MockResponseReturningInnerHandler : DelegatingHandler
         {
             private readonly int statusCode;
 
-            public InnerHandler(int statusCode)
+            public MockResponseReturningInnerHandler(int statusCode)
             {
                 this.statusCode = statusCode;
             }
@@ -69,6 +114,21 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
             protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
             {
                 return await Task.FromResult(new HttpResponseMessage { StatusCode = (HttpStatusCode)this.statusCode });
+            }
+        }
+
+        private class MockExceptionThrowingInnerHandler : DelegatingHandler
+        {
+            private readonly Exception exception;
+
+            public MockExceptionThrowingInnerHandler(Exception exception)
+            {
+                this.exception = exception;
+            }
+
+            protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            {
+                return await Task.FromException<HttpResponseMessage>(this.exception);
             }
         }
     }
