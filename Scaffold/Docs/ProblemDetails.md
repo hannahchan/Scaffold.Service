@@ -24,4 +24,4 @@ And the same response in XML;
 
 ## How it works ##
 
-Scaffold uses an [exception filter](../Sources/Scaffold.WebApi/Filters/ExceptionFilter.cs) in the ASP.NET Core MVC filter pipeline to catch exceptions and convert them into a *Problem Details* response. Exceptions that are not caught by the exception filter are not converted in to a *Problem Details* response and is instead handled by [middleware](../Sources/Scaffold.WebApi/Middleware/RequestLoggingMiddleware.cs).
+Scaffold uses an [exception filter](../Sources/Scaffold.WebApi/Filters/ExceptionFilter.cs) in the ASP.NET Core MVC filter pipeline to catch exceptions and convert them into a *Problem Details* response. Exceptions that are not caught by the exception filter are not converted in to a *Problem Details* response and is instead handled in the middleware pipeline.

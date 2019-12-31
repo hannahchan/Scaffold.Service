@@ -1,5 +1,6 @@
 namespace Scaffold.WebApi.UnitTests.Middleware
 {
+    using System;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
     using OpenTracing.Mock;
@@ -39,6 +40,35 @@ namespace Scaffold.WebApi.UnitTests.Middleware
             }
 
             Assert.Equal(expectedError, mockSpan.Tags.ContainsKey("error"));
+        }
+
+        [Fact]
+        public async Task When_InvokingMiddlewareWithException_Expect_SetTagError()
+        {
+            // Arrange
+            Exception exception = new Exception("Unit Test");
+
+            MockTracer mockTracer = new MockTracer();
+
+            OpenTracingSpanTaggingMiddleware middleware = new OpenTracingSpanTaggingMiddleware(
+                (httpContext) => throw exception,
+                mockTracer);
+
+            Exception result;
+
+            // Act
+            using (mockTracer.BuildSpan("Unit Test").StartActive())
+            {
+                result = await Record.ExceptionAsync(() => middleware.Invoke(new DefaultHttpContext()));
+            }
+
+            // Assert
+            MockSpan mockSpan = Assert.Single(mockTracer.FinishedSpans());
+            Assert.True(mockSpan.Tags.ContainsKey("error"));
+            Assert.True(Assert.IsType<bool>(mockSpan.Tags["error"]));
+
+            Assert.NotNull(result);
+            Assert.Equal(exception, result);
         }
     }
 }

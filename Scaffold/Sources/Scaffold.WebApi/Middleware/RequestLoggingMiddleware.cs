@@ -2,11 +2,8 @@ namespace Scaffold.WebApi.Middleware
 {
     using System;
     using System.Diagnostics;
-    using System.Net;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
 
     public class RequestLoggingMiddleware
@@ -27,19 +24,16 @@ namespace Scaffold.WebApi.Middleware
         private static readonly Action<ILogger, string, PathString, long, int, Exception?> LogRequestFinishedError =
             LoggerMessage.Define<string, PathString, long, int>(LogLevel.Error, default, RequestFinishedMessageTemplate);
 
-        private static readonly Action<ILogger, string, PathString, long, int, Exception?> LogRequestFinishedCritical =
-            LoggerMessage.Define<string, PathString, long, int>(LogLevel.Critical, default, RequestFinishedMessageTemplate);
+        private static readonly Action<ILogger, string, PathString, long, string, Exception?> LogRequestFinishedCritical =
+            LoggerMessage.Define<string, PathString, long, string>(LogLevel.Critical, default, RequestFinishedMessageTemplate);
 
         private readonly RequestDelegate next;
 
-        private readonly IWebHostEnvironment env;
-
         private readonly ILogger logger;
 
-        public RequestLoggingMiddleware(RequestDelegate next, IWebHostEnvironment env, ILogger<RequestLoggingMiddleware> logger)
+        public RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggingMiddleware> logger)
         {
             this.next = next;
-            this.env = env;
             this.logger = logger;
         }
 
@@ -75,18 +69,9 @@ namespace Scaffold.WebApi.Middleware
             {
                 stopwatch.Stop();
 
-                response.ContentType = "text/plain";
-                response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                LogRequestFinishedCritical(this.logger, request.Method, request.Path, stopwatch.ElapsedMilliseconds, "Unhandled Exception", exception);
 
-                LogRequestFinishedCritical(this.logger, request.Method, request.Path, stopwatch.ElapsedMilliseconds, response.StatusCode, exception);
-
-                if (this.env.IsDevelopment())
-                {
-                    await response.WriteAsync(exception.ToString());
-                    return;
-                }
-
-                await response.WriteAsync("Oh no! Something has gone wrong.");
+                throw;
             }
         }
     }

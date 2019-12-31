@@ -19,11 +19,19 @@ namespace Scaffold.WebApi.Middleware
 
         public async Task Invoke(HttpContext httpContext)
         {
-            await this.next.Invoke(httpContext);
+            try
+            {
+                await this.next.Invoke(httpContext);
 
-            if (httpContext.Response.StatusCode >= 500)
+                if (httpContext.Response.StatusCode >= 500)
+                {
+                    Tags.Error.Set(this.tracer.ActiveSpan, true);
+                }
+            }
+            catch
             {
                 Tags.Error.Set(this.tracer.ActiveSpan, true);
+                throw;
             }
         }
     }
