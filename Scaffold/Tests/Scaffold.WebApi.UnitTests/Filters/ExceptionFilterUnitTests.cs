@@ -3,8 +3,6 @@ namespace Scaffold.WebApi.UnitTests.Filters
     using System;
     using System.Collections.Generic;
     using System.Runtime.Serialization;
-    using FluentValidation;
-    using FluentValidation.Results;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Abstractions;
@@ -69,40 +67,6 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 // Assert
                 NotFoundObjectResult objectResult = Assert.IsType<NotFoundObjectResult>(context.Result);
                 Assert.IsType<ProblemDetails>(objectResult.Value);
-            }
-
-            [Fact]
-            public void When_HandlingValidationException_Expect_BadRequestObjectResult()
-            {
-                // Arrange
-                List<ValidationFailure> validationFailures = new List<ValidationFailure>
-                {
-                    new ValidationFailure("property1", "Error Message."),
-                    new ValidationFailure("property1", "Another Error Message."),
-                    new ValidationFailure("property1", "One More Error Message."),
-                    new ValidationFailure("property2", "Error Message."),
-                    new ValidationFailure("property3", "Error Message."),
-                };
-
-                ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
-                {
-                    Exception = new ValidationException(Guid.NewGuid().ToString(), validationFailures),
-                };
-
-                ExceptionFilter exceptionFilter = new ExceptionFilter(new MockProblemDetailsFactory());
-
-                // Act
-                exceptionFilter.OnException(context);
-
-                // Assert
-                BadRequestObjectResult objectResult = Assert.IsType<BadRequestObjectResult>(context.Result);
-                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
-                IDictionary<string, string[]> errors = Assert.IsType<Dictionary<string, string[]>>(problemDetails.Extensions["errors"]);
-
-                Assert.Equal(3, errors.Count);
-                Assert.Equal(3, errors["property1"].Length);
-                Assert.Single(errors["property2"]);
-                Assert.Single(errors["property3"]);
             }
 
             [Fact]

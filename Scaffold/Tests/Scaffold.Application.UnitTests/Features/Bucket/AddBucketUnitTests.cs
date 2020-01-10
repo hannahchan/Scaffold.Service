@@ -3,8 +3,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     using System;
     using System.Threading.Tasks;
     using AutoMapper;
-    using FluentValidation;
-    using FluentValidation.TestHelper;
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
@@ -52,31 +50,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             }
         }
 
-        public class Validator
-        {
-            [Fact]
-            public void ShouldNotHaveValidationErrorFor()
-            {
-                // Arrange
-                AddBucket.Validator validator = new AddBucket.Validator();
-
-                // Act and Assert
-                validator.ShouldNotHaveValidationErrorFor(command => command.Name, Guid.NewGuid().ToString());
-                validator.ShouldNotHaveValidationErrorFor(command => command.Description, Guid.NewGuid().ToString());
-            }
-
-            [Fact]
-            public void ShouldHaveValidationErrorFor()
-            {
-                // Arrange
-                AddBucket.Validator validator = new AddBucket.Validator();
-
-                // Act and Assert
-                validator.ShouldHaveValidationErrorFor(command => command.Name, string.Empty);
-                validator.ShouldHaveValidationErrorFor(command => command.Name, null as string);
-            }
-        }
-
         public class Handler : AddBucketUnitTests
         {
             [Fact]
@@ -97,21 +70,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Assert.NotEqual(default, response.Bucket.Id);
                 Assert.Equal(command.Name, response.Bucket.Name);
                 Assert.NotNull(response.Bucket.Items);
-            }
-
-            [Fact]
-            public async Task When_AddingBucketWithInvalidCommand_Expect_ValidationException()
-            {
-                // Arrange
-                AddBucket.Command command = new AddBucket.Command { Name = string.Empty };
-                AddBucket.Handler handler = new AddBucket.Handler(this.repository);
-
-                // Act
-                Exception exception = await Record.ExceptionAsync(() =>
-                    handler.Handle(command, default));
-
-                // Assert
-                Assert.IsType<ValidationException>(exception);
             }
 
             [Fact]

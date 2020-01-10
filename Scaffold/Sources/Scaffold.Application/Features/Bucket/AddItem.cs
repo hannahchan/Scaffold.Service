@@ -4,7 +4,6 @@ namespace Scaffold.Application.Features.Bucket
     using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
-    using FluentValidation;
     using MediatR;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
@@ -30,14 +29,6 @@ namespace Scaffold.Application.Features.Bucket
             public Item Item { get; private set; }
         }
 
-        public class Validator : AbstractValidator<Command>
-        {
-            public Validator()
-            {
-                this.RuleFor(command => command.Name).NotEmpty().NotNull();
-            }
-        }
-
         public class Handler : IRequestHandler<Command, Response>
         {
             private readonly IBucketRepository repository;
@@ -49,8 +40,6 @@ namespace Scaffold.Application.Features.Bucket
 
             public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
             {
-                await new Validator().ValidateAndThrowAsync(request);
-
                 Bucket bucket = await this.repository.GetAsync(request.BucketId) ??
                     throw new BucketNotFoundException(request.BucketId);
 

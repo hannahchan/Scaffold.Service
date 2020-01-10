@@ -3,8 +3,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     using System;
     using System.Threading.Tasks;
     using AutoMapper;
-    using FluentValidation;
-    using FluentValidation.TestHelper;
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
@@ -84,32 +82,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             }
         }
 
-        public class Validator
-        {
-            [Fact]
-            public void ShouldNotHaveValidationErrorFor()
-            {
-                // Arrange
-                UpdateBucket.Validator validator = new UpdateBucket.Validator();
-
-                // Act and Assert
-                validator.ShouldNotHaveValidationErrorFor(command => command.Id, new Random().Next(int.MaxValue));
-                validator.ShouldNotHaveValidationErrorFor(command => command.Name, Guid.NewGuid().ToString());
-            }
-
-            [Fact]
-            public void ShouldHaveValidationErrorFor()
-            {
-                // Arrange
-                UpdateBucket.Validator validator = new UpdateBucket.Validator();
-
-                // Act and Assert
-                validator.ShouldHaveValidationErrorFor(command => command.Id, default(int));
-                validator.ShouldHaveValidationErrorFor(command => command.Name, string.Empty);
-                validator.ShouldHaveValidationErrorFor(command => command.Name, null as string);
-            }
-        }
-
         public class Handler : UpdateBucketUnitTests
         {
             [Fact]
@@ -171,21 +143,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Assert.Equal(command.Name, response.Bucket.Name);
                 Assert.Equal(command.Description, response.Bucket.Description);
                 Assert.Equal(command.Size, response.Bucket.Size);
-            }
-
-            [Fact]
-            public async Task When_UpdatingBucketWithInvalidCommand_Expect_ValidationException()
-            {
-                // Arrange
-                UpdateBucket.Command command = new UpdateBucket.Command { Name = string.Empty };
-                UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository);
-
-                // Act
-                Exception exception = await Record.ExceptionAsync(() =>
-                    handler.Handle(command, default));
-
-                // Assert
-                Assert.IsType<ValidationException>(exception);
             }
 
             [Fact]

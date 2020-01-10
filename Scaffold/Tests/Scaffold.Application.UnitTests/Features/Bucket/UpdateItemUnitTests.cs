@@ -3,8 +3,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     using System;
     using System.Threading.Tasks;
     using AutoMapper;
-    using FluentValidation;
-    using FluentValidation.TestHelper;
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
@@ -80,34 +78,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 // Assert
                 Assert.IsType<ArgumentNullException>(exception);
-            }
-        }
-
-        public class Validator
-        {
-            [Fact]
-            public void ShouldNotHaveValidationErrorFor()
-            {
-                // Arrange
-                UpdateItem.Validator validator = new UpdateItem.Validator();
-
-                // Act and Assert
-                validator.ShouldNotHaveValidationErrorFor(command => command.BucketId, new Random().Next(int.MaxValue));
-                validator.ShouldNotHaveValidationErrorFor(command => command.ItemId, new Random().Next(int.MaxValue));
-                validator.ShouldNotHaveValidationErrorFor(command => command.Name, Guid.NewGuid().ToString());
-            }
-
-            [Fact]
-            public void ShouldHaveValidationErrorFor()
-            {
-                // Arrange
-                UpdateItem.Validator validator = new UpdateItem.Validator();
-
-                // Act and Assert
-                validator.ShouldHaveValidationErrorFor(command => command.BucketId, default(int));
-                validator.ShouldHaveValidationErrorFor(command => command.ItemId, default(int));
-                validator.ShouldHaveValidationErrorFor(command => command.Name, string.Empty);
-                validator.ShouldHaveValidationErrorFor(command => command.Name, null as string);
             }
         }
 
@@ -192,21 +162,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 // Assert
                 Assert.IsType<BucketNotFoundException>(exception);
-            }
-
-            [Fact]
-            public async Task When_UpdatingItemWithInvalidCommand_Expect_ValidationException()
-            {
-                // Arrange
-                UpdateItem.Command command = new UpdateItem.Command { Name = string.Empty };
-                UpdateItem.Handler handler = new UpdateItem.Handler(this.repository);
-
-                // Act
-                Exception exception = await Record.ExceptionAsync(() =>
-                    handler.Handle(command, default));
-
-                // Assert
-                Assert.IsType<ValidationException>(exception);
             }
         }
 

@@ -3,8 +3,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     using System;
     using System.Threading.Tasks;
     using AutoMapper;
-    using FluentValidation;
-    using FluentValidation.TestHelper;
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
@@ -51,31 +49,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             }
         }
 
-        public class Validator
-        {
-            [Fact]
-            public void ShouldNotHaveValidationErrorFor()
-            {
-                // Arrange
-                AddItem.Validator validator = new AddItem.Validator();
-
-                // Act and Assert
-                validator.ShouldNotHaveValidationErrorFor(command => command.Name, Guid.NewGuid().ToString());
-                validator.ShouldNotHaveValidationErrorFor(command => command.Description, Guid.NewGuid().ToString());
-            }
-
-            [Fact]
-            public void ShouldHaveValidationErrorFor()
-            {
-                // Arrange
-                AddItem.Validator validator = new AddItem.Validator();
-
-                // Act and Assert
-                validator.ShouldHaveValidationErrorFor(command => command.Name, string.Empty);
-                validator.ShouldHaveValidationErrorFor(command => command.Name, null as string);
-            }
-        }
-
         public class Handler : AddItemUnitTests
         {
             [Fact]
@@ -119,21 +92,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 // Assert
                 Assert.IsType<BucketNotFoundException>(exception);
-            }
-
-            [Fact]
-            public async Task When_AddingItemWithInvalidCommand_Expect_ValidationException()
-            {
-                // Arrange
-                AddItem.Command command = new AddItem.Command { Name = string.Empty };
-                AddItem.Handler handler = new AddItem.Handler(this.repository);
-
-                // Act
-                Exception exception = await Record.ExceptionAsync(() =>
-                    handler.Handle(command, default));
-
-                // Assert
-                Assert.IsType<ValidationException>(exception);
             }
 
             [Fact]
