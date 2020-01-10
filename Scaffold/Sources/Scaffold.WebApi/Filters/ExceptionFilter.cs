@@ -1,98 +1,63 @@
 namespace Scaffold.WebApi.Filters
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using FluentValidation;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
-    using OpenTracing;
+    using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Scaffold.Application.Base;
     using Scaffold.Domain.Base;
-    using Scaffold.WebApi.Extensions;
 
-    public class ExceptionFilter : IActionFilter, IExceptionFilter
+    public class ExceptionFilter : IExceptionFilter
     {
-        private readonly ITracer tracer;
+        private readonly ProblemDetailsFactory factory;
 
-        public ExceptionFilter(ITracer tracer)
+        public ExceptionFilter(ProblemDetailsFactory factory)
         {
-            this.tracer = tracer ?? throw new ArgumentNullException(nameof(tracer));
-        }
-
-        public void OnActionExecuted(ActionExecutedContext context)
-        {
-            if (context.Result is ObjectResult result && result.Value is ProblemDetails details)
-            {
-                details.AddOpenTracingTraceId(this.tracer);
-            }
-        }
-
-        public void OnActionExecuting(ActionExecutingContext context)
-        {
-            // Not Used
+            this.factory = factory;
         }
 
         public void OnException(ExceptionContext context)
         {
             if (context.Exception is DomainException domainException)
             {
-                context.Result = new ConflictObjectResult(this.GetProblemDetails(domainException));
+                context.Result = new ConflictObjectResult(this.factory.CreateProblemDetails(
+                    context.HttpContext,
+                    title: domainException.Title,
+                    detail: domainException.Detail));
             }
 
             if (context.Exception is NotFoundException notFoundException)
             {
-                context.Result = new NotFoundObjectResult(this.GetProblemDetails(notFoundException));
+                context.Result = new NotFoundObjectResult(this.factory.CreateProblemDetails(
+                    context.HttpContext,
+                    title: notFoundException.Title,
+                    detail: notFoundException.Detail));
             }
 
             if (context.Exception is ValidationException validationException)
             {
-                context.Result = new BadRequestObjectResult(this.GetProblemDetails(validationException));
+                IDictionary<string, string[]> errors = new Dictionary<string, string[]>();
+
+                foreach (string property in validationException.Errors.Select(error => error.PropertyName).Distinct())
+                {
+                    IEnumerable<string> errorMessages = validationException.Errors
+                        .Where(error => error.PropertyName == property)
+                        .Select(error => error.ErrorMessage)
+                        .Distinct();
+
+                    errors.Add(property, errorMessages.ToArray());
+                }
+
+                ProblemDetails details = this.factory.CreateProblemDetails(
+                    context.HttpContext,
+                    title: "Validation Failure");
+
+                details.Extensions["errors"] = errors;
+
+                context.Result = new BadRequestObjectResult(details);
             }
-
-            if (context.Result is ObjectResult result && result.Value is ProblemDetails details)
-            {
-                details.AddOpenTracingTraceId(this.tracer);
-            }
-        }
-
-        private ProblemDetails GetProblemDetails(Application.Base.ApplicationException exception)
-        {
-            ProblemDetails details = new ProblemDetails
-            {
-                Title = exception.Title,
-                Detail = exception.Detail,
-            };
-
-            return details;
-        }
-
-        private ProblemDetails GetProblemDetails(DomainException exception)
-        {
-            ProblemDetails details = new ProblemDetails
-            {
-                Title = exception.Title,
-                Detail = exception.Detail,
-            };
-
-            return details;
-        }
-
-        private ValidationProblemDetails GetProblemDetails(ValidationException exception)
-        {
-            ValidationProblemDetails details = new ValidationProblemDetails { Title = "Validation Failure" };
-
-            foreach (string property in exception.Errors.Select(error => error.PropertyName).Distinct())
-            {
-                IEnumerable<string> errorMessages = exception.Errors
-                    .Where(error => error.PropertyName == property)
-                    .Select(error => error.ErrorMessage)
-                    .Distinct();
-
-                details.Errors.Add(property, errorMessages.ToArray());
-            }
-
-            return details;
         }
     }
 }

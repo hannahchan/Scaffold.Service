@@ -9,8 +9,9 @@ namespace Scaffold.WebApi.UnitTests.Filters
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Abstractions;
     using Microsoft.AspNetCore.Mvc.Filters;
+    using Microsoft.AspNetCore.Mvc.Infrastructure;
+    using Microsoft.AspNetCore.Mvc.ModelBinding;
     using Microsoft.AspNetCore.Routing;
-    using OpenTracing.Mock;
     using Scaffold.Application.Base;
     using Scaffold.Domain.Base;
     using Scaffold.WebApi.Filters;
@@ -30,73 +31,6 @@ namespace Scaffold.WebApi.UnitTests.Filters
             };
         }
 
-        public class Constructor
-        {
-            [Fact]
-            public void When_InstantiatingExceptionFilterWithNullTracer_Expect_ArgumentNullException()
-            {
-                // Act
-                Exception exception = Record.Exception(() => new ExceptionFilter(null!));
-
-                // Assert
-                Assert.IsType<ArgumentNullException>(exception);
-            }
-        }
-
-        public class OnActionExecuted : ExceptionFilterUnitTests
-        {
-            [Fact]
-            public void When_HandlingObjectResultWithProblemDetails_Expect_ProblemDetailsWithTraceId()
-            {
-                // Arrange
-                MockTracer mockTracer = new MockTracer();
-
-                ActionExecutedContext context = new ActionExecutedContext(this.actionContext, new List<IFilterMetadata>(), null)
-                {
-                    Result = new ObjectResult(new ProblemDetails()),
-                };
-
-                ExceptionFilter exceptionFilter = new ExceptionFilter(mockTracer);
-
-                // Act
-                using (mockTracer.BuildSpan("Unit Test").StartActive())
-                {
-                    exceptionFilter.OnActionExecuted(context);
-                }
-
-                // Assert
-                ObjectResult objectResult = Assert.IsType<ObjectResult>(context.Result);
-                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
-                MockSpan mockSpan = Assert.Single(mockTracer.FinishedSpans());
-                Assert.Equal(mockSpan.Context.TraceId, problemDetails.Extensions["traceId"]);
-            }
-        }
-
-        public class OnActionExecuting : ExceptionFilterUnitTests
-        {
-            [Fact]
-            public void When_ActionExecuting_Expect_NullContextResult()
-            {
-                // Arrange
-                ActionExecutingContext context = new ActionExecutingContext(
-                    this.actionContext,
-                    new List<IFilterMetadata>(),
-                    new Dictionary<string, object>(),
-                    null);
-
-                ExceptionFilter exceptionFilter = new ExceptionFilter(new MockTracer());
-
-                // Act
-                exceptionFilter.OnActionExecuting(context);
-
-                // Assert
-                Assert.Empty(context.ActionArguments);
-                Assert.Null(context.Controller);
-                Assert.Empty(context.Filters);
-                Assert.Null(context.Result);
-            }
-        }
-
         public class OnException : ExceptionFilterUnitTests
         {
             [Fact]
@@ -108,7 +42,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     Exception = new TestDomainException(Guid.NewGuid().ToString()),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter(new MockTracer());
+                ExceptionFilter exceptionFilter = new ExceptionFilter(new MockProblemDetailsFactory());
 
                 // Act
                 exceptionFilter.OnException(context);
@@ -127,7 +61,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     Exception = new TestNotFoundException(Guid.NewGuid().ToString()),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter(new MockTracer());
+                ExceptionFilter exceptionFilter = new ExceptionFilter(new MockProblemDetailsFactory());
 
                 // Act
                 exceptionFilter.OnException(context);
@@ -155,19 +89,20 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     Exception = new ValidationException(Guid.NewGuid().ToString(), validationFailures),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter(new MockTracer());
+                ExceptionFilter exceptionFilter = new ExceptionFilter(new MockProblemDetailsFactory());
 
                 // Act
                 exceptionFilter.OnException(context);
 
                 // Assert
                 BadRequestObjectResult objectResult = Assert.IsType<BadRequestObjectResult>(context.Result);
-                ValidationProblemDetails problemDetails = Assert.IsType<ValidationProblemDetails>(objectResult.Value);
+                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
+                IDictionary<string, string[]> errors = Assert.IsType<Dictionary<string, string[]>>(problemDetails.Extensions["errors"]);
 
-                Assert.Equal(3, problemDetails.Errors.Count);
-                Assert.Equal(3, problemDetails.Errors["property1"].Length);
-                Assert.Single(problemDetails.Errors["property2"]);
-                Assert.Single(problemDetails.Errors["property3"]);
+                Assert.Equal(3, errors.Count);
+                Assert.Equal(3, errors["property1"].Length);
+                Assert.Single(errors["property2"]);
+                Assert.Single(errors["property3"]);
             }
 
             [Fact]
@@ -179,7 +114,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     Exception = new Exception(),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter(new MockTracer());
+                ExceptionFilter exceptionFilter = new ExceptionFilter(new MockProblemDetailsFactory());
 
                 // Act
                 exceptionFilter.OnException(context);
@@ -187,31 +122,31 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 // Assert
                 Assert.Null(context.Result);
             }
+        }
 
-            [Fact]
-            public void When_HandlingExpection_Expect_ProblemDetailsWithTraceId()
+        private class MockProblemDetailsFactory : ProblemDetailsFactory
+        {
+            public override ProblemDetails CreateProblemDetails(
+                HttpContext httpContext,
+                int? statusCode = null,
+                string? title = null,
+                string? type = null,
+                string? detail = null,
+                string? instance = null)
             {
-                // Arrange
-                MockTracer mockTracer = new MockTracer();
+                return new ProblemDetails();
+            }
 
-                ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
-                {
-                    Result = new ObjectResult(new ProblemDetails()),
-                };
-
-                ExceptionFilter exceptionFilter = new ExceptionFilter(mockTracer);
-
-                // Act
-                using (mockTracer.BuildSpan("Unit Test").StartActive())
-                {
-                    exceptionFilter.OnException(context);
-                }
-
-                // Assert
-                ObjectResult objectResult = Assert.IsType<ObjectResult>(context.Result);
-                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
-                MockSpan mockSpan = Assert.Single(mockTracer.FinishedSpans());
-                Assert.Equal(mockSpan.Context.TraceId, problemDetails.Extensions["traceId"]);
+            public override ValidationProblemDetails CreateValidationProblemDetails(
+                HttpContext httpContext,
+                ModelStateDictionary modelStateDictionary,
+                int? statusCode = null,
+                string? title = null,
+                string? type = null,
+                string? detail = null,
+                string? instance = null)
+            {
+                return new ValidationProblemDetails();
             }
         }
 
