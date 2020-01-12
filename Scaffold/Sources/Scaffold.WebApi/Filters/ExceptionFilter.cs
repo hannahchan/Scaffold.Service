@@ -1,5 +1,6 @@
 namespace Scaffold.WebApi.Filters
 {
+    using System.Net;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
     using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -8,27 +9,29 @@ namespace Scaffold.WebApi.Filters
 
     public class ExceptionFilter : IExceptionFilter
     {
-        private readonly ProblemDetailsFactory factory;
+        private readonly ProblemDetailsFactory problemDetailsFactory;
 
-        public ExceptionFilter(ProblemDetailsFactory factory)
+        public ExceptionFilter(ProblemDetailsFactory problemDetailsFactory)
         {
-            this.factory = factory;
+            this.problemDetailsFactory = problemDetailsFactory;
         }
 
         public void OnException(ExceptionContext context)
         {
             if (context.Exception is DomainException domainException)
             {
-                context.Result = new ConflictObjectResult(this.factory.CreateProblemDetails(
-                    context.HttpContext,
+                context.Result = new ConflictObjectResult(this.problemDetailsFactory.CreateProblemDetails(
+                    httpContext: context.HttpContext,
+                    statusCode: (int)HttpStatusCode.Conflict,
                     title: domainException.Title,
                     detail: domainException.Detail));
             }
 
             if (context.Exception is NotFoundException notFoundException)
             {
-                context.Result = new NotFoundObjectResult(this.factory.CreateProblemDetails(
-                    context.HttpContext,
+                context.Result = new NotFoundObjectResult(this.problemDetailsFactory.CreateProblemDetails(
+                    httpContext: context.HttpContext,
+                    statusCode: (int)HttpStatusCode.NotFound,
                     title: notFoundException.Title,
                     detail: notFoundException.Detail));
             }

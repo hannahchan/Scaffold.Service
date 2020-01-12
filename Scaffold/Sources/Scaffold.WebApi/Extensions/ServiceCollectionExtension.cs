@@ -8,6 +8,7 @@ namespace Scaffold.WebApi.Extensions
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.HttpOverrides;
+    using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,7 @@ namespace Scaffold.WebApi.Extensions
     using Scaffold.HttpClients;
     using Scaffold.Repositories.PostgreSQL;
     using Scaffold.WebApi.Controllers;
+    using Scaffold.WebApi.Factories;
     using Scaffold.WebApi.HttpMessageHandlers;
 
     public static class ServiceCollectionExtension
@@ -112,10 +114,16 @@ namespace Scaffold.WebApi.Extensions
 
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
+            if (services is null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
             services
                 .AddAutoMapper(typeof(Startup).Assembly)
                 .AddMediatR(typeof(GetBucket).Assembly)
-                .AddOpenTracing();
+                .AddOpenTracing()
+                .AddSingleton<ProblemDetailsFactory, CustomProblemDetailsFactory>();
 
             return services;
         }

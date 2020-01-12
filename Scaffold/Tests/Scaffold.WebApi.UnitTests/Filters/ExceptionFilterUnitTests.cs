@@ -2,6 +2,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
 {
     using System;
     using System.Collections.Generic;
+    using System.Net;
     using System.Runtime.Serialization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -35,9 +36,11 @@ namespace Scaffold.WebApi.UnitTests.Filters
             public void When_HandlingDomainException_Expect_ConflictObjectResult()
             {
                 // Arrange
+                TestDomainException exception = new TestDomainException(Guid.NewGuid().ToString());
+
                 ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
                 {
-                    Exception = new TestDomainException(Guid.NewGuid().ToString()),
+                    Exception = exception,
                 };
 
                 ExceptionFilter exceptionFilter = new ExceptionFilter(new MockProblemDetailsFactory());
@@ -47,16 +50,22 @@ namespace Scaffold.WebApi.UnitTests.Filters
 
                 // Assert
                 ConflictObjectResult objectResult = Assert.IsType<ConflictObjectResult>(context.Result);
-                Assert.IsType<ProblemDetails>(objectResult.Value);
+                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
+
+                Assert.Equal((int)HttpStatusCode.Conflict, problemDetails.Status);
+                Assert.Equal(exception.Title, problemDetails.Title);
+                Assert.Equal(exception.Detail, problemDetails.Detail);
             }
 
             [Fact]
             public void When_HandlingNotFoundException_Expect_NotFoundObjectResult()
             {
                 // Arrange
+                TestNotFoundException exception = new TestNotFoundException(Guid.NewGuid().ToString());
+
                 ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
                 {
-                    Exception = new TestNotFoundException(Guid.NewGuid().ToString()),
+                    Exception = exception,
                 };
 
                 ExceptionFilter exceptionFilter = new ExceptionFilter(new MockProblemDetailsFactory());
@@ -66,7 +75,11 @@ namespace Scaffold.WebApi.UnitTests.Filters
 
                 // Assert
                 NotFoundObjectResult objectResult = Assert.IsType<NotFoundObjectResult>(context.Result);
-                Assert.IsType<ProblemDetails>(objectResult.Value);
+                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
+
+                Assert.Equal((int)HttpStatusCode.NotFound, problemDetails.Status);
+                Assert.Equal(exception.Title, problemDetails.Title);
+                Assert.Equal(exception.Detail, problemDetails.Detail);
             }
 
             [Fact]
@@ -98,7 +111,14 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 string? detail = null,
                 string? instance = null)
             {
-                return new ProblemDetails();
+                return new ProblemDetails
+                {
+                    Status = statusCode,
+                    Title = title,
+                    Type = type,
+                    Detail = detail,
+                    Instance = instance,
+                };
             }
 
             public override ValidationProblemDetails CreateValidationProblemDetails(
@@ -110,7 +130,14 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 string? detail = null,
                 string? instance = null)
             {
-                return new ValidationProblemDetails();
+                return new ValidationProblemDetails
+                {
+                    Status = statusCode,
+                    Title = title,
+                    Type = type,
+                    Detail = detail,
+                    Instance = instance,
+                };
             }
         }
 
