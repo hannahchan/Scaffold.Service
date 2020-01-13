@@ -9,5 +9,5 @@ docker-compose.yml
 docker-compose.*.yml
 Docs
 README.md
-*/*/bin
-*/*/obj
+**/bin
+**/obj
