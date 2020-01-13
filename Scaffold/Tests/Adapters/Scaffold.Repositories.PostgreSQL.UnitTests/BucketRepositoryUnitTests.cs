@@ -73,7 +73,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 Exception exception = Record.Exception(() => repository.Add(null!));
 
                 // Assert
-                Assert.IsType<ArgumentNullException>(exception);
+                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
+                Assert.Equal("bucket", argumentNullException.ParamName);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
         }
@@ -115,7 +116,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 Exception exception = await Record.ExceptionAsync(() => repository.AddAsync(null!));
 
                 // Assert
-                Assert.IsType<ArgumentNullException>(exception);
+                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
+                Assert.Equal("bucket", argumentNullException.ParamName);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
         }
@@ -262,7 +264,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.IsType<ArgumentNullException>(exception);
+                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
+                Assert.Equal("predicate", argumentNullException.ParamName);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
 
@@ -569,7 +572,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.IsType<ArgumentNullException>(exception);
+                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
+                Assert.Equal("predicate", argumentNullException.ParamName);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
 
@@ -1674,7 +1678,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 Exception exception = Record.Exception(() => repository.Remove(null!));
 
                 // Assert
-                Assert.IsType<ArgumentNullException>(exception);
+                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
+                Assert.Equal("bucket", argumentNullException.ParamName);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
         }
@@ -1719,7 +1724,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 Exception exception = await Record.ExceptionAsync(() => repository.RemoveAsync(null!));
 
                 // Assert
-                Assert.IsType<ArgumentNullException>(exception);
+                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
+                Assert.Equal("bucket", argumentNullException.ParamName);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
         }
@@ -1772,7 +1778,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 Exception exception = Record.Exception(() => repository.Update(null!));
 
                 // Assert
-                Assert.IsType<ArgumentNullException>(exception);
+                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
+                Assert.Equal("bucket", argumentNullException.ParamName);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
         }
@@ -1825,7 +1832,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 Exception exception = await Record.ExceptionAsync(() => repository.UpdateAsync(null!));
 
                 // Assert
-                Assert.IsType<ArgumentNullException>(exception);
+                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
+                Assert.Equal("bucket", argumentNullException.ParamName);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
         }

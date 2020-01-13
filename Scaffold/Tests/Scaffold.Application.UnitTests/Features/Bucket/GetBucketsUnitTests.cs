@@ -85,7 +85,8 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 exception = Record.Exception(() => new GetBuckets.Query(null!));
 
                 // Assert
-                Assert.IsType<ArgumentNullException>(exception);
+                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
+                Assert.Equal("predicate", argumentNullException.ParamName);
             }
         }
 
@@ -111,7 +112,8 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Exception exception = Record.Exception(() => new GetBuckets.Response(null!));
 
                 // Assert
-                Assert.IsType<ArgumentNullException>(exception);
+                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
+                Assert.Equal("buckets", argumentNullException.ParamName);
             }
         }
 

@@ -45,7 +45,8 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Exception exception = Record.Exception(() => new GetItems.Response(null!));
 
                 // Assert
-                Assert.IsType<ArgumentNullException>(exception);
+                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
+                Assert.Equal("items", argumentNullException.ParamName);
             }
         }
 

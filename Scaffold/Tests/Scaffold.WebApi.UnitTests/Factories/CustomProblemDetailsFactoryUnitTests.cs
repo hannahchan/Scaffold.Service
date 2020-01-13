@@ -37,7 +37,8 @@ namespace Scaffold.WebApi.UnitTests.Factories
 
                 // Assert
                 Assert.NotNull(result);
-                Assert.IsType<ArgumentNullException>(result);
+                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(result);
+                Assert.Equal("options", argumentNullException.ParamName);
             }
 
             [Fact]
@@ -51,7 +52,8 @@ namespace Scaffold.WebApi.UnitTests.Factories
 
                 // Assert
                 Assert.NotNull(result);
-                Assert.IsType<ArgumentNullException>(result);
+                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(result);
+                Assert.Equal("options", argumentNullException.ParamName);
             }
         }
 
@@ -88,7 +90,8 @@ namespace Scaffold.WebApi.UnitTests.Factories
 
                 // Assert
                 Assert.NotNull(result);
-                Assert.IsType<ArgumentNullException>(result);
+                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(result);
+                Assert.Equal("httpContext", argumentNullException.ParamName);
             }
 
             [Fact]
@@ -235,7 +238,8 @@ namespace Scaffold.WebApi.UnitTests.Factories
 
                 // Assert
                 Assert.NotNull(result);
-                Assert.IsType<ArgumentNullException>(result);
+                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(result);
+                Assert.Equal("httpContext", argumentNullException.ParamName);
             }
 
             [Fact]
@@ -250,7 +254,8 @@ namespace Scaffold.WebApi.UnitTests.Factories
 
                 // Assert
                 Assert.NotNull(result);
-                Assert.IsType<ArgumentNullException>(result);
+                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(result);
+                Assert.Equal("modelStateDictionary", argumentNullException.ParamName);
             }
 
             [Fact]

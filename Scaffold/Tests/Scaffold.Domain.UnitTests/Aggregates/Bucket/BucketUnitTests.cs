@@ -77,7 +77,8 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
                 Exception exception = Record.Exception(() => bucket.AddItem(null!));
 
                 // Assert
-                Assert.IsType<ArgumentNullException>(exception);
+                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
+                Assert.Equal("item", argumentNullException.ParamName);
                 Assert.Empty(bucket.Items);
             }
 
@@ -167,7 +168,8 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
                 Exception exception = Record.Exception(() => bucket.RemoveItem(null!));
 
                 // Assert
-                Assert.IsType<ArgumentNullException>(exception);
+                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
+                Assert.Equal("item", argumentNullException.ParamName);
                 Assert.Contains(item, bucket.Items);
                 Assert.Equal(1, bucket.Items.Count);
             }
