@@ -9,29 +9,17 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     public class BucketNotFoundExceptionUnitTests
     {
         [Fact]
-        public void When_InstantiatingBucketNotFoundException_Expect_TitleNotEmpty()
+        public void When_InstantiatingBucketNotFoundExceptionWithBucketId_Expect_BucketIdInMessage()
         {
             // Arrange
+            int bucketId = new Random().Next(int.MaxValue);
             BucketNotFoundException exception;
 
             // Act
-            exception = new BucketNotFoundException(new Random().Next(int.MaxValue));
+            exception = new BucketNotFoundException(bucketId);
 
             // Assert
-            Assert.NotEmpty(exception.Title);
-        }
-
-        [Fact]
-        public void When_InstantiatingBucketNotFoundException_Expect_DetailNotEmpty()
-        {
-            // Arrange
-            BucketNotFoundException exception;
-
-            // Act
-            exception = new BucketNotFoundException(new Random().Next(int.MaxValue));
-
-            // Assert
-            Assert.NotEmpty(exception.Detail);
+            Assert.Equal($"Bucket '{bucketId}' not found.", exception.Message);
         }
 
         [Fact]
@@ -52,8 +40,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             }
 
             // Assert
-            Assert.Equal(exception.Title, result.Title);
-            Assert.Equal(exception.Detail, result.Detail);
             Assert.Equal(exception.Message, result.Message);
             Assert.Equal(exception.InnerException, result.InnerException);
             Assert.Null(result.InnerException);

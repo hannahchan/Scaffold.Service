@@ -8,7 +8,7 @@ namespace Scaffold.Domain.Aggregates.Bucket
     public class InvalidSizeException : DomainException
     {
         public InvalidSizeException(string message)
-            : base("Invalid Size", message)
+            : base(message)
         {
         }
 

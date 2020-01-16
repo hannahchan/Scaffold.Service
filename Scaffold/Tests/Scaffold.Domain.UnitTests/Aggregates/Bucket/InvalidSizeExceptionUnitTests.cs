@@ -9,21 +9,7 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
     public class InvalidSizeExceptionUnitTests
     {
         [Fact]
-        public void When_InstantiatingInvalidSizeException_Expect_TitleNotEmpty()
-        {
-            // Arrange
-            InvalidSizeException exception;
-
-            // Act
-            exception = new InvalidSizeException(string.Empty);
-
-            // Assert
-            Assert.Empty(exception.Detail);
-            Assert.NotEmpty(exception.Title);
-        }
-
-        [Fact]
-        public void When_InstantiatingInvalidSizeExceptionWithMessage_Expect_DetailToBeMessage()
+        public void When_InstantiatingInvalidSizeExceptionWithMessage_Expect_InvalidSizeExceptionWithMessage()
         {
             // Arrange
             InvalidSizeException exception;
@@ -33,7 +19,7 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
             exception = new InvalidSizeException(message);
 
             // Assert
-            Assert.Equal(message, exception.Detail);
+            Assert.Equal(message, exception.Message);
         }
 
         [Fact]
@@ -54,8 +40,6 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
             }
 
             // Assert
-            Assert.Equal(exception.Title, result.Title);
-            Assert.Equal(exception.Detail, result.Detail);
             Assert.Equal(exception.Message, result.Message);
             Assert.Equal(exception.InnerException, result.InnerException);
             Assert.Null(result.InnerException);

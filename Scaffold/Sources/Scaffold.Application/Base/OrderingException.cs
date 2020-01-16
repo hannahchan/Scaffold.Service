@@ -15,16 +15,6 @@ namespace Scaffold.Application.Base
         {
         }
 
-        protected OrderingException(string title, string message)
-            : base(title, message)
-        {
-        }
-
-        protected OrderingException(string title, string message, Exception innerException)
-            : base(title, message, innerException)
-        {
-        }
-
         protected OrderingException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

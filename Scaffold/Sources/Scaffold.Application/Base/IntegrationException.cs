@@ -17,18 +17,6 @@ namespace Scaffold.Application.Base
             this.Status = status;
         }
 
-        protected IntegrationException(string title, string message, int status)
-            : base(title, message)
-        {
-            this.Status = status;
-        }
-
-        protected IntegrationException(string title, string message, int status, Exception innerException)
-            : base(title, message, innerException)
-        {
-            this.Status = status;
-        }
-
         protected IntegrationException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

@@ -9,21 +9,7 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
     public class BucketFullExceptionUnitTests
     {
         [Fact]
-        public void When_InstantiatingBucketFullException_Expect_TitleNotEmpty()
-        {
-            // Arrange
-            BucketFullException exception;
-
-            // Act
-            exception = new BucketFullException(string.Empty);
-
-            // Assert
-            Assert.Empty(exception.Detail);
-            Assert.NotEmpty(exception.Title);
-        }
-
-        [Fact]
-        public void When_InstantiatingBucketFullExceptionWithMessage_Expect_DetailToBeMessage()
+        public void When_InstantiatingBucketFullExceptionWithMessage_Expect_BucketFullExceptionWithMessage()
         {
             // Arrange
             BucketFullException exception;
@@ -33,7 +19,7 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
             exception = new BucketFullException(message);
 
             // Assert
-            Assert.Equal(message, exception.Detail);
+            Assert.Equal(message, exception.Message);
         }
 
         [Fact]
@@ -54,8 +40,6 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
             }
 
             // Assert
-            Assert.Equal(exception.Title, result.Title);
-            Assert.Equal(exception.Detail, result.Detail);
             Assert.Equal(exception.Message, result.Message);
             Assert.Equal(exception.InnerException, result.InnerException);
             Assert.Null(result.InnerException);

@@ -8,7 +8,7 @@ namespace Scaffold.Application.Exceptions
     public class PropertyNotComparableException : OrderingException
     {
         public PropertyNotComparableException(string propertyName)
-            : base("Property Not Comparable", $"\"{propertyName}\" is not a comparable property.")
+            : base($"\"{propertyName}\" is not a comparable property.")
         {
         }
 

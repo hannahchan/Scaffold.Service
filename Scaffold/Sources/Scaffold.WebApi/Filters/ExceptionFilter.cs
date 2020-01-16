@@ -23,8 +23,7 @@ namespace Scaffold.WebApi.Filters
                 context.Result = new ConflictObjectResult(this.problemDetailsFactory.CreateProblemDetails(
                     httpContext: context.HttpContext,
                     statusCode: (int)HttpStatusCode.Conflict,
-                    title: domainException.Title,
-                    detail: domainException.Detail));
+                    detail: domainException.Message));
             }
 
             if (context.Exception is NotFoundException notFoundException)
@@ -32,8 +31,7 @@ namespace Scaffold.WebApi.Filters
                 context.Result = new NotFoundObjectResult(this.problemDetailsFactory.CreateProblemDetails(
                     httpContext: context.HttpContext,
                     statusCode: (int)HttpStatusCode.NotFound,
-                    title: notFoundException.Title,
-                    detail: notFoundException.Detail));
+                    detail: notFoundException.Message));
             }
         }
     }

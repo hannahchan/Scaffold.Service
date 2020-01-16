@@ -9,29 +9,17 @@ namespace Scaffold.Application.UnitTests.Base
     public class PropertyNotComparableExceptionUnitTests
     {
         [Fact]
-        public void When_InstantiatingPropertyNotComparableException_Expect_TitleNotEmpty()
+        public void When_InstantiatingPropertyNotComparableExceptionWithPropertyName_Expect_PropertyNameInMessage()
         {
             // Arrange
+            string propertyName = Guid.NewGuid().ToString();
             PropertyNotComparableException exception;
 
             // Act
-            exception = new PropertyNotComparableException(Guid.NewGuid().ToString());
+            exception = new PropertyNotComparableException(propertyName);
 
             // Assert
-            Assert.NotEmpty(exception.Title);
-        }
-
-        [Fact]
-        public void When_InstantiatingPropertyNotComparableException_Expect_DetailNotEmpty()
-        {
-            // Arrange
-            PropertyNotComparableException exception;
-
-            // Act
-            exception = new PropertyNotComparableException(Guid.NewGuid().ToString());
-
-            // Assert
-            Assert.NotEmpty(exception.Detail);
+            Assert.Equal($"\"{propertyName}\" is not a comparable property.", exception.Message);
         }
 
         [Fact]
@@ -52,8 +40,6 @@ namespace Scaffold.Application.UnitTests.Base
             }
 
             // Assert
-            Assert.Equal(exception.Title, result.Title);
-            Assert.Equal(exception.Detail, result.Detail);
             Assert.Equal(exception.Message, result.Message);
             Assert.Equal(exception.InnerException, result.InnerException);
             Assert.Null(result.InnerException);

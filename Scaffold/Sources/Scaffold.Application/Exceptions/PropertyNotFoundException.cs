@@ -8,7 +8,7 @@ namespace Scaffold.Application.Exceptions
     public class PropertyNotFoundException : OrderingException
     {
         public PropertyNotFoundException(string propertyName, string type)
-            : base("Property Not Found", $"\"{propertyName}\" is not a property of \"{type}\".")
+            : base($"\"{propertyName}\" is not a property of \"{type}\".")
         {
         }
 

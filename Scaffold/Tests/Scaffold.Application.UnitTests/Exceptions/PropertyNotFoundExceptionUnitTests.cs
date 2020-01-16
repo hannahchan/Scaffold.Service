@@ -9,29 +9,18 @@ namespace Scaffold.Application.UnitTests.Base
     public class PropertyNotFoundExceptionUnitTests
     {
         [Fact]
-        public void When_InstantiatingPropertyNotFoundException_Expect_TitleNotEmpty()
+        public void When_InstantiatingPropertyNotFoundExceptionWithPropertyNameAndType_Expect_PropertyNameAndTypeInMessage()
         {
             // Arrange
+            string propertyName = Guid.NewGuid().ToString();
+            string type = Guid.NewGuid().ToString();
             PropertyNotFoundException exception;
 
             // Act
-            exception = new PropertyNotFoundException(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
+            exception = new PropertyNotFoundException(propertyName, type);
 
             // Assert
-            Assert.NotEmpty(exception.Title);
-        }
-
-        [Fact]
-        public void When_InstantiatingPropertyNotFoundException_Expect_DetailNotEmpty()
-        {
-            // Arrange
-            PropertyNotFoundException exception;
-
-            // Act
-            exception = new PropertyNotFoundException(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
-
-            // Assert
-            Assert.NotEmpty(exception.Detail);
+            Assert.Equal($"\"{propertyName}\" is not a property of \"{type}\".", exception.Message);
         }
 
         [Fact]
@@ -52,8 +41,6 @@ namespace Scaffold.Application.UnitTests.Base
             }
 
             // Assert
-            Assert.Equal(exception.Title, result.Title);
-            Assert.Equal(exception.Detail, result.Detail);
             Assert.Equal(exception.Message, result.Message);
             Assert.Equal(exception.InnerException, result.InnerException);
             Assert.Null(result.InnerException);

@@ -8,7 +8,7 @@ namespace Scaffold.Application.Features.Bucket
     public class ItemNotFoundException : NotFoundException
     {
         public ItemNotFoundException(int itemId)
-            : base("Item Not Found", $"Item '{itemId}' not found.")
+            : base($"Item '{itemId}' not found.")
         {
         }
 

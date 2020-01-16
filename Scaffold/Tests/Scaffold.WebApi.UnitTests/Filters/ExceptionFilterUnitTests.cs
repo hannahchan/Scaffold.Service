@@ -53,8 +53,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
 
                 Assert.Equal((int)HttpStatusCode.Conflict, problemDetails.Status);
-                Assert.Equal(exception.Title, problemDetails.Title);
-                Assert.Equal(exception.Detail, problemDetails.Detail);
+                Assert.Equal(exception.Message, problemDetails.Detail);
             }
 
             [Fact]
@@ -78,8 +77,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
 
                 Assert.Equal((int)HttpStatusCode.NotFound, problemDetails.Status);
-                Assert.Equal(exception.Title, problemDetails.Title);
-                Assert.Equal(exception.Detail, problemDetails.Detail);
+                Assert.Equal(exception.Message, problemDetails.Detail);
             }
 
             [Fact]
@@ -154,16 +152,6 @@ namespace Scaffold.WebApi.UnitTests.Filters
             {
             }
 
-            public TestDomainException(string title, string message)
-                : base(title, message)
-            {
-            }
-
-            public TestDomainException(string title, string message, Exception innerException)
-                : base(title, message, innerException)
-            {
-            }
-
             protected TestDomainException(SerializationInfo info, StreamingContext context)
                 : base(info, context)
             {
@@ -180,16 +168,6 @@ namespace Scaffold.WebApi.UnitTests.Filters
 
             public TestNotFoundException(string message, Exception innerException)
                 : base(message, innerException)
-            {
-            }
-
-            public TestNotFoundException(string title, string message)
-                : base(title, message)
-            {
-            }
-
-            public TestNotFoundException(string title, string message, Exception innerException)
-                : base(title, message, innerException)
             {
             }
 

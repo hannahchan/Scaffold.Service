@@ -15,16 +15,6 @@ namespace Scaffold.Application.Base
         {
         }
 
-        protected NotFoundException(string title, string message)
-            : base(title, message)
-        {
-        }
-
-        protected NotFoundException(string title, string message, Exception innerException)
-            : base(title, message, innerException)
-        {
-        }
-
         protected NotFoundException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

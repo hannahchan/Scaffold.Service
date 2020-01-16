@@ -8,7 +8,7 @@ namespace Scaffold.Domain.Aggregates.Bucket
     public class BucketFullException : DomainException
     {
         public BucketFullException(string message)
-            : base("Bucket Full", message)
+            : base(message)
         {
         }
 

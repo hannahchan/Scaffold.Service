@@ -13,14 +13,12 @@ namespace Scaffold.Application.UnitTests.Base
         public void When_InstantiatingNotFoundExceptionWithMessage_Expect_NotFoundExceptionWithMessage()
         {
             // Arrange
-            TestException exception;
             string message = Guid.NewGuid().ToString();
 
             // Act
-            exception = new TestException(message);
+            TestException exception = new TestException(message);
 
             // Assert
-            Assert.Equal(message, exception.Detail);
             Assert.Equal(message, exception.Message);
         }
 
@@ -28,54 +26,14 @@ namespace Scaffold.Application.UnitTests.Base
         public void When_InstantiatingNotFoundExceptionWithMessageAndInnerException_Expect_NotFoundExceptionWithMessageAndInnerException()
         {
             // Arrange
-            TestException exception;
-
             string message = Guid.NewGuid().ToString();
             Exception innerException = new Exception();
 
             // Act
-            exception = new TestException(message, innerException);
+            TestException exception = new TestException(message, innerException);
 
             // Assert
-            Assert.Equal(message, exception.Detail);
             Assert.Equal(message, exception.Message);
-            Assert.Equal(innerException, exception.InnerException);
-        }
-
-        [Fact]
-        public void When_InstantiatingNotFoundExceptionWithTitleAndMessage_Expect_NotFoundExceptionWithTitleAndMessage()
-        {
-            // Arrange
-            TestException exception;
-            string title = Guid.NewGuid().ToString();
-            string message = Guid.NewGuid().ToString();
-
-            // Act
-            exception = new TestException(title, message);
-
-            // Assert
-            Assert.Equal(message, exception.Detail);
-            Assert.Equal(message, exception.Message);
-            Assert.Equal(title, exception.Title);
-        }
-
-        [Fact]
-        public void When_InstantiatingNotFoundExceptionWithTitleAndMessageAndInnerException_Expect_NotFoundExceptionWithTitleAndMessageAndInnerException()
-        {
-            // Arrange
-            TestException exception;
-
-            string title = Guid.NewGuid().ToString();
-            string message = Guid.NewGuid().ToString();
-            Exception innerException = new Exception();
-
-            // Act
-            exception = new TestException(title, message, innerException);
-
-            // Assert
-            Assert.Equal(message, exception.Detail);
-            Assert.Equal(message, exception.Message);
-            Assert.Equal(title, exception.Title);
             Assert.Equal(innerException, exception.InnerException);
         }
 
@@ -84,7 +42,6 @@ namespace Scaffold.Application.UnitTests.Base
         {
             // Arrange
             TestException exception = new TestException(
-                Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
                 new Exception(Guid.NewGuid().ToString()));
 
@@ -102,8 +59,6 @@ namespace Scaffold.Application.UnitTests.Base
             // Assert
             Assert.NotEqual(exception, result);
             Assert.Equal(exception.Message, result.Message);
-            Assert.Equal(exception.Detail, result.Detail);
-            Assert.Equal(exception.Title, result.Title);
 
             Assert.NotEqual(exception.InnerException, result.InnerException);
             Assert.Equal(exception.InnerException!.Message, result.InnerException?.Message);
@@ -119,16 +74,6 @@ namespace Scaffold.Application.UnitTests.Base
 
             public TestException(string message, Exception innerException)
                 : base(message, innerException)
-            {
-            }
-
-            public TestException(string title, string message)
-                : base(title, message)
-            {
-            }
-
-            public TestException(string title, string message, Exception innerException)
-                : base(title, message, innerException)
             {
             }
 
