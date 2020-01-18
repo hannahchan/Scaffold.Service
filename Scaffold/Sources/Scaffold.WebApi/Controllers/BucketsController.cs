@@ -31,7 +31,7 @@
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Bucket))]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Post([FromBody] Bucket bucket)
+        public async Task<ActionResult> AddBucket([FromBody] Bucket bucket)
         {
             AddBucket.Command command = this.mapper.Map<AddBucket.Command>(bucket);
             AddBucket.Response response = await this.mediator.Send(command);
@@ -50,7 +50,7 @@
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<IList<Bucket>> Get([FromQuery]int? limit, [FromQuery]int? offset)
+        public async Task<IList<Bucket>> GetBuckets([FromQuery]int? limit, [FromQuery]int? offset)
         {
             GetBuckets.Query query = new GetBuckets.Query { Limit = limit ?? 10, Offset = offset };
             GetBuckets.Response response = await this.mediator.Send(query);
@@ -66,7 +66,7 @@
         [HttpGet("{bucketId}", Name = "GetBucket")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<Bucket> Get(int bucketId)
+        public async Task<Bucket> GetBucket(int bucketId)
         {
             GetBucket.Query query = new GetBucket.Query { Id = bucketId };
             GetBucket.Response response = await this.mediator.Send(query);
@@ -85,7 +85,7 @@
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Bucket))]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Bucket>> Put(int bucketId, [FromBody] Bucket bucket)
+        public async Task<ActionResult<Bucket>> UpdateBucket(int bucketId, [FromBody] Bucket bucket)
         {
             UpdateBucket.Command command = this.mapper.Map<UpdateBucket.Command>(bucket);
             command.Id = bucketId;
@@ -109,9 +109,106 @@
         [HttpDelete("{bucketId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Delete(int bucketId)
+        public async Task<ActionResult> RemoveBucket(int bucketId)
         {
             await this.mediator.Send(new RemoveBucket.Command { Id = bucketId });
+            return this.NoContent();
+        }
+
+        /// <summary>Creates an item in a bucket.</summary>
+        /// <param name="bucketId">The Id. of the Bucket object to create the item in.</param>
+        /// <param name="item">A complete or partial set of key-value pairs to create the Item object with.</param>
+        /// <returns>The created Item object.</returns>
+        /// <response code="201">Item created successfully.</response>
+        /// <response code="default">Problem Details (RFC 7807) Response.</response>
+        [HttpPost("{bucketId}/Items")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Item))]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult> AddItem(int bucketId, [FromBody] Item item)
+        {
+            AddItem.Command command = this.mapper.Map<AddItem.Command>(item);
+            command.BucketId = bucketId;
+
+            AddItem.Response response = await this.mediator.Send(command);
+            item = this.mapper.Map<Item>(response.Item);
+
+            return this.CreatedAtRoute("GetItem", new { bucketId, itemId = item.Id }, item);
+        }
+
+        /// <summary>Retrieves a list of items from a bucket.</summary>
+        /// <param name="bucketId">The Id. of the Bucket object to retrieve the items from.</param>
+        /// <returns>A list of Item objects.</returns>
+        /// <response code="200">Items retrieved successfully.</response>
+        /// <response code="default">Problem Details (RFC 7807) Response.</response>
+        [HttpGet("{bucketId}/Items")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
+        public async Task<IList<Item>> GetItems(int bucketId)
+        {
+            GetItems.Query query = new GetItems.Query { BucketId = bucketId };
+            GetItems.Response response = await this.mediator.Send(query);
+
+            return this.mapper.Map<List<Item>>(response.Items);
+        }
+
+        /// <summary>Retrieves an item from a bucket.</summary>
+        /// <param name="bucketId">The Id. of the Bucket object to retrieve the item from.</param>
+        /// <param name="itemId">The Id. of the Item object to be retrieved.</param>
+        /// <returns>The specified Item object.</returns>
+        /// <response code="200">Item retrieved successfully.</response>
+        /// <response code="default">Problem Details (RFC 7807) Response.</response>
+        [HttpGet("{bucketId}/Items/{itemId}", Name = "GetItem")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
+        public async Task<Item> GetItem(int bucketId, int itemId)
+        {
+            GetItem.Query query = new GetItem.Query { BucketId = bucketId, ItemId = itemId };
+            GetItem.Response response = await this.mediator.Send(query);
+
+            return this.mapper.Map<Item>(response.Item);
+        }
+
+        /// <summary>Updates an item in a bucket or creates one if the specified one does not exist.</summary>
+        /// <param name="bucketId">The Id. of the Bucket object to create or update the item in.</param>
+        /// <param name="itemId">The Id. of the Item object to be created or updated.</param>
+        /// <param name="item">A complete set of key-value pairs to create or update the Item object with.</param>
+        /// <returns>The created or updated Item object.</returns>
+        /// <response code="200">Item updated successfully.</response>
+        /// <response code="201">Item created successfully.</response>
+        /// <response code="default">Problem Details (RFC 7807) Response.</response>
+        [HttpPut("{bucketId}/Items/{itemId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Item))]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<Item>> UpdateItem(int bucketId, int itemId, [FromBody] Item item)
+        {
+            UpdateItem.Command command = this.mapper.Map<UpdateItem.Command>(item);
+            command.BucketId = bucketId;
+            command.ItemId = itemId;
+
+            UpdateItem.Response response = await this.mediator.Send(command);
+            item = this.mapper.Map<Item>(response.Item);
+
+            if (response.Created)
+            {
+                return this.CreatedAtRoute("GetItem", new { itemId = item.Id }, item);
+            }
+
+            return item;
+        }
+
+        /// <summary>Deletes an item in a bucket.</summary>
+        /// <param name="bucketId">The Id. of the Bucket object to delete the item from.</param>
+        /// <param name="itemId">The Id. of the Item object to be deleted.</param>
+        /// <returns>A "No Content (204)" HTTP status response.</returns>
+        /// <response code="204">Item deleted successfully.</response>
+        /// <response code="default">Problem Details (RFC 7807) Response.</response>
+        [HttpDelete("{bucketId}/Items/{itemId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult> RemoveItem(int bucketId, int itemId)
+        {
+            await this.mediator.Send(new RemoveItem.Command { BucketId = bucketId, ItemId = itemId });
             return this.NoContent();
         }
     }

@@ -20,15 +20,19 @@ namespace Scaffold.WebApi.UnitTests.Controllers
 
         public BucketsControllerUnitTests()
         {
-            BucketMappingProfile profile = new BucketMappingProfile();
-            MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(profile));
+            MapperConfiguration configuration = new MapperConfiguration(config =>
+            {
+                config.AddProfile(new BucketMappingProfile());
+                config.AddProfile(new ItemMappingProfile());
+            });
+
             this.mapper = configuration.CreateMapper();
         }
 
-        public class Post : BucketsControllerUnitTests
+        public class Buckets : BucketsControllerUnitTests
         {
             [Fact]
-            public async Task When_CreatingBucket_Expect_CreatedAtRouteResult()
+            public async Task When_AddingBucket_Expect_CreatedAtRouteResult()
             {
                 // Arrange
                 Mock<IMediator> mock = new Mock<IMediator>();
@@ -40,7 +44,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 ActionResult result;
 
                 // Act
-                result = await controller.Post(new Bucket());
+                result = await controller.AddBucket(new Bucket());
 
                 // Assert
                 CreatedAtRouteResult actionResult = Assert.IsType<CreatedAtRouteResult>(result);
@@ -48,10 +52,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 Assert.NotEmpty(actionResult.RouteName);
                 Assert.IsType<Bucket>(actionResult.Value);
             }
-        }
 
-        public class Get : BucketsControllerUnitTests
-        {
             [Fact]
             public async Task When_GettingBuckets_Expect_Buckets()
             {
@@ -65,7 +66,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 IList<Bucket> result;
 
                 // Act
-                result = await controller.Get(null, null);
+                result = await controller.GetBuckets(null, null);
 
                 // Assert
                 Assert.NotNull(result);
@@ -84,15 +85,12 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 Bucket result;
 
                 // Act
-                result = await controller.Get(new Random().Next(int.MaxValue));
+                result = await controller.GetBucket(new Random().Next(int.MaxValue));
 
                 // Assert
                 Assert.NotNull(result);
             }
-        }
 
-        public class Put : BucketsControllerUnitTests
-        {
             [Fact]
             public async Task When_UpdatingBucket_Expect_UpdatedBucket()
             {
@@ -106,7 +104,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 ActionResult<Bucket> result;
 
                 // Act
-                result = await controller.Put(new Random().Next(int.MaxValue), new Bucket());
+                result = await controller.UpdateBucket(new Random().Next(int.MaxValue), new Bucket());
 
                 // Assert
                 Assert.Null(result.Result);
@@ -126,7 +124,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 ActionResult<Bucket> result;
 
                 // Act
-                result = await controller.Put(new Random().Next(int.MaxValue), new Bucket());
+                result = await controller.UpdateBucket(new Random().Next(int.MaxValue), new Bucket());
 
                 // Assert
                 CreatedAtRouteResult actionResult = Assert.IsType<CreatedAtRouteResult>(result.Result);
@@ -135,12 +133,9 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 Assert.NotEmpty(actionResult.RouteName);
                 Assert.IsType<Bucket>(actionResult.Value);
             }
-        }
 
-        public class Delete : BucketsControllerUnitTests
-        {
             [Fact]
-            public async Task When_DeletingBucket_Expect_NoContentResult()
+            public async Task When_RemovingBucket_Expect_NoContentResult()
             {
                 // Arrange
                 Mock<IMediator> mock = new Mock<IMediator>();
@@ -152,7 +147,132 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 ActionResult result;
 
                 // Act
-                result = await controller.Delete(new Random().Next(int.MaxValue));
+                result = await controller.RemoveBucket(new Random().Next(int.MaxValue));
+
+                // Assert
+                Assert.IsType<NoContentResult>(result);
+            }
+        }
+
+        public class Items : BucketsControllerUnitTests
+        {
+            [Fact]
+            public async Task When_AddingItem_Expect_CreatedAtRouteResult()
+            {
+                // Arrange
+                Mock<IMediator> mock = new Mock<IMediator>();
+                mock.Setup(m => m.Send(It.IsAny<AddItem.Command>(), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(new AddItem.Response(new Domain.Aggregates.Bucket.Item()));
+
+                BucketsController controller = new BucketsController(this.mapper, mock.Object);
+
+                ActionResult result;
+
+                // Act
+                result = await controller.AddItem(new Random().Next(int.MaxValue), new Item());
+
+                // Assert
+                CreatedAtRouteResult actionResult = Assert.IsType<CreatedAtRouteResult>(result);
+
+                Assert.NotEmpty(actionResult.RouteName);
+                Assert.IsType<Item>(actionResult.Value);
+            }
+
+            [Fact]
+            public async Task When_GettingItems_Expect_Items()
+            {
+                // Arrange
+                Mock<IMediator> mock = new Mock<IMediator>();
+                mock.Setup(m => m.Send(It.IsAny<GetItems.Query>(), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(new GetItems.Response(new List<Domain.Aggregates.Bucket.Item>()));
+
+                BucketsController controller = new BucketsController(this.mapper, mock.Object);
+
+                IList<Item> result;
+
+                // Act
+                result = await controller.GetItems(new Random().Next(int.MaxValue));
+
+                // Assert
+                Assert.NotNull(result);
+            }
+
+            [Fact]
+            public async Task When_GettingItem_Expect_Item()
+            {
+                // Arrange
+                Mock<IMediator> mock = new Mock<IMediator>();
+                mock.Setup(m => m.Send(It.IsAny<GetItem.Query>(), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(new GetItem.Response(new Domain.Aggregates.Bucket.Item()));
+
+                BucketsController controller = new BucketsController(this.mapper, mock.Object);
+
+                Item result;
+
+                // Act
+                result = await controller.GetItem(new Random().Next(int.MaxValue), new Random().Next(int.MaxValue));
+
+                // Assert
+                Assert.NotNull(result);
+            }
+
+            [Fact]
+            public async Task When_UpdatingItem_Expect_UpdatedItem()
+            {
+                // Arrange
+                Mock<IMediator> mock = new Mock<IMediator>();
+                mock.Setup(m => m.Send(It.IsAny<UpdateItem.Command>(), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(new UpdateItem.Response(new Domain.Aggregates.Bucket.Item(), false));
+
+                BucketsController controller = new BucketsController(this.mapper, mock.Object);
+
+                ActionResult<Item> result;
+
+                // Act
+                result = await controller.UpdateItem(new Random().Next(int.MaxValue), new Random().Next(int.MaxValue), new Item());
+
+                // Assert
+                Assert.Null(result.Result);
+                Assert.IsType<Item>(result.Value);
+            }
+
+            [Fact]
+            public async Task When_UpdatingNonExistingItem_Expect_CreatedAtRouteResult()
+            {
+                // Arrange
+                Mock<IMediator> mock = new Mock<IMediator>();
+                mock.Setup(m => m.Send(It.IsAny<UpdateItem.Command>(), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(new UpdateItem.Response(new Domain.Aggregates.Bucket.Item(), true));
+
+                BucketsController controller = new BucketsController(this.mapper, mock.Object);
+
+                ActionResult<Item> result;
+
+                // Act
+                result = await controller.UpdateItem(new Random().Next(int.MaxValue), new Random().Next(int.MaxValue), new Item());
+
+                // Assert
+                CreatedAtRouteResult actionResult = Assert.IsType<CreatedAtRouteResult>(result.Result);
+                Assert.Null(result.Value);
+
+                Assert.NotEmpty(actionResult.RouteName);
+                Assert.IsType<Item>(actionResult.Value);
+            }
+
+            [Fact]
+            public async Task When_RemovingItem_Expect_NoContentResult()
+            {
+                // Arrange
+                Mock<IMediator> mock = new Mock<IMediator>();
+                mock.Setup(m => m.Send(It.IsAny<RemoveItem.Command>(), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(default(Unit));
+
+                BucketsController controller = new BucketsController(this.mapper, mock.Object);
+
+                ActionResult result;
+
+                // Act
+                result = await controller.RemoveItem(new Random().Next(int.MaxValue), new Random().Next(int.MaxValue));
 
                 // Assert
                 Assert.IsType<NoContentResult>(result);
