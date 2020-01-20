@@ -1,8 +1,11 @@
 namespace Scaffold.WebApi.Views
 {
+    using Microsoft.AspNetCore.Mvc.ModelBinding;
+
     public class Bucket
     {
-        public int Id { get; set; }
+        [BindNever]
+        public int? Id { get; set; }
 
         public string? Name { get; set; }
 
