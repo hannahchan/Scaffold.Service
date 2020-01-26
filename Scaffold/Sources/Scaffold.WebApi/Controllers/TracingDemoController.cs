@@ -28,7 +28,7 @@ namespace Scaffold.WebApi.Controllers
         public async Task<string> Proxy([FromQuery]string? name)
         {
             HttpRequest request = this.HttpContext.Request;
-            Uri uri = new Uri($"{request.Scheme}://{request.Host}/api/tracingdemo/hello?name={name ?? "random"}", UriKind.Absolute);
+            Uri uri = new Uri($"{request.Scheme}://{request.Host}/TracingDemo/Hello?name={name ?? "random"}", UriKind.Absolute);
 
             HttpResponseMessage response = await this.tracingDemoClient.Get(uri);
 
@@ -40,7 +40,7 @@ namespace Scaffold.WebApi.Controllers
         /// <returns>A string containing the 'Hello' message.</returns>
         /// <response code="200">Message was successful.</response>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
-        [HttpGet("hello")]
+        [HttpGet("Hello")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
         public string Hello([FromQuery]string? name)
