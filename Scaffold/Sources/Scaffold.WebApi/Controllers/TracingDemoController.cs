@@ -7,7 +7,7 @@ namespace Scaffold.WebApi.Controllers
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class TracingDemoController : ControllerBase
     {
         private readonly Client tracingDemoClient;
