@@ -43,6 +43,27 @@ namespace Scaffold.WebApi.UnitTests.Middleware
         }
 
         [Fact]
+        public async Task When_InvokingMiddlewareWithStatusCodeWithNullActiveSpan_Expect_NoSpans()
+        {
+            // Arrange
+            MockTracer mockTracer = new MockTracer();
+
+            OpenTracingSpanTaggingMiddleware middleware = new OpenTracingSpanTaggingMiddleware(
+                (httpContext) => Task.CompletedTask,
+                mockTracer);
+
+            HttpContext context = new DefaultHttpContext();
+            context.Response.StatusCode = 500;
+
+            // Act
+            Exception result = await Record.ExceptionAsync(() => middleware.Invoke(context));
+
+            // Assert
+            Assert.Empty(mockTracer.FinishedSpans());
+            Assert.Null(result);
+        }
+
+        [Fact]
         public async Task When_InvokingMiddlewareWithException_Expect_SetTagError()
         {
             // Arrange
@@ -67,6 +88,29 @@ namespace Scaffold.WebApi.UnitTests.Middleware
             Assert.True(mockSpan.Tags.ContainsKey("error"));
             Assert.True(Assert.IsType<bool>(mockSpan.Tags["error"]));
 
+            Assert.NotNull(result);
+            Assert.Equal(exception, result);
+        }
+
+        [Fact]
+        public async Task When_InvokingMiddlewareWithExceptionWithNullActiveSpan_Expect_NoSpans()
+        {
+            // Arrange
+            Exception exception = new Exception("Unit Test");
+
+            MockTracer mockTracer = new MockTracer();
+
+            OpenTracingSpanTaggingMiddleware middleware = new OpenTracingSpanTaggingMiddleware(
+                (httpContext) => throw exception,
+                mockTracer);
+
+            Exception result;
+
+            // Act
+            result = await Record.ExceptionAsync(() => middleware.Invoke(new DefaultHttpContext()));
+
+            // Assert
+            Assert.Empty(mockTracer.FinishedSpans());
             Assert.NotNull(result);
             Assert.Equal(exception, result);
         }

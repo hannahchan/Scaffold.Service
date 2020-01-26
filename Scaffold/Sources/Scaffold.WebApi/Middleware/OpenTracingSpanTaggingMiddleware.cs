@@ -23,14 +23,18 @@ namespace Scaffold.WebApi.Middleware
             {
                 await this.next.Invoke(httpContext);
 
-                if (httpContext.Response.StatusCode >= 500)
+                if (httpContext.Response.StatusCode >= 500 && this.tracer.ActiveSpan is ISpan activeSpan)
                 {
-                    Tags.Error.Set(this.tracer.ActiveSpan, true);
+                    Tags.Error.Set(activeSpan, true);
                 }
             }
             catch
             {
-                Tags.Error.Set(this.tracer.ActiveSpan, true);
+                if (this.tracer.ActiveSpan is ISpan activeSpan)
+                {
+                    Tags.Error.Set(activeSpan, true);
+                }
+
                 throw;
             }
         }

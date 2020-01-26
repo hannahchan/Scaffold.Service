@@ -57,6 +57,40 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
         }
 
         [Fact]
+        public async Task When_SendingAsyncRespondsWithStatusCodeWithNullActiveSpan_Expect_NoSpans()
+        {
+            // Arrange
+            ServiceCollection services = new ServiceCollection();
+            services.AddScoped<ITracer, MockTracer>();
+
+            IServiceProvider serviceProvider = services.BuildServiceProvider();
+            ITracer tracer = serviceProvider.GetRequiredService<ITracer>();
+
+            IHttpContextAccessor httpContextAccessor = new HttpContextAccessor
+            {
+                HttpContext = new DefaultHttpContext { RequestServices = serviceProvider },
+            };
+
+            OpenTracingSpanTaggingHttpMessageHandler handler = new OpenTracingSpanTaggingHttpMessageHandler(httpContextAccessor)
+            {
+                InnerHandler = new MockResponseReturningInnerHandler(500),
+            };
+
+            Exception result;
+
+            // Act
+            using (HttpClient client = new HttpClient(handler))
+            {
+                result = await Record.ExceptionAsync(() => client.GetAsync(new Uri("http://localhost")));
+            }
+
+            // Assert
+            MockTracer mockTracer = Assert.IsType<MockTracer>(tracer);
+            Assert.Empty(mockTracer.FinishedSpans());
+            Assert.Null(result);
+        }
+
+        [Fact]
         public async Task When_SendingAsyncRespondsWithException_Expect_SetTagError()
         {
             // Arrange
@@ -93,6 +127,43 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
             Assert.True(mockSpan.Tags.ContainsKey("error"));
             Assert.True(Assert.IsType<bool>(mockSpan.Tags["error"]));
 
+            Assert.NotNull(result);
+            Assert.Equal(exception, result);
+        }
+
+        [Fact]
+        public async Task When_SendingAsyncRespondsWithExceptionWithNullActiveSpan_Expect_NoSpans()
+        {
+            // Arrange
+            ServiceCollection services = new ServiceCollection();
+            services.AddScoped<ITracer, MockTracer>();
+
+            IServiceProvider serviceProvider = services.BuildServiceProvider();
+            ITracer tracer = serviceProvider.GetRequiredService<ITracer>();
+
+            IHttpContextAccessor httpContextAccessor = new HttpContextAccessor
+            {
+                HttpContext = new DefaultHttpContext { RequestServices = serviceProvider },
+            };
+
+            Exception exception = new Exception();
+
+            OpenTracingSpanTaggingHttpMessageHandler handler = new OpenTracingSpanTaggingHttpMessageHandler(httpContextAccessor)
+            {
+                InnerHandler = new MockExceptionThrowingInnerHandler(exception),
+            };
+
+            Exception result;
+
+            // Act
+            using (HttpClient client = new HttpClient(handler))
+            {
+                result = await Record.ExceptionAsync(() => client.GetAsync(new Uri("http://localhost")));
+            }
+
+            // Assert
+            MockTracer mockTracer = Assert.IsType<MockTracer>(tracer);
+            Assert.Empty(mockTracer.FinishedSpans());
             Assert.NotNull(result);
             Assert.Equal(exception, result);
         }

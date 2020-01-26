@@ -27,16 +27,19 @@ namespace Scaffold.WebApi.HttpMessageHandlers
             {
                 HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
 
-                if ((int)response.StatusCode >= 500)
+                if ((int)response.StatusCode >= 500 && tracer.ActiveSpan is ISpan activeSpan)
                 {
-                    Tags.Error.Set(tracer.ActiveSpan, true);
+                    Tags.Error.Set(activeSpan, true);
                 }
 
                 return response;
             }
             catch
             {
-                Tags.Error.Set(tracer.ActiveSpan, true);
+                if (tracer.ActiveSpan is ISpan activeSpan)
+                {
+                    Tags.Error.Set(activeSpan, true);
+                }
 
                 throw;
             }
