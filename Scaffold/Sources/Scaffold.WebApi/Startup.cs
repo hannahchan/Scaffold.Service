@@ -66,8 +66,12 @@
                 .UseAuthorization()
                 .UseEndpoints(endpoints =>
                 {
-                    endpoints.MapHealthChecks("/health")
-                        .RequireHost($"*:{this.Configuration["HealthCheckPort"]}");
+                    IEndpointConventionBuilder healthCheckEndpoint = endpoints.MapHealthChecks("/health");
+
+                    if (this.Configuration["HealthCheckPort"] != null)
+                    {
+                        healthCheckEndpoint.RequireHost($"*:{this.Configuration["HealthCheckPort"]}");
+                    }
 
                     endpoints.MapControllers();
                 });
