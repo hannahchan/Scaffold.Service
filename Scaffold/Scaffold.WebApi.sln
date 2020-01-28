@@ -1,41 +1,41 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sources", "Sources", "{64B9B541-404D-483B-B6CB-74E714500D67}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Adapters", "Adapters", "{BA56B94D-AB4D-49E6-814E-8798FB3BC3FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.HttpClients", "Sources\Adapters\Scaffold.HttpClients\Scaffold.HttpClients.csproj", "{2448A980-FE0F-48B8-BA77-5C7FA2346113}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.HttpClients", "Sources\Adapters\Scaffold.HttpClients\Scaffold.HttpClients.csproj", "{2448A980-FE0F-48B8-BA77-5C7FA2346113}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.Repositories.PostgreSQL", "Sources\Adapters\Scaffold.Repositories.PostgreSQL\Scaffold.Repositories.PostgreSQL.csproj", "{32D50AEC-0A2E-4682-9B5F-138901F7E09D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Repositories.PostgreSQL", "Sources\Adapters\Scaffold.Repositories.PostgreSQL\Scaffold.Repositories.PostgreSQL.csproj", "{32D50AEC-0A2E-4682-9B5F-138901F7E09D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.Application", "Sources\Scaffold.Application\Scaffold.Application.csproj", "{9BFC9D26-ACC6-4811-B8D5-E4B91276B51E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Application", "Sources\Scaffold.Application\Scaffold.Application.csproj", "{9BFC9D26-ACC6-4811-B8D5-E4B91276B51E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.Domain", "Sources\Scaffold.Domain\Scaffold.Domain.csproj", "{BE99E27E-E923-4627-9277-C065BC178B9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Domain", "Sources\Scaffold.Domain\Scaffold.Domain.csproj", "{BE99E27E-E923-4627-9277-C065BC178B9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.WebApi", "Sources\Scaffold.WebApi\Scaffold.WebApi.csproj", "{0C692E6F-72E1-488D-9544-035F8E9FBF59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.WebApi", "Sources\Scaffold.WebApi\Scaffold.WebApi.csproj", "{0C692E6F-72E1-488D-9544-035F8E9FBF59}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F174F73B-3D43-4A0D-801F-75FF73919E98}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{1E063240-E356-473A-BE4A-C3E9E5E53CEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.WebApi.IntegrationTests", "Tests\IntegrationTests\Scaffold.WebApi.IntegrationTests\Scaffold.WebApi.IntegrationTests.csproj", "{F53AA382-D8A5-4678-A63E-C5A5131437B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.WebApi.IntegrationTests", "Tests\IntegrationTests\Scaffold.WebApi.IntegrationTests\Scaffold.WebApi.IntegrationTests.csproj", "{F53AA382-D8A5-4678-A63E-C5A5131437B9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{DE87F029-5702-4B3C-BDB7-E043959D4E93}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Adapters", "Adapters", "{2C84477E-F1C3-441F-866D-DFAE086AE8F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.HttpClients.UnitTests", "Tests\UnitTests\Adapters\Scaffold.HttpClients.UnitTests\Scaffold.HttpClients.UnitTests.csproj", "{8433C122-ABC9-41C5-8D5E-376BACB91B16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.HttpClients.UnitTests", "Tests\UnitTests\Adapters\Scaffold.HttpClients.UnitTests\Scaffold.HttpClients.UnitTests.csproj", "{8433C122-ABC9-41C5-8D5E-376BACB91B16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.Repositories.PostgreSQL.UnitTests", "Tests\UnitTests\Adapters\Scaffold.Repositories.PostgreSQL.UnitTests\Scaffold.Repositories.PostgreSQL.UnitTests.csproj", "{8687B6E2-0138-4521-8633-B2907CCF5A83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Repositories.PostgreSQL.UnitTests", "Tests\UnitTests\Adapters\Scaffold.Repositories.PostgreSQL.UnitTests\Scaffold.Repositories.PostgreSQL.UnitTests.csproj", "{8687B6E2-0138-4521-8633-B2907CCF5A83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.Application.UnitTests", "Tests\UnitTests\Scaffold.Application.UnitTests\Scaffold.Application.UnitTests.csproj", "{540B30EA-B9DB-4227-A47F-8EAE4E84A04F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Application.UnitTests", "Tests\UnitTests\Scaffold.Application.UnitTests\Scaffold.Application.UnitTests.csproj", "{540B30EA-B9DB-4227-A47F-8EAE4E84A04F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.Domain.UnitTests", "Tests\UnitTests\Scaffold.Domain.UnitTests\Scaffold.Domain.UnitTests.csproj", "{8B938610-9B8F-4C40-946B-85EF882A0A50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.Domain.UnitTests", "Tests\UnitTests\Scaffold.Domain.UnitTests\Scaffold.Domain.UnitTests.csproj", "{8B938610-9B8F-4C40-946B-85EF882A0A50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffold.WebApi.UnitTests", "Tests\UnitTests\Scaffold.WebApi.UnitTests\Scaffold.WebApi.UnitTests.csproj", "{52D8EC42-C3E1-4A16-AB8A-E4C72BD8FAEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffold.WebApi.UnitTests", "Tests\UnitTests\Scaffold.WebApi.UnitTests\Scaffold.WebApi.UnitTests.csproj", "{52D8EC42-C3E1-4A16-AB8A-E4C72BD8FAEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,9 +45,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2448A980-FE0F-48B8-BA77-5C7FA2346113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -183,6 +180,9 @@ Global
 		{52D8EC42-C3E1-4A16-AB8A-E4C72BD8FAEF}.Release|x86.ActiveCfg = Release|Any CPU
 		{52D8EC42-C3E1-4A16-AB8A-E4C72BD8FAEF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BA56B94D-AB4D-49E6-814E-8798FB3BC3FC} = {64B9B541-404D-483B-B6CB-74E714500D67}
 		{2448A980-FE0F-48B8-BA77-5C7FA2346113} = {BA56B94D-AB4D-49E6-814E-8798FB3BC3FC}
@@ -199,5 +199,8 @@ Global
 		{540B30EA-B9DB-4227-A47F-8EAE4E84A04F} = {DE87F029-5702-4B3C-BDB7-E043959D4E93}
 		{8B938610-9B8F-4C40-946B-85EF882A0A50} = {DE87F029-5702-4B3C-BDB7-E043959D4E93}
 		{52D8EC42-C3E1-4A16-AB8A-E4C72BD8FAEF} = {DE87F029-5702-4B3C-BDB7-E043959D4E93}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {23DE9F9E-4534-451E-A172-251D6517AF8C}
 	EndGlobalSection
 EndGlobal
