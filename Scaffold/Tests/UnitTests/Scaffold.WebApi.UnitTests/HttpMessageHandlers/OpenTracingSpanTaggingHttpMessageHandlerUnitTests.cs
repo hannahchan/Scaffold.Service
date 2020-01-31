@@ -15,9 +15,10 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
     public class OpenTracingSpanTaggingHttpMessageHandlerUnitTests
     {
         [Theory]
-        [InlineData(499, false)]
-        [InlineData(500, true)]
-        [InlineData(501, true)]
+        [InlineData(199, true)]
+        [InlineData(200, false)]
+        [InlineData(299, false)]
+        [InlineData(300, true)]
         public async Task When_SendingAsyncRespondsWithStatusCode_Expect_SetTag(int statusCode, bool expectedError)
         {
             // Arrange
