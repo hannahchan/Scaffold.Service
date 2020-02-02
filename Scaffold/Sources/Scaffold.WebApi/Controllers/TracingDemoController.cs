@@ -10,11 +10,16 @@ namespace Scaffold.WebApi.Controllers
     [Route("[controller]")]
     public class TracingDemoController : ControllerBase
     {
-        private readonly Client tracingDemoClient;
+        private readonly IClient tracingDemoClient;
 
-        public TracingDemoController(Client tracingDemoClient)
+        public TracingDemoController(IClient tracingDemoClient)
         {
             this.tracingDemoClient = tracingDemoClient;
+        }
+
+        public interface IClient
+        {
+            Task<HttpResponseMessage> Get(Uri uri);
         }
 
         /// <summary>Makes a proxy request to the 'Hello' endpoint.</summary>
@@ -48,7 +53,7 @@ namespace Scaffold.WebApi.Controllers
             return $"Hello, {name ?? "random"}!";
         }
 
-        public class Client
+        public class Client : IClient
         {
             private readonly HttpClient httpClient;
 

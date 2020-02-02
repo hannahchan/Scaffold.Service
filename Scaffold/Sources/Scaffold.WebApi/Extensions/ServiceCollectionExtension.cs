@@ -65,7 +65,7 @@ namespace Scaffold.WebApi.Extensions
                 .AddHttpMessageHandler<OpenTracingSpanTaggingHttpMessageHandler>()
                 .AddHttpMessageHandler<RequestLoggingHttpMessageHandler>();
 
-            services.AddHttpClient<TracingDemoController.Client>()
+            services.AddHttpClient<TracingDemoController.IClient, TracingDemoController.Client>()
                 .AddHttpMessageHandler<OpenTracingSpanTaggingHttpMessageHandler>()
                 .AddHttpMessageHandler<RequestLoggingHttpMessageHandler>();
 
