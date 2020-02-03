@@ -11,6 +11,8 @@ services:
       ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=postgres;Username=postgres;
       JAEGER_SERVICE_NAME: Scaffold
       JAEGER_AGENT_HOST: jaeger
+      JAEGER_SAMPLER_TYPE: const
+      JAEGER_SAMPLER_PARAM: 1
     image: "${DOCKER_REGISTRY}scaffold"
     ports:
       -
