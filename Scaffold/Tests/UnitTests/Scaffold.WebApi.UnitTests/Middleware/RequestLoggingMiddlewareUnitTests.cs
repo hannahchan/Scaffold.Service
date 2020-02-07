@@ -1,7 +1,6 @@
 namespace Scaffold.WebApi.UnitTests.Middleware
 {
     using System;
-    using System.IO;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Logging;
@@ -69,7 +68,6 @@ namespace Scaffold.WebApi.UnitTests.Middleware
                 mock.Object);
 
             HttpContext context = new DefaultHttpContext();
-            context.Response.Body = new MemoryStream();
 
             // Act
             Exception result = await Record.ExceptionAsync(() => middleware.Invoke(context));
