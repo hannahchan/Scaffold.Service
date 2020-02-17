@@ -6,7 +6,9 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
     using System.Text.Json;
     using System.Threading.Tasks;
     using System.Xml;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
+    using Microsoft.Extensions.Logging;
     using Microsoft.Net.Http.Headers;
     using Xunit;
 
@@ -16,7 +18,8 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
 
         public ErrorControllerIntegrationTests(WebApplicationFactory<Startup> factory)
         {
-            this.factory = factory;
+            this.factory = factory.WithWebHostBuilder(builder =>
+                builder.ConfigureLogging(logging => logging.ClearProviders()));
         }
 
         [Fact]
@@ -31,7 +34,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
 
             // Assert
             Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
-            Assert.Equal("application/problem+json", response.Content.Headers.ContentType.MediaType);
+            Assert.Equal(CustomMediaTypeNames.Application.ProblemJson, response.Content.Headers.ContentType.MediaType);
 
             JsonDocument document = JsonDocument.Parse(await response.Content.ReadAsStreamAsync());
 
@@ -52,7 +55,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
 
             // Assert
             Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
-            Assert.Equal("application/problem+xml", response.Content.Headers.ContentType.MediaType);
+            Assert.Equal(CustomMediaTypeNames.Application.ProblemXml, response.Content.Headers.ContentType.MediaType);
 
             XmlDocument document = new XmlDocument();
             document.LoadXml(await response.Content.ReadAsStringAsync());

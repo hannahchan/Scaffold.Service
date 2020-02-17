@@ -6,9 +6,11 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
     using System.Net.Http;
     using System.Net.Mime;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.AspNetCore.WebUtilities;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Primitives;
     using Scaffold.WebApi.Controllers;
     using Xunit;
@@ -23,8 +25,10 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
             {
                 this.factory = factory.WithWebHostBuilder(builder =>
                 {
-                    builder.ConfigureServices(services =>
-                        services.AddTransient<TracingDemoController.IClient, MockTracingDemoClient>());
+                    builder
+                        .ConfigureLogging(logging => logging.ClearProviders())
+                        .ConfigureServices(services =>
+                            services.AddTransient<TracingDemoController.IClient, MockTracingDemoClient>());
                 });
             }
 
@@ -79,7 +83,8 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
 
             public Hello(WebApplicationFactory<Startup> factory)
             {
-                this.factory = factory;
+                this.factory = factory.WithWebHostBuilder(builder =>
+                    builder.ConfigureLogging(logging => logging.ClearProviders()));
             }
 
             [Fact]

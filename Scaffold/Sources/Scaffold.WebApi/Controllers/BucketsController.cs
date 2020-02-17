@@ -52,7 +52,7 @@
         [ProducesDefaultResponseType]
         public async Task<IList<Bucket>> GetBuckets([FromQuery]int? limit, [FromQuery]int? offset)
         {
-            GetBuckets.Query query = new GetBuckets.Query { Limit = limit ?? 10, Offset = offset };
+            GetBuckets.Query query = new GetBuckets.Query { Limit = limit, Offset = offset };
             GetBuckets.Response response = await this.mediator.Send(query);
 
             return this.mapper.Map<List<Bucket>>(response.Buckets);
@@ -95,7 +95,7 @@
 
             if (response.Created)
             {
-                return this.CreatedAtRoute("GetBucket", new { bucketId = bucket.Id }, bucket);
+                return this.CreatedAtRoute("GetBucket", new { bucketId }, bucket);
             }
 
             return bucket;
@@ -191,7 +191,7 @@
 
             if (response.Created)
             {
-                return this.CreatedAtRoute("GetItem", new { itemId = item.Id }, item);
+                return this.CreatedAtRoute("GetItem", new { bucketId, itemId }, item);
             }
 
             return item;
