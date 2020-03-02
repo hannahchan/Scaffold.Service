@@ -6,6 +6,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HEALTHCHECKPORT": "5000",
+        "ASPNETCORE_METRICSPORT": "5000",
         "ASPNETCORE_URLS": "http://+:5000",
         "JAEGER_SERVICE_NAME": "Scaffold"
       }
