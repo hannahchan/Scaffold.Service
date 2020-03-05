@@ -27,6 +27,8 @@ services:
         target: 8081
   postgres:
     image: "postgres:alpine"
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
       -
         source: postgres_pgdata
