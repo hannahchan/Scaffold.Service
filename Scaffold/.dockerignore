@@ -8,6 +8,7 @@
 docker-compose.yml
 docker-compose.*.yml
 Docs
+prometheus.yml
 README.md
 **/bin
 **/obj

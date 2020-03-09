@@ -1,0 +1,11 @@
+# An example Prometheus config for local development
+
+global:
+  scrape_interval: 15s
+scrape_configs:
+  -
+    job_name: scaffold
+    static_configs:
+      -
+        targets:
+          - "localhost:5000"

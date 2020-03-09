@@ -6,7 +6,7 @@ Scaffold is an opinionated template of a Web API built using ASP.NET Core. It is
 
 Scaffold aims to make developing the following features in your next Web API or microservice a little bit more easier.
 
-- [API Documentation](Docs/APIDocumentation.md)
+- [API Documentation](Docs/ApiDocumentation.md)
 - [Application Metrics](Docs/ApplicationMetrics.md)
 - [Content Negotiation](Docs/ContentNegotiation.md)
 - [Distributed Tracing](Docs/DistributedTracing.md)

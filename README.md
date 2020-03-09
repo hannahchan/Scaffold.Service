@@ -22,7 +22,7 @@ Alternatively just browse the [template directory](Scaffold) and copy and paste 
 
 Scaffold.WebApi aims to make developing the following features in your next Web API or microservice a little bit more easier.
 
-- [API Documentation](Scaffold/Docs/APIDocumentation.md)
+- [API Documentation](Scaffold/Docs/ApiDocumentation.md)
 - [Application Metrics](Scaffold/Docs/ApplicationMetrics.md)
 - [Content Negotiation](Scaffold/Docs/ContentNegotiation.md)
 - [Distributed Tracing](Scaffold/Docs/DistributedTracing.md)
