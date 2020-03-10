@@ -1,4 +1,4 @@
-# An example Prometheus config for local development
+# A Prometheus config for local development
 
 global:
   scrape_interval: 15s
@@ -8,4 +8,5 @@ scrape_configs:
     static_configs:
       -
         targets:
-          - "localhost:5000"
+          - "scaffold:8081"
+          - "host.docker.internal:5000"

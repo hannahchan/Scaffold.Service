@@ -54,7 +54,8 @@
                 "up",
                 "-d",
                 "postgres",
-                "jaeger"
+                "jaeger",
+                "prometheus"
             ],
             "presentation": {
                 "echo": true,

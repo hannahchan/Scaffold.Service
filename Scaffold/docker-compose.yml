@@ -47,7 +47,25 @@ services:
         source: jaeger_tmp
         target: /tmp
         type: volume
+  prometheus:
+    image: prom/prometheus
+    ports:
+      -
+        mode: ingress
+        protocol: tcp
+        published: 9090
+        target: 9090
+    volumes:
+      -
+        source: prometheus
+        target: /prometheus
+        type: volume
+      -
+        source: ./prometheus.yml
+        target: /etc/prometheus/prometheus.yml
+        type: bind
 version: "3.5"
 volumes:
   postgres_pgdata: ~
   jaeger_tmp: ~
+  prometheus: ~
