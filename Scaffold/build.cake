@@ -74,23 +74,30 @@ Task("Test")
 
         DeleteDirectories(GetDirectories(coverageReports), deleteSettings);
 
+        string reportTitle = string.Empty;
+
         ReportGeneratorSettings reportGeneratorSettings = new ReportGeneratorSettings
         {
+            ArgumentCustomization = args =>
+                args.Append($"--title:\"{reportTitle}\""),
             Verbosity = ReportGeneratorVerbosity.Error
         };
 
+        reportTitle = "Combined (Integration + Unit) Tests";
         reportGeneratorSettings.HistoryDirectory = $"{coverageHistory}/Combined";
         ReportGenerator(
             $"./Tests/**/coverage.cobertura.xml",
             $"{coverageReports}/Combined",
             reportGeneratorSettings);
 
+        reportTitle = "Integration Tests";
         reportGeneratorSettings.HistoryDirectory = $"{coverageHistory}/IntegrationTests";
         ReportGenerator(
             $"./Tests/**/*.IntegrationTests/**/coverage.cobertura.xml",
             $"{coverageReports}/IntegrationTests",
             reportGeneratorSettings);
 
+        reportTitle = "Unit Tests";
         reportGeneratorSettings.HistoryDirectory = $"{coverageHistory}/UnitTests";
         ReportGenerator(
             $"./Tests/**/*.UnitTests/**/coverage.cobertura.xml",
