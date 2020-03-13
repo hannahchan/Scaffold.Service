@@ -8,5 +8,4 @@ scrape_configs:
     static_configs:
       -
         targets:
-          - "scaffold:8081"
-          - "host.docker.internal:5000"
+          - "host.docker.internal:8081"
