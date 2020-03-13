@@ -15,6 +15,7 @@ string artifacts = "./Artifacts";
 string buildArtifacts = $"{artifacts}/Build";
 string testArtifacts = $"{artifacts}/Test";
 
+string projectName = "Scaffold";
 string solution = "./Scaffold.WebApi.sln";
 
 //////////////////////////////////////////////////////////////////////
@@ -83,21 +84,21 @@ Task("Test")
             Verbosity = ReportGeneratorVerbosity.Error
         };
 
-        reportTitle = "Combined (Integration + Unit) Tests";
+        reportTitle = $"{projectName} Combined (Integration + Unit) Tests";
         reportGeneratorSettings.HistoryDirectory = $"{coverageHistory}/Combined";
         ReportGenerator(
             $"./Tests/**/coverage.cobertura.xml",
             $"{coverageReports}/Combined",
             reportGeneratorSettings);
 
-        reportTitle = "Integration Tests";
+        reportTitle = $"{projectName} Integration Tests";
         reportGeneratorSettings.HistoryDirectory = $"{coverageHistory}/IntegrationTests";
         ReportGenerator(
             $"./Tests/**/*.IntegrationTests/**/coverage.cobertura.xml",
             $"{coverageReports}/IntegrationTests",
             reportGeneratorSettings);
 
-        reportTitle = "Unit Tests";
+        reportTitle = $"{projectName} Unit Tests";
         reportGeneratorSettings.HistoryDirectory = $"{coverageHistory}/UnitTests";
         ReportGenerator(
             $"./Tests/**/*.UnitTests/**/coverage.cobertura.xml",
