@@ -1,5 +1,4 @@
-# A Prometheus config for local development
-
+---
 global:
   scrape_interval: 15s
 scrape_configs:

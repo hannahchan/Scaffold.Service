@@ -61,11 +61,34 @@ services:
         target: /prometheus
         type: volume
       -
-        source: ./prometheus.yml
+        source: ./Operations/Prometheus/prometheus.yml
         target: /etc/prometheus/prometheus.yml
+        type: bind
+  grafana:
+    image: grafana/grafana
+    depends_on:
+      - prometheus
+    environment:
+        GF_AUTH_ANONYMOUS_ENABLED: "true"
+        GF_AUTH_ANONYMOUS_ORG_ROLE: "Editor"
+    ports:
+      -
+        mode: ingress
+        protocol: tcp
+        published: 3000
+        target: 3000
+    volumes:
+      -
+        source: grafana
+        target: /var/lib/grafana
+        type: volume
+      -
+        source: ./Operations/Grafana/datasources.yml
+        target: /etc/grafana/provisioning/datasources/datasources.yml
         type: bind
 version: "3.5"
 volumes:
   postgres_pgdata: ~
   jaeger_tmp: ~
   prometheus: ~
+  grafana: ~

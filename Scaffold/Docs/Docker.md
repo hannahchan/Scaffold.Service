@@ -39,3 +39,19 @@ To run the Web API natively on your computer, change directory to the [Scaffold.
 `dotnet run`
 
 Once up and running you can access the Web API on `http://localhost:5000`.
+
+## Running other Services Locally ##
+
+Included in the `docker-compose.yml` file are other services that you can spin up in Docker should you need them for local development. These services and the path to their UIs once spun up are:
+
+- Jaeger - http://localhost:16686/search
+- Prometheus - http://localhost:9090/graph
+- Grafana - http://localhost:3000
+
+To spin up any combination of these services, use the command;
+
+`docker-compose up -d [service...]`
+
+For example to spin up Jaeger, Prometheus an Grafana in one command, use;
+
+`docker-compose up -d jaeger prometheus grafana`
