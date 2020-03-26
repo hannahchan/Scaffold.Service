@@ -83,8 +83,12 @@ services:
         target: /var/lib/grafana
         type: volume
       -
-        source: ./Operations/Grafana/datasources.yml
-        target: /etc/grafana/provisioning/datasources/datasources.yml
+        source: ./Operations/Grafana/dashboards
+        target: /etc/grafana/provisioning/dashboards
+        type: bind
+      -
+        source: ./Operations/Grafana/datasources
+        target: /etc/grafana/provisioning/datasources
         type: bind
 version: "3.5"
 volumes:
