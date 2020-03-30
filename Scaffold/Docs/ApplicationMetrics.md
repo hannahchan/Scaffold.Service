@@ -26,6 +26,11 @@ rate(http_request_duration_seconds_sum[5m]) /
 rate(http_request_duration_seconds_count[5m]) * 1000
 ```
 
+Request Duration of the 85th Percentile in Milliseconds (Over the Last 5 Minutes)
+```
+histogram_quantile(0.85, sum(rate(http_request_duration_seconds_bucket[5m])) by (le)) * 1000
+```
+
 ### Traffic ###
 
 Number of HTTP Requests (Over the Last 5 Minutes)
@@ -54,22 +59,6 @@ max_over_time(http_requests_in_progress[24h])
 ```
 
 ### Errors ###
-
-Number of Successful Requests (2xx) (Over the Last 5 Minutes)
-```
-increase(http_requests_received_total{code=~"2.*"}[5m])
-```
-
-Average Successful Requests (2xx) Per Minute (Over the Last 5 Minutes)
-```
-rate(http_requests_received_total{code=~"2.*"}[5m]) * 60
-```
-
-Percentage of All Successful Requests (2xx) to All Requests (Over the Last 5 Minutes)
-```
-sum(increase(http_requests_received_total{code=~"2.*"}[5m])) /
-sum(increase(http_requests_received_total{code=~".+"}[5m])) * 100
-```
 
 Number of Client Errors (4xx) (Over the Last 5 Minutes)
 ```
