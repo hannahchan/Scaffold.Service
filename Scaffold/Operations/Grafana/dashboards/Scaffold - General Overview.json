@@ -14,6 +14,192 @@
       "type": "row"
     },
     {
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 0,
+        "y": 1
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "white"
+                }
+              ]
+            },
+            "unit": "s"
+          },
+          "values": false
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto"
+      },
+      "pluginVersion": "6.7.1",
+      "targets": [
+        {
+          "expr": "sum(rate(http_request_duration_seconds_sum{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(rate(http_request_duration_seconds_count{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "Average Request Duration",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(http_request_duration_seconds_sum{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(irate(http_request_duration_seconds_count{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "Instant Request Duration",
+          "refId": "B"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "aliasColors": {
+        "Average Request Duration": "green",
+        "Instant Request Duration": "super-light-green"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 9,
+        "x": 3,
+        "y": 1
+      },
+      "hiddenSeries": false,
+      "id": 3,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(rate(http_request_duration_seconds_sum{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(rate(http_request_duration_seconds_count{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "legendFormat": "Average Request Duration",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(http_request_duration_seconds_sum{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(irate(http_request_duration_seconds_count{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "legendFormat": "Instant Request Duration",
+          "refId": "B"
+        }
+      ],
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:149",
+          "format": "s",
+          "logBase": 2,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:150",
+          "format": "short",
+          "logBase": 2,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 12,
+        "y": 1
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "white"
+                }
+              ]
+            },
+            "unit": "s"
+          },
+          "values": false
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto"
+      },
+      "pluginVersion": "6.7.1",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "99th Percentile",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
+          "instant": true,
+          "legendFormat": "95th Percentile",
+          "refId": "B"
+        },
+        {
+          "expr": "histogram_quantile(0.85, sum(rate(http_request_duration_seconds_bucket{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
+          "instant": true,
+          "legendFormat": "85th Percentile",
+          "refId": "C"
+        },
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(http_request_duration_seconds_bucket{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
+          "instant": true,
+          "legendFormat": "50th Percentile",
+          "refId": "D"
+        }
+      ],
+      "type": "stat"
+    },
+    {
       "aliasColors": {
         "50th Percentile": "green",
         "85th Percentile": "yellow",
@@ -26,13 +212,13 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 9,
-        "w": 18,
-        "x": 0,
+        "h": 7,
+        "w": 9,
+        "x": 15,
         "y": 1
       },
       "hiddenSeries": false,
-      "id": 2,
+      "id": 5,
       "legend": {
         "avg": false,
         "current": false,
@@ -74,7 +260,6 @@
           "refId": "D"
         }
       ],
-      "title": "Request Duration",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -89,13 +274,13 @@
         {
           "$$hashKey": "object:596",
           "format": "s",
-          "logBase": 1,
+          "logBase": 10,
           "show": true
         },
         {
           "$$hashKey": "object:597",
           "format": "short",
-          "logBase": 1,
+          "logBase": 10,
           "show": true
         }
       ],
@@ -104,62 +289,200 @@
       }
     },
     {
-      "format": "ms",
-      "gridPos": {
-        "h": 3,
-        "w": 6,
-        "x": 18,
-        "y": 1
-      },
-      "id": 3,
-      "sparkline": {
-        "full": true,
-        "show": true
-      },
-      "targets": [
-        {
-          "expr": "sum(rate(http_request_duration_seconds_sum{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(rate(http_request_duration_seconds_count{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) *\n1000",
-          "refId": "A"
-        }
-      ],
-      "title": "Average Request Duration",
-      "type": "singlestat",
-      "valueName": "current"
-    },
-    {
-      "format": "ms",
-      "gridPos": {
-        "h": 3,
-        "w": 6,
-        "x": 18,
-        "y": 4
-      },
-      "id": 4,
-      "sparkline": {
-        "full": true,
-        "show": true
-      },
-      "targets": [
-        {
-          "expr": "sum(irate(http_request_duration_seconds_sum{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(irate(http_request_duration_seconds_count{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) *\n1000",
-          "refId": "A"
-        }
-      ],
-      "title": "Instant Request Duration",
-      "type": "singlestat",
-      "valueName": "current"
-    },
-    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 8
       },
-      "id": 5,
+      "id": 6,
       "title": "Traffic",
       "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 0,
+        "y": 9
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "white"
+                }
+              ]
+            },
+            "unit": "rpm"
+          },
+          "values": false
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto"
+      },
+      "pluginVersion": "6.7.1",
+      "targets": [
+        {
+          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) * 60",
+          "instant": true,
+          "legendFormat": "Average Request Rate",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) * 60",
+          "instant": true,
+          "legendFormat": "Instant Request Rate",
+          "refId": "B"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "aliasColors": {
+        "Average Request Rate": "blue",
+        "Instant Request Rate": "super-light-blue"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 9,
+        "x": 3,
+        "y": 9
+      },
+      "hiddenSeries": false,
+      "id": 8,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) * 60",
+          "legendFormat": "Average Request Rate",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) * 60",
+          "legendFormat": "Instant Request Rate",
+          "refId": "B"
+        }
+      ],
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:316",
+          "format": "rpm",
+          "logBase": 2,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:317",
+          "format": "short",
+          "logBase": 2,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 12,
+        "y": 9
+      },
+      "id": 9,
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "white"
+                }
+              ]
+            }
+          },
+          "values": false
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto"
+      },
+      "pluginVersion": "6.7.1",
+      "targets": [
+        {
+          "expr": "sum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "All Requests",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "Successes (2xx)",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "Client Errors (4xx)",
+          "refId": "C"
+        },
+        {
+          "expr": "sum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "Server Errors (5xx)",
+          "refId": "D"
+        }
+      ],
+      "type": "stat"
     },
     {
       "aliasColors": {
@@ -174,13 +497,13 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 9,
-        "w": 18,
-        "x": 0,
-        "y": 11
+        "h": 7,
+        "w": 9,
+        "x": 15,
+        "y": 9
       },
       "hiddenSeries": false,
-      "id": 6,
+      "id": 10,
       "legend": {
         "avg": false,
         "current": false,
@@ -222,7 +545,6 @@
           "refId": "D"
         }
       ],
-      "title": "No. of Requests",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -237,13 +559,13 @@
         {
           "$$hashKey": "object:221",
           "format": "short",
-          "logBase": 1,
+          "logBase": 10,
           "show": true
         },
         {
           "$$hashKey": "object:222",
           "format": "short",
-          "logBase": 1,
+          "logBase": 10,
           "show": true
         }
       ],
@@ -252,361 +574,520 @@
       }
     },
     {
-      "format": "none",
-      "gridPos": {
-        "h": 3,
-        "w": 6,
-        "x": 18,
-        "y": 11
-      },
-      "id": 7,
-      "sparkline": {
-        "full": true,
-        "show": false
-      },
-      "targets": [
-        {
-          "expr": "sum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
-          "refId": "A"
-        }
-      ],
-      "title": "No. of Requests",
-      "type": "singlestat",
-      "valueName": "current"
-    },
-    {
-      "format": "none",
-      "gridPos": {
-        "h": 3,
-        "w": 6,
-        "x": 18,
-        "y": 14
-      },
-      "id": 8,
-      "sparkline": {
-        "full": true,
-        "show": true
-      },
-      "targets": [
-        {
-          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) * 60",
-          "refId": "A"
-        }
-      ],
-      "title": "Average Requests / Minute",
-      "type": "singlestat",
-      "valueName": "current"
-    },
-    {
-      "format": "none",
-      "gridPos": {
-        "h": 3,
-        "w": 6,
-        "x": 18,
-        "y": 17
-      },
-      "id": 9,
-      "sparkline": {
-        "full": true,
-        "show": true
-      },
-      "targets": [
-        {
-          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range])) * 60",
-          "refId": "A"
-        }
-      ],
-      "title": "Instant Requests / Minute",
-      "type": "singlestat",
-      "valueName": "current"
-    },
-    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 16
       },
-      "id": 10,
+      "id": 11,
       "title": "Errors",
       "type": "row"
     },
     {
-      "format": "none",
       "gridPos": {
         "h": 3,
-        "w": 6,
+        "w": 2,
         "x": 0,
-        "y": 21
-      },
-      "id": 11,
-      "sparkline": {
-        "full": true,
-        "show": false
-      },
-      "targets": [
-        {
-          "expr": "sum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
-          "refId": "A"
-        }
-      ],
-      "title": "No. of Successes (2xx)",
-      "type": "singlestat",
-      "valueName": "current"
-    },
-    {
-      "format": "none",
-      "gridPos": {
-        "h": 3,
-        "w": 6,
-        "x": 6,
-        "y": 21
+        "y": 17
       },
       "id": 12,
-      "sparkline": {
-        "full": true,
-        "show": true
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "white"
+                }
+              ]
+            },
+            "title": "${__series.name}",
+            "unit": "percentunit"
+          },
+          "values": false
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto"
       },
-      "targets": [
-        {
-          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range])) * 60",
-          "refId": "A"
-        }
-      ],
-      "title": "Average Successes (2xx) / Minute",
-      "type": "singlestat",
-      "valueName": "current"
-    },
-    {
-      "format": "none",
-      "gridPos": {
-        "h": 3,
-        "w": 6,
-        "x": 12,
-        "y": 21
-      },
-      "id": 13,
-      "sparkline": {
-        "full": true,
-        "show": true
-      },
-      "targets": [
-        {
-          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range])) * 60",
-          "refId": "A"
-        }
-      ],
-      "title": "Instant Successes (2xx) / Minute",
-      "type": "singlestat",
-      "valueName": "current"
-    },
-    {
-      "format": "percentunit",
-      "gridPos": {
-        "h": 3,
-        "w": 6,
-        "x": 18,
-        "y": 21
-      },
-      "id": 14,
-      "sparkline": {
-        "full": true,
-        "show": false
-      },
+      "pluginVersion": "6.7.1",
       "targets": [
         {
           "expr": "sum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range])) /\nsum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "% Successes (2xx)",
           "refId": "A"
         }
       ],
-      "title": "% Successes (2xx)",
-      "type": "singlestat",
-      "valueName": "current"
+      "type": "stat"
     },
     {
-      "format": "none",
+      "aliasColors": {
+        "Average Success (2xx) Rate": "green",
+        "Instant Success (2xx) Rate": "super-light-green"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
-        "h": 3,
+        "h": 7,
         "w": 6,
-        "x": 0,
-        "y": 24
+        "x": 2,
+        "y": 17
       },
-      "id": 15,
-      "sparkline": {
-        "full": true,
-        "show": false
+      "hiddenSeries": false,
+      "id": 13,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
       },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
+          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range])) * 60",
+          "legendFormat": "Average Success (2xx) Rate",
           "refId": "A"
+        },
+        {
+          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range])) * 60",
+          "legendFormat": "Instant Success (2xx) Rate",
+          "refId": "B"
         }
       ],
-      "title": "No. of Client Errors (4xx)",
-      "type": "singlestat",
-      "valueName": "current"
-    },
-    {
-      "format": "none",
-      "gridPos": {
-        "h": 3,
-        "w": 6,
-        "x": 6,
-        "y": 24
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
       },
-      "id": 16,
-      "sparkline": {
-        "full": true,
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
         "show": true
       },
-      "targets": [
+      "yaxes": [
         {
-          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range])) * 60",
-          "refId": "A"
+          "$$hashKey": "object:649",
+          "format": "rpm",
+          "logBase": 2,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:650",
+          "format": "short",
+          "logBase": 2,
+          "show": true
         }
       ],
-      "title": "Average Client Errors (4xx) / Minute",
-      "type": "singlestat",
-      "valueName": "current"
+      "yaxis": {
+        "align": false
+      }
     },
     {
-      "format": "none",
       "gridPos": {
         "h": 3,
-        "w": 6,
-        "x": 12,
-        "y": 24
+        "w": 2,
+        "x": 8,
+        "y": 17
       },
-      "id": 17,
-      "sparkline": {
-        "full": true,
-        "show": true
+      "id": 14,
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "white"
+                }
+              ]
+            },
+            "title": "${__series.name}",
+            "unit": "percentunit"
+          },
+          "values": false
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto"
       },
-      "targets": [
-        {
-          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range])) * 60",
-          "refId": "A"
-        }
-      ],
-      "title": "Instant Client Errors (4xx) / Minute",
-      "type": "singlestat",
-      "valueName": "current"
-    },
-    {
-      "format": "percentunit",
-      "gridPos": {
-        "h": 3,
-        "w": 6,
-        "x": 18,
-        "y": 24
-      },
-      "id": 18,
-      "sparkline": {
-        "full": true,
-        "show": false
-      },
+      "pluginVersion": "6.7.1",
       "targets": [
         {
           "expr": "sum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range])) /\nsum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "% Client Errors (4xx)",
           "refId": "A"
         }
       ],
-      "title": "% Client Errors (4xx)",
-      "type": "singlestat",
-      "valueName": "current"
+      "type": "stat"
     },
     {
-      "format": "none",
+      "aliasColors": {
+        "Average Client Error (4xx) Rate": "yellow",
+        "Instant Client Error (4xx) Rate": "super-light-yellow"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
-        "h": 3,
+        "h": 7,
         "w": 6,
-        "x": 0,
-        "y": 27
+        "x": 10,
+        "y": 17
       },
-      "id": 19,
-      "sparkline": {
-        "full": true,
-        "show": false
+      "hiddenSeries": false,
+      "id": 15,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
       },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
+          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range])) * 60",
+          "legendFormat": "Average Client Error (4xx) Rate",
           "refId": "A"
+        },
+        {
+          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range])) * 60",
+          "legendFormat": "Instant Client Error (4xx) Rate",
+          "refId": "B"
         }
       ],
-      "title": "No. of Server Errors (5xx)",
-      "type": "singlestat",
-      "valueName": "current"
-    },
-    {
-      "format": "none",
-      "gridPos": {
-        "h": 3,
-        "w": 6,
-        "x": 6,
-        "y": 27
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
       },
-      "id": 20,
-      "sparkline": {
-        "full": true,
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
         "show": true
       },
-      "targets": [
+      "yaxes": [
         {
-          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range])) * 60",
-          "refId": "A"
+          "$$hashKey": "object:649",
+          "format": "rpm",
+          "logBase": 2,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:650",
+          "format": "short",
+          "logBase": 2,
+          "show": true
         }
       ],
-      "title": "Average Server Errors (5xx) / Minute",
-      "type": "singlestat",
-      "valueName": "current"
+      "yaxis": {
+        "align": false
+      }
     },
     {
-      "format": "none",
       "gridPos": {
         "h": 3,
-        "w": 6,
-        "x": 12,
-        "y": 27
+        "w": 2,
+        "x": 16,
+        "y": 17
       },
-      "id": 21,
-      "sparkline": {
-        "full": true,
-        "show": true
+      "id": 16,
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "white"
+                }
+              ]
+            },
+            "title": "${__series.name}",
+            "unit": "percentunit"
+          },
+          "values": false
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto"
       },
-      "targets": [
-        {
-          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range])) * 60",
-          "refId": "A"
-        }
-      ],
-      "title": "Instant Server Errors (5xx) / Minute",
-      "type": "singlestat",
-      "valueName": "current"
-    },
-    {
-      "format": "percentunit",
-      "gridPos": {
-        "h": 3,
-        "w": 6,
-        "x": 18,
-        "y": 27
-      },
-      "id": 22,
-      "sparkline": {
-        "full": true,
-        "show": false
-      },
+      "pluginVersion": "6.7.1",
       "targets": [
         {
           "expr": "sum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range])) /\nsum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "% Server Errors (5xx)",
           "refId": "A"
         }
       ],
-      "title": "% Server Errors (5xx)",
-      "type": "singlestat",
-      "valueName": "current"
+      "type": "stat"
+    },
+    {
+      "aliasColors": {
+        "Average Server Error (5xx) Rate": "red",
+        "Instant Server Error (5xx) Rate": "super-light-red"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 18,
+        "y": 17
+      },
+      "hiddenSeries": false,
+      "id": 17,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range])) * 60",
+          "legendFormat": "Average Server Error (5xx) Rate",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range])) * 60",
+          "legendFormat": "Instant Server Error (5xx) Rate",
+          "refId": "B"
+        }
+      ],
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:649",
+          "format": "rpm",
+          "logBase": 2,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:650",
+          "format": "short",
+          "logBase": 2,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 0,
+        "y": 20
+      },
+      "id": 18,
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "white"
+                }
+              ]
+            },
+            "unit": "rpm"
+          },
+          "values": false
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto"
+      },
+      "pluginVersion": "6.7.1",
+      "targets": [
+        {
+          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range])) * 60",
+          "instant": true,
+          "legendFormat": "Average Success (2xx) Rate",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range])) * 60",
+          "instant": true,
+          "legendFormat": "Instant Success (2xx) Rate",
+          "refId": "B"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 8,
+        "y": 20
+      },
+      "id": 19,
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "white"
+                }
+              ]
+            },
+            "unit": "rpm"
+          },
+          "values": false
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto"
+      },
+      "pluginVersion": "6.7.1",
+      "targets": [
+        {
+          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range])) * 60",
+          "instant": true,
+          "legendFormat": "Average Client Error (4xx) Rate",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range])) * 60",
+          "instant": true,
+          "legendFormat": "Instant Client Error (4xx) Rate",
+          "refId": "B"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 16,
+        "y": 20
+      },
+      "id": 20,
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "white"
+                }
+              ]
+            },
+            "unit": "rpm"
+          },
+          "values": false
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto"
+      },
+      "pluginVersion": "6.7.1",
+      "targets": [
+        {
+          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range])) * 60",
+          "instant": true,
+          "legendFormat": "Average Server Error (5xx) Rate",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range])) * 60",
+          "instant": true,
+          "legendFormat": "Instant Server Error (5xx) Rate",
+          "refId": "B"
+        }
+      ],
+      "type": "stat"
     }
   ],
   "refresh": "30s",
