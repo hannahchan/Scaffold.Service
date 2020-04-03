@@ -38,7 +38,7 @@ namespace Scaffold.HttpClients.UnitTests
 
             // Assert
             Assert.Equal(HttpMethod.Get, result.RequestMessage.Method);
-            Assert.EndsWith(path ?? string.Empty, result.RequestMessage.RequestUri.ToString());
+            Assert.Equal($"https://worldtimeapi.org/{(path ?? string.Empty).TrimStart('/')}", result.RequestMessage.RequestUri.ToString());
             Assert.Equal(content, await result.Content.ReadAsStringAsync());
         }
 

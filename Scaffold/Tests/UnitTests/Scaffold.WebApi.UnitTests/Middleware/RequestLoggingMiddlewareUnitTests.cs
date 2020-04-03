@@ -39,19 +39,21 @@ namespace Scaffold.WebApi.UnitTests.Middleware
                 m => m.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.IsAny<It.IsAnyType>(),
+                    It.Is<It.IsAnyType>((@object, type) => @object.ToString()
+                        !.Equals("Inbound HTTP   started")),
                     null,
                     (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
-                Times.Exactly(expectedLogLevel == LogLevel.Information ? 2 : 1));
+                Times.Once);
 
             mock.Verify(
                 m => m.Log(
                     expectedLogLevel,
                     It.IsAny<EventId>(),
-                    It.IsAny<It.IsAnyType>(),
+                    It.Is<It.IsAnyType>((@object, type) => @object.ToString()
+                        !.Equals($"Inbound HTTP   finished - {statusCode}")),
                     null,
                     (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
-                Times.Exactly(expectedLogLevel == LogLevel.Information ? 2 : 1));
+                Times.Once());
         }
 
         [Fact]
@@ -77,7 +79,8 @@ namespace Scaffold.WebApi.UnitTests.Middleware
                 m => m.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.IsAny<It.IsAnyType>(),
+                    It.Is<It.IsAnyType>((@object, type) => @object.ToString()
+                        !.Equals("Inbound HTTP   started")),
                     null,
                     (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
                 Times.Once);
@@ -86,7 +89,8 @@ namespace Scaffold.WebApi.UnitTests.Middleware
                 m => m.Log(
                     LogLevel.Critical,
                     It.IsAny<EventId>(),
-                    It.IsAny<It.IsAnyType>(),
+                    It.Is<It.IsAnyType>((@object, type) => @object.ToString()
+                        !.Equals("Inbound HTTP   finished - Unhandled Exception")),
                     exception,
                     (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
                 Times.Once);
