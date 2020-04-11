@@ -111,14 +111,13 @@ Task("Publish")
     .IsDependentOn("Test")
     .Does(() =>
     {
-        if (DirectoryExists(buildArtifacts))
+        DeleteDirectorySettings deleteSettings = new DeleteDirectorySettings
         {
-            DeleteDirectory(buildArtifacts, new DeleteDirectorySettings
-            {
-                Force = true,
-                Recursive = true
-            });
-        }
+            Force = true,
+            Recursive = true,
+        };
+
+        DeleteDirectories(GetDirectories(buildArtifacts), deleteSettings);
 
         DotNetCorePublishSettings settings = new DotNetCorePublishSettings
         {
@@ -129,6 +128,7 @@ Task("Publish")
 
         DotNetCorePublish("./Sources/Scaffold.WebApi", settings);
         Zip(settings.OutputDirectory, $"{settings.OutputDirectory}.zip");
+        DeleteDirectories(GetDirectories(settings.OutputDirectory.ToString()), deleteSettings);
     });
 
 //////////////////////////////////////////////////////////////////////
