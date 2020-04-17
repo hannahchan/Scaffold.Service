@@ -14,6 +14,12 @@
         "dotnet-ef"
       ]
     },
+    "dotnet-outdated": {
+      "version": "2.10.0",
+      "commands": [
+        "dotnet-outdated"
+      ]
+    },
     "dotnet-stryker": {
       "version": "0.17.1",
       "commands": [
