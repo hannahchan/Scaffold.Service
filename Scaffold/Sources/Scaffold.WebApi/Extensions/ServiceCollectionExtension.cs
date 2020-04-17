@@ -21,6 +21,7 @@ namespace Scaffold.WebApi.Extensions
     using Scaffold.WebApi.Controllers;
     using Scaffold.WebApi.Factories;
     using Scaffold.WebApi.HttpMessageHandlers;
+    using Scaffold.WebApi.Middleware;
 
     public static class ServiceCollectionExtension
     {
@@ -87,7 +88,12 @@ namespace Scaffold.WebApi.Extensions
 
             services
                 .Configure<ForwardedHeadersOptions>(options => options.ForwardedHeaders = ForwardedHeaders.All)
-                .Configure<GenericEventOptions>(options => options.IgnoreAll = true);
+                .Configure<GenericEventOptions>(options => options.IgnoreAll = true)
+                .Configure<RequestLoggingMiddleware.Options>(options => options.IgnorePatterns = new string[]
+                {
+                    "^/health$",
+                    "^/metrics$",
+                });
 
             return services;
         }

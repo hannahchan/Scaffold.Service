@@ -4,6 +4,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Options;
     using Moq;
     using Scaffold.WebApi.Middleware;
     using Xunit;
@@ -26,7 +27,8 @@ namespace Scaffold.WebApi.UnitTests.Middleware
 
             RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
                 (httpContext) => Task.CompletedTask,
-                mock.Object);
+                mock.Object,
+                Options.Create(new RequestLoggingMiddleware.Options()));
 
             HttpContext context = new DefaultHttpContext();
             context.Response.StatusCode = statusCode;
@@ -56,6 +58,44 @@ namespace Scaffold.WebApi.UnitTests.Middleware
                 Times.Once());
         }
 
+        [Theory]
+        [InlineData("/health", "^/health$", false)]
+        [InlineData("/HEALTH", "^/health$", false)]
+        [InlineData("/HeAlTh", "^/health$", false)]
+        [InlineData("/health", "^/metrics$", true)]
+        public async Task When_InvokingMiddlewareWithPathAndIgnorePattern_Expect_Logged(string path, string ignorePattern, bool logged)
+        {
+            // Arrange
+            Mock<ILogger<RequestLoggingMiddleware>> mock = new Mock<ILogger<RequestLoggingMiddleware>>();
+            mock.Setup(m => m.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
+
+            RequestLoggingMiddleware.Options options = new RequestLoggingMiddleware.Options
+            {
+                IgnorePatterns = new string[] { ignorePattern },
+            };
+
+            RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
+                (httpContext) => Task.CompletedTask,
+                mock.Object,
+                Options.Create(options));
+
+            HttpContext context = new DefaultHttpContext();
+            context.Request.Path = path;
+
+            // Act
+            await middleware.Invoke(context);
+
+            // Assert
+            mock.Verify(
+                m => m.Log(
+                    It.IsAny<LogLevel>(),
+                    It.IsAny<EventId>(),
+                    It.IsAny<It.IsAnyType>(),
+                    null,
+                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
+                Times.Exactly(logged ? 2 : 0));
+        }
+
         [Fact]
         public async Task When_InvokingMiddlewareWithException_Expect_LogLevelCritical()
         {
@@ -67,7 +107,8 @@ namespace Scaffold.WebApi.UnitTests.Middleware
 
             RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
                 (httpContext) => throw exception,
-                mock.Object);
+                mock.Object,
+                Options.Create(new RequestLoggingMiddleware.Options()));
 
             HttpContext context = new DefaultHttpContext();
 
@@ -97,6 +138,19 @@ namespace Scaffold.WebApi.UnitTests.Middleware
 
             Assert.NotNull(result);
             Assert.Equal(exception, result);
+        }
+
+        [Fact]
+        public void When_InstantiatingOptions_Expect_IgnorePatternsEmpty()
+        {
+            // Arrange
+            RequestLoggingMiddleware.Options options;
+
+            // Act
+            options = new RequestLoggingMiddleware.Options();
+
+            // Assert
+            Assert.Empty(options.IgnorePatterns);
         }
     }
 }

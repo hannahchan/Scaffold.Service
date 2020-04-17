@@ -1,9 +1,11 @@
 namespace Scaffold.WebApi.Middleware
 {
     using System;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Options;
 
     public class RequestLoggingMiddleware
     {
@@ -30,16 +32,25 @@ namespace Scaffold.WebApi.Middleware
 
         private readonly ILogger logger;
 
-        public RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggingMiddleware> logger)
+        private readonly Options options;
+
+        public RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggingMiddleware> logger, IOptions<Options> options)
         {
             this.next = next;
             this.logger = logger;
+            this.options = options.Value;
         }
 
         public async Task Invoke(HttpContext httpContext)
         {
             HttpRequest request = httpContext.Request;
             HttpResponse response = httpContext.Response;
+
+            if (IgnorePath(request.Path, this.options))
+            {
+                await this.next.Invoke(httpContext);
+                return;
+            }
 
             LogRequestStarted(this.logger, request.Method, request.Path, null);
 
@@ -64,9 +75,26 @@ namespace Scaffold.WebApi.Middleware
             catch (Exception exception)
             {
                 LogRequestFinishedCritical(this.logger, request.Method, request.Path, "Unhandled Exception", exception);
-
                 throw;
             }
+        }
+
+        private static bool IgnorePath(PathString path, Options options)
+        {
+            foreach (string ignorePattern in options.IgnorePatterns)
+            {
+                if (Regex.IsMatch(path, ignorePattern, RegexOptions.Compiled | RegexOptions.IgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public class Options
+        {
+            public string[] IgnorePatterns { get; set; } = new string[0];
         }
     }
 }
