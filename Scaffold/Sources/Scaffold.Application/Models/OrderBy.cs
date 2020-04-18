@@ -10,13 +10,8 @@ namespace Scaffold.Application.Models
 
         public string PropertyName { get; }
 
-        public bool Ascending { get; set; }
+        public bool Ascending { get; }
 
-        public bool Descending
-        {
-            get => !this.Ascending;
-
-            set => this.Ascending = !value;
-        }
+        public bool Descending { get => !this.Ascending; }
     }
 }

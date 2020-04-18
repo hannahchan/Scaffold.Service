@@ -24,13 +24,21 @@ namespace Scaffold.Application.Features.Bucket
                 this.Predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
             }
 
+            public Query(Expression<Func<Bucket, bool>> predicate, int? limit, int? offset, Ordering<Bucket>? ordering)
+                : this(predicate)
+            {
+                this.Limit = limit;
+                this.Offset = offset;
+                this.Ordering = ordering;
+            }
+
             public Expression<Func<Bucket, bool>> Predicate { get; }
 
-            public int? Limit { get; set; } = null;
+            public int? Limit { get; } = null;
 
-            public int? Offset { get; set; } = null;
+            public int? Offset { get; } = null;
 
-            public Ordering<Bucket>? Ordering { get; set; } = null;
+            public Ordering<Bucket>? Ordering { get; } = null;
         }
 
         public class Response
@@ -40,7 +48,7 @@ namespace Scaffold.Application.Features.Bucket
                 this.Buckets = buckets ?? throw new ArgumentNullException(nameof(buckets));
             }
 
-            public IList<Bucket> Buckets { get; private set; }
+            public IList<Bucket> Buckets { get; }
         }
 
         public class Handler : IRequestHandler<Query, Response>

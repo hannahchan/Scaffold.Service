@@ -57,10 +57,10 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_AddingBucket_Expect_AddedBucket()
             {
                 // Arrange
-                AddBucket.Command command = new AddBucket.Command
-                {
-                    Name = Guid.NewGuid().ToString(),
-                };
+                AddBucket.Command command = new AddBucket.Command(
+                    name: Guid.NewGuid().ToString(),
+                    description: null,
+                    size: null);
 
                 AddBucket.Handler handler = new AddBucket.Handler(this.repository);
 
@@ -77,12 +77,11 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_AddingBucketResultingInDomainConflict_Expect_DomainException()
             {
                 // Arrange
-                AddBucket.Command command = new AddBucket.Command
-                {
-                    Name = Guid.NewGuid().ToString(),
-                    Description = Guid.NewGuid().ToString(),
-                    Size = -1,
-                };
+                AddBucket.Command command = new AddBucket.Command(
+                    name: Guid.NewGuid().ToString(),
+                    description: Guid.NewGuid().ToString(),
+                    size: -1);
+
                 AddBucket.Handler handler = new AddBucket.Handler(this.repository);
 
                 // Act

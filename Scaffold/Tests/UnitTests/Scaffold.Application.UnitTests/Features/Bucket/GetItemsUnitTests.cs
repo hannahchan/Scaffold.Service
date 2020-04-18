@@ -63,7 +63,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 await this.repository.AddAsync(bucket);
 
-                GetItems.Query query = new GetItems.Query { BucketId = bucket.Id };
+                GetItems.Query query = new GetItems.Query(bucket.Id);
                 GetItems.Handler handler = new GetItems.Handler(this.repository);
 
                 // Act
@@ -82,7 +82,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Bucket bucket = new Bucket();
                 await this.repository.AddAsync(bucket);
 
-                GetItems.Query query = new GetItems.Query { BucketId = bucket.Id };
+                GetItems.Query query = new GetItems.Query(bucket.Id);
                 GetItems.Handler handler = new GetItems.Handler(this.repository);
 
                 // Act
@@ -97,7 +97,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_GettingItemsFromNonExistingBucket_Expect_BucketNotFoundException()
             {
                 // Arrange
-                GetItems.Query query = new GetItems.Query { BucketId = new Random().Next(int.MaxValue) };
+                GetItems.Query query = new GetItems.Query(new Random().Next(int.MaxValue));
                 GetItems.Handler handler = new GetItems.Handler(this.repository);
 
                 // Act

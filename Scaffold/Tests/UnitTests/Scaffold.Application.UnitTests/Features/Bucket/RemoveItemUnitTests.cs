@@ -33,7 +33,10 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 bucket.AddItem(item);
                 await this.repository.AddAsync(bucket);
 
-                RemoveItem.Command command = new RemoveItem.Command { BucketId = bucket.Id, ItemId = item.Id };
+                RemoveItem.Command command = new RemoveItem.Command(
+                    bucketId: bucket.Id,
+                    itemId: item.Id);
+
                 RemoveItem.Handler handler = new RemoveItem.Handler(this.repository);
 
                 // Act
@@ -52,11 +55,9 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 bucket.AddItem(item);
                 await this.repository.AddAsync(bucket);
 
-                RemoveItem.Command command = new RemoveItem.Command
-                {
-                    BucketId = bucket.Id,
-                    ItemId = new Random().Next(int.MaxValue),
-                };
+                RemoveItem.Command command = new RemoveItem.Command(
+                    bucketId: bucket.Id,
+                    itemId: new Random().Next(int.MaxValue));
 
                 RemoveItem.Handler handler = new RemoveItem.Handler(this.repository);
 
@@ -77,11 +78,9 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 bucket.AddItem(item);
                 await this.repository.AddAsync(bucket);
 
-                RemoveItem.Command command = new RemoveItem.Command
-                {
-                    BucketId = new Random().Next(int.MaxValue),
-                    ItemId = item.Id,
-                };
+                RemoveItem.Command command = new RemoveItem.Command(
+                    bucketId: new Random().Next(int.MaxValue),
+                    itemId: item.Id);
 
                 RemoveItem.Handler handler = new RemoveItem.Handler(this.repository);
 

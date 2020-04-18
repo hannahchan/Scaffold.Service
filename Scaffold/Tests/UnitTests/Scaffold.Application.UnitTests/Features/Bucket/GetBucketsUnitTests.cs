@@ -177,14 +177,19 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             }
 
             [Fact]
-            public async Task When_GettingBucketsWithNoLimit_Expect_AllBuckets()
+            public async Task When_GettingBucketsWithNoLimitAndNoOffset_Expect_AllBuckets()
             {
                 // Arrange
                 await this.repository.AddAsync(new Bucket { Name = "Bucket 1" });
                 await this.repository.AddAsync(new Bucket { Name = "Bucket 2" });
                 await this.repository.AddAsync(new Bucket { Name = "Bucket 3" });
 
-                GetBuckets.Query query = new GetBuckets.Query { Limit = null };
+                GetBuckets.Query query = new GetBuckets.Query(
+                    predicate: bucket => true,
+                    limit: null,
+                    offset: null,
+                    ordering: null);
+
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
@@ -207,7 +212,12 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 await this.repository.AddAsync(new Bucket { Name = "Bucket 2" });
                 await this.repository.AddAsync(new Bucket { Name = "Bucket 3" });
 
-                GetBuckets.Query query = new GetBuckets.Query { Limit = 2 };
+                GetBuckets.Query query = new GetBuckets.Query(
+                    predicate: bucket => true,
+                    limit: 2,
+                    offset: null,
+                    ordering: null);
+
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
@@ -222,29 +232,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             }
 
             [Fact]
-            public async Task When_GettingBucketsWithNoOffset_Expect_AllBuckets()
-            {
-                // Arrange
-                await this.repository.AddAsync(new Bucket { Name = "Bucket 1" });
-                await this.repository.AddAsync(new Bucket { Name = "Bucket 2" });
-                await this.repository.AddAsync(new Bucket { Name = "Bucket 3" });
-
-                GetBuckets.Query query = new GetBuckets.Query { Offset = null };
-                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
-
-                // Act
-                GetBuckets.Response response = await handler.Handle(query, default);
-
-                // Assert
-                Assert.NotNull(response.Buckets);
-                Assert.NotEmpty(response.Buckets);
-                Assert.Equal(3, response.Buckets.Count);
-                Assert.Equal("Bucket 1", response.Buckets[0].Name);
-                Assert.Equal("Bucket 2", response.Buckets[1].Name);
-                Assert.Equal("Bucket 3", response.Buckets[2].Name);
-            }
-
-            [Fact]
             public async Task When_GettingBucketsWithOffset_Expect_OffsetBuckets()
             {
                 // Arrange
@@ -252,7 +239,12 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 await this.repository.AddAsync(new Bucket { Name = "Bucket 2" });
                 await this.repository.AddAsync(new Bucket { Name = "Bucket 3" });
 
-                GetBuckets.Query query = new GetBuckets.Query { Offset = 1 };
+                GetBuckets.Query query = new GetBuckets.Query(
+                    predicate: bucket => true,
+                    limit: null,
+                    offset: 1,
+                    ordering: null);
+
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
@@ -274,7 +266,12 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 await this.repository.AddAsync(new Bucket { Name = "Bucket 2" });
                 await this.repository.AddAsync(new Bucket { Name = "Bucket 3" });
 
-                GetBuckets.Query query = new GetBuckets.Query { Limit = 1, Offset = 1 };
+                GetBuckets.Query query = new GetBuckets.Query(
+                    predicate: bucket => true,
+                    limit: 1,
+                    offset: 1,
+                    ordering: null);
+
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
@@ -298,7 +295,12 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
 
-                GetBuckets.Query query = new GetBuckets.Query { Ordering = ordering };
+                GetBuckets.Query query = new GetBuckets.Query(
+                    predicate: bucket => true,
+                    limit: null,
+                    offset: null,
+                    ordering: ordering);
+
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
@@ -322,7 +324,12 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", false) };
 
-                GetBuckets.Query query = new GetBuckets.Query { Ordering = ordering };
+                GetBuckets.Query query = new GetBuckets.Query(
+                    predicate: bucket => true,
+                    limit: null,
+                    offset: null,
+                    ordering: ordering);
+
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
@@ -346,7 +353,12 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
 
-                GetBuckets.Query query = new GetBuckets.Query { Limit = 6, Ordering = ordering };
+                GetBuckets.Query query = new GetBuckets.Query(
+                    predicate: bucket => true,
+                    limit: 6,
+                    offset: null,
+                    ordering: ordering);
+
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
@@ -370,7 +382,12 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
 
-                GetBuckets.Query query = new GetBuckets.Query { Offset = 6, Ordering = ordering };
+                GetBuckets.Query query = new GetBuckets.Query(
+                    predicate: bucket => true,
+                    limit: null,
+                    offset: 6,
+                    ordering: ordering);
+
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
@@ -394,7 +411,12 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
 
-                GetBuckets.Query query = new GetBuckets.Query { Limit = 6, Offset = 3, Ordering = ordering };
+                GetBuckets.Query query = new GetBuckets.Query(
+                    predicate: bucket => true,
+                    limit: 6,
+                    offset: 3,
+                    ordering: ordering);
+
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
@@ -422,7 +444,12 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     new OrderBy("Description", true),
                 };
 
-                GetBuckets.Query query = new GetBuckets.Query { Ordering = ordering };
+                GetBuckets.Query query = new GetBuckets.Query(
+                    predicate: bucket => true,
+                    limit: null,
+                    offset: null,
+                    ordering: ordering);
+
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
@@ -471,7 +498,12 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     new OrderBy("Description", false),
                 };
 
-                GetBuckets.Query query = new GetBuckets.Query { Ordering = ordering };
+                GetBuckets.Query query = new GetBuckets.Query(
+                    predicate: bucket => true,
+                    limit: null,
+                    offset: null,
+                    ordering: ordering);
+
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
@@ -520,7 +552,12 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     new OrderBy("Description", false),
                 };
 
-                GetBuckets.Query query = new GetBuckets.Query { Ordering = ordering };
+                GetBuckets.Query query = new GetBuckets.Query(
+                    predicate: bucket => true,
+                    limit: null,
+                    offset: null,
+                    ordering: ordering);
+
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
@@ -569,7 +606,12 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     new OrderBy("Description", true),
                 };
 
-                GetBuckets.Query query = new GetBuckets.Query { Ordering = ordering };
+                GetBuckets.Query query = new GetBuckets.Query(
+                    predicate: bucket => true,
+                    limit: null,
+                    offset: null,
+                    ordering: ordering);
+
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act

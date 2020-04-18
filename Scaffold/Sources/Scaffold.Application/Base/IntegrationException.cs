@@ -23,7 +23,7 @@ namespace Scaffold.Application.Base
             this.Status = info.GetInt32(nameof(this.Status));
         }
 
-        public virtual int Status { get; private set; }
+        public virtual int Status { get; }
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {

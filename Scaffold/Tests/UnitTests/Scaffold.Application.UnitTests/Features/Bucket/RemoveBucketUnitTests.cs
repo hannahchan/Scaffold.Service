@@ -33,7 +33,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Bucket bucket = new Bucket();
                 await this.repository.AddAsync(bucket);
 
-                RemoveBucket.Command command = new RemoveBucket.Command { Id = bucket.Id };
+                RemoveBucket.Command command = new RemoveBucket.Command(bucket.Id);
                 RemoveBucket.Handler handler = new RemoveBucket.Handler(this.repository);
 
                 // Act
@@ -50,7 +50,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Bucket bucket = new Bucket();
                 await this.repository.AddAsync(bucket);
 
-                RemoveBucket.Command command = new RemoveBucket.Command { Id = new Random().Next(int.MaxValue) };
+                RemoveBucket.Command command = new RemoveBucket.Command(new Random().Next(int.MaxValue));
                 RemoveBucket.Handler handler = new RemoveBucket.Handler(this.repository);
 
                 // Act

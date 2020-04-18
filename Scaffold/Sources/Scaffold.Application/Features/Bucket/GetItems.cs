@@ -13,7 +13,12 @@ namespace Scaffold.Application.Features.Bucket
     {
         public class Query : IRequest<Response>
         {
-            public int BucketId { get; set; }
+            public Query(int bucketId)
+            {
+                this.BucketId = bucketId;
+            }
+
+            public int BucketId { get; }
         }
 
         public class Response
@@ -23,7 +28,7 @@ namespace Scaffold.Application.Features.Bucket
                 this.Items = items ?? throw new ArgumentNullException(nameof(items));
             }
 
-            public IList<Item> Items { get; private set; }
+            public IList<Item> Items { get; }
         }
 
         public class Handler : IRequestHandler<Query, Response>

@@ -13,13 +13,21 @@ namespace Scaffold.Application.Features.Bucket
     {
         public class Command : IRequest<Response>
         {
-            public int Id { get; set; }
+            public Command(int id, string? name, string? description, int? size)
+            {
+                this.Id = id;
+                this.Name = name;
+                this.Description = description;
+                this.Size = size;
+            }
 
-            public string? Name { get; set; }
+            public int Id { get; }
 
-            public string? Description { get; set; }
+            public string? Name { get; }
 
-            public int? Size { get; set; }
+            public string? Description { get; }
+
+            public int? Size { get; }
         }
 
         public class Response
@@ -30,9 +38,9 @@ namespace Scaffold.Application.Features.Bucket
                 this.Created = created;
             }
 
-            public Bucket Bucket { get; private set; }
+            public Bucket Bucket { get; }
 
-            public bool Created { get; private set; }
+            public bool Created { get; }
 
             public bool Updated { get => !this.Created; }
         }

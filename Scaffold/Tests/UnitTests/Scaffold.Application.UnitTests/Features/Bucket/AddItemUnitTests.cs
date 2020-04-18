@@ -59,11 +59,10 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Bucket bucket = new Bucket();
                 await this.repository.AddAsync(bucket);
 
-                AddItem.Command command = new AddItem.Command
-                {
-                    BucketId = bucket.Id,
-                    Name = Guid.NewGuid().ToString(),
-                };
+                AddItem.Command command = new AddItem.Command(
+                    bucketId: bucket.Id,
+                    name: Guid.NewGuid().ToString(),
+                    description: null);
 
                 AddItem.Handler handler = new AddItem.Handler(this.repository);
 
@@ -79,11 +78,10 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_AddingItemToNonExistingBucket_Expect_BucketNotFoundException()
             {
                 // Arrange
-                AddItem.Command command = new AddItem.Command
-                {
-                    BucketId = new Random().Next(int.MaxValue),
-                    Name = Guid.NewGuid().ToString(),
-                };
+                AddItem.Command command = new AddItem.Command(
+                    bucketId: new Random().Next(int.MaxValue),
+                    name: Guid.NewGuid().ToString(),
+                    description: null);
 
                 AddItem.Handler handler = new AddItem.Handler(this.repository);
 
@@ -102,11 +100,10 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Bucket bucket = new Bucket { Size = 0 };
                 await this.repository.AddAsync(bucket);
 
-                AddItem.Command command = new AddItem.Command
-                {
-                    BucketId = bucket.Id,
-                    Name = Guid.NewGuid().ToString(),
-                };
+                AddItem.Command command = new AddItem.Command(
+                    bucketId: bucket.Id,
+                    name: Guid.NewGuid().ToString(),
+                    description: null);
 
                 AddItem.Handler handler = new AddItem.Handler(this.repository);
 

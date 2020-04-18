@@ -98,13 +98,11 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 await this.repository.AddAsync(bucket);
 
-                UpdateBucket.Command command = new UpdateBucket.Command
-                {
-                    Id = bucket.Id,
-                    Name = Guid.NewGuid().ToString(),
-                    Description = Guid.NewGuid().ToString(),
-                    Size = new Random().Next(int.MaxValue),
-                };
+                UpdateBucket.Command command = new UpdateBucket.Command(
+                    id: bucket.Id,
+                    name: Guid.NewGuid().ToString(),
+                    description: Guid.NewGuid().ToString(),
+                    size: new Random().Next(int.MaxValue));
 
                 UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository);
 
@@ -124,13 +122,11 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_UpdatingNonExistingBucket_Expect_NewBucket()
             {
                 // Arrange
-                UpdateBucket.Command command = new UpdateBucket.Command
-                {
-                    Id = new Random().Next(int.MaxValue),
-                    Name = Guid.NewGuid().ToString(),
-                    Description = Guid.NewGuid().ToString(),
-                    Size = new Random().Next(int.MaxValue),
-                };
+                UpdateBucket.Command command = new UpdateBucket.Command(
+                    id: new Random().Next(int.MaxValue),
+                    name: Guid.NewGuid().ToString(),
+                    description: Guid.NewGuid().ToString(),
+                    size: new Random().Next(int.MaxValue));
 
                 UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository);
 
@@ -154,12 +150,11 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 bucket.AddItem(new Item());
                 await this.repository.AddAsync(bucket);
 
-                UpdateBucket.Command command = new UpdateBucket.Command
-                {
-                    Id = bucket.Id,
-                    Name = Guid.NewGuid().ToString(),
-                    Size = 0,
-                };
+                UpdateBucket.Command command = new UpdateBucket.Command(
+                    id: bucket.Id,
+                    name: Guid.NewGuid().ToString(),
+                    description: null,
+                    size: 0);
 
                 UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository);
 
@@ -175,12 +170,11 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_UpdatingNonExistingBucketResultingInDomainConflict_Expect_DomainException()
             {
                 // Arrange
-                UpdateBucket.Command command = new UpdateBucket.Command
-                {
-                    Id = new Random().Next(int.MaxValue),
-                    Name = Guid.NewGuid().ToString(),
-                    Size = -1,
-                };
+                UpdateBucket.Command command = new UpdateBucket.Command(
+                    id: new Random().Next(int.MaxValue),
+                    name: Guid.NewGuid().ToString(),
+                    description: null,
+                    size: -1);
 
                 UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository);
 

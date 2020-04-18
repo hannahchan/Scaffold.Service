@@ -94,13 +94,11 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 await this.repository.AddAsync(bucket);
 
-                UpdateItem.Command command = new UpdateItem.Command
-                {
-                    BucketId = bucket.Id,
-                    ItemId = item.Id,
-                    Name = Guid.NewGuid().ToString(),
-                    Description = Guid.NewGuid().ToString(),
-                };
+                UpdateItem.Command command = new UpdateItem.Command(
+                    bucketId: bucket.Id,
+                    itemId: item.Id,
+                    name: Guid.NewGuid().ToString(),
+                    description: Guid.NewGuid().ToString());
 
                 UpdateItem.Handler handler = new UpdateItem.Handler(this.repository);
 
@@ -123,13 +121,11 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Bucket bucket = new Bucket();
                 await this.repository.AddAsync(bucket);
 
-                UpdateItem.Command command = new UpdateItem.Command
-                {
-                    BucketId = bucket.Id,
-                    ItemId = new Random().Next(int.MaxValue),
-                    Name = Guid.NewGuid().ToString(),
-                    Description = Guid.NewGuid().ToString(),
-                };
+                UpdateItem.Command command = new UpdateItem.Command(
+                    bucketId: bucket.Id,
+                    itemId: new Random().Next(int.MaxValue),
+                    name: Guid.NewGuid().ToString(),
+                    description: Guid.NewGuid().ToString());
 
                 UpdateItem.Handler handler = new UpdateItem.Handler(this.repository);
 
@@ -148,12 +144,11 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_UpdatingItemFromNonExistingBucket_Expect_BucketNotFoundException()
             {
                 // Arrange
-                UpdateItem.Command command = new UpdateItem.Command
-                {
-                    BucketId = new Random().Next(int.MaxValue),
-                    ItemId = new Random().Next(int.MaxValue),
-                    Name = Guid.NewGuid().ToString(),
-                };
+                UpdateItem.Command command = new UpdateItem.Command(
+                    bucketId: new Random().Next(int.MaxValue),
+                    itemId: new Random().Next(int.MaxValue),
+                    name: Guid.NewGuid().ToString(),
+                    description: null);
 
                 UpdateItem.Handler handler = new UpdateItem.Handler(this.repository);
 

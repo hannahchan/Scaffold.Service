@@ -11,9 +11,15 @@ namespace Scaffold.Application.Features.Bucket
     {
         public class Command : IRequest
         {
-            public int BucketId { get; set; }
+            public Command(int bucketId, int itemId)
+            {
+                this.BucketId = bucketId;
+                this.ItemId = itemId;
+            }
 
-            public int ItemId { get; set; }
+            public int BucketId { get; }
+
+            public int ItemId { get; }
         }
 
         public class Handler : IRequestHandler<Command>
