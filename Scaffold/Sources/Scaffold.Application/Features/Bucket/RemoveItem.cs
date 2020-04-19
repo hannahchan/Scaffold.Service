@@ -33,11 +33,11 @@ namespace Scaffold.Application.Features.Bucket
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                Bucket bucket = await this.repository.GetAsync(request.BucketId) ?? throw new BucketNotFoundException(request.BucketId);
+                Bucket bucket = await this.repository.GetAsync(request.BucketId, cancellationToken) ?? throw new BucketNotFoundException(request.BucketId);
                 Item item = bucket.Items.SingleOrDefault(x => x.Id == request.ItemId) ?? throw new ItemNotFoundException(request.ItemId);
 
                 bucket.RemoveItem(item);
-                await this.repository.UpdateAsync(bucket);
+                await this.repository.UpdateAsync(bucket, cancellationToken);
 
                 return default;
             }

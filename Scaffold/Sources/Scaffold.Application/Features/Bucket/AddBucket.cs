@@ -60,7 +60,7 @@ namespace Scaffold.Application.Features.Bucket
                     throw exception.InnerException;
                 }
 
-                await this.repository.AddAsync(bucket);
+                await this.repository.AddAsync(bucket, cancellationToken);
 
                 return new Response(bucket);
             }

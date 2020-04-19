@@ -47,7 +47,7 @@ namespace Scaffold.Application.Features.Bucket
 
             public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
             {
-                Bucket bucket = await this.repository.GetAsync(request.BucketId) ??
+                Bucket bucket = await this.repository.GetAsync(request.BucketId, cancellationToken) ??
                     throw new BucketNotFoundException(request.BucketId);
 
                 MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(new MappingProfile()));
@@ -55,7 +55,7 @@ namespace Scaffold.Application.Features.Bucket
 
                 bucket.AddItem(item);
 
-                await this.repository.UpdateAsync(bucket);
+                await this.repository.UpdateAsync(bucket, cancellationToken);
 
                 return new Response(item);
             }

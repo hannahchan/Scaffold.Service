@@ -44,7 +44,7 @@ namespace Scaffold.Application.Features.Bucket
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                Bucket bucket = await this.repository.GetAsync(request.BucketId) ??
+                Bucket bucket = await this.repository.GetAsync(request.BucketId, cancellationToken) ??
                     throw new BucketNotFoundException(request.BucketId);
 
                 return new Response(bucket.Items.SingleOrDefault(x => x.Id == request.ItemId) ??

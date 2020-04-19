@@ -62,7 +62,7 @@ namespace Scaffold.Application.Features.Bucket
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                return new Response(await this.repository.GetAsync(request.Predicate, request.Limit, request.Offset, request.Ordering));
+                return new Response(await this.repository.GetAsync(request.Predicate, request.Limit, request.Offset, request.Ordering, cancellationToken));
             }
         }
     }

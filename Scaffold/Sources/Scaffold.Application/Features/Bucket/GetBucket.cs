@@ -40,7 +40,7 @@ namespace Scaffold.Application.Features.Bucket
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                return new Response(await this.repository.GetAsync(request.Id) ?? throw new BucketNotFoundException(request.Id));
+                return new Response(await this.repository.GetAsync(request.Id, cancellationToken) ?? throw new BucketNotFoundException(request.Id));
             }
         }
     }

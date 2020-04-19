@@ -56,7 +56,7 @@ namespace Scaffold.Application.Features.Bucket
 
             public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
             {
-                Bucket? bucket = await this.repository.GetAsync(request.Id);
+                Bucket? bucket = await this.repository.GetAsync(request.Id, cancellationToken);
 
                 try
                 {
@@ -65,13 +65,13 @@ namespace Scaffold.Application.Features.Bucket
                     if (bucket is null)
                     {
                         bucket = configuration.CreateMapper().Map<Bucket>(request);
-                        await this.repository.AddAsync(bucket);
+                        await this.repository.AddAsync(bucket, cancellationToken);
 
                         return new Response(bucket, true);
                     }
 
                     bucket = configuration.CreateMapper().Map(request, bucket);
-                    await this.repository.UpdateAsync(bucket);
+                    await this.repository.UpdateAsync(bucket, cancellationToken);
 
                     return new Response(bucket);
                 }
