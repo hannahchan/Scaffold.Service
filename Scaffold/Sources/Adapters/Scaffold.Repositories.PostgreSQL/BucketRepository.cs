@@ -5,6 +5,7 @@ namespace Scaffold.Repositories.PostgreSQL
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+    using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Interfaces;
@@ -33,7 +34,7 @@ namespace Scaffold.Repositories.PostgreSQL
             this.context.SaveChanges();
         }
 
-        public Task AddAsync(Bucket bucket)
+        public Task AddAsync(Bucket bucket, CancellationToken cancellationToken = default)
         {
             if (bucket is null)
             {
@@ -41,7 +42,7 @@ namespace Scaffold.Repositories.PostgreSQL
             }
 
             this.context.Set<Bucket>().Add(bucket);
-            return this.context.SaveChangesAsync();
+            return this.context.SaveChangesAsync(cancellationToken);
         }
 
         public Bucket? Get(int id)
@@ -59,19 +60,19 @@ namespace Scaffold.Repositories.PostgreSQL
                 .ToList();
         }
 
-        public Task<Bucket?> GetAsync(int id)
+        public Task<Bucket?> GetAsync(int id, CancellationToken cancellationToken = default)
         {
             return this.context.Set<Bucket>()
                 .Where(bucket => bucket.Id == id)
                 .Include(bucket => bucket.Items)
-                .SingleOrDefaultAsync();
+                .SingleOrDefaultAsync(cancellationToken);
         }
 
-        public Task<List<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket>? ordering = null)
+        public Task<List<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket>? ordering = null, CancellationToken cancellationToken = default)
         {
             return this.BuildQuery(predicate, limit, offset, ordering)
                 .Include(bucket => bucket.Items)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
 
         public void Remove(Bucket bucket)
@@ -85,7 +86,7 @@ namespace Scaffold.Repositories.PostgreSQL
             this.context.SaveChanges();
         }
 
-        public Task RemoveAsync(Bucket bucket)
+        public Task RemoveAsync(Bucket bucket, CancellationToken cancellationToken = default)
         {
             if (bucket is null)
             {
@@ -93,7 +94,7 @@ namespace Scaffold.Repositories.PostgreSQL
             }
 
             this.context.Set<Bucket>().Remove(bucket);
-            return this.context.SaveChangesAsync();
+            return this.context.SaveChangesAsync(cancellationToken);
         }
 
         public void Update(Bucket bucket)
@@ -107,7 +108,7 @@ namespace Scaffold.Repositories.PostgreSQL
             this.context.SaveChanges();
         }
 
-        public Task UpdateAsync(Bucket bucket)
+        public Task UpdateAsync(Bucket bucket, CancellationToken cancellationToken = default)
         {
             if (bucket is null)
             {
@@ -115,7 +116,7 @@ namespace Scaffold.Repositories.PostgreSQL
             }
 
             this.context.Set<Bucket>().Update(bucket);
-            return this.context.SaveChangesAsync();
+            return this.context.SaveChangesAsync(cancellationToken);
         }
 
         private static Dictionary<string, LambdaExpression> InitializeKeySelectors()

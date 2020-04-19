@@ -3,6 +3,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Models;
@@ -119,6 +120,22 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
                 Assert.Equal("bucket", argumentNullException.ParamName);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
+            }
+
+            [Fact(Skip = "Not testable with Entity Framework Core In-Memory Database")]
+            public async Task When_AddingBucketAndCancellationIsRequested_Expect_OperationCanceledException()
+            {
+                // Arrange
+                Bucket bucket = new Bucket();
+
+                BucketContext context = new BucketContext(this.dbContextOptions);
+                BucketRepository repository = new BucketRepository(context);
+
+                // Act
+                Exception exception = await Record.ExceptionAsync(() => repository.AddAsync(bucket, new CancellationToken(true)));
+
+                // Assert
+                Assert.IsType<OperationCanceledException>(exception);
             }
         }
 
@@ -463,6 +480,23 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
             }
 
             [Fact]
+            public async Task When_GettingBucketAndCancellationIsRequested_Expect_OperationCanceledException()
+            {
+                // Arrange
+                Exception exception;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    BucketRepository repository = new BucketRepository(context);
+                    exception = await Record.ExceptionAsync(() => repository.GetAsync(new Random().Next(int.MaxValue), new CancellationToken(true)));
+                }
+
+                // Assert
+                Assert.IsType<OperationCanceledException>(exception);
+            }
+
+            [Fact]
             public async Task When_GettingBucketsWithPredicate_Expect_AllBuckets()
             {
                 // Arrange
@@ -721,6 +755,25 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 Assert.NotEmpty(result);
                 Assert.Equal(1, result.Count);
                 Assert.Equal("Bucket 2", result[0].Name);
+            }
+
+            [Fact]
+            public async Task When_GettingBucketsAndCancellationIsRequested_Expect_OperationCanceledException()
+            {
+                // Arrange
+                Exception exception;
+
+                // Act
+                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                {
+                    BucketRepository repository = new BucketRepository(context);
+                    exception = await Record.ExceptionAsync(() => repository.GetAsync(
+                        predicate: bucket => true,
+                        cancellationToken: new CancellationToken(true)));
+                }
+
+                // Assert
+                Assert.IsType<OperationCanceledException>(exception);
             }
         }
 
@@ -1728,6 +1781,22 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 Assert.Equal("bucket", argumentNullException.ParamName);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
+
+            [Fact(Skip = "Not testable with Entity Framework Core In-Memory Database")]
+            public async Task When_RemovingBucketAndCancellationIsRequested_Expect_OperationCanceledException()
+            {
+                // Arrange
+                Bucket bucket = new Bucket();
+
+                BucketContext context = new BucketContext(this.dbContextOptions);
+                BucketRepository repository = new BucketRepository(context);
+
+                // Act
+                Exception exception = await Record.ExceptionAsync(() => repository.RemoveAsync(bucket, new CancellationToken(true)));
+
+                // Assert
+                Assert.IsType<OperationCanceledException>(exception);
+            }
         }
 
         public class Update : BucketRepositoryUnitTests
@@ -1835,6 +1904,22 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
                 Assert.Equal("bucket", argumentNullException.ParamName);
                 Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
+            }
+
+            [Fact(Skip = "Not testable with Entity Framework Core In-Memory Database")]
+            public async Task When_UpdatingBucketAndCancellationIsRequested_Expect_OperationCanceledException()
+            {
+                // Arrange
+                Bucket bucket = new Bucket();
+
+                BucketContext context = new BucketContext(this.dbContextOptions);
+                BucketRepository repository = new BucketRepository(context);
+
+                // Act
+                Exception exception = await Record.ExceptionAsync(() => repository.UpdateAsync(bucket, new CancellationToken(true)));
+
+                // Assert
+                Assert.IsType<OperationCanceledException>(exception);
             }
         }
     }

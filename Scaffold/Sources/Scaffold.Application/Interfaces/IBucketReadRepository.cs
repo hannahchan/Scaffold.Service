@@ -3,6 +3,7 @@ namespace Scaffold.Application.Interfaces
     using System;
     using System.Collections.Generic;
     using System.Linq.Expressions;
+    using System.Threading;
     using System.Threading.Tasks;
     using Scaffold.Application.Models;
     using Scaffold.Domain.Aggregates.Bucket;
@@ -13,8 +14,8 @@ namespace Scaffold.Application.Interfaces
 
         List<Bucket> Get(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket>? ordering = null);
 
-        Task<Bucket?> GetAsync(int id);
+        Task<Bucket?> GetAsync(int id, CancellationToken cancellationToken = default);
 
-        Task<List<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket>? ordering = null);
+        Task<List<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket>? ordering = null, CancellationToken cancellationToken = default);
     }
 }
