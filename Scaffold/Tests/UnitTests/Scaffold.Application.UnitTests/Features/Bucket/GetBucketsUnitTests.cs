@@ -55,7 +55,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Assert.NotNull(query.Predicate);
                 Assert.Null(query.Limit);
                 Assert.Null(query.Offset);
-                Assert.Null(query.Ordering);
+                Assert.Null(query.SortOrder);
             }
 
             [Fact]
@@ -72,7 +72,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Assert.Equal(predicate, query.Predicate);
                 Assert.Null(query.Limit);
                 Assert.Null(query.Offset);
-                Assert.Null(query.Ordering);
+                Assert.Null(query.SortOrder);
             }
 
             [Fact]
@@ -188,7 +188,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     predicate: bucket => true,
                     limit: null,
                     offset: null,
-                    ordering: null);
+                    sortOrder: null);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -216,7 +216,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     predicate: bucket => true,
                     limit: 2,
                     offset: null,
-                    ordering: null);
+                    sortOrder: null);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -243,7 +243,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     predicate: bucket => true,
                     limit: null,
                     offset: 1,
-                    ordering: null);
+                    sortOrder: null);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -270,7 +270,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     predicate: bucket => true,
                     limit: 1,
                     offset: 1,
-                    ordering: null);
+                    sortOrder: null);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -293,13 +293,14 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     await this.repository.AddAsync(bucket);
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderBy("Size");
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
                     limit: null,
                     offset: null,
-                    ordering: ordering);
+                    sortOrder: sortOrder);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -322,13 +323,14 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     await this.repository.AddAsync(bucket);
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", false) };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderByDescending("Size");
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
                     limit: null,
                     offset: null,
-                    ordering: ordering);
+                    sortOrder: sortOrder);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -351,13 +353,14 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     await this.repository.AddAsync(bucket);
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderBy("Size");
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
                     limit: 6,
                     offset: null,
-                    ordering: ordering);
+                    sortOrder: sortOrder);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -380,13 +383,14 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     await this.repository.AddAsync(bucket);
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderBy("Size");
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
                     limit: null,
                     offset: 6,
-                    ordering: ordering);
+                    sortOrder: sortOrder);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -409,13 +413,14 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     await this.repository.AddAsync(bucket);
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderBy("Size");
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
                     limit: 6,
                     offset: 3,
-                    ordering: ordering);
+                    sortOrder: sortOrder);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -438,17 +443,15 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     await this.repository.AddAsync(bucket);
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>
-                {
-                    new OrderBy("Name", true),
-                    new OrderBy("Description", true),
-                };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderBy("Name")
+                    .ThenBy("Description");
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
                     limit: null,
                     offset: null,
-                    ordering: ordering);
+                    sortOrder: sortOrder);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -492,17 +495,15 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     await this.repository.AddAsync(bucket);
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>
-                {
-                    new OrderBy("Name", false),
-                    new OrderBy("Description", false),
-                };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderByDescending("Name")
+                    .ThenByDescending("Description");
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
                     limit: null,
                     offset: null,
-                    ordering: ordering);
+                    sortOrder: sortOrder);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -546,17 +547,15 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     await this.repository.AddAsync(bucket);
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>
-                {
-                    new OrderBy("Name", true),
-                    new OrderBy("Description", false),
-                };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderBy("Name")
+                    .ThenByDescending("Description");
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
                     limit: null,
                     offset: null,
-                    ordering: ordering);
+                    sortOrder: sortOrder);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -600,17 +599,15 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     await this.repository.AddAsync(bucket);
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>
-                {
-                    new OrderBy("Name", false),
-                    new OrderBy("Description", true),
-                };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderByDescending("Name")
+                    .ThenBy("Description");
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
                     limit: null,
                     offset: null,
-                    ordering: ordering);
+                    sortOrder: sortOrder);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 

@@ -53,9 +53,9 @@ namespace Scaffold.Repositories.PostgreSQL
                 .SingleOrDefault();
         }
 
-        public List<Bucket> Get(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket>? ordering = null)
+        public List<Bucket> Get(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, SortOrder<Bucket>? sortOrder = null)
         {
-            return this.BuildQuery(predicate, limit, offset, ordering)
+            return this.BuildQuery(predicate, limit, offset, sortOrder)
                 .Include(bucket => bucket.Items)
                 .ToList();
         }
@@ -68,9 +68,9 @@ namespace Scaffold.Repositories.PostgreSQL
                 .SingleOrDefaultAsync(cancellationToken);
         }
 
-        public Task<List<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket>? ordering = null, CancellationToken cancellationToken = default)
+        public Task<List<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, SortOrder<Bucket>? sortOrder = null, CancellationToken cancellationToken = default)
         {
-            return this.BuildQuery(predicate, limit, offset, ordering)
+            return this.BuildQuery(predicate, limit, offset, sortOrder)
                 .Include(bucket => bucket.Items)
                 .ToListAsync(cancellationToken);
         }
@@ -136,7 +136,7 @@ namespace Scaffold.Repositories.PostgreSQL
             return keySelectors;
         }
 
-        private IQueryable<Bucket> BuildQuery(Expression<Func<Bucket, bool>> predicate, int? limit, int? offset, Ordering<Bucket>? ordering = null)
+        private IQueryable<Bucket> BuildQuery(Expression<Func<Bucket, bool>> predicate, int? limit, int? offset, SortOrder<Bucket>? sortOrder = null)
         {
             if (predicate is null)
             {
@@ -145,23 +145,23 @@ namespace Scaffold.Repositories.PostgreSQL
 
             IQueryable<Bucket> query = this.context.Set<Bucket>().Where(predicate);
 
-            if (ordering != null)
+            if (sortOrder != null)
             {
-                foreach (OrderBy orderBy in ordering)
+                foreach ((string PropertyName, bool Descending) sortItem in sortOrder)
                 {
-                    string methodName = orderBy.Ascending ? nameof(Queryable.ThenBy) : nameof(Queryable.ThenByDescending);
+                    string methodName = sortItem.Descending ? nameof(Queryable.ThenByDescending) : nameof(Queryable.ThenBy);
 
-                    if (orderBy == ordering.First())
+                    if (sortItem == sortOrder.First())
                     {
-                        methodName = orderBy.Ascending ? nameof(Queryable.OrderBy) : nameof(Queryable.OrderByDescending);
+                        methodName = sortItem.Descending ? nameof(Queryable.OrderByDescending) : nameof(Queryable.OrderBy);
                     }
 
                     query = query.Provider.CreateQuery<Bucket>(Expression.Call(
                         typeof(Queryable),
                         methodName,
-                        new Type[] { typeof(Bucket), KeySelectors[orderBy.PropertyName].ReturnType },
+                        new Type[] { typeof(Bucket), KeySelectors[sortItem.PropertyName].ReturnType },
                         query.Expression,
-                        Expression.Quote(KeySelectors[orderBy.PropertyName])));
+                        Expression.Quote(KeySelectors[sortItem.PropertyName])));
                 }
             }
 

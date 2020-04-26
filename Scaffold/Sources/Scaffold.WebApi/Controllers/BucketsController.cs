@@ -60,7 +60,7 @@
                     predicate: bucket => true,
                     limit: limit,
                     offset: offset,
-                    ordering: null);
+                    sortOrder: null);
 
             GetBuckets.Response response = await this.mediator.Send(query);
 

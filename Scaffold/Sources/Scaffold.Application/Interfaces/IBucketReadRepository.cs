@@ -12,10 +12,10 @@ namespace Scaffold.Application.Interfaces
     {
         Bucket? Get(int id);
 
-        List<Bucket> Get(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket>? ordering = null);
+        List<Bucket> Get(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, SortOrder<Bucket>? sortOrder = null);
 
         Task<Bucket?> GetAsync(int id, CancellationToken cancellationToken = default);
 
-        Task<List<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, Ordering<Bucket>? ordering = null, CancellationToken cancellationToken = default);
+        Task<List<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, SortOrder<Bucket>? sortOrder = null, CancellationToken cancellationToken = default);
     }
 }

@@ -793,7 +793,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     context.SaveChanges();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderBy("Size");
 
                 IList<Bucket> result;
 
@@ -801,7 +802,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    result = repository.Get(bucket => true, null, null, ordering);
+                    result = repository.Get(bucket => true, null, null, sortOrder);
                 }
 
                 // Assert
@@ -825,7 +826,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     context.SaveChanges();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", false) };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderByDescending("Size");
 
                 IList<Bucket> result;
 
@@ -833,7 +835,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    result = repository.Get(bucket => true, null, null, ordering);
+                    result = repository.Get(bucket => true, null, null, sortOrder);
                 }
 
                 // Assert
@@ -857,7 +859,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     context.SaveChanges();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderBy("Size");
 
                 IList<Bucket> result;
 
@@ -865,7 +868,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    result = repository.Get(bucket => true, 6, null, ordering);
+                    result = repository.Get(bucket => true, 6, null, sortOrder);
                 }
 
                 // Assert
@@ -889,7 +892,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     context.SaveChanges();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderBy("Size");
 
                 IList<Bucket> result;
 
@@ -897,7 +901,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    result = repository.Get(bucket => true, null, 6, ordering);
+                    result = repository.Get(bucket => true, null, 6, sortOrder);
                 }
 
                 // Assert
@@ -921,7 +925,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     context.SaveChanges();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderBy("Size");
 
                 IList<Bucket> result;
 
@@ -929,7 +934,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    result = repository.Get(bucket => true, 6, 3, ordering);
+                    result = repository.Get(bucket => true, 6, 3, sortOrder);
                 }
 
                 // Assert
@@ -953,11 +958,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     context.SaveChanges();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>
-                {
-                    new OrderBy("Name", true),
-                    new OrderBy("Description", true),
-                };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderBy("Name")
+                    .ThenBy("Description");
 
                 IList<Bucket> result;
 
@@ -965,7 +968,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    result = repository.Get(bucket => true, null, null, ordering);
+                    result = repository.Get(bucket => true, null, null, sortOrder);
                 }
 
                 // Assert
@@ -1010,11 +1013,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     context.SaveChanges();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>
-                {
-                    new OrderBy("Name", false),
-                    new OrderBy("Description", false),
-                };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderByDescending("Name")
+                    .ThenByDescending("Description");
 
                 IList<Bucket> result;
 
@@ -1022,7 +1023,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    result = repository.Get(bucket => true, null, null, ordering);
+                    result = repository.Get(bucket => true, null, null, sortOrder);
                 }
 
                 // Assert
@@ -1067,11 +1068,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     context.SaveChanges();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>
-                {
-                    new OrderBy("Name", true),
-                    new OrderBy("Description", false),
-                };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderBy("Name")
+                    .ThenByDescending("Description");
 
                 IList<Bucket> result;
 
@@ -1079,7 +1078,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    result = repository.Get(bucket => true, null, null, ordering);
+                    result = repository.Get(bucket => true, null, null, sortOrder);
                 }
 
                 // Assert
@@ -1124,11 +1123,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     context.SaveChanges();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>
-                {
-                    new OrderBy("Name", false),
-                    new OrderBy("Description", true),
-                };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderByDescending("Name")
+                    .ThenBy("Description");
 
                 IList<Bucket> result;
 
@@ -1136,7 +1133,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    result = repository.Get(bucket => true, null, null, ordering);
+                    result = repository.Get(bucket => true, null, null, sortOrder);
                 }
 
                 // Assert
@@ -1166,72 +1163,6 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 Assert.Equal("3", result[10].Description);
                 Assert.Equal("3", result[11].Description);
             }
-
-            [Fact]
-            public void When_GettingBucketsWithEmptyOrderedBy_Expect_DefaultOrdering()
-            {
-                // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
-                {
-                    foreach (Bucket bucket in this.testBuckets)
-                    {
-                        context.Set<Bucket>().Add(bucket);
-                    }
-
-                    context.SaveChanges();
-                }
-
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-
-                IList<Bucket> result;
-
-                // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
-                {
-                    BucketRepository repository = new BucketRepository(context);
-                    result = repository.Get(bucket => true, null, null, ordering);
-                }
-
-                // Assert
-                Assert.Equal("B", result[0].Name);
-                Assert.Equal("A", result[1].Name);
-                Assert.Equal("B", result[2].Name);
-                Assert.Equal("B", result[3].Name);
-                Assert.Equal("B", result[4].Name);
-                Assert.Equal("A", result[5].Name);
-                Assert.Equal("B", result[6].Name);
-                Assert.Equal("A", result[7].Name);
-                Assert.Equal("A", result[8].Name);
-                Assert.Equal("A", result[9].Name);
-                Assert.Equal("B", result[10].Name);
-                Assert.Equal("A", result[11].Name);
-
-                Assert.Equal("1", result[0].Description);
-                Assert.Equal("3", result[1].Description);
-                Assert.Equal("1", result[2].Description);
-                Assert.Equal("3", result[3].Description);
-                Assert.Equal("3", result[4].Description);
-                Assert.Equal("3", result[5].Description);
-                Assert.Equal("2", result[6].Description);
-                Assert.Equal("2", result[7].Description);
-                Assert.Equal("1", result[8].Description);
-                Assert.Equal("2", result[9].Description);
-                Assert.Equal("2", result[10].Description);
-                Assert.Equal("1", result[11].Description);
-
-                Assert.Equal(3, result[0].Size);
-                Assert.Equal(9, result[1].Size);
-                Assert.Equal(7, result[2].Size);
-                Assert.Equal(10, result[3].Size);
-                Assert.Equal(4, result[4].Size);
-                Assert.Equal(6, result[5].Size);
-                Assert.Equal(1, result[6].Size);
-                Assert.Equal(11, result[7].Size);
-                Assert.Equal(5, result[8].Size);
-                Assert.Equal(12, result[9].Size);
-                Assert.Equal(2, result[10].Size);
-                Assert.Equal(8, result[11].Size);
-            }
         }
 
         public class GetWithOrderingAsync : BucketRepositoryUnitTests
@@ -1250,7 +1181,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     await context.SaveChangesAsync();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderBy("Size");
 
                 IList<Bucket> result;
 
@@ -1258,7 +1190,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    result = await repository.GetAsync(bucket => true, null, null, ordering);
+                    result = await repository.GetAsync(bucket => true, null, null, sortOrder);
                 }
 
                 // Assert
@@ -1282,7 +1214,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     await context.SaveChangesAsync();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", false) };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderByDescending("Size");
 
                 IList<Bucket> result;
 
@@ -1290,7 +1223,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    result = await repository.GetAsync(bucket => true, null, null, ordering);
+                    result = await repository.GetAsync(bucket => true, null, null, sortOrder);
                 }
 
                 // Assert
@@ -1314,7 +1247,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     await context.SaveChangesAsync();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderBy("Size");
 
                 IList<Bucket> result;
 
@@ -1322,7 +1256,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    result = await repository.GetAsync(bucket => true, 6, null, ordering);
+                    result = await repository.GetAsync(bucket => true, 6, null, sortOrder);
                 }
 
                 // Assert
@@ -1346,7 +1280,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     await context.SaveChangesAsync();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderBy("Size");
 
                 IList<Bucket> result;
 
@@ -1354,7 +1289,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    result = await repository.GetAsync(bucket => true, null, 6, ordering);
+                    result = await repository.GetAsync(bucket => true, null, 6, sortOrder);
                 }
 
                 // Assert
@@ -1378,7 +1313,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     await context.SaveChangesAsync();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket> { new OrderBy("Size", true) };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderBy("Size");
 
                 IList<Bucket> result;
 
@@ -1386,7 +1322,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    result = await repository.GetAsync(bucket => true, 6, 3, ordering);
+                    result = await repository.GetAsync(bucket => true, 6, 3, sortOrder);
                 }
 
                 // Assert
@@ -1410,11 +1346,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     await context.SaveChangesAsync();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>
-                {
-                    new OrderBy("Name", true),
-                    new OrderBy("Description", true),
-                };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderBy("Name")
+                    .ThenBy("Description");
 
                 IList<Bucket> result;
 
@@ -1422,7 +1356,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    result = await repository.GetAsync(bucket => true, null, null, ordering);
+                    result = await repository.GetAsync(bucket => true, null, null, sortOrder);
                 }
 
                 // Assert
@@ -1467,11 +1401,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     await context.SaveChangesAsync();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>
-                {
-                    new OrderBy("Name", false),
-                    new OrderBy("Description", false),
-                };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderByDescending("Name")
+                    .ThenByDescending("Description");
 
                 IList<Bucket> result;
 
@@ -1479,7 +1411,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    result = await repository.GetAsync(bucket => true, null, null, ordering);
+                    result = await repository.GetAsync(bucket => true, null, null, sortOrder);
                 }
 
                 // Assert
@@ -1524,11 +1456,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     await context.SaveChangesAsync();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>
-                {
-                    new OrderBy("Name", true),
-                    new OrderBy("Description", false),
-                };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderBy("Name")
+                    .ThenByDescending("Description");
 
                 IList<Bucket> result;
 
@@ -1536,7 +1466,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    result = await repository.GetAsync(bucket => true, null, null, ordering);
+                    result = await repository.GetAsync(bucket => true, null, null, sortOrder);
                 }
 
                 // Assert
@@ -1581,11 +1511,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     await context.SaveChangesAsync();
                 }
 
-                Ordering<Bucket> ordering = new Ordering<Bucket>
-                {
-                    new OrderBy("Name", false),
-                    new OrderBy("Description", true),
-                };
+                SortOrder<Bucket> sortOrder = SortOrder<Bucket>
+                    .OrderByDescending("Name")
+                    .ThenBy("Description");
 
                 IList<Bucket> result;
 
@@ -1593,7 +1521,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    result = await repository.GetAsync(bucket => true, null, null, ordering);
+                    result = await repository.GetAsync(bucket => true, null, null, sortOrder);
                 }
 
                 // Assert
@@ -1622,72 +1550,6 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 Assert.Equal("2", result[9].Description);
                 Assert.Equal("3", result[10].Description);
                 Assert.Equal("3", result[11].Description);
-            }
-
-            [Fact]
-            public async Task When_GettingBucketsWithEmptyOrderedBy_Expect_DefaultOrdering()
-            {
-                // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
-                {
-                    foreach (Bucket bucket in this.testBuckets)
-                    {
-                        await context.Set<Bucket>().AddAsync(bucket);
-                    }
-
-                    await context.SaveChangesAsync();
-                }
-
-                Ordering<Bucket> ordering = new Ordering<Bucket>();
-
-                IList<Bucket> result;
-
-                // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
-                {
-                    BucketRepository repository = new BucketRepository(context);
-                    result = await repository.GetAsync(bucket => true, null, null, ordering);
-                }
-
-                // Assert
-                Assert.Equal("B", result[0].Name);
-                Assert.Equal("A", result[1].Name);
-                Assert.Equal("B", result[2].Name);
-                Assert.Equal("B", result[3].Name);
-                Assert.Equal("B", result[4].Name);
-                Assert.Equal("A", result[5].Name);
-                Assert.Equal("B", result[6].Name);
-                Assert.Equal("A", result[7].Name);
-                Assert.Equal("A", result[8].Name);
-                Assert.Equal("A", result[9].Name);
-                Assert.Equal("B", result[10].Name);
-                Assert.Equal("A", result[11].Name);
-
-                Assert.Equal("1", result[0].Description);
-                Assert.Equal("3", result[1].Description);
-                Assert.Equal("1", result[2].Description);
-                Assert.Equal("3", result[3].Description);
-                Assert.Equal("3", result[4].Description);
-                Assert.Equal("3", result[5].Description);
-                Assert.Equal("2", result[6].Description);
-                Assert.Equal("2", result[7].Description);
-                Assert.Equal("1", result[8].Description);
-                Assert.Equal("2", result[9].Description);
-                Assert.Equal("2", result[10].Description);
-                Assert.Equal("1", result[11].Description);
-
-                Assert.Equal(3, result[0].Size);
-                Assert.Equal(9, result[1].Size);
-                Assert.Equal(7, result[2].Size);
-                Assert.Equal(10, result[3].Size);
-                Assert.Equal(4, result[4].Size);
-                Assert.Equal(6, result[5].Size);
-                Assert.Equal(1, result[6].Size);
-                Assert.Equal(11, result[7].Size);
-                Assert.Equal(5, result[8].Size);
-                Assert.Equal(12, result[9].Size);
-                Assert.Equal(2, result[10].Size);
-                Assert.Equal(8, result[11].Size);
             }
         }
 

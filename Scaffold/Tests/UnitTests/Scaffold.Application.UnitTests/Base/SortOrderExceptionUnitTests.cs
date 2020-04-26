@@ -7,10 +7,10 @@ namespace Scaffold.Application.UnitTests.Base
     using Scaffold.Application.Base;
     using Xunit;
 
-    public class OrderingExceptionUnitTests
+    public class SortOrderExceptionUnitTests
     {
         [Fact]
-        public void When_InstantiatingOrderingExceptionWithMessage_Expect_OrderingExceptionWithMessage()
+        public void When_InstantiatingSortOrderExceptionWithMessage_Expect_SortOrderExceptionWithMessage()
         {
             // Arrange
             string message = Guid.NewGuid().ToString();
@@ -23,7 +23,7 @@ namespace Scaffold.Application.UnitTests.Base
         }
 
         [Fact]
-        public void When_InstantiatingOrderingExceptionWithMessageAndInnerException_Expect_OrderingExceptionWithMessageAndInnerException()
+        public void When_InstantiatingSortOrderExceptionWithMessageAndInnerException_Expect_SortOrderExceptionWithMessageAndInnerException()
         {
             // Arrange
             string message = Guid.NewGuid().ToString();
@@ -38,7 +38,7 @@ namespace Scaffold.Application.UnitTests.Base
         }
 
         [Fact]
-        public void When_DeserializingOrderingException_Expect_SerializedOrderingException()
+        public void When_DeserializingSortOrderException_Expect_SerializedSortOrderException()
         {
             // Arrange
             TestException exception = new TestException(
@@ -65,7 +65,7 @@ namespace Scaffold.Application.UnitTests.Base
         }
 
         [Serializable]
-        private class TestException : OrderingException
+        private class TestException : SortOrderException
         {
             public TestException(string message)
                 : base(message)

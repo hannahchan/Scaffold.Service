@@ -24,12 +24,12 @@ namespace Scaffold.Application.Features.Bucket
                 this.Predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
             }
 
-            public Query(Expression<Func<Bucket, bool>> predicate, int? limit, int? offset, Ordering<Bucket>? ordering)
+            public Query(Expression<Func<Bucket, bool>> predicate, int? limit, int? offset, SortOrder<Bucket>? sortOrder)
                 : this(predicate)
             {
                 this.Limit = limit;
                 this.Offset = offset;
-                this.Ordering = ordering;
+                this.SortOrder = sortOrder;
             }
 
             public Expression<Func<Bucket, bool>> Predicate { get; }
@@ -38,7 +38,7 @@ namespace Scaffold.Application.Features.Bucket
 
             public int? Offset { get; } = null;
 
-            public Ordering<Bucket>? Ordering { get; } = null;
+            public SortOrder<Bucket>? SortOrder { get; } = null;
         }
 
         public class Response
@@ -62,7 +62,7 @@ namespace Scaffold.Application.Features.Bucket
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                return new Response(await this.repository.GetAsync(request.Predicate, request.Limit, request.Offset, request.Ordering, cancellationToken));
+                return new Response(await this.repository.GetAsync(request.Predicate, request.Limit, request.Offset, request.SortOrder, cancellationToken));
             }
         }
     }

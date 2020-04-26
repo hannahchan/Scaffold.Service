@@ -5,7 +5,7 @@ namespace Scaffold.Application.Exceptions
     using Scaffold.Application.Base;
 
     [Serializable]
-    public class PropertyNotComparableException : OrderingException
+    public class PropertyNotComparableException : SortOrderException
     {
         public PropertyNotComparableException(string propertyName)
             : base($"\"{propertyName}\" is not a comparable property.")

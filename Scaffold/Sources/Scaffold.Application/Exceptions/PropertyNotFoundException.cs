@@ -5,7 +5,7 @@ namespace Scaffold.Application.Exceptions
     using Scaffold.Application.Base;
 
     [Serializable]
-    public class PropertyNotFoundException : OrderingException
+    public class PropertyNotFoundException : SortOrderException
     {
         public PropertyNotFoundException(string propertyName, string type)
             : base($"\"{propertyName}\" is not a property of \"{type}\".")
