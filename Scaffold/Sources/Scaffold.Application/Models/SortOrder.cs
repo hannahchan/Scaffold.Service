@@ -28,13 +28,13 @@ namespace Scaffold.Application.Models
 
         public static SortOrder<T> OrderBy(string propertyName)
         {
-            return new SortOrder<T>(ImmutableList<(string PropertyName, bool Descending)>.Empty)
+            return new SortOrder<T>(ImmutableArray<(string PropertyName, bool Descending)>.Empty)
                 .Add(propertyName, false);
         }
 
         public static SortOrder<T> OrderByDescending(string propertyName)
         {
-            return new SortOrder<T>(ImmutableList<(string PropertyName, bool Descending)>.Empty)
+            return new SortOrder<T>(ImmutableArray<(string PropertyName, bool Descending)>.Empty)
                 .Add(propertyName, true);
         }
 
