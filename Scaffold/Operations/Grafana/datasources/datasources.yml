@@ -7,3 +7,9 @@ datasources:
     name: Prometheus
     type: prometheus
     url: "http://prometheus:9090"
+  -
+    access: proxy
+    isDefault: false
+    name: Jaeger
+    type: jaeger
+    url: "http://jaeger:16686"
