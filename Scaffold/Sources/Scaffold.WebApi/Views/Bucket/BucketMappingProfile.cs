@@ -1,4 +1,4 @@
-namespace Scaffold.WebApi.Views.MappingProfiles
+namespace Scaffold.WebApi.Views.Bucket
 {
     using AutoMapper;
 

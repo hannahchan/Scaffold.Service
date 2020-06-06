@@ -1,7 +1,7 @@
-namespace Scaffold.WebApi.UnitTests.Views.MappingProfiles
+namespace Scaffold.WebApi.UnitTests.Views
 {
     using AutoMapper;
-    using Scaffold.WebApi.Views.MappingProfiles;
+    using Scaffold.WebApi.Views.Item;
     using Xunit;
 
     public class ItemMappingProfileUnitTests

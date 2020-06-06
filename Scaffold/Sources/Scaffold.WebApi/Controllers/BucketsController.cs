@@ -7,7 +7,8 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Scaffold.Application.Features.Bucket;
-    using Scaffold.WebApi.Views;
+    using Scaffold.WebApi.Views.Bucket;
+    using Scaffold.WebApi.Views.Item;
 
     [ApiController]
     [Route("[controller]")]
@@ -24,23 +25,23 @@
         }
 
         /// <summary>Creates a bucket.</summary>
-        /// <param name="bucket">A complete or partial set of key-value pairs to create the Bucket object with.</param>
+        /// <param name="requestBody">A complete or partial set of key-value pairs to create the Bucket object with.</param>
         /// <returns>The created Bucket object.</returns>
         /// <response code="201">Bucket created successfully.</response>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Bucket))]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> AddBucket([FromBody] Bucket bucket)
+        public async Task<ActionResult> AddBucket([FromBody] AddBucketRequestBody requestBody)
         {
             AddBucket.Command command = new AddBucket.Command(
-                name: bucket.Name,
-                description: bucket.Description,
-                size: bucket.Size);
+                name: requestBody.Name,
+                description: requestBody.Description,
+                size: requestBody.Size);
 
             AddBucket.Response response = await this.mediator.Send(command);
 
-            bucket = this.mapper.Map<Bucket>(response.Bucket);
+            Bucket bucket = this.mapper.Map<Bucket>(response.Bucket);
 
             return this.CreatedAtRoute("GetBucket", new { bucketId = bucket.Id }, bucket);
         }
@@ -83,7 +84,7 @@
 
         /// <summary>Updates a bucket or creates one if the specified one does not exist.</summary>
         /// <param name="bucketId">The Id. of the Bucket object to be created or updated.</param>
-        /// <param name="bucket">A complete set of key-value pairs to create or update the Bucket object with.</param>
+        /// <param name="requestBody">A complete set of key-value pairs to create or update the Bucket object with.</param>
         /// <returns>The created or updated Bucket object.</returns>
         /// <response code="200">Bucket updated successfully.</response>
         /// <response code="201">Bucket created successfully.</response>
@@ -92,16 +93,16 @@
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Bucket))]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Bucket>> UpdateBucket(int bucketId, [FromBody] Bucket bucket)
+        public async Task<ActionResult<Bucket>> UpdateBucket(int bucketId, [FromBody] UpdateBucketRequestBody requestBody)
         {
             UpdateBucket.Command command = new UpdateBucket.Command(
                 id: bucketId,
-                name: bucket.Name,
-                description: bucket.Description,
-                size: bucket.Size);
+                name: requestBody.Name,
+                description: requestBody.Description,
+                size: requestBody.Size);
 
             UpdateBucket.Response response = await this.mediator.Send(command);
-            bucket = this.mapper.Map<Bucket>(response.Bucket);
+            Bucket bucket = this.mapper.Map<Bucket>(response.Bucket);
 
             if (response.Created)
             {
@@ -127,22 +128,22 @@
 
         /// <summary>Creates an item in a bucket.</summary>
         /// <param name="bucketId">The Id. of the Bucket object to create the item in.</param>
-        /// <param name="item">A complete or partial set of key-value pairs to create the Item object with.</param>
+        /// <param name="requestBody">A complete or partial set of key-value pairs to create the Item object with.</param>
         /// <returns>The created Item object.</returns>
         /// <response code="201">Item created successfully.</response>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpPost("{bucketId}/Items")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Item))]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> AddItem(int bucketId, [FromBody] Item item)
+        public async Task<ActionResult> AddItem(int bucketId, [FromBody] AddItemRequestBody requestBody)
         {
             AddItem.Command command = new AddItem.Command(
                 bucketId: bucketId,
-                name: item.Name,
-                description: item.Description);
+                name: requestBody.Name,
+                description: requestBody.Description);
 
             AddItem.Response response = await this.mediator.Send(command);
-            item = this.mapper.Map<Item>(response.Item);
+            Item item = this.mapper.Map<Item>(response.Item);
 
             return this.CreatedAtRoute("GetItem", new { bucketId, itemId = item.Id }, item);
         }
@@ -184,7 +185,7 @@
         /// <summary>Updates an item in a bucket or creates one if the specified one does not exist.</summary>
         /// <param name="bucketId">The Id. of the Bucket object to create or update the item in.</param>
         /// <param name="itemId">The Id. of the Item object to be created or updated.</param>
-        /// <param name="item">A complete set of key-value pairs to create or update the Item object with.</param>
+        /// <param name="requestBody">A complete set of key-value pairs to create or update the Item object with.</param>
         /// <returns>The created or updated Item object.</returns>
         /// <response code="200">Item updated successfully.</response>
         /// <response code="201">Item created successfully.</response>
@@ -193,16 +194,16 @@
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Item))]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Item>> UpdateItem(int bucketId, int itemId, [FromBody] Item item)
+        public async Task<ActionResult<Item>> UpdateItem(int bucketId, int itemId, [FromBody] UpdateItemRequestBody requestBody)
         {
             UpdateItem.Command command = new UpdateItem.Command(
                 bucketId: bucketId,
                 itemId: itemId,
-                name: item.Name,
-                description: item.Description);
+                name: requestBody.Name,
+                description: requestBody.Description);
 
             UpdateItem.Response response = await this.mediator.Send(command);
-            item = this.mapper.Map<Item>(response.Item);
+            Item item = this.mapper.Map<Item>(response.Item);
 
             if (response.Created)
             {

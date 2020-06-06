@@ -10,8 +10,8 @@ namespace Scaffold.WebApi.UnitTests.Controllers
     using Moq;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.WebApi.Controllers;
-    using Scaffold.WebApi.Views;
-    using Scaffold.WebApi.Views.MappingProfiles;
+    using Scaffold.WebApi.Views.Bucket;
+    using Scaffold.WebApi.Views.Item;
     using Xunit;
 
     public class BucketsControllerUnitTests
@@ -44,7 +44,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 ActionResult result;
 
                 // Act
-                result = await controller.AddBucket(new Bucket());
+                result = await controller.AddBucket(new AddBucketRequestBody());
 
                 // Assert
                 CreatedAtRouteResult actionResult = Assert.IsType<CreatedAtRouteResult>(result);
@@ -104,7 +104,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 ActionResult<Bucket> result;
 
                 // Act
-                result = await controller.UpdateBucket(new Random().Next(int.MaxValue), new Bucket());
+                result = await controller.UpdateBucket(new Random().Next(int.MaxValue), new UpdateBucketRequestBody());
 
                 // Assert
                 Assert.Null(result.Result);
@@ -124,7 +124,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 ActionResult<Bucket> result;
 
                 // Act
-                result = await controller.UpdateBucket(new Random().Next(int.MaxValue), new Bucket());
+                result = await controller.UpdateBucket(new Random().Next(int.MaxValue), new UpdateBucketRequestBody());
 
                 // Assert
                 CreatedAtRouteResult actionResult = Assert.IsType<CreatedAtRouteResult>(result.Result);
@@ -169,7 +169,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 ActionResult result;
 
                 // Act
-                result = await controller.AddItem(new Random().Next(int.MaxValue), new Item());
+                result = await controller.AddItem(new Random().Next(int.MaxValue), new AddItemRequestBody());
 
                 // Assert
                 CreatedAtRouteResult actionResult = Assert.IsType<CreatedAtRouteResult>(result);
@@ -229,7 +229,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 ActionResult<Item> result;
 
                 // Act
-                result = await controller.UpdateItem(new Random().Next(int.MaxValue), new Random().Next(int.MaxValue), new Item());
+                result = await controller.UpdateItem(new Random().Next(int.MaxValue), new Random().Next(int.MaxValue), new UpdateItemRequestBody());
 
                 // Assert
                 Assert.Null(result.Result);
@@ -249,7 +249,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 ActionResult<Item> result;
 
                 // Act
-                result = await controller.UpdateItem(new Random().Next(int.MaxValue), new Random().Next(int.MaxValue), new Item());
+                result = await controller.UpdateItem(new Random().Next(int.MaxValue), new Random().Next(int.MaxValue), new UpdateItemRequestBody());
 
                 // Assert
                 CreatedAtRouteResult actionResult = Assert.IsType<CreatedAtRouteResult>(result.Result);

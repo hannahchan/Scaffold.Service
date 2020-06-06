@@ -15,7 +15,8 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Scaffold.Repositories.PostgreSQL;
-    using Scaffold.WebApi.Views;
+    using Scaffold.WebApi.Views.Bucket;
+    using Scaffold.WebApi.Views.Item;
     using Xunit;
 
     public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFactory<Startup>>
@@ -64,7 +65,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Bucket bucket = new Bucket
+                var bucket = new
                 {
                     Name = Guid.NewGuid().ToString(),
                     Description = Guid.NewGuid().ToString(),
@@ -99,10 +100,10 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Bucket bucket = new Bucket { Size = new Random().Next(int.MaxValue) };
+                var bucket = new { Size = "abc" };
 
                 StringContent content = new StringContent(
-                    JsonSerializer.Serialize(bucket).Replace($"{bucket.Size}", "abc"),
+                    JsonSerializer.Serialize(bucket),
                     Encoding.UTF8,
                     MediaTypeNames.Application.Json);
 
@@ -120,7 +121,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Bucket bucket = new Bucket { Size = -new Random().Next(int.MaxValue) };
+                var bucket = new { Size = -new Random().Next(int.MaxValue) };
 
                 StringContent content = new StringContent(
                     JsonSerializer.Serialize(bucket),
@@ -153,7 +154,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
 
                 for (int i = 1; i <= size; i++)
                 {
-                    Bucket bucket = new Bucket
+                    var bucket = new
                     {
                         Name = $"Bucket {i}",
                         Size = i,
@@ -216,7 +217,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Bucket bucket = new Bucket
+                var bucket = new
                 {
                     Name = Guid.NewGuid().ToString(),
                     Description = Guid.NewGuid().ToString(),
@@ -288,7 +289,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Bucket bucket = new Bucket();
+                var bucket = new { };
 
                 StringContent content = new StringContent(
                     JsonSerializer.Serialize(bucket),
@@ -331,7 +332,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Bucket bucket = new Bucket
+                var bucket = new
                 {
                     Name = Guid.NewGuid().ToString(),
                     Description = Guid.NewGuid().ToString(),
@@ -366,10 +367,10 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Bucket bucket = new Bucket { Size = new Random().Next(int.MaxValue) };
+                var bucket = new { Size = "abc" };
 
                 StringContent content = new StringContent(
-                    JsonSerializer.Serialize(bucket).Replace($"{bucket.Size}", "abc"),
+                    JsonSerializer.Serialize(bucket),
                     Encoding.UTF8,
                     MediaTypeNames.Application.Json);
 
@@ -387,7 +388,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Bucket bucket = new Bucket();
+                var bucket = new { };
 
                 StringContent content = new StringContent(
                     JsonSerializer.Serialize(bucket),
@@ -430,7 +431,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Bucket bucket = new Bucket();
+                var bucket = new { };
 
                 StringContent content = new StringContent(
                     JsonSerializer.Serialize(bucket),
@@ -488,7 +489,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Bucket bucket = new Bucket
+                var bucket = new
                 {
                     Id = new Random().Next(int.MaxValue),
                     Size = 1,
@@ -502,7 +503,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 HttpResponseMessage response = await client.PutAsync($"/Buckets/{bucket.Id}", content);
 
                 // Act
-                Item item = new Item
+                var item = new
                 {
                     Name = Guid.NewGuid().ToString(),
                     Description = Guid.NewGuid().ToString(),
@@ -534,10 +535,10 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Item item = new Item { Name = "abc" };
+                var item = new { Name = 123 };
 
                 StringContent content = new StringContent(
-                    JsonSerializer.Serialize(item).Replace("\"abc\"", "123"),
+                    JsonSerializer.Serialize(item),
                     Encoding.UTF8,
                     MediaTypeNames.Application.Json);
 
@@ -555,7 +556,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Bucket bucket = new Bucket
+                var bucket = new
                 {
                     Id = new Random().Next(int.MaxValue),
                     Size = 0,
@@ -569,7 +570,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 HttpResponseMessage response = await client.PutAsync($"/Buckets/{bucket.Id}", content);
 
                 // Act
-                Item item = new Item();
+                var item = new { };
 
                 content = new StringContent(
                     JsonSerializer.Serialize(item),
@@ -589,7 +590,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Item item = new Item();
+                var item = new { };
 
                 StringContent content = new StringContent(
                     JsonSerializer.Serialize(item),
@@ -618,7 +619,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Bucket bucket = new Bucket
+                var bucket = new
                 {
                     Id = new Random().Next(int.MaxValue),
                     Size = 10,
@@ -633,7 +634,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
 
                 for (int i = 1; i <= bucket.Size; i++)
                 {
-                    Item item = new Item { Name = $"Item {i}" };
+                    var item = new { Name = $"Item {i}" };
 
                     content = new StringContent(
                         JsonSerializer.Serialize(item),
@@ -705,7 +706,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Bucket bucket = new Bucket
+                var bucket = new
                 {
                     Id = new Random().Next(int.MaxValue),
                     Size = 1,
@@ -718,7 +719,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
 
                 HttpResponseMessage response = await client.PutAsync($"/Buckets/{bucket.Id}", content);
 
-                Item item = new Item
+                var item = new
                 {
                     Id = new Random().Next(int.MaxValue),
                     Name = Guid.NewGuid().ToString(),
@@ -769,7 +770,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Bucket bucket = new Bucket();
+                var bucket = new { };
 
                 StringContent content = new StringContent(
                     JsonSerializer.Serialize(bucket),
@@ -778,7 +779,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
 
                 await client.PutAsync("/Buckets/123", content);
 
-                Item item = new Item();
+                var item = new { };
 
                 content = new StringContent(
                     JsonSerializer.Serialize(item),
@@ -809,7 +810,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Bucket bucket = new Bucket
+                var bucket = new
                 {
                     Id = new Random().Next(int.MaxValue),
                     Size = 1,
@@ -822,7 +823,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
 
                 HttpResponseMessage response = await client.PutAsync($"/Buckets/{bucket.Id}", content);
 
-                Item item = new Item { Id = new Random().Next(int.MaxValue) };
+                var item = new { Id = new Random().Next(int.MaxValue) };
 
                 content = new StringContent(
                     JsonSerializer.Serialize(item),
@@ -863,7 +864,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Bucket bucket = new Bucket
+                var bucket = new
                 {
                     Id = new Random().Next(int.MaxValue),
                     Size = 1,
@@ -877,7 +878,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 HttpResponseMessage response = await client.PutAsync($"/Buckets/{bucket.Id}", content);
 
                 // Act
-                Item item = new Item
+                var item = new
                 {
                     Id = new Random().Next(int.MaxValue),
                     Name = Guid.NewGuid().ToString(),
@@ -910,7 +911,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Bucket bucket = new Bucket
+                var bucket = new
                 {
                     Id = new Random().Next(int.MaxValue),
                     Size = 0,
@@ -924,7 +925,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 HttpResponseMessage response = await client.PutAsync($"/Buckets/{bucket.Id}", content);
 
                 // Act
-                Item item = new Item { Id = new Random().Next(int.MaxValue) };
+                var item = new { Id = new Random().Next(int.MaxValue) };
 
                 content = new StringContent(
                     JsonSerializer.Serialize(item),
@@ -944,10 +945,10 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Item item = new Item { Name = "abc" };
+                var item = new { Name = 123 };
 
                 StringContent content = new StringContent(
-                    JsonSerializer.Serialize(item).Replace("\"abc\"", "123"),
+                    JsonSerializer.Serialize(item),
                     Encoding.UTF8,
                     MediaTypeNames.Application.Json);
 
@@ -965,7 +966,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Item item = new Item();
+                var item = new { };
 
                 StringContent content = new StringContent(
                     JsonSerializer.Serialize(item),
@@ -994,7 +995,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Bucket bucket = new Bucket
+                var bucket = new
                 {
                     Id = new Random().Next(int.MaxValue),
                     Size = 1,
@@ -1007,7 +1008,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
 
                 HttpResponseMessage response = await client.PutAsync($"/Buckets/{bucket.Id}", content);
 
-                Item item = new Item { Id = new Random().Next(int.MaxValue) };
+                var item = new { Id = new Random().Next(int.MaxValue) };
 
                 content = new StringContent(
                     JsonSerializer.Serialize(item),
@@ -1045,7 +1046,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.CreateNewTestClient();
 
-                Bucket bucket = new Bucket();
+                var bucket = new { };
 
                 StringContent content = new StringContent(
                     JsonSerializer.Serialize(bucket),
@@ -1054,7 +1055,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
 
                 await client.PutAsync("/Buckets/123", content);
 
-                Item item = new Item();
+                var item = new { };
 
                 content = new StringContent(
                     JsonSerializer.Serialize(item),
