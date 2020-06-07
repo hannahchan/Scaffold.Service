@@ -1,11 +1,11 @@
 {
-    "stryker-config": {
-        "mutate": [
-            "!Extensions/HostExtension.cs",
-            "!Extensions/MvcBuilderExtension.cs",
-            "!Extensions/ServiceCollectionExtension.cs",
-            "!Startup.cs"
-        ],
-        "project-file": "Scaffold.WebApi.csproj"
-    }
+  "stryker-config": {
+    "mutate": [
+      "!Extensions/HostExtension.cs",
+      "!Extensions/MvcBuilderExtension.cs",
+      "!Extensions/ServiceCollectionExtension.cs",
+      "!Startup.cs"
+    ],
+    "project-file": "Scaffold.WebApi.csproj"
+  }
 }

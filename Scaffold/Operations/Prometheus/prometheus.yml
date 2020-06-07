@@ -2,9 +2,7 @@
 global:
   scrape_interval: 15s
 scrape_configs:
-  -
-    job_name: scaffold
+  - job_name: scaffold
     static_configs:
-      -
-        targets:
+      - targets:
           - "host.docker.internal:8081"

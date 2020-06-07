@@ -1,15 +1,12 @@
 {
-    "author": "Hannah Chan",
-    "classifications": [
-        "Web",
-        "WebAPI"
-    ],
-    "name": "Scaffold.WebApi",
-    "identity": "Scaffold.WebApi",
-    "shortName": "scaffold.webapi",
-    "tags": {
-        "language": "C#"
-    },
-    "sourceName": "Scaffold",
-    "preferNameDirectory": "true"
+  "author": "Hannah Chan",
+  "classifications": ["Web", "WebAPI"],
+  "name": "Scaffold.WebApi",
+  "identity": "Scaffold.WebApi",
+  "shortName": "scaffold.webapi",
+  "tags": {
+    "language": "C#"
+  },
+  "sourceName": "Scaffold",
+  "preferNameDirectory": "true"
 }

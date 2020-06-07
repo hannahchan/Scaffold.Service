@@ -58,9 +58,9 @@
                 "up",
                 "-d",
                 "postgres",
+                "grafana",
                 "jaeger",
-                "prometheus",
-                "grafana"
+                "prometheus"
             ],
             "presentation": {
                 "echo": true,

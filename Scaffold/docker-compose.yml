@@ -15,13 +15,11 @@ services:
       JAEGER_SAMPLER_PARAM: 1
     image: "${DOCKER_REGISTRY}scaffold"
     ports:
-      -
-        mode: ingress
+      - mode: ingress
         protocol: tcp
         published: 80
         target: 80
-      -
-        mode: ingress
+      - mode: ingress
         protocol: tcp
         published: 8081
         target: 8081
@@ -30,69 +28,59 @@ services:
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
-      -
-        source: postgres_pgdata
+      - source: postgres_pgdata
         target: /var/lib/postgresql/data
         type: volume
-  jaeger:
-    image: "jaegertracing/all-in-one:latest"
-    ports:
-      -
-        mode: ingress
-        protocol: tcp
-        published: 16686
-        target: 16686
-    volumes:
-      -
-        source: jaeger_tmp
-        target: /tmp
-        type: volume
-  prometheus:
-    image: prom/prometheus
-    ports:
-      -
-        mode: ingress
-        protocol: tcp
-        published: 9090
-        target: 9090
-    volumes:
-      -
-        source: prometheus
-        target: /prometheus
-        type: volume
-      -
-        source: ./Operations/Prometheus/prometheus.yml
-        target: /etc/prometheus/prometheus.yml
-        type: bind
   grafana:
     image: grafana/grafana
     depends_on:
       - prometheus
     environment:
-        GF_AUTH_ANONYMOUS_ENABLED: "true"
-        GF_AUTH_ANONYMOUS_ORG_ROLE: "Editor"
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Editor"
     ports:
-      -
-        mode: ingress
+      - mode: ingress
         protocol: tcp
         published: 3000
         target: 3000
     volumes:
-      -
-        source: grafana
+      - source: grafana
         target: /var/lib/grafana
         type: volume
-      -
-        source: ./Operations/Grafana/dashboards
+      - source: ./Operations/Grafana/dashboards
         target: /etc/grafana/provisioning/dashboards
         type: bind
-      -
-        source: ./Operations/Grafana/datasources
+      - source: ./Operations/Grafana/datasources
         target: /etc/grafana/provisioning/datasources
+        type: bind
+  jaeger:
+    image: "jaegertracing/all-in-one:latest"
+    ports:
+      - mode: ingress
+        protocol: tcp
+        published: 16686
+        target: 16686
+    volumes:
+      - source: jaeger_tmp
+        target: /tmp
+        type: volume
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - mode: ingress
+        protocol: tcp
+        published: 9090
+        target: 9090
+    volumes:
+      - source: prometheus
+        target: /prometheus
+        type: volume
+      - source: ./Operations/Prometheus/prometheus.yml
+        target: /etc/prometheus/prometheus.yml
         type: bind
 version: "3.5"
 volumes:
   postgres_pgdata: ~
+  grafana: ~
   jaeger_tmp: ~
   prometheus: ~
-  grafana: ~

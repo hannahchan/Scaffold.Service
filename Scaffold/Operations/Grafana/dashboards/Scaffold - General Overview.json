@@ -28,9 +28,7 @@
         "orientation": "horizontal"
       },
       "fieldConfig": {
-        "calcs": [
-          "lastNotNull"
-        ],
+        "calcs": ["lastNotNull"],
         "defaults": {
           "thresholds": {
             "mode": "absolute",
@@ -153,9 +151,7 @@
         "orientation": "horizontal"
       },
       "fieldConfig": {
-        "calcs": [
-          "lastNotNull"
-        ],
+        "calcs": ["lastNotNull"],
         "defaults": {
           "thresholds": {
             "mode": "absolute",
@@ -315,9 +311,7 @@
         "orientation": "horizontal"
       },
       "fieldConfig": {
-        "calcs": [
-          "lastNotNull"
-        ],
+        "calcs": ["lastNotNull"],
         "defaults": {
           "thresholds": {
             "mode": "absolute",
@@ -440,9 +434,7 @@
         "orientation": "horizontal"
       },
       "fieldConfig": {
-        "calcs": [
-          "lastNotNull"
-        ],
+        "calcs": ["lastNotNull"],
         "defaults": {
           "thresholds": {
             "mode": "absolute",
@@ -600,9 +592,7 @@
         "orientation": "horizontal"
       },
       "fieldConfig": {
-        "calcs": [
-          "lastNotNull"
-        ],
+        "calcs": ["lastNotNull"],
         "defaults": {
           "thresholds": {
             "mode": "absolute",
@@ -720,9 +710,7 @@
         "orientation": "horizontal"
       },
       "fieldConfig": {
-        "calcs": [
-          "lastNotNull"
-        ],
+        "calcs": ["lastNotNull"],
         "defaults": {
           "thresholds": {
             "mode": "absolute",
@@ -840,9 +828,7 @@
         "orientation": "horizontal"
       },
       "fieldConfig": {
-        "calcs": [
-          "lastNotNull"
-        ],
+        "calcs": ["lastNotNull"],
         "defaults": {
           "thresholds": {
             "mode": "absolute",
@@ -960,9 +946,7 @@
         "orientation": "horizontal"
       },
       "fieldConfig": {
-        "calcs": [
-          "lastNotNull"
-        ],
+        "calcs": ["lastNotNull"],
         "defaults": {
           "thresholds": {
             "mode": "absolute",
@@ -1008,9 +992,7 @@
         "orientation": "horizontal"
       },
       "fieldConfig": {
-        "calcs": [
-          "lastNotNull"
-        ],
+        "calcs": ["lastNotNull"],
         "defaults": {
           "thresholds": {
             "mode": "absolute",
@@ -1056,9 +1038,7 @@
         "orientation": "horizontal"
       },
       "fieldConfig": {
-        "calcs": [
-          "lastNotNull"
-        ],
+        "calcs": ["lastNotNull"],
         "defaults": {
           "thresholds": {
             "mode": "absolute",
@@ -1098,9 +1078,7 @@
         "allValue": ".*",
         "current": {
           "text": "All",
-          "value": [
-            "$__all"
-          ]
+          "value": ["$__all"]
         },
         "datasource": "Prometheus",
         "definition": "label_values(http_requests_received_total, job)",
@@ -1121,9 +1099,7 @@
         "allValue": ".*",
         "current": {
           "text": "All",
-          "value": [
-            "$__all"
-          ]
+          "value": ["$__all"]
         },
         "datasource": "Prometheus",
         "definition": "label_values(http_requests_received_total, controller)",
@@ -1144,9 +1120,7 @@
         "allValue": ".*",
         "current": {
           "text": "All",
-          "value": [
-            "$__all"
-          ]
+          "value": ["$__all"]
         },
         "datasource": "Prometheus",
         "definition": "label_values(http_requests_received_total, action)",
@@ -1167,9 +1141,7 @@
         "allValue": ".*",
         "current": {
           "text": "All",
-          "value": [
-            "$__all"
-          ]
+          "value": ["$__all"]
         },
         "datasource": "Prometheus",
         "definition": "label_values(http_requests_received_total, method)",
