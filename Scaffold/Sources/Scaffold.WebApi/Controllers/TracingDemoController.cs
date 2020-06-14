@@ -30,7 +30,7 @@ namespace Scaffold.WebApi.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<string> Proxy([FromQuery]string? name)
+        public async Task<string> Proxy([FromQuery] string? name)
         {
             HttpRequest request = this.HttpContext.Request;
             Uri uri = new Uri($"{request.Scheme}://{request.Host}/TracingDemo/Hello?name={name ?? "random"}", UriKind.Absolute);
@@ -48,7 +48,7 @@ namespace Scaffold.WebApi.Controllers
         [HttpGet("Hello")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public string Hello([FromQuery]string? name)
+        public string Hello([FromQuery] string? name)
         {
             return $"Hello, {name ?? "random"}!";
         }

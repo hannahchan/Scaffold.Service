@@ -55,7 +55,7 @@
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<IList<Bucket>> GetBuckets([FromQuery]int? limit, [FromQuery]int? offset)
+        public async Task<IList<Bucket>> GetBuckets([FromQuery] int? limit, [FromQuery] int? offset)
         {
             GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,

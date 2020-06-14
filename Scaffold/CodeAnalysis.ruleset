@@ -5,6 +5,7 @@
     <Rule Id="IDE0003" Action="None" />
     <Rule Id="IDE0021" Action="Info" />
     <Rule Id="IDE0022" Action="Info" />
+    <Rule Id="IDE0055" Action="Warning" />
     <Rule Id="IDE0065" Action="None" />
   </Rules>
 
