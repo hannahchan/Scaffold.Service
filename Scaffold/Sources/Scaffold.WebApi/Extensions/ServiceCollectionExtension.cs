@@ -22,6 +22,7 @@ namespace Scaffold.WebApi.Extensions
     using Scaffold.WebApi.Factories;
     using Scaffold.WebApi.HttpMessageHandlers;
     using Scaffold.WebApi.Middleware;
+    using Swashbuckle.AspNetCore.SwaggerGen;
 
     public static class ServiceCollectionExtension
     {
@@ -42,6 +43,9 @@ namespace Scaffold.WebApi.Extensions
                 };
 
                 options.SwaggerDoc("v1", info);
+
+                options.CustomOperationIds(apiDescription =>
+                    apiDescription.TryGetMethodInfo(out MethodInfo methodInfo) ? methodInfo.Name : null);
 
                 string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
