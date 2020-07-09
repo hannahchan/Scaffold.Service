@@ -72,7 +72,8 @@ namespace Scaffold.Application.Features.Bucket
             {
                 this.CreateMap<Command, Bucket>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
-                    .ForMember(dest => dest.Size, opt => opt.Condition(src => src.Size != null));
+                    .ForMember(dest => dest.Size, opt => opt.Condition(src => src.Size != null))
+                    .ForMember(dest => dest.Items, opt => opt.Ignore());
             }
         }
     }
