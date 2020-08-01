@@ -1,4 +1,4 @@
-# Content Negotiation #
+# Content Negotiation
 
 Scaffold accepts and returns content in the following media types.
 

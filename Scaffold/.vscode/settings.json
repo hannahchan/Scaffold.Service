@@ -1,7 +1,7 @@
 {
-    "files.exclude": {
-        "**/bin": true,
-        "**/obj": true
-    },
-    "omnisharp.enableRoslynAnalyzers": true
+  "files.exclude": {
+    "**/bin": true,
+    "**/obj": true
+  },
+  "omnisharp.enableRoslynAnalyzers": true
 }

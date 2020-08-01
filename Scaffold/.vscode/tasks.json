@@ -1,91 +1,69 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "preLaunch",
-            "dependsOn": [
-                "Build",
-                "Start Infrastructure"
-            ],
-            "problemMatcher": []
-        },
-        {
-            "label": "postDebug",
-            "dependsOn": [
-                "Stop Infrastructure"
-            ],
-            "problemMatcher": []
-        },
-        {
-            "label": "Build",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "build"
-            ],
-            "problemMatcher": "$msCompile",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        },
-        {
-            "label": "Clean",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "clean"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "Restore",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "restore"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "Start Infrastructure",
-            "command": "docker-compose",
-            "dependsOn": [
-                "Stop Infrastructure"
-            ],
-            "type": "process",
-            "args": [
-                "up",
-                "-d",
-                "postgres",
-                "grafana",
-                "jaeger",
-                "prometheus"
-            ],
-            "presentation": {
-                "echo": true,
-                "reveal": "never",
-                "focus": false,
-                "panel": "shared",
-                "showReuseMessage": true
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "Stop Infrastructure",
-            "command": "docker-compose",
-            "type": "process",
-            "args": [
-                "down"
-            ],
-            "presentation": {
-                "echo": true,
-                "reveal": "never",
-                "focus": false,
-                "panel": "shared",
-                "showReuseMessage": true
-            },
-            "problemMatcher": []
-        }
-    ]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "preLaunch",
+      "dependsOn": ["Build", "Start Infrastructure"],
+      "problemMatcher": []
+    },
+    {
+      "label": "postDebug",
+      "dependsOn": ["Stop Infrastructure"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Build",
+      "command": "dotnet",
+      "type": "process",
+      "args": ["build"],
+      "problemMatcher": "$msCompile",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Clean",
+      "command": "dotnet",
+      "type": "process",
+      "args": ["clean"],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Restore",
+      "command": "dotnet",
+      "type": "process",
+      "args": ["restore"],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Start Infrastructure",
+      "command": "docker-compose",
+      "dependsOn": ["Stop Infrastructure"],
+      "type": "process",
+      "args": ["up", "-d", "postgres", "grafana", "jaeger", "prometheus"],
+      "presentation": {
+        "echo": true,
+        "reveal": "never",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Stop Infrastructure",
+      "command": "docker-compose",
+      "type": "process",
+      "args": ["down"],
+      "presentation": {
+        "echo": true,
+        "reveal": "never",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true
+      },
+      "problemMatcher": []
+    }
+  ]
 }

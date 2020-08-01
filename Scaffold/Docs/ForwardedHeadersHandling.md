@@ -1,4 +1,4 @@
-# Forwarded Headers Handling #
+# Forwarded Headers Handling
 
 Requests sent to Web APIs are often relayed through network appliances such as proxies or load balancers before reaching the Web APIs. When this happens, information about the original request is often transposed into the headers of the request that is eventually received by the Web API. Common headers used to do this are:
 

@@ -1,8 +1,8 @@
-# Scaffold #
+# Scaffold
 
 Scaffold is an opinionated template of a Web API built using ASP.NET Core. It is intended to be used as an example for, or as a bootstrap to, the development of other Web APIs and aims to address some common concerns when building microservices using Web APIs in ASP.NET Core.
 
-## Features ##
+## Features
 
 Scaffold aims to make developing the following features in your next Web API or microservice a little bit more easier.
 
@@ -14,7 +14,7 @@ Scaffold aims to make developing the following features in your next Web API or 
 - [Health Checks](Docs/HealthChecks.md)
 - [Problem Details (RFC 7807) Error Handling](Docs/ProblemDetails.md)
 
-### Other Features ###
+### Other Features
 
 Other stuff you inherit when you bootstrap with Scaffold.
 
@@ -24,7 +24,7 @@ Other stuff you inherit when you bootstrap with Scaffold.
 - [Roslyn Analyzers](Docs/RoslynAnalyzers.md)
 - [Visual Studio Code Support](Docs/VisualStudioCode.md)
 
-### Not Included ###
+### Not Included
 
 Stuff you might want to add to your Web API / microservice but not included with Scaffold.
 
@@ -33,15 +33,15 @@ Stuff you might want to add to your Web API / microservice but not included with
 - [Cross-Origin Resource Sharing (CORS)](https://docs.microsoft.com/aspnet/core/security/cors)
 - [Header Propagation](https://docs.microsoft.com/aspnet/core/fundamentals/http-requests#header-propagation-middleware)
 
-## Example App ##
+## Example App
 
 Scaffold includes an example application which is intended to be replaced with your actual application when using this template. This example application has been included to help demonstrate features in this template.
 
-The example application is a simple CRUD application where you can create **Buckets** and put **Items** in them. The Buckets have a *size* which represents the number of Items you can put in them. To *Create*, *Read*, *Update* and *Delete* Buckets or Items in the application, simply send HTTP *POST*, *GET*, *PUT* or *DELETE* requests to the Web API.
+The example application is a simple CRUD application where you can create **Buckets** and put **Items** in them. The Buckets have a _size_ which represents the number of Items you can put in them. To _Create_, _Read_, _Update_ and _Delete_ Buckets or Items in the application, simply send HTTP _POST_, _GET_, _PUT_ or _DELETE_ requests to the Web API.
 
 Explore the Web API by going to `/swagger` in a web browser.
 
-## Developing and Running the Web API ##
+## Developing and Running the Web API
 
 For the best experience when developing with and running Scaffold, it is recommended to have Docker installed. Docker is not required however parts of the documentation and support features has been written or built assuming that you have Docker installed.
 
