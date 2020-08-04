@@ -6,11 +6,11 @@ The following is an example error response from the Web API in JSON;
 
 ```json
 {
-    "type": "https://tools.ietf.org/html/rfc7231#section-6.5.8",
-    "title": "Conflict",
-    "status": 409,
-    "detail": "Bucket '1' is full. Cannot add Item to Bucket.",
-    "traceId": "42a3b2cb86507d3a"
+  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.8",
+  "title": "Conflict",
+  "status": 409,
+  "detail": "Bucket '1' is full. Cannot add Item to Bucket.",
+  "traceId": "42a3b2cb86507d3a"
 }
 ```
 
@@ -18,11 +18,11 @@ And the same response in XML;
 
 ```xml
 <problem xmlns="urn:ietf:rfc:7807">
-    <detail>Bucket '1' is full. Cannot add Item to Bucket.</detail>
-    <status>409</status>
-    <title>Conflict</title>
-    <type>https://tools.ietf.org/html/rfc7231#section-6.5.8</type>
-    <traceId>42a3b2cb86507d3a</traceId>
+  <detail>Bucket '1' is full. Cannot add Item to Bucket.</detail>
+  <status>409</status>
+  <title>Conflict</title>
+  <type>https://tools.ietf.org/html/rfc7231#section-6.5.8</type>
+  <traceId>42a3b2cb86507d3a</traceId>
 </problem>
 ```
 

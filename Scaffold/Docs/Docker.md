@@ -42,9 +42,9 @@ Once up and running you can access the Web API on `http://localhost:5000`.
 
 Included in the `docker-compose.yml` file are other services that you can spin up in Docker should you need them for local development. These services and the path to their UIs once spun up are:
 
-- Jaeger - http://localhost:16686/search
-- Prometheus - http://localhost:9090/graph
-- Grafana - http://localhost:3000
+- Jaeger - <http://localhost:16686/search>
+- Prometheus - <http://localhost:9090/graph>
+- Grafana - <http://localhost:3000>
 
 To spin up any combination of these services, use the command;
 

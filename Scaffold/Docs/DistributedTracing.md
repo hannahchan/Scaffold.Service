@@ -14,9 +14,9 @@ Distributed tracing requires that developers add instrumentation to the code of 
 
 For updated information about OpenTracing and how to instrument your application, please check out;
 
-- https://opentracing.io/
-- https://github.com/opentracing/opentracing-csharp
-- https://github.com/opentracing-contrib/csharp-netcore
+- <https://opentracing.io/>
+- <https://github.com/opentracing/opentracing-csharp>
+- <https://github.com/opentracing-contrib/csharp-netcore>
 
 OpenTracing is currently in the process of being merged into a new project called [OpenTelemetry](https://opentelemetry.io/). A future version of Scaffold will probably switch to using OpenTelemetry.
 
@@ -28,7 +28,7 @@ When an operation needs to be traced across process boundaries, a trace context 
 
 Since ASP.NET Core 2.0, ASP.NET Core apps have been propagating a trace context out-of-the-box via the `Request-Id` header using the [Hierarchical](https://github.com/dotnet/corefx/blob/master/src/System.Diagnostics.DiagnosticSource/src/HierarchicalRequestId.md) format. Beginning with ASP.NET Core 3.0, you now have the option to change this to use the [W3C Trace Context](https://github.com/w3c/trace-context) header and format. Future versions of ASP.NET will switch to using the W3C Trace Context specification as default. You can read more about this in the following blog post.
 
-https://devblogs.microsoft.com/aspnet/improvements-in-net-core-3-0-for-troubleshooting-and-monitoring-distributed-apps/
+<https://devblogs.microsoft.com/aspnet/improvements-in-net-core-3-0-for-troubleshooting-and-monitoring-distributed-apps/>
 
 Scaffold has been configured to propagate trace context using the W3C Trace Context specification.
 
@@ -38,6 +38,6 @@ In environments where the trace context propagation format is different from the
 
 ## Collect and report traces
 
-After instrumenting your application, you will need to configure a tracing client, also called a tracer, to collect and report traces in your application. This tracer is typically registered as the Global Tracer on application startup. For a list of supported tracers, please visit https://opentracing.io/docs/supported-tracers/.
+After instrumenting your application, you will need to configure a tracing client, also called a tracer, to collect and report traces in your application. This tracer is typically registered as the Global Tracer on application startup. For a list of supported tracers, please visit <https://opentracing.io/docs/supported-tracers/>.
 
-Scaffold has been configured to use [Jaeger](https://www.jaegertracing.io/) as the tracing client for collecting and reporting traces. Documentation for the Jaeger C# client can be found here; https://github.com/jaegertracing/jaeger-client-csharp.
+Scaffold has been configured to use [Jaeger](https://www.jaegertracing.io/) as the tracing client for collecting and reporting traces. Documentation for the Jaeger C# client can be found here; <https://github.com/jaegertracing/jaeger-client-csharp>.

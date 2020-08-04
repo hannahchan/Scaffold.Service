@@ -14,4 +14,4 @@ When Scaffold receives a request with any of these headers present, it sets cert
 
 This is all handled by the Forwarded Headers middleware built into ASP.NET Core. For more information on how to configure this middleware, please checkout;
 
-https://docs.microsoft.com/aspnet/core/host-and-deploy/proxy-load-balancer
+<https://docs.microsoft.com/aspnet/core/host-and-deploy/proxy-load-balancer>
