@@ -15,7 +15,9 @@ namespace Scaffold.Repositories.PostgreSQL.Configurations
 
             builder.HasKey($"{nameof(Bucket)}Id", nameof(Item.Id));
 
-            builder.ToTable(nameof(Item));
+            builder
+                .ToTable(nameof(Item))
+                .UseXminAsConcurrencyToken();
         }
     }
 }

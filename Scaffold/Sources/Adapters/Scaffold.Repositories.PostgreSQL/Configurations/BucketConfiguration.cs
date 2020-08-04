@@ -15,7 +15,9 @@ namespace Scaffold.Repositories.PostgreSQL.Configurations
                 .FindNavigation(nameof(Bucket.Items))
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.ToTable(nameof(Bucket));
+            builder
+                .ToTable(nameof(Bucket))
+                .UseXminAsConcurrencyToken();
         }
     }
 }
