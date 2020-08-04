@@ -16,6 +16,7 @@
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     Size = table.Column<int>(nullable: false),
+                    xmin = table.Column<uint>(type: "xid", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -31,6 +32,7 @@
                     BucketId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
+                    xmin = table.Column<uint>(type: "xid", nullable: false),
                 },
                 constraints: table =>
                 {

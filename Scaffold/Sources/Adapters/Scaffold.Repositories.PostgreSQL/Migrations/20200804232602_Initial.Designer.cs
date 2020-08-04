@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Scaffold.Repositories.PostgreSQL.Migrations
 {
     [DbContext(typeof(BucketContext))]
-    [Migration("20191010140632_Initial")]
+    [Migration("20200804232602_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -15,7 +15,7 @@ namespace Scaffold.Repositories.PostgreSQL.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                .HasAnnotation("ProductVersion", "3.0.0")
+                .HasAnnotation("ProductVersion", "3.1.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("Scaffold.Domain.Aggregates.Bucket.Bucket", b =>
@@ -33,6 +33,11 @@ namespace Scaffold.Repositories.PostgreSQL.Migrations
 
                     b.Property<int>("Size")
                         .HasColumnType("integer");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid");
 
                     b.HasKey("Id");
 
@@ -54,6 +59,11 @@ namespace Scaffold.Repositories.PostgreSQL.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
+
+                    b.Property<uint>("xmin")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid");
 
                     b.HasKey("BucketId", "Id");
 
