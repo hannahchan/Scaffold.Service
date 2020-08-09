@@ -2,6 +2,8 @@ namespace Scaffold.WebApi.Extensions
 {
     using System;
     using Jaeger;
+    using Jaeger.Senders;
+    using Jaeger.Senders.Thrift;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -66,6 +68,9 @@ namespace Scaffold.WebApi.Extensions
             {
                 IServiceProvider serviceProvider = serviceScope.ServiceProvider;
                 ILoggerFactory loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+
+                Configuration.SenderConfiguration.DefaultSenderResolver = new SenderResolver(loggerFactory)
+                    .RegisterSenderFactory<ThriftSenderFactory>();
 
                 GlobalTracer.Register(Configuration.FromEnv(loggerFactory).GetTracer());
             }
