@@ -39,6 +39,9 @@
     {
       "label": "Start Infrastructure",
       "command": "docker-compose",
+      "windows": {
+        "command": "docker-compose.exe"
+      },
       "dependsOn": ["Stop Infrastructure"],
       "type": "process",
       "args": ["up", "-d", "postgres", "grafana", "jaeger", "prometheus"],
@@ -54,6 +57,9 @@
     {
       "label": "Stop Infrastructure",
       "command": "docker-compose",
+      "windows": {
+        "command": "docker-compose.exe"
+      },
       "type": "process",
       "args": ["down"],
       "presentation": {
