@@ -123,9 +123,12 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_GettingBuckets_Expect_AllBuckets()
             {
                 // Arrange
-                await this.repository.AddAsync(new Bucket());
-                await this.repository.AddAsync(new Bucket());
-                await this.repository.AddAsync(new Bucket());
+                await Task.WhenAll(new Task[]
+                {
+                    this.repository.AddAsync(new Bucket { Name = "Bucket 1" }),
+                    this.repository.AddAsync(new Bucket { Name = "Bucket 2" }),
+                    this.repository.AddAsync(new Bucket { Name = "Bucket 3" }),
+                });
 
                 GetBuckets.Query query = new GetBuckets.Query();
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
@@ -158,11 +161,14 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_GettingBucketsWithPredicate_Expect_SomeBuckets()
             {
                 // Arrange
-                await this.repository.AddAsync(new Bucket { Size = 1 });
-                await this.repository.AddAsync(new Bucket { Size = 2 });
-                await this.repository.AddAsync(new Bucket { Size = 3 });
-                await this.repository.AddAsync(new Bucket { Size = 5 });
-                await this.repository.AddAsync(new Bucket { Size = 8 });
+                await Task.WhenAll(new Task[]
+                {
+                    this.repository.AddAsync(new Bucket { Size = 1 }),
+                    this.repository.AddAsync(new Bucket { Size = 2 }),
+                    this.repository.AddAsync(new Bucket { Size = 3 }),
+                    this.repository.AddAsync(new Bucket { Size = 5 }),
+                    this.repository.AddAsync(new Bucket { Size = 8 }),
+                });
 
                 GetBuckets.Query query = new GetBuckets.Query(bucket => bucket.Size == 2 || bucket.Size == 5);
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
@@ -180,9 +186,12 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_GettingBucketsWithNoLimitAndNoOffset_Expect_AllBuckets()
             {
                 // Arrange
-                await this.repository.AddAsync(new Bucket { Name = "Bucket 1" });
-                await this.repository.AddAsync(new Bucket { Name = "Bucket 2" });
-                await this.repository.AddAsync(new Bucket { Name = "Bucket 3" });
+                await Task.WhenAll(new Task[]
+                {
+                    this.repository.AddAsync(new Bucket { Name = "Bucket 1" }),
+                    this.repository.AddAsync(new Bucket { Name = "Bucket 2" }),
+                    this.repository.AddAsync(new Bucket { Name = "Bucket 3" }),
+                });
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
@@ -208,9 +217,12 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_GettingBucketsWithLimit_Expect_LimitedBuckets()
             {
                 // Arrange
-                await this.repository.AddAsync(new Bucket { Name = "Bucket 1" });
-                await this.repository.AddAsync(new Bucket { Name = "Bucket 2" });
-                await this.repository.AddAsync(new Bucket { Name = "Bucket 3" });
+                await Task.WhenAll(new Task[]
+                {
+                    this.repository.AddAsync(new Bucket { Name = "Bucket 1" }),
+                    this.repository.AddAsync(new Bucket { Name = "Bucket 2" }),
+                    this.repository.AddAsync(new Bucket { Name = "Bucket 3" }),
+                });
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
@@ -235,9 +247,12 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_GettingBucketsWithOffset_Expect_OffsetBuckets()
             {
                 // Arrange
-                await this.repository.AddAsync(new Bucket { Name = "Bucket 1" });
-                await this.repository.AddAsync(new Bucket { Name = "Bucket 2" });
-                await this.repository.AddAsync(new Bucket { Name = "Bucket 3" });
+                await Task.WhenAll(new Task[]
+                {
+                    this.repository.AddAsync(new Bucket { Name = "Bucket 1" }),
+                    this.repository.AddAsync(new Bucket { Name = "Bucket 2" }),
+                    this.repository.AddAsync(new Bucket { Name = "Bucket 3" }),
+                });
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
@@ -262,9 +277,12 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_GettingBucketsWithLimitAndOffset_Expect_LimitedAndOffsetBuckets()
             {
                 // Arrange
-                await this.repository.AddAsync(new Bucket { Name = "Bucket 1" });
-                await this.repository.AddAsync(new Bucket { Name = "Bucket 2" });
-                await this.repository.AddAsync(new Bucket { Name = "Bucket 3" });
+                await Task.WhenAll(new Task[]
+                {
+                    this.repository.AddAsync(new Bucket { Name = "Bucket 1" }),
+                    this.repository.AddAsync(new Bucket { Name = "Bucket 2" }),
+                    this.repository.AddAsync(new Bucket { Name = "Bucket 3" }),
+                });
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
@@ -288,10 +306,14 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_GettingBucketsOrderedBySizeAscending_Expect_OrderedBySizeAscending()
             {
                 // Arrange
+                List<Task> addBucketTasks = new List<Task>();
+
                 foreach (Bucket bucket in this.testBuckets)
                 {
-                    await this.repository.AddAsync(bucket);
+                    addBucketTasks.Add(this.repository.AddAsync(bucket));
                 }
+
+                await Task.WhenAll(addBucketTasks);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderBy("Size");
@@ -318,10 +340,14 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_GettingBucketsOrderedBySizeDescending_Expect_OrderedBySizeDescending()
             {
                 // Arrange
+                List<Task> addBucketTasks = new List<Task>();
+
                 foreach (Bucket bucket in this.testBuckets)
                 {
-                    await this.repository.AddAsync(bucket);
+                    addBucketTasks.Add(this.repository.AddAsync(bucket));
                 }
+
+                await Task.WhenAll(addBucketTasks);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderByDescending("Size");
@@ -348,10 +374,14 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_GettingBucketsOrderedBySizeWithLimit_Expect_OrderedLimitedBuckets()
             {
                 // Arrange
+                List<Task> addBucketTasks = new List<Task>();
+
                 foreach (Bucket bucket in this.testBuckets)
                 {
-                    await this.repository.AddAsync(bucket);
+                    addBucketTasks.Add(this.repository.AddAsync(bucket));
                 }
+
+                await Task.WhenAll(addBucketTasks);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderBy("Size");
@@ -378,10 +408,14 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_GettingBucketsOrderedBySizeWithOffset_Expect_OrderedOffsetBuckets()
             {
                 // Arrange
+                List<Task> addBucketTasks = new List<Task>();
+
                 foreach (Bucket bucket in this.testBuckets)
                 {
-                    await this.repository.AddAsync(bucket);
+                    addBucketTasks.Add(this.repository.AddAsync(bucket));
                 }
+
+                await Task.WhenAll(addBucketTasks);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderBy("Size");
@@ -408,10 +442,14 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_GettingBucketsOrderedBySizeWithLimtAndOffset_Expect_OrderedLimitedAndOffsetBuckets()
             {
                 // Arrange
+                List<Task> addBucketTasks = new List<Task>();
+
                 foreach (Bucket bucket in this.testBuckets)
                 {
-                    await this.repository.AddAsync(bucket);
+                    addBucketTasks.Add(this.repository.AddAsync(bucket));
                 }
+
+                await Task.WhenAll(addBucketTasks);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderBy("Size");
@@ -438,10 +476,14 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_GettingBucketsOrderedByNameAscendingThenByDescriptionAscending_Expect_OrderedByNameAscendingThenByDescriptionAscending()
             {
                 // Arrange
+                List<Task> addBucketTasks = new List<Task>();
+
                 foreach (Bucket bucket in this.testBuckets)
                 {
-                    await this.repository.AddAsync(bucket);
+                    addBucketTasks.Add(this.repository.AddAsync(bucket));
                 }
+
+                await Task.WhenAll(addBucketTasks);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderBy("Name")
@@ -490,10 +532,14 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_GettingBucketsOrderedByNameDescendingThenByDescriptionDescending_Expect_OrderedByNameDescendingThenByDescriptionDescending()
             {
                 // Arrange
+                List<Task> addBucketTasks = new List<Task>();
+
                 foreach (Bucket bucket in this.testBuckets)
                 {
-                    await this.repository.AddAsync(bucket);
+                    addBucketTasks.Add(this.repository.AddAsync(bucket));
                 }
+
+                await Task.WhenAll(addBucketTasks);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderByDescending("Name")
@@ -542,10 +588,14 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_GettingBucketsOrderedByNameAscendingThenByDescriptionDescending_Expect_OrderedByNameAscendingThenByDescriptionDescending()
             {
                 // Arrange
+                List<Task> addBucketTasks = new List<Task>();
+
                 foreach (Bucket bucket in this.testBuckets)
                 {
-                    await this.repository.AddAsync(bucket);
+                    addBucketTasks.Add(this.repository.AddAsync(bucket));
                 }
+
+                await Task.WhenAll(addBucketTasks);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderBy("Name")
@@ -594,10 +644,14 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_GettingBucketsOrderedByNameDescendingThenByDescriptionAscending_Expect_OrderedByNameDescendingThenByDescriptionAscending()
             {
                 // Arrange
+                List<Task> addBucketTasks = new List<Task>();
+
                 foreach (Bucket bucket in this.testBuckets)
                 {
-                    await this.repository.AddAsync(bucket);
+                    addBucketTasks.Add(this.repository.AddAsync(bucket));
                 }
+
+                await Task.WhenAll(addBucketTasks);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderByDescending("Name")

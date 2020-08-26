@@ -1175,10 +1175,10 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        await context.Set<Bucket>().AddAsync(bucket);
+                        context.Set<Bucket>().Add(bucket);
                     }
 
-                    await context.SaveChangesAsync();
+                    context.SaveChanges();
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
@@ -1208,10 +1208,10 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        await context.Set<Bucket>().AddAsync(bucket);
+                        context.Set<Bucket>().Add(bucket);
                     }
 
-                    await context.SaveChangesAsync();
+                    context.SaveChanges();
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
@@ -1241,10 +1241,10 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        await context.Set<Bucket>().AddAsync(bucket);
+                        context.Set<Bucket>().Add(bucket);
                     }
 
-                    await context.SaveChangesAsync();
+                    context.SaveChanges();
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
@@ -1274,10 +1274,10 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        await context.Set<Bucket>().AddAsync(bucket);
+                        context.Set<Bucket>().Add(bucket);
                     }
 
-                    await context.SaveChangesAsync();
+                    context.SaveChanges();
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
@@ -1307,10 +1307,10 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        await context.Set<Bucket>().AddAsync(bucket);
+                        context.Set<Bucket>().Add(bucket);
                     }
 
-                    await context.SaveChangesAsync();
+                    context.SaveChanges();
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
@@ -1340,10 +1340,10 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        await context.Set<Bucket>().AddAsync(bucket);
+                        context.Set<Bucket>().Add(bucket);
                     }
 
-                    await context.SaveChangesAsync();
+                    context.SaveChanges();
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
@@ -1395,10 +1395,10 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        await context.Set<Bucket>().AddAsync(bucket);
+                        context.Set<Bucket>().Add(bucket);
                     }
 
-                    await context.SaveChangesAsync();
+                    context.SaveChanges();
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
@@ -1450,10 +1450,10 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        await context.Set<Bucket>().AddAsync(bucket);
+                        context.Set<Bucket>().Add(bucket);
                     }
 
-                    await context.SaveChangesAsync();
+                    context.SaveChanges();
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
@@ -1505,10 +1505,10 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        await context.Set<Bucket>().AddAsync(bucket);
+                        context.Set<Bucket>().Add(bucket);
                     }
 
-                    await context.SaveChangesAsync();
+                    context.SaveChanges();
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
