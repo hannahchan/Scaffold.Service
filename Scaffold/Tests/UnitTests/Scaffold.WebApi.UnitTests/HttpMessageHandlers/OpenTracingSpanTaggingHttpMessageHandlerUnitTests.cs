@@ -178,9 +178,9 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
                 this.statusCode = statusCode;
             }
 
-            protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
             {
-                return await Task.FromResult(new HttpResponseMessage { StatusCode = (HttpStatusCode)this.statusCode });
+                return Task.FromResult(new HttpResponseMessage { StatusCode = (HttpStatusCode)this.statusCode });
             }
         }
 
@@ -193,9 +193,9 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
                 this.exception = exception;
             }
 
-            protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
             {
-                return await Task.FromException<HttpResponseMessage>(this.exception);
+                return Task.FromException<HttpResponseMessage>(this.exception);
             }
         }
     }

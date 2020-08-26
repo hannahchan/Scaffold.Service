@@ -51,10 +51,10 @@ namespace Scaffold.HttpClients.UnitTests
                 this.response = response;
             }
 
-            protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
             {
                 this.response.RequestMessage = request;
-                return await Task.FromResult(this.response);
+                return Task.FromResult(this.response);
             }
         }
     }

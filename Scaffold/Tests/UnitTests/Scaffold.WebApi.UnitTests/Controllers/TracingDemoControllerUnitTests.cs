@@ -107,11 +107,11 @@ namespace Scaffold.WebApi.UnitTests.Controllers
 
         private class InnerHandler : DelegatingHandler
         {
-            protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
             {
                 Dictionary<string, StringValues> queryParameters = QueryHelpers.ParseQuery(request.RequestUri.Query);
 
-                return await Task.FromResult(new HttpResponseMessage
+                return Task.FromResult(new HttpResponseMessage
                 {
                     Content = new StringContent($"Hello, {queryParameters["name"]}!"),
                 });
