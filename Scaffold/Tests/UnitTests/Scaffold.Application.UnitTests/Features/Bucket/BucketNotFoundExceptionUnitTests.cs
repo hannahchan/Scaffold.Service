@@ -12,7 +12,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
         public void When_InstantiatingBucketNotFoundExceptionWithBucketId_Expect_BucketIdInMessage()
         {
             // Arrange
-            int bucketId = new Random().Next(int.MaxValue);
+            int bucketId = new Random().Next();
             BucketNotFoundException exception;
 
             // Act
@@ -26,7 +26,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
         public void When_DeserializingBucketNotFoundException_Expect_SerializedBucketNotFoundException()
         {
             // Arrange
-            BucketNotFoundException exception = new BucketNotFoundException(new Random().Next(int.MaxValue));
+            BucketNotFoundException exception = new BucketNotFoundException(new Random().Next());
 
             BucketNotFoundException result;
 

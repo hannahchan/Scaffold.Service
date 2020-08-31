@@ -14,7 +14,7 @@ namespace Scaffold.Application.UnitTests.Base
         {
             // Arrange
             string message = Guid.NewGuid().ToString();
-            int status = new Random().Next(int.MaxValue);
+            int status = new Random().Next();
 
             // Act
             TestException exception = new TestException(message, status);
@@ -29,7 +29,7 @@ namespace Scaffold.Application.UnitTests.Base
         {
             // Arrange
             string message = Guid.NewGuid().ToString();
-            int status = new Random().Next(int.MaxValue);
+            int status = new Random().Next();
             Exception innerException = new Exception();
 
             // Act
@@ -47,7 +47,7 @@ namespace Scaffold.Application.UnitTests.Base
             // Arrange
             TestException exception = new TestException(
                 Guid.NewGuid().ToString(),
-                new Random().Next(int.MaxValue),
+                new Random().Next(),
                 new Exception(Guid.NewGuid().ToString()));
 
             TestException result;

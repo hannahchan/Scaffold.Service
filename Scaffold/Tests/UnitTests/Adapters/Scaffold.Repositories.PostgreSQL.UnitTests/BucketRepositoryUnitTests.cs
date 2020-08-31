@@ -178,7 +178,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    result = repository.Get(new Random().Next(int.MaxValue));
+                    result = repository.Get(new Random().Next());
                 }
 
                 // Assert
@@ -472,7 +472,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    result = await repository.GetAsync(new Random().Next(int.MaxValue));
+                    result = await repository.GetAsync(new Random().Next());
                 }
 
                 // Assert
@@ -489,7 +489,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    exception = await Record.ExceptionAsync(() => repository.GetAsync(new Random().Next(int.MaxValue), new CancellationToken(true)));
+                    exception = await Record.ExceptionAsync(() => repository.GetAsync(new Random().Next(), new CancellationToken(true)));
                 }
 
                 // Assert

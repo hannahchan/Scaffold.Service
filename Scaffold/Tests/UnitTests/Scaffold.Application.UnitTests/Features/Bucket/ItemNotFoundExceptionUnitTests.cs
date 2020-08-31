@@ -12,7 +12,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
         public void When_InstantiatingItemNotFoundExceptionWithItemId_Expect_ItemIdInMessage()
         {
             // Arrange
-            int itemId = new Random().Next(int.MaxValue);
+            int itemId = new Random().Next();
             ItemNotFoundException exception;
 
             // Act
@@ -26,7 +26,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
         public void When_DeserializingItemNotFoundException_Expect_SerializedItemNotFoundException()
         {
             // Arrange
-            ItemNotFoundException exception = new ItemNotFoundException(new Random().Next(int.MaxValue));
+            ItemNotFoundException exception = new ItemNotFoundException(new Random().Next());
 
             ItemNotFoundException result;
 

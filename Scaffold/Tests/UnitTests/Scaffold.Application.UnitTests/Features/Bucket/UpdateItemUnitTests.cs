@@ -123,7 +123,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 UpdateItem.Command command = new UpdateItem.Command(
                     bucketId: bucket.Id,
-                    itemId: new Random().Next(int.MaxValue),
+                    itemId: new Random().Next(),
                     name: Guid.NewGuid().ToString(),
                     description: Guid.NewGuid().ToString());
 
@@ -145,8 +145,8 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             {
                 // Arrange
                 UpdateItem.Command command = new UpdateItem.Command(
-                    bucketId: new Random().Next(int.MaxValue),
-                    itemId: new Random().Next(int.MaxValue),
+                    bucketId: new Random().Next(),
+                    itemId: new Random().Next(),
                     name: Guid.NewGuid().ToString(),
                     description: null);
 

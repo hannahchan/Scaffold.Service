@@ -93,7 +93,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 {
                     Name = Guid.NewGuid().ToString(),
                     Description = Guid.NewGuid().ToString(),
-                    Size = new Random().Next(int.MaxValue),
+                    Size = new Random().Next(),
                 };
 
                 await this.repository.AddAsync(bucket);
@@ -102,7 +102,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                     id: bucket.Id,
                     name: Guid.NewGuid().ToString(),
                     description: Guid.NewGuid().ToString(),
-                    size: new Random().Next(int.MaxValue));
+                    size: new Random().Next());
 
                 UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository);
 
@@ -123,10 +123,10 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             {
                 // Arrange
                 UpdateBucket.Command command = new UpdateBucket.Command(
-                    id: new Random().Next(int.MaxValue),
+                    id: new Random().Next(),
                     name: Guid.NewGuid().ToString(),
                     description: Guid.NewGuid().ToString(),
-                    size: new Random().Next(int.MaxValue));
+                    size: new Random().Next());
 
                 UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository);
 
@@ -171,7 +171,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             {
                 // Arrange
                 UpdateBucket.Command command = new UpdateBucket.Command(
-                    id: new Random().Next(int.MaxValue),
+                    id: new Random().Next(),
                     name: Guid.NewGuid().ToString(),
                     description: null,
                     size: -1);

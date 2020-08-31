@@ -26,7 +26,7 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
             {
                 // Arrange
                 Item item;
-                int id = new Random().Next(int.MaxValue);
+                int id = new Random().Next();
 
                 // Act
                 item = new Item(id);

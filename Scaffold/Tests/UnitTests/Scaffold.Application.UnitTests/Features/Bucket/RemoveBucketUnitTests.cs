@@ -50,7 +50,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Bucket bucket = new Bucket();
                 await this.repository.AddAsync(bucket);
 
-                RemoveBucket.Command command = new RemoveBucket.Command(new Random().Next(int.MaxValue));
+                RemoveBucket.Command command = new RemoveBucket.Command(new Random().Next());
                 RemoveBucket.Handler handler = new RemoveBucket.Handler(this.repository);
 
                 // Act

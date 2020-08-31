@@ -97,7 +97,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_GettingItemsFromNonExistingBucket_Expect_BucketNotFoundException()
             {
                 // Arrange
-                GetItems.Query query = new GetItems.Query(new Random().Next(int.MaxValue));
+                GetItems.Query query = new GetItems.Query(new Random().Next());
                 GetItems.Handler handler = new GetItems.Handler(this.repository);
 
                 // Act

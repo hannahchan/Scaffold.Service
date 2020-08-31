@@ -360,7 +360,7 @@ namespace Scaffold.Application.UnitTests.Models
 
         private class TestClass
         {
-            public int Property1 { get; set; } = 0;
+            public int Property1 { get; set; } = new Random().Next();
 
             public string Property2 { get; set; } = string.Empty;
 
@@ -375,7 +375,7 @@ namespace Scaffold.Application.UnitTests.Models
 
         private class ComparableProperty1 : IComparable<ComparableProperty1>
         {
-            public int Value { get; set; } = 0;
+            public int Value { get; set; } = new Random().Next();
 
             public int CompareTo(ComparableProperty1? other)
             {
@@ -385,7 +385,7 @@ namespace Scaffold.Application.UnitTests.Models
 
         private class ComparableProperty2 : IComparable
         {
-            public int Value { get; set; } = 0;
+            public int Value { get; set; } = new Random().Next();
 
             public int CompareTo(object? obj)
             {

@@ -83,7 +83,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 GetItem.Query query = new GetItem.Query(
                     bucketId: bucket.Id,
-                    itemId: new Random().Next(int.MaxValue));
+                    itemId: new Random().Next());
 
                 GetItem.Handler handler = new GetItem.Handler(this.repository);
 
@@ -100,8 +100,8 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             {
                 // Arrange
                 GetItem.Query query = new GetItem.Query(
-                    bucketId: new Random().Next(int.MaxValue),
-                    itemId: new Random().Next(int.MaxValue));
+                    bucketId: new Random().Next(),
+                    itemId: new Random().Next());
 
                 GetItem.Handler handler = new GetItem.Handler(this.repository);
 

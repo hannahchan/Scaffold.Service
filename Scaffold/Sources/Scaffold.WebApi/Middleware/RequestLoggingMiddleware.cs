@@ -94,7 +94,7 @@ namespace Scaffold.WebApi.Middleware
 
         public class Options
         {
-            public string[] IgnorePatterns { get; set; } = new string[0];
+            public string[] IgnorePatterns { get; set; } = Array.Empty<string>();
         }
     }
 }

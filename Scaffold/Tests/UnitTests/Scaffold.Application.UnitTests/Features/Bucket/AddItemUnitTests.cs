@@ -79,7 +79,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             {
                 // Arrange
                 AddItem.Command command = new AddItem.Command(
-                    bucketId: new Random().Next(int.MaxValue),
+                    bucketId: new Random().Next(),
                     name: Guid.NewGuid().ToString(),
                     description: null);
 

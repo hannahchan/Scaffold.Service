@@ -73,7 +73,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_GettingNonExistingBucket_Expect_BucketNotFoundException()
             {
                 // Arrange
-                GetBucket.Query query = new GetBucket.Query(new Random().Next(int.MaxValue));
+                GetBucket.Query query = new GetBucket.Query(new Random().Next());
                 GetBucket.Handler handler = new GetBucket.Handler(this.repository);
 
                 // Act

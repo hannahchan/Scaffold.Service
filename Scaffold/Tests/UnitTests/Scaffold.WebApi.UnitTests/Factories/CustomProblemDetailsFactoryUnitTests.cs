@@ -101,7 +101,7 @@ namespace Scaffold.WebApi.UnitTests.Factories
                 IOptions<ApiBehaviorOptions> options = Options.Create(new ApiBehaviorOptions());
                 ProblemDetailsFactory factory = new CustomProblemDetailsFactory(options);
 
-                int status = new Random().Next(int.MaxValue);
+                int status = new Random().Next();
                 string title = Guid.NewGuid().ToString();
                 string type = Guid.NewGuid().ToString();
                 string detail = Guid.NewGuid().ToString();
@@ -125,7 +125,7 @@ namespace Scaffold.WebApi.UnitTests.Factories
                 // Arrange
                 ApiBehaviorOptions apiBehaviorOptions = new ApiBehaviorOptions();
 
-                int status = new Random().Next(int.MaxValue);
+                int status = new Random().Next();
 
                 apiBehaviorOptions.ClientErrorMapping[status] = new ClientErrorData
                 {
@@ -151,7 +151,7 @@ namespace Scaffold.WebApi.UnitTests.Factories
                 // Arrange
                 ApiBehaviorOptions apiBehaviorOptions = new ApiBehaviorOptions();
 
-                int status = new Random().Next(int.MaxValue);
+                int status = new Random().Next();
 
                 apiBehaviorOptions.ClientErrorMapping[status] = new ClientErrorData
                 {
@@ -265,7 +265,7 @@ namespace Scaffold.WebApi.UnitTests.Factories
                 IOptions<ApiBehaviorOptions> options = Options.Create(new ApiBehaviorOptions());
                 ProblemDetailsFactory factory = new CustomProblemDetailsFactory(options);
 
-                int status = new Random().Next(int.MaxValue);
+                int status = new Random().Next();
                 string title = Guid.NewGuid().ToString();
                 string type = Guid.NewGuid().ToString();
                 string detail = Guid.NewGuid().ToString();
@@ -290,7 +290,7 @@ namespace Scaffold.WebApi.UnitTests.Factories
                 // Arrange
                 ApiBehaviorOptions apiBehaviorOptions = new ApiBehaviorOptions();
 
-                int status = new Random().Next(int.MaxValue);
+                int status = new Random().Next();
 
                 apiBehaviorOptions.ClientErrorMapping[status] = new ClientErrorData
                 {
@@ -317,7 +317,7 @@ namespace Scaffold.WebApi.UnitTests.Factories
                 // Arrange
                 ApiBehaviorOptions apiBehaviorOptions = new ApiBehaviorOptions();
 
-                int status = new Random().Next(int.MaxValue);
+                int status = new Random().Next();
 
                 apiBehaviorOptions.ClientErrorMapping[status] = new ClientErrorData
                 {

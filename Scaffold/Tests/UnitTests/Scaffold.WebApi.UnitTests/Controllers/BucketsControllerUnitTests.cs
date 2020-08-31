@@ -85,7 +85,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 Bucket result;
 
                 // Act
-                result = await controller.GetBucket(new Random().Next(int.MaxValue));
+                result = await controller.GetBucket(new Random().Next());
 
                 // Assert
                 Assert.NotNull(result);
@@ -104,7 +104,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 ActionResult<Bucket> result;
 
                 // Act
-                result = await controller.UpdateBucket(new Random().Next(int.MaxValue), new UpdateBucketRequestBody());
+                result = await controller.UpdateBucket(new Random().Next(), new UpdateBucketRequestBody());
 
                 // Assert
                 Assert.Null(result.Result);
@@ -124,7 +124,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 ActionResult<Bucket> result;
 
                 // Act
-                result = await controller.UpdateBucket(new Random().Next(int.MaxValue), new UpdateBucketRequestBody());
+                result = await controller.UpdateBucket(new Random().Next(), new UpdateBucketRequestBody());
 
                 // Assert
                 CreatedAtRouteResult actionResult = Assert.IsType<CreatedAtRouteResult>(result.Result);
@@ -147,7 +147,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 ActionResult result;
 
                 // Act
-                result = await controller.RemoveBucket(new Random().Next(int.MaxValue));
+                result = await controller.RemoveBucket(new Random().Next());
 
                 // Assert
                 Assert.IsType<NoContentResult>(result);
@@ -169,7 +169,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 ActionResult result;
 
                 // Act
-                result = await controller.AddItem(new Random().Next(int.MaxValue), new AddItemRequestBody());
+                result = await controller.AddItem(new Random().Next(), new AddItemRequestBody());
 
                 // Assert
                 CreatedAtRouteResult actionResult = Assert.IsType<CreatedAtRouteResult>(result);
@@ -191,7 +191,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 IList<Item> result;
 
                 // Act
-                result = await controller.GetItems(new Random().Next(int.MaxValue));
+                result = await controller.GetItems(new Random().Next());
 
                 // Assert
                 Assert.NotNull(result);
@@ -210,7 +210,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 Item result;
 
                 // Act
-                result = await controller.GetItem(new Random().Next(int.MaxValue), new Random().Next(int.MaxValue));
+                result = await controller.GetItem(new Random().Next(), new Random().Next());
 
                 // Assert
                 Assert.NotNull(result);
@@ -229,7 +229,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 ActionResult<Item> result;
 
                 // Act
-                result = await controller.UpdateItem(new Random().Next(int.MaxValue), new Random().Next(int.MaxValue), new UpdateItemRequestBody());
+                result = await controller.UpdateItem(new Random().Next(), new Random().Next(), new UpdateItemRequestBody());
 
                 // Assert
                 Assert.Null(result.Result);
@@ -249,7 +249,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 ActionResult<Item> result;
 
                 // Act
-                result = await controller.UpdateItem(new Random().Next(int.MaxValue), new Random().Next(int.MaxValue), new UpdateItemRequestBody());
+                result = await controller.UpdateItem(new Random().Next(), new Random().Next(), new UpdateItemRequestBody());
 
                 // Assert
                 CreatedAtRouteResult actionResult = Assert.IsType<CreatedAtRouteResult>(result.Result);
@@ -272,7 +272,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 ActionResult result;
 
                 // Act
-                result = await controller.RemoveItem(new Random().Next(int.MaxValue), new Random().Next(int.MaxValue));
+                result = await controller.RemoveItem(new Random().Next(), new Random().Next());
 
                 // Assert
                 Assert.IsType<NoContentResult>(result);
