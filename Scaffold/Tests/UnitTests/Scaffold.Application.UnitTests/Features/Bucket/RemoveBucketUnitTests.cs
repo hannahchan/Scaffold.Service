@@ -13,15 +13,13 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     {
         private readonly IBucketRepository repository;
 
-        private readonly BucketContext context;
-
         public RemoveBucketUnitTests()
         {
-            this.context = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
+            BucketContext context = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options);
 
-            this.repository = new BucketRepository(this.context);
+            this.repository = new BucketRepository(context);
         }
 
         public class Handler : RemoveBucketUnitTests
@@ -47,9 +45,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_RemovingNonExistingBucket_Expect_BucketNotFoundException()
             {
                 // Arrange
-                Bucket bucket = new Bucket();
-                await this.repository.AddAsync(bucket);
-
                 RemoveBucket.Command command = new RemoveBucket.Command(new Random().Next());
                 RemoveBucket.Handler handler = new RemoveBucket.Handler(this.repository);
 
@@ -58,7 +53,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 // Assert
                 Assert.IsType<BucketNotFoundException>(exception);
-                Assert.NotEmpty(this.context.Buckets);
             }
         }
     }

@@ -25,19 +25,23 @@ namespace Scaffold.WebApi.IntegrationTests
         }
 
         [Fact]
-        public async Task When_DatabaseIsAvailable_Expect_Ok()
+        public async Task When_AllDatabaseConnectionsAreAvailable_Expect_Ok()
         {
             // Arrange
             HttpClient client = this.factory.WithWebHostBuilder(builder =>
             {
                 builder.ConfigureServices(services =>
                 {
-                    ServiceDescriptor service = services.SingleOrDefault(service =>
-                        service.ServiceType == typeof(DbContextOptions<BucketContext>));
-
-                    services.Remove(service);
+                    services.Remove(services.SingleOrDefault(service =>
+                        service.ServiceType == typeof(DbContextOptions<BucketContext>)));
 
                     services.AddDbContext<BucketContext>(options =>
+                        options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
+
+                    services.Remove(services.SingleOrDefault(service =>
+                        service.ServiceType == typeof(DbContextOptions<BucketContext.ReadOnly>)));
+
+                    services.AddDbContext<BucketContext.ReadOnly>(options =>
                         options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
                 });
 
@@ -54,12 +58,66 @@ namespace Scaffold.WebApi.IntegrationTests
         }
 
         [Fact]
-        public async Task When_DatabaseIsUnavailable_Expect_ServiceUnavailable()
+        public async Task When_AllDatabaseConnectionsAreUnavailable_Expect_ServiceUnavailable()
         {
             // Arrange
             HttpClient client = this.factory
                 .WithWebHostBuilder(builder => builder.UseSetting("HEALTHCHECKPORT", "80"))
                 .CreateClient();
+
+            // Act
+            HttpResponseMessage response = await client.GetAsync("/health");
+
+            // Assert
+            Assert.Equal(HttpStatusCode.ServiceUnavailable, response.StatusCode);
+            Assert.Equal(MediaTypeNames.Text.Plain, response.Content.Headers.ContentType.MediaType);
+            Assert.Equal("Unhealthy", await response.Content.ReadAsStringAsync());
+        }
+
+        [Fact]
+        public async Task When_ReadWriteDatabaseConnectionIsUnavailable_Expect_ServiceUnavailable()
+        {
+            // Arrange
+            HttpClient client = this.factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureServices(services =>
+                {
+                    services.Remove(services.SingleOrDefault(service =>
+                        service.ServiceType == typeof(DbContextOptions<BucketContext.ReadOnly>)));
+
+                    services.AddDbContext<BucketContext.ReadOnly>(options =>
+                        options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
+                });
+
+                builder.UseSetting("HEALTHCHECKPORT", "80");
+            }).CreateClient();
+
+            // Act
+            HttpResponseMessage response = await client.GetAsync("/health");
+
+            // Assert
+            Assert.Equal(HttpStatusCode.ServiceUnavailable, response.StatusCode);
+            Assert.Equal(MediaTypeNames.Text.Plain, response.Content.Headers.ContentType.MediaType);
+            Assert.Equal("Unhealthy", await response.Content.ReadAsStringAsync());
+        }
+
+        [Fact]
+        public async Task When_ReadOnlyDatabaseConnectionIsUnavailable_Expect_ServiceUnavailable()
+        {
+            // Arrange
+            HttpClient client = this.factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureServices(services =>
+                {
+                    services.Remove(services.SingleOrDefault(service =>
+                        service.ServiceType == typeof(DbContextOptions<BucketContext>)));
+
+                    services.AddDbContext<BucketContext>(options =>
+                        options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
+                });
+
+                builder.UseSetting("HEALTHCHECKPORT", "80");
+            }).CreateClient();
 
             // Act
             HttpResponseMessage response = await client.GetAsync("/health");
@@ -80,12 +138,16 @@ namespace Scaffold.WebApi.IntegrationTests
             {
                 builder.ConfigureServices(services =>
                 {
-                    ServiceDescriptor service = services.SingleOrDefault(service =>
-                        service.ServiceType == typeof(DbContextOptions<BucketContext>));
-
-                    services.Remove(service);
+                    services.Remove(services.SingleOrDefault(service =>
+                        service.ServiceType == typeof(DbContextOptions<BucketContext>)));
 
                     services.AddDbContext<BucketContext>(options =>
+                        options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
+
+                    services.Remove(services.SingleOrDefault(service =>
+                        service.ServiceType == typeof(DbContextOptions<BucketContext.ReadOnly>)));
+
+                    services.AddDbContext<BucketContext.ReadOnly>(options =>
                         options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
                 });
 

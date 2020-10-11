@@ -12,6 +12,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Storage;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Scaffold.Repositories.PostgreSQL;
@@ -21,6 +22,8 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
 
     public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFactory<Startup>>
     {
+        private static readonly InMemoryDatabaseRoot InMemoryDatabaseRoot = new InMemoryDatabaseRoot();
+
         private readonly WebApplicationFactory<Startup> factory;
 
         public BucketsControllerIntegrationTests(WebApplicationFactory<Startup> factory)
@@ -38,16 +41,17 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                     .ConfigureLogging(logging => logging.ClearProviders())
                     .ConfigureServices(services =>
                     {
-                        ServiceDescriptor service = services.SingleOrDefault(service =>
-                            service.ServiceType == typeof(DbContextOptions<BucketContext>));
-
-                        if (service != null)
-                        {
-                            services.Remove(service);
-                        }
+                        services.Remove(services.SingleOrDefault(service =>
+                            service.ServiceType == typeof(DbContextOptions<BucketContext>)));
 
                         services.AddDbContext<BucketContext>(options =>
-                            options.UseInMemoryDatabase(databaseName));
+                            options.UseInMemoryDatabase(databaseName, InMemoryDatabaseRoot));
+
+                        services.Remove(services.SingleOrDefault(service =>
+                            service.ServiceType == typeof(DbContextOptions<BucketContext.ReadOnly>)));
+
+                        services.AddDbContext<BucketContext.ReadOnly>(options =>
+                            options.UseInMemoryDatabase(databaseName, InMemoryDatabaseRoot));
                     });
             }).CreateClient();
         }

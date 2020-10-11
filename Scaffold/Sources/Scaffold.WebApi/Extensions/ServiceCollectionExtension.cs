@@ -117,8 +117,11 @@ namespace Scaffold.WebApi.Extensions
             services.AddDbContext<BucketContext>(builder =>
                 builder.UseNpgsql(config.GetValue<string>("ConnectionStrings:DefaultConnection")));
 
+            services.AddDbContext<BucketContext.ReadOnly>(builder =>
+                builder.UseNpgsql(config.GetValue<string>("ConnectionStrings:ReadOnlyConnection")));
+
             services
-                .AddScoped<IBucketReadRepository, BucketRepository>()
+                .AddScoped<IBucketReadRepository, BucketReadRepository>()
                 .AddScoped<IBucketRepository, BucketRepository>();
 
             return services;

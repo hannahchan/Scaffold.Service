@@ -11,9 +11,14 @@ namespace Scaffold.Repositories.PostgreSQL
         {
         }
 
-        public DbSet<Bucket> Buckets { get; set; } = null!;
+        protected BucketContext(DbContextOptions options)
+            : base(options)
+        {
+        }
 
-        public DbSet<Item> Items { get; set; } = null!;
+        public DbSet<Bucket> Buckets => this.Set<Bucket>();
+
+        public DbSet<Item> Items => this.Set<Item>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,6 +26,15 @@ namespace Scaffold.Repositories.PostgreSQL
 
             modelBuilder.ApplyConfiguration(new BucketConfiguration());
             modelBuilder.ApplyConfiguration(new ItemConfiguration());
+        }
+
+        public class ReadOnly : BucketContext
+        {
+            public ReadOnly(DbContextOptions<ReadOnly> options)
+                : base(options)
+            {
+                this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            }
         }
     }
 }

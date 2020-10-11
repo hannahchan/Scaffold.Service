@@ -33,7 +33,8 @@
             }));
 
             services.AddHealthChecks()
-                .AddDbContextCheck<BucketContext>();
+                .AddDbContextCheck<BucketContext>()
+                .AddDbContextCheck<BucketContext.ReadOnly>();
 
             services
                 .AddHttpClients()
