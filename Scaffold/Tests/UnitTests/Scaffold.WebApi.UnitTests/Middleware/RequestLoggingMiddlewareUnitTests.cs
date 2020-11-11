@@ -44,7 +44,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
                     It.Is<It.IsAnyType>((@object, type) => @object.ToString()
                         !.Equals("Inbound HTTP   started")),
                     null,
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
+                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
                 Times.Once);
 
             mock.Verify(
@@ -54,7 +54,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
                     It.Is<It.IsAnyType>((@object, type) => @object.ToString()
                         !.Equals($"Inbound HTTP   finished - {statusCode}")),
                     null,
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
+                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
                 Times.Once());
         }
 
@@ -92,7 +92,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
                     It.IsAny<EventId>(),
                     It.IsAny<It.IsAnyType>(),
                     null,
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
+                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
                 Times.Exactly(logged ? 2 : 0));
         }
 
@@ -123,7 +123,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
                     It.Is<It.IsAnyType>((@object, type) => @object.ToString()
                         !.Equals("Inbound HTTP   started")),
                     null,
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
+                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
                 Times.Once);
 
             mock.Verify(
@@ -133,7 +133,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
                     It.Is<It.IsAnyType>((@object, type) => @object.ToString()
                         !.Equals("Inbound HTTP   finished - Unhandled Exception")),
                     exception,
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
+                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
                 Times.Once);
 
             Assert.NotNull(result);

@@ -45,7 +45,7 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
                     It.Is<It.IsAnyType>((@object, type) => @object.ToString()
                         !.Equals("Outbound HTTP GET http://localhost/ started")),
                     null,
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
+                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
                 Times.Once());
 
             mock.Verify(
@@ -55,7 +55,7 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
                     It.Is<It.IsAnyType>((@object, type) => @object.ToString()
                         !.Equals($"Outbound HTTP GET http://localhost/ finished - {statusCode}")),
                     null,
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
+                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
                 Times.Once());
         }
 
@@ -89,7 +89,7 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
                     It.Is<It.IsAnyType>((@object, type) => @object.ToString()
                         !.Equals("Outbound HTTP GET http://localhost/ started")),
                     null,
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
+                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
                 Times.Once);
 
             mock.Verify(
@@ -99,7 +99,7 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
                     It.Is<It.IsAnyType>((@object, type) => @object.ToString()
                         !.Equals("Outbound HTTP GET http://localhost/ finished - Unhandled Exception")),
                     exception,
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()),
+                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
                 Times.Once);
 
             Assert.NotNull(result);
