@@ -10,7 +10,7 @@
       "request": "launch",
       "preLaunchTask": "preLaunch",
       "postDebugTask": "postDebug",
-      "program": "${workspaceFolder}/Sources/Scaffold.WebApi/bin/Debug/netcoreapp3.1/Scaffold.WebApi.dll",
+      "program": "${workspaceFolder}/Sources/Scaffold.WebApi/bin/Debug/net5.0/Scaffold.WebApi.dll",
       "args": [],
       "cwd": "${workspaceFolder}/Sources/Scaffold.WebApi",
       "stopAtEntry": false,
