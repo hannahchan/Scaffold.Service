@@ -16,7 +16,7 @@ string buildArtifacts = $"{artifacts}/Build";
 string testArtifacts = $"{artifacts}/Test";
 
 string projectName = "Scaffold";
-string solution = "./Scaffold.WebApi.sln";
+string solution = "./Scaffold.sln";
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
