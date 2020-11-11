@@ -23,7 +23,7 @@ namespace Scaffold.Repositories.PostgreSQL
                 throw new ArgumentNullException(nameof(bucket));
             }
 
-            this.context.Set<Bucket>().Add(bucket);
+            this.context.Buckets.Add(bucket);
             this.context.SaveChanges();
         }
 
@@ -34,7 +34,7 @@ namespace Scaffold.Repositories.PostgreSQL
                 throw new ArgumentNullException(nameof(bucket));
             }
 
-            this.context.Set<Bucket>().Add(bucket);
+            this.context.Buckets.Add(bucket);
             return this.context.SaveChangesAsync(cancellationToken);
         }
 
@@ -45,7 +45,7 @@ namespace Scaffold.Repositories.PostgreSQL
                 throw new ArgumentNullException(nameof(bucket));
             }
 
-            this.context.Set<Bucket>().Remove(bucket);
+            this.context.Buckets.Remove(bucket);
             this.context.SaveChanges();
         }
 
@@ -56,7 +56,7 @@ namespace Scaffold.Repositories.PostgreSQL
                 throw new ArgumentNullException(nameof(bucket));
             }
 
-            this.context.Set<Bucket>().Remove(bucket);
+            this.context.Buckets.Remove(bucket);
             return this.context.SaveChangesAsync(cancellationToken);
         }
 
@@ -67,7 +67,7 @@ namespace Scaffold.Repositories.PostgreSQL
                 throw new ArgumentNullException(nameof(bucket));
             }
 
-            this.context.Set<Bucket>().Update(bucket);
+            this.context.Buckets.Update(bucket);
             this.context.SaveChanges();
         }
 
@@ -78,7 +78,7 @@ namespace Scaffold.Repositories.PostgreSQL
                 throw new ArgumentNullException(nameof(bucket));
             }
 
-            this.context.Set<Bucket>().Update(bucket);
+            this.context.Buckets.Update(bucket);
             return this.context.SaveChangesAsync(cancellationToken);
         }
     }

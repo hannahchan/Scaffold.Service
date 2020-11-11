@@ -46,7 +46,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
 
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(bucket);
+                    context.Buckets.Add(bucket);
                     context.SaveChanges();
                 }
 
@@ -88,9 +88,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(new Bucket());
-                    context.Set<Bucket>().Add(new Bucket());
-                    context.Set<Bucket>().Add(new Bucket());
+                    context.Buckets.Add(new Bucket());
+                    context.Buckets.Add(new Bucket());
+                    context.Buckets.Add(new Bucket());
                     context.SaveChanges();
                 }
 
@@ -115,9 +115,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(new Bucket());
-                    context.Set<Bucket>().Add(new Bucket());
-                    context.Set<Bucket>().Add(new Bucket());
+                    context.Buckets.Add(new Bucket());
+                    context.Buckets.Add(new Bucket());
+                    context.Buckets.Add(new Bucket());
                     context.SaveChanges();
                 }
 
@@ -141,11 +141,11 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(new Bucket { Size = 1 });
-                    context.Set<Bucket>().Add(new Bucket { Size = 2 });
-                    context.Set<Bucket>().Add(new Bucket { Size = 3 });
-                    context.Set<Bucket>().Add(new Bucket { Size = 5 });
-                    context.Set<Bucket>().Add(new Bucket { Size = 8 });
+                    context.Buckets.Add(new Bucket { Size = 1 });
+                    context.Buckets.Add(new Bucket { Size = 2 });
+                    context.Buckets.Add(new Bucket { Size = 3 });
+                    context.Buckets.Add(new Bucket { Size = 5 });
+                    context.Buckets.Add(new Bucket { Size = 8 });
                     context.SaveChanges();
                 }
 
@@ -189,9 +189,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 1" });
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 2" });
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 3" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 1" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 2" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 3" });
                     context.SaveChanges();
                 }
 
@@ -219,9 +219,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 1" });
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 2" });
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 3" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 1" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 2" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 3" });
                     context.SaveChanges();
                 }
 
@@ -248,9 +248,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 1" });
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 2" });
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 3" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 1" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 2" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 3" });
                     context.SaveChanges();
                 }
 
@@ -278,9 +278,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 1" });
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 2" });
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 3" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 1" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 2" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 3" });
                     context.SaveChanges();
                 }
 
@@ -307,9 +307,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 1" });
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 2" });
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 3" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 1" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 2" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 3" });
                     context.SaveChanges();
                 }
 
@@ -340,7 +340,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
 
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(bucket);
+                    context.Buckets.Add(bucket);
                     await context.SaveChangesAsync();
                 }
 
@@ -403,9 +403,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
 
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(bucket1);
-                    context.Set<Bucket>().Add(bucket2);
-                    context.Set<Bucket>().Add(bucket3);
+                    context.Buckets.Add(bucket1);
+                    context.Buckets.Add(bucket2);
+                    context.Buckets.Add(bucket3);
                     await context.SaveChangesAsync();
                 }
 
@@ -434,9 +434,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
 
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(bucket1);
-                    context.Set<Bucket>().Add(bucket2);
-                    context.Set<Bucket>().Add(bucket3);
+                    context.Buckets.Add(bucket1);
+                    context.Buckets.Add(bucket2);
+                    context.Buckets.Add(bucket3);
                     await context.SaveChangesAsync();
                 }
 
@@ -466,11 +466,11 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
 
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(bucket1);
-                    context.Set<Bucket>().Add(bucket2);
-                    context.Set<Bucket>().Add(bucket3);
-                    context.Set<Bucket>().Add(bucket4);
-                    context.Set<Bucket>().Add(bucket5);
+                    context.Buckets.Add(bucket1);
+                    context.Buckets.Add(bucket2);
+                    context.Buckets.Add(bucket3);
+                    context.Buckets.Add(bucket4);
+                    context.Buckets.Add(bucket5);
                     await context.SaveChangesAsync();
                 }
 
@@ -514,9 +514,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 1" });
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 2" });
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 3" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 1" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 2" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 3" });
                     await context.SaveChangesAsync();
                 }
 
@@ -544,9 +544,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 1" });
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 2" });
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 3" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 1" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 2" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 3" });
                     await context.SaveChangesAsync();
                 }
 
@@ -573,9 +573,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 1" });
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 2" });
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 3" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 1" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 2" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 3" });
                     await context.SaveChangesAsync();
                 }
 
@@ -603,9 +603,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 1" });
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 2" });
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 3" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 1" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 2" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 3" });
                     await context.SaveChangesAsync();
                 }
 
@@ -632,9 +632,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 1" });
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 2" });
-                    context.Set<Bucket>().Add(new Bucket { Name = "Bucket 3" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 1" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 2" });
+                    context.Buckets.Add(new Bucket { Name = "Bucket 3" });
                     await context.SaveChangesAsync();
                 }
 
@@ -684,7 +684,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        context.Set<Bucket>().Add(bucket);
+                        context.Buckets.Add(bucket);
                     }
 
                     context.SaveChanges();
@@ -717,7 +717,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        context.Set<Bucket>().Add(bucket);
+                        context.Buckets.Add(bucket);
                     }
 
                     context.SaveChanges();
@@ -750,7 +750,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        context.Set<Bucket>().Add(bucket);
+                        context.Buckets.Add(bucket);
                     }
 
                     context.SaveChanges();
@@ -783,7 +783,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        context.Set<Bucket>().Add(bucket);
+                        context.Buckets.Add(bucket);
                     }
 
                     context.SaveChanges();
@@ -816,7 +816,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        context.Set<Bucket>().Add(bucket);
+                        context.Buckets.Add(bucket);
                     }
 
                     context.SaveChanges();
@@ -849,7 +849,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        context.Set<Bucket>().Add(bucket);
+                        context.Buckets.Add(bucket);
                     }
 
                     context.SaveChanges();
@@ -904,7 +904,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        context.Set<Bucket>().Add(bucket);
+                        context.Buckets.Add(bucket);
                     }
 
                     context.SaveChanges();
@@ -959,7 +959,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        context.Set<Bucket>().Add(bucket);
+                        context.Buckets.Add(bucket);
                     }
 
                     context.SaveChanges();
@@ -1014,7 +1014,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        context.Set<Bucket>().Add(bucket);
+                        context.Buckets.Add(bucket);
                     }
 
                     context.SaveChanges();
@@ -1072,7 +1072,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        context.Set<Bucket>().Add(bucket);
+                        context.Buckets.Add(bucket);
                     }
 
                     context.SaveChanges();
@@ -1105,7 +1105,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        context.Set<Bucket>().Add(bucket);
+                        context.Buckets.Add(bucket);
                     }
 
                     context.SaveChanges();
@@ -1138,7 +1138,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        context.Set<Bucket>().Add(bucket);
+                        context.Buckets.Add(bucket);
                     }
 
                     context.SaveChanges();
@@ -1171,7 +1171,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        context.Set<Bucket>().Add(bucket);
+                        context.Buckets.Add(bucket);
                     }
 
                     context.SaveChanges();
@@ -1204,7 +1204,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        context.Set<Bucket>().Add(bucket);
+                        context.Buckets.Add(bucket);
                     }
 
                     context.SaveChanges();
@@ -1237,7 +1237,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        context.Set<Bucket>().Add(bucket);
+                        context.Buckets.Add(bucket);
                     }
 
                     context.SaveChanges();
@@ -1292,7 +1292,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        context.Set<Bucket>().Add(bucket);
+                        context.Buckets.Add(bucket);
                     }
 
                     context.SaveChanges();
@@ -1347,7 +1347,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        context.Set<Bucket>().Add(bucket);
+                        context.Buckets.Add(bucket);
                     }
 
                     context.SaveChanges();
@@ -1402,7 +1402,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 {
                     foreach (Bucket bucket in this.testBuckets)
                     {
-                        context.Set<Bucket>().Add(bucket);
+                        context.Buckets.Add(bucket);
                     }
 
                     context.SaveChanges();

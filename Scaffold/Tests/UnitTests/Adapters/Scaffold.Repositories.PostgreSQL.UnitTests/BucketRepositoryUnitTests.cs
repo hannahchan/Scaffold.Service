@@ -37,9 +37,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Assert
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    Bucket result = context.Set<Bucket>().Find(bucket.Id);
+                    Bucket result = context.Buckets.Find(bucket.Id);
 
-                    Assert.Equal(1, context.Set<Bucket>().Count());
+                    Assert.Equal(1, context.Buckets.Count());
                     Assert.NotEqual(bucket, result);
                     Assert.Equal(bucket.Id, result.Id);
                 }
@@ -80,9 +80,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Assert
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    Bucket result = context.Set<Bucket>().Find(bucket.Id);
+                    Bucket result = context.Buckets.Find(bucket.Id);
 
-                    Assert.Equal(1, context.Set<Bucket>().Count());
+                    Assert.Equal(1, context.Buckets.Count());
                     Assert.NotEqual(bucket, result);
                     Assert.Equal(bucket.Id, result.Id);
                 }
@@ -131,7 +131,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
 
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(bucket);
+                    context.Buckets.Add(bucket);
                     context.SaveChanges();
                 }
 
@@ -145,8 +145,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Assert
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    Assert.Null(context.Set<Bucket>().Find(bucket.Id));
-                    Assert.Equal(0, context.Set<Bucket>().Count());
+                    Assert.Null(context.Buckets.Find(bucket.Id));
+                    Assert.Equal(0, context.Buckets.Count());
                 }
             }
 
@@ -177,7 +177,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
 
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(bucket);
+                    context.Buckets.Add(bucket);
                     await context.SaveChangesAsync();
                 }
 
@@ -191,8 +191,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Assert
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    Assert.Null(context.Set<Bucket>().Find(bucket.Id));
-                    Assert.Equal(0, context.Set<Bucket>().Count());
+                    Assert.Null(context.Buckets.Find(bucket.Id));
+                    Assert.Equal(0, context.Buckets.Count());
                 }
             }
 
@@ -239,7 +239,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
 
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(bucket);
+                    context.Buckets.Add(bucket);
                     context.SaveChanges();
                 }
 
@@ -256,13 +256,13 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Assert
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    Bucket result = context.Set<Bucket>().Find(bucket.Id);
+                    Bucket result = context.Buckets.Find(bucket.Id);
 
                     Assert.NotEqual(bucket, result);
                     Assert.Equal(bucket.Id, result.Id);
                     Assert.Equal(newValue, result.Name);
 
-                    Assert.Equal(1, context.Set<Bucket>().Count());
+                    Assert.Equal(1, context.Buckets.Count());
                 }
             }
 
@@ -293,7 +293,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
 
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Set<Bucket>().Add(bucket);
+                    context.Buckets.Add(bucket);
                     await context.SaveChangesAsync();
                 }
 
@@ -310,13 +310,13 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Assert
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    Bucket result = context.Set<Bucket>().Find(bucket.Id);
+                    Bucket result = context.Buckets.Find(bucket.Id);
 
                     Assert.NotEqual(bucket, result);
                     Assert.Equal(bucket.Id, result.Id);
                     Assert.Equal(newValue, result.Name);
 
-                    Assert.Equal(1, context.Set<Bucket>().Count());
+                    Assert.Equal(1, context.Buckets.Count());
                 }
             }
 
