@@ -11,10 +11,10 @@ namespace Scaffold.WebApi.UnitTests.Extensions
         public void When_EnsuringCreatedDatabaseWithNullHost_Expect_ArgumentNullException()
         {
             // Arrange
-            IHost? host = null;
+            IHost host = null;
 
             // Act
-            Exception exception = Record.Exception(() => host!.EnsureCreatedDatabase());
+            Exception exception = Record.Exception(() => host.EnsureCreatedDatabase());
 
             // Assert
             ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
@@ -25,10 +25,10 @@ namespace Scaffold.WebApi.UnitTests.Extensions
         public void When_MigratingDatabaseWithNullHost_Expect_ArgumentNullException()
         {
             // Arrange
-            IHost? host = null;
+            IHost host = null;
 
             // Act
-            Exception exception = Record.Exception(() => host!.MigrateDatabase());
+            Exception exception = Record.Exception(() => host.MigrateDatabase());
 
             // Assert
             ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
@@ -39,10 +39,10 @@ namespace Scaffold.WebApi.UnitTests.Extensions
         public void When_RegisteringGlobalTracerWithNullHost_Expect_ArgumentNullException()
         {
             // Arrange
-            IHost? host = null;
+            IHost host = null;
 
             // Act
-            Exception exception = Record.Exception(() => host!.RegisterGlobalTracer());
+            Exception exception = Record.Exception(() => host.RegisterGlobalTracer());
 
             // Assert
             ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);

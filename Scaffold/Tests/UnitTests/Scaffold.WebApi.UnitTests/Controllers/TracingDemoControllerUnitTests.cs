@@ -81,7 +81,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
             public void When_SayingHelloToName_Expect_HelloMessage()
             {
                 // Arrange
-                TracingDemoController controller = new TracingDemoController(null!);
+                TracingDemoController controller = new TracingDemoController(null);
                 string name = Guid.NewGuid().ToString();
 
                 // Act
@@ -95,7 +95,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
             public void When_SayingHelloToNullName_Expect_HelloMessage()
             {
                 // Arrange
-                TracingDemoController controller = new TracingDemoController(null!);
+                TracingDemoController controller = new TracingDemoController(null);
 
                 // Act
                 string result = controller.Hello(null);

@@ -50,7 +50,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     context.SaveChanges();
                 }
 
-                Bucket? result;
+                Bucket result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -61,15 +61,15 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
 
                 // Assert
                 Assert.NotEqual(bucket, result);
-                Assert.Equal(bucket.Id, result?.Id);
-                Assert.Equal(bucket.Name, result?.Name);
+                Assert.Equal(bucket.Id, result.Id);
+                Assert.Equal(bucket.Name, result.Name);
             }
 
             [Fact]
             public void When_GettingNonExistingBucket_Expect_Null()
             {
                 // Arrange
-                Bucket? result;
+                Bucket result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -174,7 +174,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    exception = Record.Exception(() => repository.Get(null!));
+                    exception = Record.Exception(() => repository.Get(null));
                 }
 
                 // Assert
@@ -344,7 +344,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     await context.SaveChangesAsync();
                 }
 
-                Bucket? result;
+                Bucket result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -355,15 +355,15 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
 
                 // Assert
                 Assert.NotEqual(bucket, result);
-                Assert.Equal(bucket.Id, result?.Id);
-                Assert.Equal(bucket.Name, result?.Name);
+                Assert.Equal(bucket.Id, result.Id);
+                Assert.Equal(bucket.Name, result.Name);
             }
 
             [Fact]
             public async Task When_GettingNonExistingBucket_Expect_Null()
             {
                 // Arrange
-                Bucket? result;
+                Bucket result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -499,7 +499,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
                     BucketRepository repository = new BucketRepository(context);
-                    exception = await Record.ExceptionAsync(() => repository.GetAsync(null!));
+                    exception = await Record.ExceptionAsync(() => repository.GetAsync(null));
                 }
 
                 // Assert

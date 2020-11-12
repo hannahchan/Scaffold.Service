@@ -377,9 +377,9 @@ namespace Scaffold.Application.UnitTests.Models
         {
             public int Value { get; set; } = new Random().Next();
 
-            public int CompareTo(ComparableProperty1? other)
+            public int CompareTo(ComparableProperty1 other)
             {
-                return this.Value.CompareTo(other?.Value);
+                return this.Value.CompareTo(other.Value);
             }
         }
 
@@ -387,7 +387,7 @@ namespace Scaffold.Application.UnitTests.Models
         {
             public int Value { get; set; } = new Random().Next();
 
-            public int CompareTo(object? obj)
+            public int CompareTo(object obj)
             {
                 if (obj is ComparableProperty2 other)
                 {

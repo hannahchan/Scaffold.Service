@@ -33,7 +33,7 @@ namespace Scaffold.WebApi.UnitTests.Factories
             public void When_InstantiatingFactoryWithNullOptions_Expect_ArgumentNullException()
             {
                 // Act
-                Exception result = Record.Exception(() => new CustomProblemDetailsFactory(null!));
+                Exception result = Record.Exception(() => new CustomProblemDetailsFactory(null));
 
                 // Assert
                 Assert.NotNull(result);
@@ -45,7 +45,7 @@ namespace Scaffold.WebApi.UnitTests.Factories
             public void When_InstantiatingFactoryWithNullApiBehaviorOptions_Expect_ArgumentNullException()
             {
                 // Arrange
-                IOptions<ApiBehaviorOptions> options = Options.Create<ApiBehaviorOptions>(null!);
+                IOptions<ApiBehaviorOptions> options = Options.Create<ApiBehaviorOptions>(null);
 
                 // Act
                 Exception result = Record.Exception(() => new CustomProblemDetailsFactory(options));
@@ -86,7 +86,7 @@ namespace Scaffold.WebApi.UnitTests.Factories
                 ProblemDetailsFactory factory = new CustomProblemDetailsFactory(options);
 
                 // Act
-                Exception result = Record.Exception(() => factory.CreateProblemDetails(null!));
+                Exception result = Record.Exception(() => factory.CreateProblemDetails(null));
 
                 // Assert
                 Assert.NotNull(result);
@@ -234,7 +234,7 @@ namespace Scaffold.WebApi.UnitTests.Factories
                 ProblemDetailsFactory factory = new CustomProblemDetailsFactory(options);
 
                 // Act
-                Exception result = Record.Exception(() => factory.CreateValidationProblemDetails(null!, new ModelStateDictionary()));
+                Exception result = Record.Exception(() => factory.CreateValidationProblemDetails(null, new ModelStateDictionary()));
 
                 // Assert
                 Assert.NotNull(result);
@@ -250,7 +250,7 @@ namespace Scaffold.WebApi.UnitTests.Factories
                 ProblemDetailsFactory factory = new CustomProblemDetailsFactory(options);
 
                 // Act
-                Exception result = Record.Exception(() => factory.CreateValidationProblemDetails(new DefaultHttpContext(), null!));
+                Exception result = Record.Exception(() => factory.CreateValidationProblemDetails(new DefaultHttpContext(), null));
 
                 // Assert
                 Assert.NotNull(result);

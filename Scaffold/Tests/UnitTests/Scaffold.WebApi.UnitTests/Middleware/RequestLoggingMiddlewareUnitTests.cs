@@ -41,8 +41,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
                 m => m.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((@object, type) => @object.ToString()
-                        !.Equals("Inbound HTTP   started")),
+                    It.Is<It.IsAnyType>((@object, type) => @object.ToString().Equals("Inbound HTTP   started")),
                     null,
                     It.IsAny<Func<It.IsAnyType, Exception, string>>()),
                 Times.Once);
@@ -51,8 +50,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
                 m => m.Log(
                     expectedLogLevel,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((@object, type) => @object.ToString()
-                        !.Equals($"Inbound HTTP   finished - {statusCode}")),
+                    It.Is<It.IsAnyType>((@object, type) => @object.ToString().Equals($"Inbound HTTP   finished - {statusCode}")),
                     null,
                     It.IsAny<Func<It.IsAnyType, Exception, string>>()),
                 Times.Once());
@@ -120,8 +118,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
                 m => m.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((@object, type) => @object.ToString()
-                        !.Equals("Inbound HTTP   started")),
+                    It.Is<It.IsAnyType>((@object, type) => @object.ToString().Equals("Inbound HTTP   started")),
                     null,
                     It.IsAny<Func<It.IsAnyType, Exception, string>>()),
                 Times.Once);
@@ -130,8 +127,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
                 m => m.Log(
                     LogLevel.Critical,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((@object, type) => @object.ToString()
-                        !.Equals("Inbound HTTP   finished - Unhandled Exception")),
+                    It.Is<It.IsAnyType>((@object, type) => @object.ToString().Equals("Inbound HTTP   finished - Unhandled Exception")),
                     exception,
                     It.IsAny<Func<It.IsAnyType, Exception, string>>()),
                 Times.Once);

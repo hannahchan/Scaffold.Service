@@ -53,7 +53,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 BucketRepository repository = new BucketRepository(context);
 
                 // Act
-                Exception exception = Record.Exception(() => repository.Add(null!));
+                Exception exception = Record.Exception(() => repository.Add(null));
 
                 // Assert
                 ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
@@ -96,7 +96,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 BucketRepository repository = new BucketRepository(context);
 
                 // Act
-                Exception exception = await Record.ExceptionAsync(() => repository.AddAsync(null!));
+                Exception exception = await Record.ExceptionAsync(() => repository.AddAsync(null));
 
                 // Assert
                 ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
@@ -158,7 +158,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 BucketRepository repository = new BucketRepository(context);
 
                 // Act
-                Exception exception = Record.Exception(() => repository.Remove(null!));
+                Exception exception = Record.Exception(() => repository.Remove(null));
 
                 // Assert
                 ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
@@ -204,7 +204,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 BucketRepository repository = new BucketRepository(context);
 
                 // Act
-                Exception exception = await Record.ExceptionAsync(() => repository.RemoveAsync(null!));
+                Exception exception = await Record.ExceptionAsync(() => repository.RemoveAsync(null));
 
                 // Assert
                 ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
@@ -274,7 +274,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 BucketRepository repository = new BucketRepository(context);
 
                 // Act
-                Exception exception = Record.Exception(() => repository.Update(null!));
+                Exception exception = Record.Exception(() => repository.Update(null));
 
                 // Assert
                 ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
@@ -328,7 +328,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 BucketRepository repository = new BucketRepository(context);
 
                 // Act
-                Exception exception = await Record.ExceptionAsync(() => repository.UpdateAsync(null!));
+                Exception exception = await Record.ExceptionAsync(() => repository.UpdateAsync(null));
 
                 // Assert
                 ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);

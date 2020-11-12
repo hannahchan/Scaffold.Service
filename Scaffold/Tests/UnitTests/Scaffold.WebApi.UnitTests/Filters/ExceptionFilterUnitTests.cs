@@ -104,10 +104,10 @@ namespace Scaffold.WebApi.UnitTests.Filters
             public override ProblemDetails CreateProblemDetails(
                 HttpContext httpContext,
                 int? statusCode = null,
-                string? title = null,
-                string? type = null,
-                string? detail = null,
-                string? instance = null)
+                string title = null,
+                string type = null,
+                string detail = null,
+                string instance = null)
             {
                 return new ProblemDetails
                 {
@@ -123,10 +123,10 @@ namespace Scaffold.WebApi.UnitTests.Filters
                 HttpContext httpContext,
                 ModelStateDictionary modelStateDictionary,
                 int? statusCode = null,
-                string? title = null,
-                string? type = null,
-                string? detail = null,
-                string? instance = null)
+                string title = null,
+                string type = null,
+                string detail = null,
+                string instance = null)
             {
                 return new ValidationProblemDetails
                 {

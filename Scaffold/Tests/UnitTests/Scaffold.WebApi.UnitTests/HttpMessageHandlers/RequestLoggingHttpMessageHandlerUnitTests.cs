@@ -42,8 +42,7 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
                 m => m.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((@object, type) => @object.ToString()
-                        !.Equals("Outbound HTTP GET http://localhost/ started")),
+                    It.Is<It.IsAnyType>((@object, type) => @object.ToString().Equals("Outbound HTTP GET http://localhost/ started")),
                     null,
                     It.IsAny<Func<It.IsAnyType, Exception, string>>()),
                 Times.Once());
@@ -52,8 +51,7 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
                 m => m.Log(
                     expectedLogLevel,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((@object, type) => @object.ToString()
-                        !.Equals($"Outbound HTTP GET http://localhost/ finished - {statusCode}")),
+                    It.Is<It.IsAnyType>((@object, type) => @object.ToString().Equals($"Outbound HTTP GET http://localhost/ finished - {statusCode}")),
                     null,
                     It.IsAny<Func<It.IsAnyType, Exception, string>>()),
                 Times.Once());
@@ -86,8 +84,7 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
                 m => m.Log(
                     LogLevel.Information,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((@object, type) => @object.ToString()
-                        !.Equals("Outbound HTTP GET http://localhost/ started")),
+                    It.Is<It.IsAnyType>((@object, type) => @object.ToString().Equals("Outbound HTTP GET http://localhost/ started")),
                     null,
                     It.IsAny<Func<It.IsAnyType, Exception, string>>()),
                 Times.Once);
@@ -96,8 +93,7 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
                 m => m.Log(
                     LogLevel.Critical,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((@object, type) => @object.ToString()
-                        !.Equals("Outbound HTTP GET http://localhost/ finished - Unhandled Exception")),
+                    It.Is<It.IsAnyType>((@object, type) => @object.ToString().Equals("Outbound HTTP GET http://localhost/ finished - Unhandled Exception")),
                     exception,
                     It.IsAny<Func<It.IsAnyType, Exception, string>>()),
                 Times.Once);

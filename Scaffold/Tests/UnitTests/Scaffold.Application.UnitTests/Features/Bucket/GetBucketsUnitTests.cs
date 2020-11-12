@@ -82,7 +82,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 Exception exception;
 
                 // Act
-                exception = Record.Exception(() => new GetBuckets.Query(null!));
+                exception = Record.Exception(() => new GetBuckets.Query(null));
 
                 // Assert
                 ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
@@ -109,7 +109,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public void When_InstantiatingResponseWithNull_Expect_ArgumentNullException()
             {
                 // Act
-                Exception exception = Record.Exception(() => new GetBuckets.Response(null!));
+                Exception exception = Record.Exception(() => new GetBuckets.Response(null));
 
                 // Assert
                 ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);

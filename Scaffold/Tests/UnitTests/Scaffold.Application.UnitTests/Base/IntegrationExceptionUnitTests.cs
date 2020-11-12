@@ -66,7 +66,7 @@ namespace Scaffold.Application.UnitTests.Base
             Assert.Equal(exception.Message, result.Message);
 
             Assert.NotEqual(exception.InnerException, result.InnerException);
-            Assert.Equal(exception.InnerException!.Message, result.InnerException?.Message);
+            Assert.Equal(exception.InnerException.Message, result.InnerException.Message);
         }
 
         [Serializable]

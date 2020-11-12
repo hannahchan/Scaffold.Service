@@ -13,10 +13,10 @@ namespace Scaffold.WebApi.UnitTests.Extensions
         public void When_AddingApiDocumentationWithNullServices_Expect_ArgumentNullException()
         {
             // Arrange
-            IServiceCollection? services = null;
+            IServiceCollection services = null;
 
             // Act
-            Exception exception = Record.Exception(() => services!.AddApiDocumentation());
+            Exception exception = Record.Exception(() => services.AddApiDocumentation());
 
             // Assert
             ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
@@ -27,10 +27,10 @@ namespace Scaffold.WebApi.UnitTests.Extensions
         public void When_AddingHttpClientsWithNullServices_Expect_ArgumentNullException()
         {
             // Arrange
-            IServiceCollection? services = null;
+            IServiceCollection services = null;
 
             // Act
-            Exception exception = Record.Exception(() => services!.AddHttpClients());
+            Exception exception = Record.Exception(() => services.AddHttpClients());
 
             // Assert
             ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
@@ -41,11 +41,11 @@ namespace Scaffold.WebApi.UnitTests.Extensions
         public void When_AddingOptionsWithNullServices_Expect_ArgumentNullException()
         {
             // Arrange
-            IServiceCollection? services = null;
+            IServiceCollection services = null;
 
             // Act
             Exception exception = Record.Exception(() =>
-                services!.AddOptions(new ConfigurationRoot(new List<IConfigurationProvider>())));
+                services.AddOptions(new ConfigurationRoot(new List<IConfigurationProvider>())));
 
             // Assert
             ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
@@ -56,10 +56,10 @@ namespace Scaffold.WebApi.UnitTests.Extensions
         public void When_AddingOptionsWithNullConfiguration_Expect_ArgumentNullException()
         {
             // Arrange
-            IServiceCollection? services = new ServiceCollection();
+            IServiceCollection services = new ServiceCollection();
 
             // Act
-            Exception exception = Record.Exception(() => services!.AddOptions(null!));
+            Exception exception = Record.Exception(() => services.AddOptions(null));
 
             // Assert
             ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
@@ -70,11 +70,11 @@ namespace Scaffold.WebApi.UnitTests.Extensions
         public void When_AddingRepositoriesWithNullServices_Expect_ArgumentNullException()
         {
             // Arrange
-            IServiceCollection? services = null;
+            IServiceCollection services = null;
 
             // Act
             Exception exception = Record.Exception(() =>
-                services!.AddRepositories(new ConfigurationRoot(new List<IConfigurationProvider>())));
+                services.AddRepositories(new ConfigurationRoot(new List<IConfigurationProvider>())));
 
             // Assert
             ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
@@ -85,10 +85,10 @@ namespace Scaffold.WebApi.UnitTests.Extensions
         public void When_AddingRepositoriesWithNullConfiguration_Expect_ArgumentNullException()
         {
             // Arrange
-            IServiceCollection? services = new ServiceCollection();
+            IServiceCollection services = new ServiceCollection();
 
             // Act
-            Exception exception = Record.Exception(() => services!.AddRepositories(null!));
+            Exception exception = Record.Exception(() => services.AddRepositories(null));
 
             // Assert
             ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
@@ -99,10 +99,10 @@ namespace Scaffold.WebApi.UnitTests.Extensions
         public void When_AddingServicesWithNullServices_Expect_ArgumentNullException()
         {
             // Arrange
-            IServiceCollection? services = null;
+            IServiceCollection services = null;
 
             // Act
-            Exception exception = Record.Exception(() => services!.AddServices());
+            Exception exception = Record.Exception(() => services.AddServices());
 
             // Assert
             ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);

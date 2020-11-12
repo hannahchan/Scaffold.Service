@@ -11,10 +11,10 @@ namespace Scaffold.WebApi.UnitTests.Extensions
         public void When_AddingCustomJsonOptionsWithNullMvcBuilder_Expect_ArgumentNullException()
         {
             // Arrange
-            IMvcBuilder? builder = null;
+            IMvcBuilder builder = null;
 
             // Act
-            Exception exception = Record.Exception(() => builder!.AddCustomJsonOptions());
+            Exception exception = Record.Exception(() => builder.AddCustomJsonOptions());
 
             // Assert
             ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
@@ -25,10 +25,10 @@ namespace Scaffold.WebApi.UnitTests.Extensions
         public void When_AddingCustomXmlFormattersWithNullMvcBuilder_Expect_ArgumentNullException()
         {
             // Arrange
-            IMvcBuilder? builder = null;
+            IMvcBuilder builder = null;
 
             // Act
-            Exception exception = Record.Exception(() => builder!.AddCustomXmlFormatters());
+            Exception exception = Record.Exception(() => builder.AddCustomXmlFormatters());
 
             // Assert
             ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);

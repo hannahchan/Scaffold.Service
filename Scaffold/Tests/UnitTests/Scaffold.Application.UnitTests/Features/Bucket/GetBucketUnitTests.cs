@@ -41,7 +41,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public void When_InstantiatingResponseWithNull_Expect_ArgumentNullException()
             {
                 // Act
-                Exception exception = Record.Exception(() => new GetBucket.Response(null!));
+                Exception exception = Record.Exception(() => new GetBucket.Response(null));
 
                 // Assert
                 ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);

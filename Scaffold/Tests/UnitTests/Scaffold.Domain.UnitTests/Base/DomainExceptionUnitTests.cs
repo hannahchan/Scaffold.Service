@@ -82,18 +82,18 @@ namespace Scaffold.Domain.UnitTests.Base
             Assert.Equal(exception.Message, result.Message);
 
             Assert.NotEqual(exception.InnerException, result.InnerException);
-            Assert.Equal(exception.InnerException!.Message, result.InnerException?.Message);
+            Assert.Equal(exception.InnerException.Message, result.InnerException.Message);
         }
 
         [Serializable]
         private class TestException : DomainException
         {
-            public TestException(string? message)
+            public TestException(string message)
                 : base(message)
             {
             }
 
-            public TestException(string? message, Exception? innerException)
+            public TestException(string message, Exception innerException)
                 : base(message, innerException)
             {
             }

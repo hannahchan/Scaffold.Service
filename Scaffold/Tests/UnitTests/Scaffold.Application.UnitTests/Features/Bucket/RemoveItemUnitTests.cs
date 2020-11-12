@@ -43,7 +43,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 await handler.Handle(command, default);
 
                 // Assert
-                Assert.DoesNotContain(item, this.repository.Get(bucket.Id)?.Items);
+                Assert.DoesNotContain(item, this.repository.Get(bucket.Id).Items);
             }
 
             [Fact]
@@ -66,7 +66,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 // Assert
                 Assert.IsType<ItemNotFoundException>(exception);
-                Assert.NotEmpty(this.repository.Get(bucket.Id)?.Items);
+                Assert.NotEmpty(this.repository.Get(bucket.Id).Items);
             }
 
             [Fact]
@@ -89,7 +89,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 
                 // Assert
                 Assert.IsType<BucketNotFoundException>(exception);
-                Assert.NotEmpty(this.repository.Get(bucket.Id)?.Items);
+                Assert.NotEmpty(this.repository.Get(bucket.Id).Items);
             }
         }
     }
