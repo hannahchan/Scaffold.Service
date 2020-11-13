@@ -169,6 +169,58 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
             Assert.Equal(exception, result);
         }
 
+        [Fact]
+        public async Task When_SendingAsyncWithNullHttpContext_Expect_InvalidOperationException()
+        {
+            // Arrange
+            IHttpContextAccessor httpContextAccessor = new HttpContextAccessor
+            {
+                HttpContext = null,
+            };
+
+            OpenTracingSpanTaggingHttpMessageHandler handler = new OpenTracingSpanTaggingHttpMessageHandler(httpContextAccessor);
+
+            Exception result;
+
+            // Act
+            using (HttpClient client = new HttpClient(handler))
+            {
+                result = await Record.ExceptionAsync(() => client.GetAsync(new Uri("http://localhost")));
+            }
+
+            // Assert
+            Assert.NotNull(result);
+            InvalidOperationException invalidOperationException = Assert.IsType<InvalidOperationException>(result);
+            Assert.Equal("Missing HttpContext while processing request.", invalidOperationException.Message);
+        }
+
+        [Fact]
+        public async Task When_SendingAsyncWithNoTracerRegisteredInServices_Expect_InvalidOperationException()
+        {
+            // Arrange
+            ServiceCollection services = new ServiceCollection();
+            IServiceProvider serviceProvider = services.BuildServiceProvider();
+
+            IHttpContextAccessor httpContextAccessor = new HttpContextAccessor
+            {
+                HttpContext = new DefaultHttpContext { RequestServices = serviceProvider },
+            };
+
+            OpenTracingSpanTaggingHttpMessageHandler handler = new OpenTracingSpanTaggingHttpMessageHandler(httpContextAccessor);
+
+            Exception result;
+
+            // Act
+            using (HttpClient client = new HttpClient(handler))
+            {
+                result = await Record.ExceptionAsync(() => client.GetAsync(new Uri("http://localhost")));
+            }
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<InvalidOperationException>(result);
+        }
+
         private class MockResponseReturningInnerHandler : DelegatingHandler
         {
             private readonly int statusCode;

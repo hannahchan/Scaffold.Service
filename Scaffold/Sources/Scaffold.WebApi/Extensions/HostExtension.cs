@@ -27,8 +27,8 @@ namespace Scaffold.WebApi.Extensions
 
                 if (hostEnvironment.IsDevelopment())
                 {
-                    BucketContext context = serviceProvider.GetService<BucketContext>();
-                    context?.Database.EnsureCreated();
+                    BucketContext context = serviceProvider.GetRequiredService<BucketContext>();
+                    context.Database.EnsureCreated();
                 }
             }
 
@@ -49,8 +49,8 @@ namespace Scaffold.WebApi.Extensions
 
                 if (hostEnvironment.IsDevelopment())
                 {
-                    BucketContext context = serviceProvider.GetService<BucketContext>();
-                    context?.Database.Migrate();
+                    BucketContext context = serviceProvider.GetRequiredService<BucketContext>();
+                    context.Database.Migrate();
                 }
             }
 

@@ -20,8 +20,10 @@ namespace Scaffold.WebApi.HttpMessageHandlers
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            IServiceProvider serviceProvider = this.httpContextAccessor.HttpContext.RequestServices;
-            ITracer tracer = serviceProvider.GetRequiredService<ITracer>();
+            HttpContext httpContext = this.httpContextAccessor.HttpContext ??
+                throw new InvalidOperationException("Missing HttpContext while processing request.");
+
+            ITracer tracer = httpContext.RequestServices.GetRequiredService<ITracer>();
 
             try
             {

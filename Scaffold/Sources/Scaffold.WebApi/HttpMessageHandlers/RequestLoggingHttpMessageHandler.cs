@@ -36,6 +36,11 @@ namespace Scaffold.WebApi.HttpMessageHandlers
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            if (request.RequestUri is null)
+            {
+                throw new InvalidOperationException("Missing RequestUri while processing request.");
+            }
+
             LogRequestStarted(this.logger, request.Method, request.RequestUri, null);
 
             try

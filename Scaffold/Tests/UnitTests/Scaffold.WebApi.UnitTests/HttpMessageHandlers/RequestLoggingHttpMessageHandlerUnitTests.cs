@@ -6,6 +6,7 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
     using Moq;
     using Scaffold.WebApi.HttpMessageHandlers;
     using Xunit;
@@ -102,6 +103,25 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
             Assert.Equal(exception, result);
         }
 
+        [Fact]
+        public async Task When_SendingAsyncWithNullRequestUri_Expect_InvalidOperationException()
+        {
+            // Arrange
+            TestRequestLoggingHttpMessageHandler handler = new TestRequestLoggingHttpMessageHandler();
+            HttpRequestMessage request = new HttpRequestMessage()
+            {
+                RequestUri = null,
+            };
+
+            // Act
+            Exception result = await Record.ExceptionAsync(() => handler.SendAsync(request, default));
+
+            // Assert
+            Assert.NotNull(result);
+            InvalidOperationException invalidOperationException = Assert.IsType<InvalidOperationException>(result);
+            Assert.Equal("Missing RequestUri while processing request.", invalidOperationException.Message);
+        }
+
         private class MockResponseReturningInnerHandler : DelegatingHandler
         {
             private readonly int statusCode;
@@ -129,6 +149,19 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
             protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
             {
                 return Task.FromException<HttpResponseMessage>(this.exception);
+            }
+        }
+
+        private class TestRequestLoggingHttpMessageHandler : RequestLoggingHttpMessageHandler
+        {
+            public TestRequestLoggingHttpMessageHandler()
+                : base(new NullLogger<RequestLoggingHttpMessageHandler>())
+            {
+            }
+
+            public new Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            {
+                return base.SendAsync(request, cancellationToken);
             }
         }
     }
