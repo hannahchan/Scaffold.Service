@@ -87,7 +87,7 @@ namespace Scaffold.Application.Features.Bucket
             public MappingProfile()
             {
                 this.CreateMap<Command, Bucket>()
-                    .ForMember(dest => dest.Size, opt => opt.Condition(src => src.Size != null))
+                    .ForMember(dest => dest.Size, opt => opt.Condition(src => src.Size is not null))
                     .ForMember(dest => dest.Items, opt => opt.Ignore());
             }
         }

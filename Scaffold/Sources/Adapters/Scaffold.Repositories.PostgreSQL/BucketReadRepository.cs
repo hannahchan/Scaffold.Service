@@ -84,7 +84,7 @@ namespace Scaffold.Repositories.PostgreSQL
 
             IQueryable<Bucket> query = this.context.Buckets.Where(predicate);
 
-            if (sortOrder != null)
+            if (sortOrder is not null)
             {
                 foreach ((string PropertyName, bool Descending) sortItem in sortOrder)
                 {
@@ -104,12 +104,12 @@ namespace Scaffold.Repositories.PostgreSQL
                 }
             }
 
-            if (offset != null)
+            if (offset is not null)
             {
                 query = query.Skip(offset.GetValueOrDefault());
             }
 
-            if (limit != null)
+            if (limit is not null)
             {
                 query = query.Take(limit.GetValueOrDefault());
             }

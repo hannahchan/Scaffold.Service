@@ -81,14 +81,14 @@
                 {
                     IEndpointConventionBuilder healthCheckEndpoint = endpoints.MapHealthChecks("/health");
 
-                    if (this.Configuration["HealthCheckPort"] != null)
+                    if (this.Configuration["HealthCheckPort"] is not null)
                     {
                         healthCheckEndpoint.RequireHost($"*:{this.Configuration["HealthCheckPort"]}");
                     }
 
                     IEndpointConventionBuilder metricsEndpoint = endpoints.MapMetrics();
 
-                    if (this.Configuration["MetricsPort"] != null)
+                    if (this.Configuration["MetricsPort"] is not null)
                     {
                         metricsEndpoint.RequireHost($"*:{this.Configuration["MetricsPort"]}");
                     }
