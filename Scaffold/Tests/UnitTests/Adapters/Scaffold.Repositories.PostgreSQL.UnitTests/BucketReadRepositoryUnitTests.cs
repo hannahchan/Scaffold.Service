@@ -5,7 +5,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
-    using Scaffold.Application.Models;
+    using Scaffold.Application.Common.Models;
     using Scaffold.Domain.Aggregates.Bucket;
     using Xunit;
 

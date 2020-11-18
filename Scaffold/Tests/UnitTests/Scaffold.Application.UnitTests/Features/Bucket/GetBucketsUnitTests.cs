@@ -5,9 +5,9 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
+    using Scaffold.Application.Common.Models;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
-    using Scaffold.Application.Models;
     using Scaffold.Domain.Aggregates.Bucket;
     using Scaffold.Repositories.PostgreSQL;
     using Xunit;

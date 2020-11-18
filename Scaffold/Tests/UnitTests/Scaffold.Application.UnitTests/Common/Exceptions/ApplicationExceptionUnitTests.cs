@@ -1,53 +1,68 @@
-namespace Scaffold.Application.UnitTests.Base
+namespace Scaffold.Application.UnitTests.Common.Exceptions
 {
     using System;
     using System.IO;
     using System.Runtime.Serialization;
     using System.Runtime.Serialization.Formatters.Binary;
-    using Scaffold.Application.Base;
     using Xunit;
 
-    public class IntegrationExceptionUnitTests
+    public class ApplicationExceptionUnitTests
     {
         [Fact]
-        public void When_InstantiatingIntegrationExceptionWithMessageAndStatus_Expect_IntegrationExceptionWithMessageAndStatus()
+        public void When_InstantiatingApplicationExceptionWithMessage_Expect_ApplicationExceptionWithMessage()
         {
             // Arrange
             string message = Guid.NewGuid().ToString();
-            int status = new Random().Next();
 
             // Act
-            TestException exception = new TestException(message, status);
+            TestException exception = new TestException(message);
 
             // Assert
             Assert.Equal(message, exception.Message);
-            Assert.Equal(status, exception.Status);
         }
 
         [Fact]
-        public void When_InstantiatingIntegrationExceptionWithMessageAndStatusAndInnerException_Expect_IntegrationExceptionWithMessageAndStatusAndInnerException()
+        public void When_InstantiatingApplicationExceptionNullMessage_Expect_ApplicationExceptionWithMessage()
+        {
+            // Act
+            TestException exception = new TestException(null);
+
+            // Assert
+            Assert.NotEmpty(exception.Message);
+        }
+
+        [Fact]
+        public void When_InstantiatingApplicationExceptionWithMessageAndInnerException_Expect_ApplicationExceptionWithMessageAndInnerException()
         {
             // Arrange
             string message = Guid.NewGuid().ToString();
-            int status = new Random().Next();
             Exception innerException = new Exception();
 
             // Act
-            TestException exception = new TestException(message, status, innerException);
+            TestException exception = new TestException(message, innerException);
 
             // Assert
             Assert.Equal(message, exception.Message);
             Assert.Equal(innerException, exception.InnerException);
-            Assert.Equal(status, exception.Status);
         }
 
         [Fact]
-        public void When_DeserializingIntegrationException_Expect_SerializedIntegrationException()
+        public void When_InstantiatingApplicationExceptionWithNullMessageAndNullInnerException_Expect_ApplicationExceptionWithMessageAndNullInnerException()
+        {
+            // Act
+            TestException exception = new TestException(null, null);
+
+            // Assert
+            Assert.NotEmpty(exception.Message);
+            Assert.Null(exception.InnerException);
+        }
+
+        [Fact]
+        public void When_DeserializingApplicationException_Expect_SerializedApplicationException()
         {
             // Arrange
             TestException exception = new TestException(
                 Guid.NewGuid().ToString(),
-                new Random().Next(),
                 new Exception(Guid.NewGuid().ToString()));
 
             TestException result;
@@ -70,15 +85,15 @@ namespace Scaffold.Application.UnitTests.Base
         }
 
         [Serializable]
-        private class TestException : IntegrationException
+        private class TestException : Application.Common.Exceptions.ApplicationException
         {
-            public TestException(string message, int status)
-                : base(message, status)
+            public TestException(string message)
+                : base(message)
             {
             }
 
-            public TestException(string message, int status, Exception innerException)
-                : base(message, status, innerException)
+            public TestException(string message, Exception innerException)
+                : base(message, innerException)
             {
             }
 

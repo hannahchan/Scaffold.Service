@@ -8,8 +8,8 @@ namespace Scaffold.Repositories.PostgreSQL
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
+    using Scaffold.Application.Common.Models;
     using Scaffold.Application.Interfaces;
-    using Scaffold.Application.Models;
     using Scaffold.Domain.Aggregates.Bucket;
 
     public class BucketReadRepository : IBucketReadRepository

@@ -6,8 +6,8 @@ namespace Scaffold.Application.Features.Bucket
     using System.Threading;
     using System.Threading.Tasks;
     using MediatR;
+    using Scaffold.Application.Common.Models;
     using Scaffold.Application.Interfaces;
-    using Scaffold.Application.Models;
     using Scaffold.Domain.Aggregates.Bucket;
 
     public static class GetBuckets

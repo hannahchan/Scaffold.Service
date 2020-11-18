@@ -1,16 +1,16 @@
-namespace Scaffold.Application.UnitTests.Base
+namespace Scaffold.Application.UnitTests.Common.Exceptions
 {
     using System;
     using System.IO;
     using System.Runtime.Serialization;
     using System.Runtime.Serialization.Formatters.Binary;
-    using Scaffold.Application.Base;
+    using Scaffold.Application.Common.Exceptions;
     using Xunit;
 
-    public class SortOrderExceptionUnitTests
+    public class NotFoundExceptionUnitTests
     {
         [Fact]
-        public void When_InstantiatingSortOrderExceptionWithMessage_Expect_SortOrderExceptionWithMessage()
+        public void When_InstantiatingNotFoundExceptionWithMessage_Expect_NotFoundExceptionWithMessage()
         {
             // Arrange
             string message = Guid.NewGuid().ToString();
@@ -23,7 +23,7 @@ namespace Scaffold.Application.UnitTests.Base
         }
 
         [Fact]
-        public void When_InstantiatingSortOrderExceptionWithMessageAndInnerException_Expect_SortOrderExceptionWithMessageAndInnerException()
+        public void When_InstantiatingNotFoundExceptionWithMessageAndInnerException_Expect_NotFoundExceptionWithMessageAndInnerException()
         {
             // Arrange
             string message = Guid.NewGuid().ToString();
@@ -38,7 +38,7 @@ namespace Scaffold.Application.UnitTests.Base
         }
 
         [Fact]
-        public void When_DeserializingSortOrderException_Expect_SerializedSortOrderException()
+        public void When_DeserializingNotFoundException_Expect_SerializedNotFoundException()
         {
             // Arrange
             TestException exception = new TestException(
@@ -65,7 +65,7 @@ namespace Scaffold.Application.UnitTests.Base
         }
 
         [Serializable]
-        private class TestException : SortOrderException
+        private class TestException : NotFoundException
         {
             public TestException(string message)
                 : base(message)

@@ -4,7 +4,7 @@ namespace Scaffold.WebApi.Filters
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
     using Microsoft.AspNetCore.Mvc.Infrastructure;
-    using Scaffold.Application.Base;
+    using Scaffold.Application.Common.Exceptions;
     using Scaffold.Domain.Base;
 
     public class ExceptionFilter : IExceptionFilter

@@ -1,4 +1,4 @@
-namespace Scaffold.Application.Models
+namespace Scaffold.Application.Common.Models
 {
     using System;
     using System.Collections;
@@ -6,7 +6,7 @@ namespace Scaffold.Application.Models
     using System.Collections.Immutable;
     using System.Linq;
     using System.Reflection;
-    using Scaffold.Application.Exceptions;
+    using Scaffold.Application.Common.Exceptions;
 
     public class SortOrder<T> : IReadOnlyList<(string PropertyName, bool Descending)>
     {

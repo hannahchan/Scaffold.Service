@@ -5,7 +5,7 @@ namespace Scaffold.Application.Interfaces
     using System.Linq.Expressions;
     using System.Threading;
     using System.Threading.Tasks;
-    using Scaffold.Application.Models;
+    using Scaffold.Application.Common.Models;
     using Scaffold.Domain.Aggregates.Bucket;
 
     public interface IBucketReadRepository

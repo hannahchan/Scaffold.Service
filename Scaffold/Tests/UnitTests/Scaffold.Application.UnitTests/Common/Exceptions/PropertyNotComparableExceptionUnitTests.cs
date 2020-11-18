@@ -1,9 +1,9 @@
-namespace Scaffold.Application.UnitTests.Base
+namespace Scaffold.Application.UnitTests.Common.Exceptions
 {
     using System;
     using System.IO;
     using System.Runtime.Serialization.Formatters.Binary;
-    using Scaffold.Application.Exceptions;
+    using Scaffold.Application.Common.Exceptions;
     using Xunit;
 
     public class PropertyNotComparableExceptionUnitTests

@@ -1,9 +1,9 @@
-namespace Scaffold.Application.UnitTests.Models
+namespace Scaffold.Application.UnitTests.Common.Models
 {
     using System;
     using System.Collections.Generic;
-    using Scaffold.Application.Exceptions;
-    using Scaffold.Application.Models;
+    using Scaffold.Application.Common.Exceptions;
+    using Scaffold.Application.Common.Models;
     using Xunit;
 
     public static class SortOrderUnitTests
