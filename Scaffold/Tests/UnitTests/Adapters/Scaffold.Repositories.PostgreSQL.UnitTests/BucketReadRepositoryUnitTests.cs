@@ -36,7 +36,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 .Options;
         }
 
-        public class Get : BucketReadRepositoryUnitTests
+        public class GetWithId : BucketReadRepositoryUnitTests
         {
             [Fact]
             public void When_GettingExistingBucket_Expect_ExistingBucket()
@@ -81,7 +81,10 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Assert
                 Assert.Null(result);
             }
+        }
 
+        public class GetWithPredicate : BucketReadRepositoryUnitTests
+        {
             [Fact]
             public void When_GettingBucketsWithPredicate_Expect_AllBuckets()
             {
@@ -330,7 +333,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
             }
         }
 
-        public class GetAsync : BucketReadRepositoryUnitTests
+        public class GetWithIdAsync : BucketReadRepositoryUnitTests
         {
             [Fact]
             public async Task When_GettingExistingBucket_Expect_ExistingBucket()
@@ -375,7 +378,10 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Assert
                 Assert.Null(result);
             }
+        }
 
+        public class GetWithPredicateAsync : BucketReadRepositoryUnitTests
+        {
             [Fact]
             public async Task When_GettingBucketAndCancellationIsRequested_Expect_OperationCanceledException()
             {
@@ -674,7 +680,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
             }
         }
 
-        public class GetWithOrdering : BucketReadRepositoryUnitTests
+        public class GetWithSortOrder : BucketReadRepositoryUnitTests
         {
             [Fact]
             public void When_GettingBucketsOrderedBySizeAscending_Expect_OrderedBySizeAscending()
@@ -1062,7 +1068,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
             }
         }
 
-        public class GetWithOrderingAsync : BucketReadRepositoryUnitTests
+        public class GetWithSortOrderAsync : BucketReadRepositoryUnitTests
         {
             [Fact]
             public async Task When_GettingBucketsOrderedBySizeAscending_Expect_OrderedBySizeAscending()
