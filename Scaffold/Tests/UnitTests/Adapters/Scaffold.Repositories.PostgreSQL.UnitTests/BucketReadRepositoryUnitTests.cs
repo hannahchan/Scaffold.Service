@@ -13,7 +13,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
     {
         private readonly DbContextOptions<BucketContext> dbContextOptions;
 
-        private readonly IList<Bucket> testBuckets = new List<Bucket>
+        private readonly Bucket[] testBuckets =
         {
             new Bucket { Name = "B", Description = "1", Size = 3 },
             new Bucket { Name = "A", Description = "3", Size = 9 },
@@ -91,9 +91,13 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Buckets.Add(new Bucket());
-                    context.Buckets.Add(new Bucket());
-                    context.Buckets.Add(new Bucket());
+                    context.Buckets.AddRange(new Bucket[]
+                    {
+                        new Bucket { Name = "Bucket 1" },
+                        new Bucket { Name = "Bucket 2" },
+                        new Bucket { Name = "Bucket 3" },
+                    });
+
                     context.SaveChanges();
                 }
 
@@ -107,9 +111,11 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.NotNull(result);
-                Assert.NotEmpty(result);
-                Assert.Equal(3, result.Count);
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal("Bucket 1", bucket.Name),
+                    bucket => Assert.Equal("Bucket 2", bucket.Name),
+                    bucket => Assert.Equal("Bucket 3", bucket.Name));
             }
 
             [Fact]
@@ -118,9 +124,13 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Buckets.Add(new Bucket());
-                    context.Buckets.Add(new Bucket());
-                    context.Buckets.Add(new Bucket());
+                    context.Buckets.AddRange(new Bucket[]
+                    {
+                        new Bucket { Name = "Bucket 1" },
+                        new Bucket { Name = "Bucket 2" },
+                        new Bucket { Name = "Bucket 3" },
+                    });
+
                     context.SaveChanges();
                 }
 
@@ -144,11 +154,15 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Buckets.Add(new Bucket { Size = 1 });
-                    context.Buckets.Add(new Bucket { Size = 2 });
-                    context.Buckets.Add(new Bucket { Size = 3 });
-                    context.Buckets.Add(new Bucket { Size = 5 });
-                    context.Buckets.Add(new Bucket { Size = 8 });
+                    context.Buckets.AddRange(new Bucket[]
+                    {
+                        new Bucket { Size = 1 },
+                        new Bucket { Size = 2 },
+                        new Bucket { Size = 3 },
+                        new Bucket { Size = 4 },
+                        new Bucket { Size = 5 },
+                    });
+
                     context.SaveChanges();
                 }
 
@@ -162,9 +176,10 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.NotNull(result);
-                Assert.NotEmpty(result);
-                Assert.Equal(2, result.Count);
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal(2, bucket.Size),
+                    bucket => Assert.Equal(5, bucket.Size));
             }
 
             [Fact]
@@ -192,9 +207,13 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Buckets.Add(new Bucket { Name = "Bucket 1" });
-                    context.Buckets.Add(new Bucket { Name = "Bucket 2" });
-                    context.Buckets.Add(new Bucket { Name = "Bucket 3" });
+                    context.Buckets.AddRange(new Bucket[]
+                    {
+                        new Bucket { Name = "Bucket 1" },
+                        new Bucket { Name = "Bucket 2" },
+                        new Bucket { Name = "Bucket 3" },
+                    });
+
                     context.SaveChanges();
                 }
 
@@ -208,12 +227,11 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.NotNull(result);
-                Assert.NotEmpty(result);
-                Assert.Equal(3, result.Count);
-                Assert.Equal("Bucket 1", result[0].Name);
-                Assert.Equal("Bucket 2", result[1].Name);
-                Assert.Equal("Bucket 3", result[2].Name);
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal("Bucket 1", bucket.Name),
+                    bucket => Assert.Equal("Bucket 2", bucket.Name),
+                    bucket => Assert.Equal("Bucket 3", bucket.Name));
             }
 
             [Fact]
@@ -222,9 +240,13 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Buckets.Add(new Bucket { Name = "Bucket 1" });
-                    context.Buckets.Add(new Bucket { Name = "Bucket 2" });
-                    context.Buckets.Add(new Bucket { Name = "Bucket 3" });
+                    context.Buckets.AddRange(new Bucket[]
+                    {
+                        new Bucket { Name = "Bucket 1" },
+                        new Bucket { Name = "Bucket 2" },
+                        new Bucket { Name = "Bucket 3" },
+                    });
+
                     context.SaveChanges();
                 }
 
@@ -238,11 +260,10 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.NotNull(result);
-                Assert.NotEmpty(result);
-                Assert.Equal(2, result.Count);
-                Assert.Equal("Bucket 1", result[0].Name);
-                Assert.Equal("Bucket 2", result[1].Name);
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal("Bucket 1", bucket.Name),
+                    bucket => Assert.Equal("Bucket 2", bucket.Name));
             }
 
             [Fact]
@@ -251,9 +272,13 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Buckets.Add(new Bucket { Name = "Bucket 1" });
-                    context.Buckets.Add(new Bucket { Name = "Bucket 2" });
-                    context.Buckets.Add(new Bucket { Name = "Bucket 3" });
+                    context.Buckets.AddRange(new Bucket[]
+                    {
+                        new Bucket { Name = "Bucket 1" },
+                        new Bucket { Name = "Bucket 2" },
+                        new Bucket { Name = "Bucket 3" },
+                    });
+
                     context.SaveChanges();
                 }
 
@@ -267,12 +292,11 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.NotNull(result);
-                Assert.NotEmpty(result);
-                Assert.Equal(3, result.Count);
-                Assert.Equal("Bucket 1", result[0].Name);
-                Assert.Equal("Bucket 2", result[1].Name);
-                Assert.Equal("Bucket 3", result[2].Name);
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal("Bucket 1", bucket.Name),
+                    bucket => Assert.Equal("Bucket 2", bucket.Name),
+                    bucket => Assert.Equal("Bucket 3", bucket.Name));
             }
 
             [Fact]
@@ -281,9 +305,13 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Buckets.Add(new Bucket { Name = "Bucket 1" });
-                    context.Buckets.Add(new Bucket { Name = "Bucket 2" });
-                    context.Buckets.Add(new Bucket { Name = "Bucket 3" });
+                    context.Buckets.AddRange(new Bucket[]
+                    {
+                        new Bucket { Name = "Bucket 1" },
+                        new Bucket { Name = "Bucket 2" },
+                        new Bucket { Name = "Bucket 3" },
+                    });
+
                     context.SaveChanges();
                 }
 
@@ -297,11 +325,10 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.NotNull(result);
-                Assert.NotEmpty(result);
-                Assert.Equal(2, result.Count);
-                Assert.Equal("Bucket 2", result[0].Name);
-                Assert.Equal("Bucket 3", result[1].Name);
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal("Bucket 2", bucket.Name),
+                    bucket => Assert.Equal("Bucket 3", bucket.Name));
             }
 
             [Fact]
@@ -310,9 +337,13 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Buckets.Add(new Bucket { Name = "Bucket 1" });
-                    context.Buckets.Add(new Bucket { Name = "Bucket 2" });
-                    context.Buckets.Add(new Bucket { Name = "Bucket 3" });
+                    context.Buckets.AddRange(new Bucket[]
+                    {
+                        new Bucket { Name = "Bucket 1" },
+                        new Bucket { Name = "Bucket 2" },
+                        new Bucket { Name = "Bucket 3" },
+                    });
+
                     context.SaveChanges();
                 }
 
@@ -326,10 +357,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.NotNull(result);
-                Assert.NotEmpty(result);
-                Assert.Equal(1, result.Count);
-                Assert.Equal("Bucket 2", result[0].Name);
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal("Bucket 2", bucket.Name));
             }
         }
 
@@ -378,10 +408,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Assert
                 Assert.Null(result);
             }
-        }
 
-        public class GetWithPredicateAsync : BucketReadRepositoryUnitTests
-        {
             [Fact]
             public async Task When_GettingBucketAndCancellationIsRequested_Expect_OperationCanceledException()
             {
@@ -398,20 +425,23 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Assert
                 Assert.IsType<OperationCanceledException>(exception);
             }
+        }
 
+        public class GetWithPredicateAsync : BucketReadRepositoryUnitTests
+        {
             [Fact]
             public async Task When_GettingBucketsWithPredicate_Expect_AllBuckets()
             {
                 // Arrange
-                Bucket bucket1 = new Bucket();
-                Bucket bucket2 = new Bucket();
-                Bucket bucket3 = new Bucket();
-
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Buckets.Add(bucket1);
-                    context.Buckets.Add(bucket2);
-                    context.Buckets.Add(bucket3);
+                    context.Buckets.AddRange(new Bucket[]
+                    {
+                        new Bucket { Name = "Bucket 1" },
+                        new Bucket { Name = "Bucket 2" },
+                        new Bucket { Name = "Bucket 3" },
+                    });
+
                     await context.SaveChangesAsync();
                 }
 
@@ -425,24 +455,26 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.NotNull(result);
-                Assert.NotEmpty(result);
-                Assert.Equal(3, result.Count);
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal("Bucket 1", bucket.Name),
+                    bucket => Assert.Equal("Bucket 2", bucket.Name),
+                    bucket => Assert.Equal("Bucket 3", bucket.Name));
             }
 
             [Fact]
-            public async Task When_GettingBucketsWithPredicate_Expect_NoBuckets()
+            public async Task When_GettingBucketsWithPredicate_Expect_EmptyList()
             {
                 // Arrange
-                Bucket bucket1 = new Bucket();
-                Bucket bucket2 = new Bucket();
-                Bucket bucket3 = new Bucket();
-
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Buckets.Add(bucket1);
-                    context.Buckets.Add(bucket2);
-                    context.Buckets.Add(bucket3);
+                    context.Buckets.AddRange(new Bucket[]
+                    {
+                        new Bucket { Name = "Bucket 1" },
+                        new Bucket { Name = "Bucket 2" },
+                        new Bucket { Name = "Bucket 3" },
+                    });
+
                     await context.SaveChangesAsync();
                 }
 
@@ -464,19 +496,17 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
             public async Task When_GettingBucketsWithPredicate_Expect_SomeBuckets()
             {
                 // Arrange
-                Bucket bucket1 = new Bucket { Size = 1 };
-                Bucket bucket2 = new Bucket { Size = 2 };
-                Bucket bucket3 = new Bucket { Size = 3 };
-                Bucket bucket4 = new Bucket { Size = 5 };
-                Bucket bucket5 = new Bucket { Size = 8 };
-
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Buckets.Add(bucket1);
-                    context.Buckets.Add(bucket2);
-                    context.Buckets.Add(bucket3);
-                    context.Buckets.Add(bucket4);
-                    context.Buckets.Add(bucket5);
+                    context.Buckets.AddRange(new Bucket[]
+                    {
+                        new Bucket { Size = 1 },
+                        new Bucket { Size = 2 },
+                        new Bucket { Size = 3 },
+                        new Bucket { Size = 4 },
+                        new Bucket { Size = 5 },
+                    });
+
                     await context.SaveChangesAsync();
                 }
 
@@ -490,9 +520,10 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.NotNull(result);
-                Assert.NotEmpty(result);
-                Assert.Equal(2, result.Count);
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal(2, bucket.Size),
+                    bucket => Assert.Equal(5, bucket.Size));
             }
 
             [Fact]
@@ -520,9 +551,13 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Buckets.Add(new Bucket { Name = "Bucket 1" });
-                    context.Buckets.Add(new Bucket { Name = "Bucket 2" });
-                    context.Buckets.Add(new Bucket { Name = "Bucket 3" });
+                    context.Buckets.AddRange(new Bucket[]
+                    {
+                        new Bucket { Name = "Bucket 1" },
+                        new Bucket { Name = "Bucket 2" },
+                        new Bucket { Name = "Bucket 3" },
+                    });
+
                     await context.SaveChangesAsync();
                 }
 
@@ -536,12 +571,11 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.NotNull(result);
-                Assert.NotEmpty(result);
-                Assert.Equal(3, result.Count);
-                Assert.Equal("Bucket 1", result[0].Name);
-                Assert.Equal("Bucket 2", result[1].Name);
-                Assert.Equal("Bucket 3", result[2].Name);
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal("Bucket 1", bucket.Name),
+                    bucket => Assert.Equal("Bucket 2", bucket.Name),
+                    bucket => Assert.Equal("Bucket 3", bucket.Name));
             }
 
             [Fact]
@@ -550,9 +584,13 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Buckets.Add(new Bucket { Name = "Bucket 1" });
-                    context.Buckets.Add(new Bucket { Name = "Bucket 2" });
-                    context.Buckets.Add(new Bucket { Name = "Bucket 3" });
+                    context.Buckets.AddRange(new Bucket[]
+                    {
+                        new Bucket { Name = "Bucket 1" },
+                        new Bucket { Name = "Bucket 2" },
+                        new Bucket { Name = "Bucket 3" },
+                    });
+
                     await context.SaveChangesAsync();
                 }
 
@@ -566,11 +604,10 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.NotNull(result);
-                Assert.NotEmpty(result);
-                Assert.Equal(2, result.Count);
-                Assert.Equal("Bucket 1", result[0].Name);
-                Assert.Equal("Bucket 2", result[1].Name);
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal("Bucket 1", bucket.Name),
+                    bucket => Assert.Equal("Bucket 2", bucket.Name));
             }
 
             [Fact]
@@ -579,9 +616,13 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Buckets.Add(new Bucket { Name = "Bucket 1" });
-                    context.Buckets.Add(new Bucket { Name = "Bucket 2" });
-                    context.Buckets.Add(new Bucket { Name = "Bucket 3" });
+                    context.Buckets.AddRange(new Bucket[]
+                    {
+                        new Bucket { Name = "Bucket 1" },
+                        new Bucket { Name = "Bucket 2" },
+                        new Bucket { Name = "Bucket 3" },
+                    });
+
                     await context.SaveChangesAsync();
                 }
 
@@ -595,12 +636,11 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.NotNull(result);
-                Assert.NotEmpty(result);
-                Assert.Equal(3, result.Count);
-                Assert.Equal("Bucket 1", result[0].Name);
-                Assert.Equal("Bucket 2", result[1].Name);
-                Assert.Equal("Bucket 3", result[2].Name);
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal("Bucket 1", bucket.Name),
+                    bucket => Assert.Equal("Bucket 2", bucket.Name),
+                    bucket => Assert.Equal("Bucket 3", bucket.Name));
             }
 
             [Fact]
@@ -609,9 +649,13 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Buckets.Add(new Bucket { Name = "Bucket 1" });
-                    context.Buckets.Add(new Bucket { Name = "Bucket 2" });
-                    context.Buckets.Add(new Bucket { Name = "Bucket 3" });
+                    context.Buckets.AddRange(new Bucket[]
+                    {
+                        new Bucket { Name = "Bucket 1" },
+                        new Bucket { Name = "Bucket 2" },
+                        new Bucket { Name = "Bucket 3" },
+                    });
+
                     await context.SaveChangesAsync();
                 }
 
@@ -625,11 +669,10 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.NotNull(result);
-                Assert.NotEmpty(result);
-                Assert.Equal(2, result.Count);
-                Assert.Equal("Bucket 2", result[0].Name);
-                Assert.Equal("Bucket 3", result[1].Name);
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal("Bucket 2", bucket.Name),
+                    bucket => Assert.Equal("Bucket 3", bucket.Name));
             }
 
             [Fact]
@@ -638,9 +681,13 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    context.Buckets.Add(new Bucket { Name = "Bucket 1" });
-                    context.Buckets.Add(new Bucket { Name = "Bucket 2" });
-                    context.Buckets.Add(new Bucket { Name = "Bucket 3" });
+                    context.Buckets.AddRange(new Bucket[]
+                    {
+                        new Bucket { Name = "Bucket 1" },
+                        new Bucket { Name = "Bucket 2" },
+                        new Bucket { Name = "Bucket 3" },
+                    });
+
                     await context.SaveChangesAsync();
                 }
 
@@ -654,10 +701,9 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.NotNull(result);
-                Assert.NotEmpty(result);
-                Assert.Equal(1, result.Count);
-                Assert.Equal("Bucket 2", result[0].Name);
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal("Bucket 2", bucket.Name));
             }
 
             [Fact]
@@ -688,11 +734,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    foreach (Bucket bucket in this.testBuckets)
-                    {
-                        context.Buckets.Add(bucket);
-                    }
-
+                    context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
                 }
 
@@ -709,10 +751,20 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                for (int i = 1; i <= 12; i++)
-                {
-                    Assert.Equal(i, result[i - 1].Size);
-                }
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal(1, bucket.Size),
+                    bucket => Assert.Equal(2, bucket.Size),
+                    bucket => Assert.Equal(3, bucket.Size),
+                    bucket => Assert.Equal(4, bucket.Size),
+                    bucket => Assert.Equal(5, bucket.Size),
+                    bucket => Assert.Equal(6, bucket.Size),
+                    bucket => Assert.Equal(7, bucket.Size),
+                    bucket => Assert.Equal(8, bucket.Size),
+                    bucket => Assert.Equal(9, bucket.Size),
+                    bucket => Assert.Equal(10, bucket.Size),
+                    bucket => Assert.Equal(11, bucket.Size),
+                    bucket => Assert.Equal(12, bucket.Size));
             }
 
             [Fact]
@@ -721,11 +773,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    foreach (Bucket bucket in this.testBuckets)
-                    {
-                        context.Buckets.Add(bucket);
-                    }
-
+                    context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
                 }
 
@@ -742,10 +790,20 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                for (int i = 1; i <= 12; i++)
-                {
-                    Assert.Equal(12 - (i - 1), result[i - 1].Size);
-                }
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal(12, bucket.Size),
+                    bucket => Assert.Equal(11, bucket.Size),
+                    bucket => Assert.Equal(10, bucket.Size),
+                    bucket => Assert.Equal(9, bucket.Size),
+                    bucket => Assert.Equal(8, bucket.Size),
+                    bucket => Assert.Equal(7, bucket.Size),
+                    bucket => Assert.Equal(6, bucket.Size),
+                    bucket => Assert.Equal(5, bucket.Size),
+                    bucket => Assert.Equal(4, bucket.Size),
+                    bucket => Assert.Equal(3, bucket.Size),
+                    bucket => Assert.Equal(2, bucket.Size),
+                    bucket => Assert.Equal(1, bucket.Size));
             }
 
             [Fact]
@@ -754,11 +812,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    foreach (Bucket bucket in this.testBuckets)
-                    {
-                        context.Buckets.Add(bucket);
-                    }
-
+                    context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
                 }
 
@@ -775,10 +829,14 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                for (int i = 1; i <= 6; i++)
-                {
-                    Assert.Equal(i, result[i - 1].Size);
-                }
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal(1, bucket.Size),
+                    bucket => Assert.Equal(2, bucket.Size),
+                    bucket => Assert.Equal(3, bucket.Size),
+                    bucket => Assert.Equal(4, bucket.Size),
+                    bucket => Assert.Equal(5, bucket.Size),
+                    bucket => Assert.Equal(6, bucket.Size));
             }
 
             [Fact]
@@ -787,11 +845,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    foreach (Bucket bucket in this.testBuckets)
-                    {
-                        context.Buckets.Add(bucket);
-                    }
-
+                    context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
                 }
 
@@ -808,10 +862,14 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                for (int i = 1; i <= 6; i++)
-                {
-                    Assert.Equal(i + 6, result[i - 1].Size);
-                }
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal(7, bucket.Size),
+                    bucket => Assert.Equal(8, bucket.Size),
+                    bucket => Assert.Equal(9, bucket.Size),
+                    bucket => Assert.Equal(10, bucket.Size),
+                    bucket => Assert.Equal(11, bucket.Size),
+                    bucket => Assert.Equal(12, bucket.Size));
             }
 
             [Fact]
@@ -820,11 +878,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    foreach (Bucket bucket in this.testBuckets)
-                    {
-                        context.Buckets.Add(bucket);
-                    }
-
+                    context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
                 }
 
@@ -841,10 +895,14 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                for (int i = 1; i <= 6; i++)
-                {
-                    Assert.Equal(i + 3, result[i - 1].Size);
-                }
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal(4, bucket.Size),
+                    bucket => Assert.Equal(5, bucket.Size),
+                    bucket => Assert.Equal(6, bucket.Size),
+                    bucket => Assert.Equal(7, bucket.Size),
+                    bucket => Assert.Equal(8, bucket.Size),
+                    bucket => Assert.Equal(9, bucket.Size));
             }
 
             [Fact]
@@ -853,11 +911,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    foreach (Bucket bucket in this.testBuckets)
-                    {
-                        context.Buckets.Add(bucket);
-                    }
-
+                    context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
                 }
 
@@ -875,31 +929,68 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.Equal("A", result[0].Name);
-                Assert.Equal("A", result[1].Name);
-                Assert.Equal("A", result[2].Name);
-                Assert.Equal("A", result[3].Name);
-                Assert.Equal("A", result[4].Name);
-                Assert.Equal("A", result[5].Name);
-                Assert.Equal("B", result[6].Name);
-                Assert.Equal("B", result[7].Name);
-                Assert.Equal("B", result[8].Name);
-                Assert.Equal("B", result[9].Name);
-                Assert.Equal("B", result[10].Name);
-                Assert.Equal("B", result[11].Name);
-
-                Assert.Equal("1", result[0].Description);
-                Assert.Equal("1", result[1].Description);
-                Assert.Equal("2", result[2].Description);
-                Assert.Equal("2", result[3].Description);
-                Assert.Equal("3", result[4].Description);
-                Assert.Equal("3", result[5].Description);
-                Assert.Equal("1", result[6].Description);
-                Assert.Equal("1", result[7].Description);
-                Assert.Equal("2", result[8].Description);
-                Assert.Equal("2", result[9].Description);
-                Assert.Equal("3", result[10].Description);
-                Assert.Equal("3", result[11].Description);
+                Assert.Collection(
+                    result,
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    });
             }
 
             [Fact]
@@ -908,11 +999,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    foreach (Bucket bucket in this.testBuckets)
-                    {
-                        context.Buckets.Add(bucket);
-                    }
-
+                    context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
                 }
 
@@ -930,31 +1017,68 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.Equal("B", result[0].Name);
-                Assert.Equal("B", result[1].Name);
-                Assert.Equal("B", result[2].Name);
-                Assert.Equal("B", result[3].Name);
-                Assert.Equal("B", result[4].Name);
-                Assert.Equal("B", result[5].Name);
-                Assert.Equal("A", result[6].Name);
-                Assert.Equal("A", result[7].Name);
-                Assert.Equal("A", result[8].Name);
-                Assert.Equal("A", result[9].Name);
-                Assert.Equal("A", result[10].Name);
-                Assert.Equal("A", result[11].Name);
-
-                Assert.Equal("3", result[0].Description);
-                Assert.Equal("3", result[1].Description);
-                Assert.Equal("2", result[2].Description);
-                Assert.Equal("2", result[3].Description);
-                Assert.Equal("1", result[4].Description);
-                Assert.Equal("1", result[5].Description);
-                Assert.Equal("3", result[6].Description);
-                Assert.Equal("3", result[7].Description);
-                Assert.Equal("2", result[8].Description);
-                Assert.Equal("2", result[9].Description);
-                Assert.Equal("1", result[10].Description);
-                Assert.Equal("1", result[11].Description);
+                Assert.Collection(
+                    result,
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    });
             }
 
             [Fact]
@@ -963,11 +1087,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    foreach (Bucket bucket in this.testBuckets)
-                    {
-                        context.Buckets.Add(bucket);
-                    }
-
+                    context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
                 }
 
@@ -985,31 +1105,68 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.Equal("A", result[0].Name);
-                Assert.Equal("A", result[1].Name);
-                Assert.Equal("A", result[2].Name);
-                Assert.Equal("A", result[3].Name);
-                Assert.Equal("A", result[4].Name);
-                Assert.Equal("A", result[5].Name);
-                Assert.Equal("B", result[6].Name);
-                Assert.Equal("B", result[7].Name);
-                Assert.Equal("B", result[8].Name);
-                Assert.Equal("B", result[9].Name);
-                Assert.Equal("B", result[10].Name);
-                Assert.Equal("B", result[11].Name);
-
-                Assert.Equal("3", result[0].Description);
-                Assert.Equal("3", result[1].Description);
-                Assert.Equal("2", result[2].Description);
-                Assert.Equal("2", result[3].Description);
-                Assert.Equal("1", result[4].Description);
-                Assert.Equal("1", result[5].Description);
-                Assert.Equal("3", result[6].Description);
-                Assert.Equal("3", result[7].Description);
-                Assert.Equal("2", result[8].Description);
-                Assert.Equal("2", result[9].Description);
-                Assert.Equal("1", result[10].Description);
-                Assert.Equal("1", result[11].Description);
+                Assert.Collection(
+                    result,
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    });
             }
 
             [Fact]
@@ -1018,11 +1175,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    foreach (Bucket bucket in this.testBuckets)
-                    {
-                        context.Buckets.Add(bucket);
-                    }
-
+                    context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
                 }
 
@@ -1040,31 +1193,68 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.Equal("B", result[0].Name);
-                Assert.Equal("B", result[1].Name);
-                Assert.Equal("B", result[2].Name);
-                Assert.Equal("B", result[3].Name);
-                Assert.Equal("B", result[4].Name);
-                Assert.Equal("B", result[5].Name);
-                Assert.Equal("A", result[6].Name);
-                Assert.Equal("A", result[7].Name);
-                Assert.Equal("A", result[8].Name);
-                Assert.Equal("A", result[9].Name);
-                Assert.Equal("A", result[10].Name);
-                Assert.Equal("A", result[11].Name);
-
-                Assert.Equal("1", result[0].Description);
-                Assert.Equal("1", result[1].Description);
-                Assert.Equal("2", result[2].Description);
-                Assert.Equal("2", result[3].Description);
-                Assert.Equal("3", result[4].Description);
-                Assert.Equal("3", result[5].Description);
-                Assert.Equal("1", result[6].Description);
-                Assert.Equal("1", result[7].Description);
-                Assert.Equal("2", result[8].Description);
-                Assert.Equal("2", result[9].Description);
-                Assert.Equal("3", result[10].Description);
-                Assert.Equal("3", result[11].Description);
+                Assert.Collection(
+                    result,
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    });
             }
         }
 
@@ -1076,11 +1266,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    foreach (Bucket bucket in this.testBuckets)
-                    {
-                        context.Buckets.Add(bucket);
-                    }
-
+                    context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
                 }
 
@@ -1097,10 +1283,20 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                for (int i = 1; i <= 12; i++)
-                {
-                    Assert.Equal(i, result[i - 1].Size);
-                }
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal(1, bucket.Size),
+                    bucket => Assert.Equal(2, bucket.Size),
+                    bucket => Assert.Equal(3, bucket.Size),
+                    bucket => Assert.Equal(4, bucket.Size),
+                    bucket => Assert.Equal(5, bucket.Size),
+                    bucket => Assert.Equal(6, bucket.Size),
+                    bucket => Assert.Equal(7, bucket.Size),
+                    bucket => Assert.Equal(8, bucket.Size),
+                    bucket => Assert.Equal(9, bucket.Size),
+                    bucket => Assert.Equal(10, bucket.Size),
+                    bucket => Assert.Equal(11, bucket.Size),
+                    bucket => Assert.Equal(12, bucket.Size));
             }
 
             [Fact]
@@ -1109,11 +1305,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    foreach (Bucket bucket in this.testBuckets)
-                    {
-                        context.Buckets.Add(bucket);
-                    }
-
+                    context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
                 }
 
@@ -1130,10 +1322,20 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                for (int i = 1; i <= 12; i++)
-                {
-                    Assert.Equal(12 - (i - 1), result[i - 1].Size);
-                }
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal(12, bucket.Size),
+                    bucket => Assert.Equal(11, bucket.Size),
+                    bucket => Assert.Equal(10, bucket.Size),
+                    bucket => Assert.Equal(9, bucket.Size),
+                    bucket => Assert.Equal(8, bucket.Size),
+                    bucket => Assert.Equal(7, bucket.Size),
+                    bucket => Assert.Equal(6, bucket.Size),
+                    bucket => Assert.Equal(5, bucket.Size),
+                    bucket => Assert.Equal(4, bucket.Size),
+                    bucket => Assert.Equal(3, bucket.Size),
+                    bucket => Assert.Equal(2, bucket.Size),
+                    bucket => Assert.Equal(1, bucket.Size));
             }
 
             [Fact]
@@ -1142,11 +1344,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    foreach (Bucket bucket in this.testBuckets)
-                    {
-                        context.Buckets.Add(bucket);
-                    }
-
+                    context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
                 }
 
@@ -1163,10 +1361,14 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                for (int i = 1; i <= 6; i++)
-                {
-                    Assert.Equal(i, result[i - 1].Size);
-                }
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal(1, bucket.Size),
+                    bucket => Assert.Equal(2, bucket.Size),
+                    bucket => Assert.Equal(3, bucket.Size),
+                    bucket => Assert.Equal(4, bucket.Size),
+                    bucket => Assert.Equal(5, bucket.Size),
+                    bucket => Assert.Equal(6, bucket.Size));
             }
 
             [Fact]
@@ -1175,11 +1377,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    foreach (Bucket bucket in this.testBuckets)
-                    {
-                        context.Buckets.Add(bucket);
-                    }
-
+                    context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
                 }
 
@@ -1196,10 +1394,14 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                for (int i = 1; i <= 6; i++)
-                {
-                    Assert.Equal(i + 6, result[i - 1].Size);
-                }
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal(7, bucket.Size),
+                    bucket => Assert.Equal(8, bucket.Size),
+                    bucket => Assert.Equal(9, bucket.Size),
+                    bucket => Assert.Equal(10, bucket.Size),
+                    bucket => Assert.Equal(11, bucket.Size),
+                    bucket => Assert.Equal(12, bucket.Size));
             }
 
             [Fact]
@@ -1208,11 +1410,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    foreach (Bucket bucket in this.testBuckets)
-                    {
-                        context.Buckets.Add(bucket);
-                    }
-
+                    context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
                 }
 
@@ -1229,10 +1427,14 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                for (int i = 1; i <= 6; i++)
-                {
-                    Assert.Equal(i + 3, result[i - 1].Size);
-                }
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal(4, bucket.Size),
+                    bucket => Assert.Equal(5, bucket.Size),
+                    bucket => Assert.Equal(6, bucket.Size),
+                    bucket => Assert.Equal(7, bucket.Size),
+                    bucket => Assert.Equal(8, bucket.Size),
+                    bucket => Assert.Equal(9, bucket.Size));
             }
 
             [Fact]
@@ -1241,11 +1443,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    foreach (Bucket bucket in this.testBuckets)
-                    {
-                        context.Buckets.Add(bucket);
-                    }
-
+                    context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
                 }
 
@@ -1263,31 +1461,68 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.Equal("A", result[0].Name);
-                Assert.Equal("A", result[1].Name);
-                Assert.Equal("A", result[2].Name);
-                Assert.Equal("A", result[3].Name);
-                Assert.Equal("A", result[4].Name);
-                Assert.Equal("A", result[5].Name);
-                Assert.Equal("B", result[6].Name);
-                Assert.Equal("B", result[7].Name);
-                Assert.Equal("B", result[8].Name);
-                Assert.Equal("B", result[9].Name);
-                Assert.Equal("B", result[10].Name);
-                Assert.Equal("B", result[11].Name);
-
-                Assert.Equal("1", result[0].Description);
-                Assert.Equal("1", result[1].Description);
-                Assert.Equal("2", result[2].Description);
-                Assert.Equal("2", result[3].Description);
-                Assert.Equal("3", result[4].Description);
-                Assert.Equal("3", result[5].Description);
-                Assert.Equal("1", result[6].Description);
-                Assert.Equal("1", result[7].Description);
-                Assert.Equal("2", result[8].Description);
-                Assert.Equal("2", result[9].Description);
-                Assert.Equal("3", result[10].Description);
-                Assert.Equal("3", result[11].Description);
+                Assert.Collection(
+                    result,
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    });
             }
 
             [Fact]
@@ -1296,11 +1531,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    foreach (Bucket bucket in this.testBuckets)
-                    {
-                        context.Buckets.Add(bucket);
-                    }
-
+                    context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
                 }
 
@@ -1318,31 +1549,68 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.Equal("B", result[0].Name);
-                Assert.Equal("B", result[1].Name);
-                Assert.Equal("B", result[2].Name);
-                Assert.Equal("B", result[3].Name);
-                Assert.Equal("B", result[4].Name);
-                Assert.Equal("B", result[5].Name);
-                Assert.Equal("A", result[6].Name);
-                Assert.Equal("A", result[7].Name);
-                Assert.Equal("A", result[8].Name);
-                Assert.Equal("A", result[9].Name);
-                Assert.Equal("A", result[10].Name);
-                Assert.Equal("A", result[11].Name);
-
-                Assert.Equal("3", result[0].Description);
-                Assert.Equal("3", result[1].Description);
-                Assert.Equal("2", result[2].Description);
-                Assert.Equal("2", result[3].Description);
-                Assert.Equal("1", result[4].Description);
-                Assert.Equal("1", result[5].Description);
-                Assert.Equal("3", result[6].Description);
-                Assert.Equal("3", result[7].Description);
-                Assert.Equal("2", result[8].Description);
-                Assert.Equal("2", result[9].Description);
-                Assert.Equal("1", result[10].Description);
-                Assert.Equal("1", result[11].Description);
+                Assert.Collection(
+                    result,
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    });
             }
 
             [Fact]
@@ -1351,11 +1619,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    foreach (Bucket bucket in this.testBuckets)
-                    {
-                        context.Buckets.Add(bucket);
-                    }
-
+                    context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
                 }
 
@@ -1373,31 +1637,68 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.Equal("A", result[0].Name);
-                Assert.Equal("A", result[1].Name);
-                Assert.Equal("A", result[2].Name);
-                Assert.Equal("A", result[3].Name);
-                Assert.Equal("A", result[4].Name);
-                Assert.Equal("A", result[5].Name);
-                Assert.Equal("B", result[6].Name);
-                Assert.Equal("B", result[7].Name);
-                Assert.Equal("B", result[8].Name);
-                Assert.Equal("B", result[9].Name);
-                Assert.Equal("B", result[10].Name);
-                Assert.Equal("B", result[11].Name);
-
-                Assert.Equal("3", result[0].Description);
-                Assert.Equal("3", result[1].Description);
-                Assert.Equal("2", result[2].Description);
-                Assert.Equal("2", result[3].Description);
-                Assert.Equal("1", result[4].Description);
-                Assert.Equal("1", result[5].Description);
-                Assert.Equal("3", result[6].Description);
-                Assert.Equal("3", result[7].Description);
-                Assert.Equal("2", result[8].Description);
-                Assert.Equal("2", result[9].Description);
-                Assert.Equal("1", result[10].Description);
-                Assert.Equal("1", result[11].Description);
+                Assert.Collection(
+                    result,
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    });
             }
 
             [Fact]
@@ -1406,11 +1707,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    foreach (Bucket bucket in this.testBuckets)
-                    {
-                        context.Buckets.Add(bucket);
-                    }
-
+                    context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
                 }
 
@@ -1428,31 +1725,68 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 // Assert
-                Assert.Equal("B", result[0].Name);
-                Assert.Equal("B", result[1].Name);
-                Assert.Equal("B", result[2].Name);
-                Assert.Equal("B", result[3].Name);
-                Assert.Equal("B", result[4].Name);
-                Assert.Equal("B", result[5].Name);
-                Assert.Equal("A", result[6].Name);
-                Assert.Equal("A", result[7].Name);
-                Assert.Equal("A", result[8].Name);
-                Assert.Equal("A", result[9].Name);
-                Assert.Equal("A", result[10].Name);
-                Assert.Equal("A", result[11].Name);
-
-                Assert.Equal("1", result[0].Description);
-                Assert.Equal("1", result[1].Description);
-                Assert.Equal("2", result[2].Description);
-                Assert.Equal("2", result[3].Description);
-                Assert.Equal("3", result[4].Description);
-                Assert.Equal("3", result[5].Description);
-                Assert.Equal("1", result[6].Description);
-                Assert.Equal("1", result[7].Description);
-                Assert.Equal("2", result[8].Description);
-                Assert.Equal("2", result[9].Description);
-                Assert.Equal("3", result[10].Description);
-                Assert.Equal("3", result[11].Description);
+                Assert.Collection(
+                    result,
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    });
             }
         }
     }
