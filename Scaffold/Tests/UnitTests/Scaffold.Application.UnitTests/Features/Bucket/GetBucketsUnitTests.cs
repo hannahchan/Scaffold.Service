@@ -16,7 +16,21 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     {
         private readonly IBucketRepository repository;
 
-        private readonly IList<Bucket> testBuckets = new List<Bucket>();
+        private readonly Bucket[] testBuckets =
+        {
+            new Bucket { Name = "B", Description = "1", Size = 3 },
+            new Bucket { Name = "A", Description = "3", Size = 9 },
+            new Bucket { Name = "B", Description = "1", Size = 7 },
+            new Bucket { Name = "B", Description = "3", Size = 10 },
+            new Bucket { Name = "B", Description = "3", Size = 4 },
+            new Bucket { Name = "A", Description = "3", Size = 6 },
+            new Bucket { Name = "B", Description = "2", Size = 1 },
+            new Bucket { Name = "A", Description = "2", Size = 11 },
+            new Bucket { Name = "A", Description = "1", Size = 5 },
+            new Bucket { Name = "A", Description = "2", Size = 12 },
+            new Bucket { Name = "B", Description = "2", Size = 2 },
+            new Bucket { Name = "A", Description = "1", Size = 8 },
+        };
 
         public GetBucketsUnitTests()
         {
@@ -25,19 +39,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 .Options);
 
             this.repository = new BucketRepository(context);
-
-            this.testBuckets.Add(new Bucket { Name = "B", Description = "1", Size = 3 });
-            this.testBuckets.Add(new Bucket { Name = "A", Description = "3", Size = 9 });
-            this.testBuckets.Add(new Bucket { Name = "B", Description = "1", Size = 7 });
-            this.testBuckets.Add(new Bucket { Name = "B", Description = "3", Size = 10 });
-            this.testBuckets.Add(new Bucket { Name = "B", Description = "3", Size = 4 });
-            this.testBuckets.Add(new Bucket { Name = "A", Description = "3", Size = 6 });
-            this.testBuckets.Add(new Bucket { Name = "B", Description = "2", Size = 1 });
-            this.testBuckets.Add(new Bucket { Name = "A", Description = "2", Size = 11 });
-            this.testBuckets.Add(new Bucket { Name = "A", Description = "1", Size = 5 });
-            this.testBuckets.Add(new Bucket { Name = "A", Description = "2", Size = 12 });
-            this.testBuckets.Add(new Bucket { Name = "B", Description = "2", Size = 2 });
-            this.testBuckets.Add(new Bucket { Name = "A", Description = "1", Size = 8 });
         }
 
         public class Query
@@ -123,11 +124,11 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_GettingBuckets_Expect_AllBuckets()
             {
                 // Arrange
-                await Task.WhenAll(new Task[]
+                await this.repository.AddAsync(new Bucket[]
                 {
-                    this.repository.AddAsync(new Bucket { Name = "Bucket 1" }),
-                    this.repository.AddAsync(new Bucket { Name = "Bucket 2" }),
-                    this.repository.AddAsync(new Bucket { Name = "Bucket 3" }),
+                    new Bucket { Name = "Bucket 1" },
+                    new Bucket { Name = "Bucket 2" },
+                    new Bucket { Name = "Bucket 3" },
                 });
 
                 GetBuckets.Query query = new GetBuckets.Query();
@@ -137,9 +138,11 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
-                Assert.NotNull(response.Buckets);
-                Assert.NotEmpty(response.Buckets);
-                Assert.Equal(3, response.Buckets.Count);
+                Assert.Collection(
+                    response.Buckets,
+                    bucket => Assert.Equal("Bucket 1", bucket.Name),
+                    bucket => Assert.Equal("Bucket 2", bucket.Name),
+                    bucket => Assert.Equal("Bucket 3", bucket.Name));
             }
 
             [Fact]
@@ -153,7 +156,6 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
-                Assert.NotNull(response.Buckets);
                 Assert.Empty(response.Buckets);
             }
 
@@ -161,13 +163,13 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public async Task When_GettingBucketsWithPredicate_Expect_SomeBuckets()
             {
                 // Arrange
-                await Task.WhenAll(new Task[]
+                await this.repository.AddAsync(new Bucket[]
                 {
-                    this.repository.AddAsync(new Bucket { Size = 1 }),
-                    this.repository.AddAsync(new Bucket { Size = 2 }),
-                    this.repository.AddAsync(new Bucket { Size = 3 }),
-                    this.repository.AddAsync(new Bucket { Size = 5 }),
-                    this.repository.AddAsync(new Bucket { Size = 8 }),
+                    new Bucket { Size = 1 },
+                    new Bucket { Size = 2 },
+                    new Bucket { Size = 3 },
+                    new Bucket { Size = 5 },
+                    new Bucket { Size = 8 },
                 });
 
                 GetBuckets.Query query = new GetBuckets.Query(bucket => bucket.Size == 2 || bucket.Size == 5);
@@ -177,20 +179,21 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
-                Assert.NotNull(response.Buckets);
-                Assert.NotEmpty(response.Buckets);
-                Assert.Equal(2, response.Buckets.Count);
+                Assert.Collection(
+                    response.Buckets,
+                    bucket => Assert.Equal(2, bucket.Size),
+                    bucket => Assert.Equal(5, bucket.Size));
             }
 
             [Fact]
             public async Task When_GettingBucketsWithNoLimitAndNoOffset_Expect_AllBuckets()
             {
                 // Arrange
-                await Task.WhenAll(new Task[]
+                await this.repository.AddAsync(new Bucket[]
                 {
-                    this.repository.AddAsync(new Bucket { Name = "Bucket 1" }),
-                    this.repository.AddAsync(new Bucket { Name = "Bucket 2" }),
-                    this.repository.AddAsync(new Bucket { Name = "Bucket 3" }),
+                    new Bucket { Name = "Bucket 1" },
+                    new Bucket { Name = "Bucket 2" },
+                    new Bucket { Name = "Bucket 3" },
                 });
 
                 GetBuckets.Query query = new GetBuckets.Query(
@@ -205,23 +208,22 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
-                Assert.NotNull(response.Buckets);
-                Assert.NotEmpty(response.Buckets);
-                Assert.Equal(3, response.Buckets.Count);
-                Assert.Equal("Bucket 1", response.Buckets[0].Name);
-                Assert.Equal("Bucket 2", response.Buckets[1].Name);
-                Assert.Equal("Bucket 3", response.Buckets[2].Name);
+                Assert.Collection(
+                    response.Buckets,
+                    bucket => Assert.Equal("Bucket 1", bucket.Name),
+                    bucket => Assert.Equal("Bucket 2", bucket.Name),
+                    bucket => Assert.Equal("Bucket 3", bucket.Name));
             }
 
             [Fact]
             public async Task When_GettingBucketsWithLimit_Expect_LimitedBuckets()
             {
                 // Arrange
-                await Task.WhenAll(new Task[]
+                await this.repository.AddAsync(new Bucket[]
                 {
-                    this.repository.AddAsync(new Bucket { Name = "Bucket 1" }),
-                    this.repository.AddAsync(new Bucket { Name = "Bucket 2" }),
-                    this.repository.AddAsync(new Bucket { Name = "Bucket 3" }),
+                    new Bucket { Name = "Bucket 1" },
+                    new Bucket { Name = "Bucket 2" },
+                    new Bucket { Name = "Bucket 3" },
                 });
 
                 GetBuckets.Query query = new GetBuckets.Query(
@@ -236,22 +238,21 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
-                Assert.NotNull(response.Buckets);
-                Assert.NotEmpty(response.Buckets);
-                Assert.Equal(2, response.Buckets.Count);
-                Assert.Equal("Bucket 1", response.Buckets[0].Name);
-                Assert.Equal("Bucket 2", response.Buckets[1].Name);
+                Assert.Collection(
+                    response.Buckets,
+                    bucket => Assert.Equal("Bucket 1", bucket.Name),
+                    bucket => Assert.Equal("Bucket 2", bucket.Name));
             }
 
             [Fact]
             public async Task When_GettingBucketsWithOffset_Expect_OffsetBuckets()
             {
                 // Arrange
-                await Task.WhenAll(new Task[]
+                await this.repository.AddAsync(new Bucket[]
                 {
-                    this.repository.AddAsync(new Bucket { Name = "Bucket 1" }),
-                    this.repository.AddAsync(new Bucket { Name = "Bucket 2" }),
-                    this.repository.AddAsync(new Bucket { Name = "Bucket 3" }),
+                    new Bucket { Name = "Bucket 1" },
+                    new Bucket { Name = "Bucket 2" },
+                    new Bucket { Name = "Bucket 3" },
                 });
 
                 GetBuckets.Query query = new GetBuckets.Query(
@@ -266,22 +267,21 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
-                Assert.NotNull(response.Buckets);
-                Assert.NotEmpty(response.Buckets);
-                Assert.Equal(2, response.Buckets.Count);
-                Assert.Equal("Bucket 2", response.Buckets[0].Name);
-                Assert.Equal("Bucket 3", response.Buckets[1].Name);
+                Assert.Collection(
+                    response.Buckets,
+                    bucket => Assert.Equal("Bucket 2", bucket.Name),
+                    bucket => Assert.Equal("Bucket 3", bucket.Name));
             }
 
             [Fact]
             public async Task When_GettingBucketsWithLimitAndOffset_Expect_LimitedAndOffsetBuckets()
             {
                 // Arrange
-                await Task.WhenAll(new Task[]
+                await this.repository.AddAsync(new Bucket[]
                 {
-                    this.repository.AddAsync(new Bucket { Name = "Bucket 1" }),
-                    this.repository.AddAsync(new Bucket { Name = "Bucket 2" }),
-                    this.repository.AddAsync(new Bucket { Name = "Bucket 3" }),
+                    new Bucket { Name = "Bucket 1" },
+                    new Bucket { Name = "Bucket 2" },
+                    new Bucket { Name = "Bucket 3" },
                 });
 
                 GetBuckets.Query query = new GetBuckets.Query(
@@ -296,24 +296,14 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
-                Assert.NotNull(response.Buckets);
-                Assert.NotEmpty(response.Buckets);
-                Assert.Equal(1, response.Buckets.Count);
-                Assert.Equal("Bucket 2", response.Buckets[0].Name);
+                Assert.Collection(response.Buckets, bucket => Assert.Equal("Bucket 2", bucket.Name));
             }
 
             [Fact]
             public async Task When_GettingBucketsOrderedBySizeAscending_Expect_OrderedBySizeAscending()
             {
                 // Arrange
-                List<Task> addBucketTasks = new List<Task>();
-
-                foreach (Bucket bucket in this.testBuckets)
-                {
-                    addBucketTasks.Add(this.repository.AddAsync(bucket));
-                }
-
-                await Task.WhenAll(addBucketTasks);
+                await this.repository.AddAsync(this.testBuckets);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderBy("Size");
@@ -330,24 +320,27 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
-                for (int i = 1; i <= 12; i++)
-                {
-                    Assert.Equal(i, response.Buckets[i - 1].Size);
-                }
+                Assert.Collection(
+                    response.Buckets,
+                    bucket => Assert.Equal(1, bucket.Size),
+                    bucket => Assert.Equal(2, bucket.Size),
+                    bucket => Assert.Equal(3, bucket.Size),
+                    bucket => Assert.Equal(4, bucket.Size),
+                    bucket => Assert.Equal(5, bucket.Size),
+                    bucket => Assert.Equal(6, bucket.Size),
+                    bucket => Assert.Equal(7, bucket.Size),
+                    bucket => Assert.Equal(8, bucket.Size),
+                    bucket => Assert.Equal(9, bucket.Size),
+                    bucket => Assert.Equal(10, bucket.Size),
+                    bucket => Assert.Equal(11, bucket.Size),
+                    bucket => Assert.Equal(12, bucket.Size));
             }
 
             [Fact]
             public async Task When_GettingBucketsOrderedBySizeDescending_Expect_OrderedBySizeDescending()
             {
                 // Arrange
-                List<Task> addBucketTasks = new List<Task>();
-
-                foreach (Bucket bucket in this.testBuckets)
-                {
-                    addBucketTasks.Add(this.repository.AddAsync(bucket));
-                }
-
-                await Task.WhenAll(addBucketTasks);
+                await this.repository.AddAsync(this.testBuckets);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderByDescending("Size");
@@ -364,24 +357,27 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
-                for (int i = 1; i <= 12; i++)
-                {
-                    Assert.Equal(12 - (i - 1), response.Buckets[i - 1].Size);
-                }
+                Assert.Collection(
+                    response.Buckets,
+                    bucket => Assert.Equal(12, bucket.Size),
+                    bucket => Assert.Equal(11, bucket.Size),
+                    bucket => Assert.Equal(10, bucket.Size),
+                    bucket => Assert.Equal(9, bucket.Size),
+                    bucket => Assert.Equal(8, bucket.Size),
+                    bucket => Assert.Equal(7, bucket.Size),
+                    bucket => Assert.Equal(6, bucket.Size),
+                    bucket => Assert.Equal(5, bucket.Size),
+                    bucket => Assert.Equal(4, bucket.Size),
+                    bucket => Assert.Equal(3, bucket.Size),
+                    bucket => Assert.Equal(2, bucket.Size),
+                    bucket => Assert.Equal(1, bucket.Size));
             }
 
             [Fact]
             public async Task When_GettingBucketsOrderedBySizeWithLimit_Expect_OrderedLimitedBuckets()
             {
                 // Arrange
-                List<Task> addBucketTasks = new List<Task>();
-
-                foreach (Bucket bucket in this.testBuckets)
-                {
-                    addBucketTasks.Add(this.repository.AddAsync(bucket));
-                }
-
-                await Task.WhenAll(addBucketTasks);
+                await this.repository.AddAsync(this.testBuckets);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderBy("Size");
@@ -398,24 +394,21 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
-                for (int i = 1; i <= 6; i++)
-                {
-                    Assert.Equal(i, response.Buckets[i - 1].Size);
-                }
+                Assert.Collection(
+                    response.Buckets,
+                    bucket => Assert.Equal(1, bucket.Size),
+                    bucket => Assert.Equal(2, bucket.Size),
+                    bucket => Assert.Equal(3, bucket.Size),
+                    bucket => Assert.Equal(4, bucket.Size),
+                    bucket => Assert.Equal(5, bucket.Size),
+                    bucket => Assert.Equal(6, bucket.Size));
             }
 
             [Fact]
             public async Task When_GettingBucketsOrderedBySizeWithOffset_Expect_OrderedOffsetBuckets()
             {
                 // Arrange
-                List<Task> addBucketTasks = new List<Task>();
-
-                foreach (Bucket bucket in this.testBuckets)
-                {
-                    addBucketTasks.Add(this.repository.AddAsync(bucket));
-                }
-
-                await Task.WhenAll(addBucketTasks);
+                await this.repository.AddAsync(this.testBuckets);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderBy("Size");
@@ -432,24 +425,21 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
-                for (int i = 1; i <= 6; i++)
-                {
-                    Assert.Equal(i + 6, response.Buckets[i - 1].Size);
-                }
+                Assert.Collection(
+                    response.Buckets,
+                    bucket => Assert.Equal(7, bucket.Size),
+                    bucket => Assert.Equal(8, bucket.Size),
+                    bucket => Assert.Equal(9, bucket.Size),
+                    bucket => Assert.Equal(10, bucket.Size),
+                    bucket => Assert.Equal(11, bucket.Size),
+                    bucket => Assert.Equal(12, bucket.Size));
             }
 
             [Fact]
             public async Task When_GettingBucketsOrderedBySizeWithLimtAndOffset_Expect_OrderedLimitedAndOffsetBuckets()
             {
                 // Arrange
-                List<Task> addBucketTasks = new List<Task>();
-
-                foreach (Bucket bucket in this.testBuckets)
-                {
-                    addBucketTasks.Add(this.repository.AddAsync(bucket));
-                }
-
-                await Task.WhenAll(addBucketTasks);
+                await this.repository.AddAsync(this.testBuckets);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderBy("Size");
@@ -466,24 +456,21 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
-                for (int i = 1; i <= 6; i++)
-                {
-                    Assert.Equal(i + 3, response.Buckets[i - 1].Size);
-                }
+                Assert.Collection(
+                    response.Buckets,
+                    bucket => Assert.Equal(4, bucket.Size),
+                    bucket => Assert.Equal(5, bucket.Size),
+                    bucket => Assert.Equal(6, bucket.Size),
+                    bucket => Assert.Equal(7, bucket.Size),
+                    bucket => Assert.Equal(8, bucket.Size),
+                    bucket => Assert.Equal(9, bucket.Size));
             }
 
             [Fact]
             public async Task When_GettingBucketsOrderedByNameAscendingThenByDescriptionAscending_Expect_OrderedByNameAscendingThenByDescriptionAscending()
             {
                 // Arrange
-                List<Task> addBucketTasks = new List<Task>();
-
-                foreach (Bucket bucket in this.testBuckets)
-                {
-                    addBucketTasks.Add(this.repository.AddAsync(bucket));
-                }
-
-                await Task.WhenAll(addBucketTasks);
+                await this.repository.AddAsync(this.testBuckets);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderBy("Name")
@@ -501,45 +488,75 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
-                Assert.Equal("A", response.Buckets[0].Name);
-                Assert.Equal("A", response.Buckets[1].Name);
-                Assert.Equal("A", response.Buckets[2].Name);
-                Assert.Equal("A", response.Buckets[3].Name);
-                Assert.Equal("A", response.Buckets[4].Name);
-                Assert.Equal("A", response.Buckets[5].Name);
-                Assert.Equal("B", response.Buckets[6].Name);
-                Assert.Equal("B", response.Buckets[7].Name);
-                Assert.Equal("B", response.Buckets[8].Name);
-                Assert.Equal("B", response.Buckets[9].Name);
-                Assert.Equal("B", response.Buckets[10].Name);
-                Assert.Equal("B", response.Buckets[11].Name);
-
-                Assert.Equal("1", response.Buckets[0].Description);
-                Assert.Equal("1", response.Buckets[1].Description);
-                Assert.Equal("2", response.Buckets[2].Description);
-                Assert.Equal("2", response.Buckets[3].Description);
-                Assert.Equal("3", response.Buckets[4].Description);
-                Assert.Equal("3", response.Buckets[5].Description);
-                Assert.Equal("1", response.Buckets[6].Description);
-                Assert.Equal("1", response.Buckets[7].Description);
-                Assert.Equal("2", response.Buckets[8].Description);
-                Assert.Equal("2", response.Buckets[9].Description);
-                Assert.Equal("3", response.Buckets[10].Description);
-                Assert.Equal("3", response.Buckets[11].Description);
+                Assert.Collection(
+                    response.Buckets,
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    });
             }
 
             [Fact]
             public async Task When_GettingBucketsOrderedByNameDescendingThenByDescriptionDescending_Expect_OrderedByNameDescendingThenByDescriptionDescending()
             {
                 // Arrange
-                List<Task> addBucketTasks = new List<Task>();
-
-                foreach (Bucket bucket in this.testBuckets)
-                {
-                    addBucketTasks.Add(this.repository.AddAsync(bucket));
-                }
-
-                await Task.WhenAll(addBucketTasks);
+                await this.repository.AddAsync(this.testBuckets);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderByDescending("Name")
@@ -557,45 +574,75 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
-                Assert.Equal("B", response.Buckets[0].Name);
-                Assert.Equal("B", response.Buckets[1].Name);
-                Assert.Equal("B", response.Buckets[2].Name);
-                Assert.Equal("B", response.Buckets[3].Name);
-                Assert.Equal("B", response.Buckets[4].Name);
-                Assert.Equal("B", response.Buckets[5].Name);
-                Assert.Equal("A", response.Buckets[6].Name);
-                Assert.Equal("A", response.Buckets[7].Name);
-                Assert.Equal("A", response.Buckets[8].Name);
-                Assert.Equal("A", response.Buckets[9].Name);
-                Assert.Equal("A", response.Buckets[10].Name);
-                Assert.Equal("A", response.Buckets[11].Name);
-
-                Assert.Equal("3", response.Buckets[0].Description);
-                Assert.Equal("3", response.Buckets[1].Description);
-                Assert.Equal("2", response.Buckets[2].Description);
-                Assert.Equal("2", response.Buckets[3].Description);
-                Assert.Equal("1", response.Buckets[4].Description);
-                Assert.Equal("1", response.Buckets[5].Description);
-                Assert.Equal("3", response.Buckets[6].Description);
-                Assert.Equal("3", response.Buckets[7].Description);
-                Assert.Equal("2", response.Buckets[8].Description);
-                Assert.Equal("2", response.Buckets[9].Description);
-                Assert.Equal("1", response.Buckets[10].Description);
-                Assert.Equal("1", response.Buckets[11].Description);
+                Assert.Collection(
+                    response.Buckets,
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    });
             }
 
             [Fact]
             public async Task When_GettingBucketsOrderedByNameAscendingThenByDescriptionDescending_Expect_OrderedByNameAscendingThenByDescriptionDescending()
             {
                 // Arrange
-                List<Task> addBucketTasks = new List<Task>();
-
-                foreach (Bucket bucket in this.testBuckets)
-                {
-                    addBucketTasks.Add(this.repository.AddAsync(bucket));
-                }
-
-                await Task.WhenAll(addBucketTasks);
+                await this.repository.AddAsync(this.testBuckets);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderBy("Name")
@@ -613,45 +660,75 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
-                Assert.Equal("A", response.Buckets[0].Name);
-                Assert.Equal("A", response.Buckets[1].Name);
-                Assert.Equal("A", response.Buckets[2].Name);
-                Assert.Equal("A", response.Buckets[3].Name);
-                Assert.Equal("A", response.Buckets[4].Name);
-                Assert.Equal("A", response.Buckets[5].Name);
-                Assert.Equal("B", response.Buckets[6].Name);
-                Assert.Equal("B", response.Buckets[7].Name);
-                Assert.Equal("B", response.Buckets[8].Name);
-                Assert.Equal("B", response.Buckets[9].Name);
-                Assert.Equal("B", response.Buckets[10].Name);
-                Assert.Equal("B", response.Buckets[11].Name);
-
-                Assert.Equal("3", response.Buckets[0].Description);
-                Assert.Equal("3", response.Buckets[1].Description);
-                Assert.Equal("2", response.Buckets[2].Description);
-                Assert.Equal("2", response.Buckets[3].Description);
-                Assert.Equal("1", response.Buckets[4].Description);
-                Assert.Equal("1", response.Buckets[5].Description);
-                Assert.Equal("3", response.Buckets[6].Description);
-                Assert.Equal("3", response.Buckets[7].Description);
-                Assert.Equal("2", response.Buckets[8].Description);
-                Assert.Equal("2", response.Buckets[9].Description);
-                Assert.Equal("1", response.Buckets[10].Description);
-                Assert.Equal("1", response.Buckets[11].Description);
+                Assert.Collection(
+                    response.Buckets,
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    });
             }
 
             [Fact]
             public async Task When_GettingBucketsOrderedByNameDescendingThenByDescriptionAscending_Expect_OrderedByNameDescendingThenByDescriptionAscending()
             {
                 // Arrange
-                List<Task> addBucketTasks = new List<Task>();
-
-                foreach (Bucket bucket in this.testBuckets)
-                {
-                    addBucketTasks.Add(this.repository.AddAsync(bucket));
-                }
-
-                await Task.WhenAll(addBucketTasks);
+                await this.repository.AddAsync(this.testBuckets);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderByDescending("Name")
@@ -669,31 +746,68 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
-                Assert.Equal("B", response.Buckets[0].Name);
-                Assert.Equal("B", response.Buckets[1].Name);
-                Assert.Equal("B", response.Buckets[2].Name);
-                Assert.Equal("B", response.Buckets[3].Name);
-                Assert.Equal("B", response.Buckets[4].Name);
-                Assert.Equal("B", response.Buckets[5].Name);
-                Assert.Equal("A", response.Buckets[6].Name);
-                Assert.Equal("A", response.Buckets[7].Name);
-                Assert.Equal("A", response.Buckets[8].Name);
-                Assert.Equal("A", response.Buckets[9].Name);
-                Assert.Equal("A", response.Buckets[10].Name);
-                Assert.Equal("A", response.Buckets[11].Name);
-
-                Assert.Equal("1", response.Buckets[0].Description);
-                Assert.Equal("1", response.Buckets[1].Description);
-                Assert.Equal("2", response.Buckets[2].Description);
-                Assert.Equal("2", response.Buckets[3].Description);
-                Assert.Equal("3", response.Buckets[4].Description);
-                Assert.Equal("3", response.Buckets[5].Description);
-                Assert.Equal("1", response.Buckets[6].Description);
-                Assert.Equal("1", response.Buckets[7].Description);
-                Assert.Equal("2", response.Buckets[8].Description);
-                Assert.Equal("2", response.Buckets[9].Description);
-                Assert.Equal("3", response.Buckets[10].Description);
-                Assert.Equal("3", response.Buckets[11].Description);
+                Assert.Collection(
+                    response.Buckets,
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("B", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("1", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("2", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    },
+                    bucket =>
+                    {
+                        Assert.Equal("A", bucket.Name);
+                        Assert.Equal("3", bucket.Description);
+                    });
             }
         }
     }

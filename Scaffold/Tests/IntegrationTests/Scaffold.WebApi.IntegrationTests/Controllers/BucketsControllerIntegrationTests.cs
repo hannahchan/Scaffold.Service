@@ -183,14 +183,18 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 Assert.Equal(MediaTypeNames.Application.Json, response.Content.Headers.ContentType.MediaType);
 
-                Assert.NotEmpty(result);
-                Assert.Equal(size, result.Count);
-
-                for (int i = 1; i <= size; i++)
-                {
-                    Assert.Equal($"Bucket {i}", result[i - 1].Name);
-                    Assert.Equal(i, result[i - 1].Size);
-                }
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal("Bucket 1", bucket.Name),
+                    bucket => Assert.Equal("Bucket 2", bucket.Name),
+                    bucket => Assert.Equal("Bucket 3", bucket.Name),
+                    bucket => Assert.Equal("Bucket 4", bucket.Name),
+                    bucket => Assert.Equal("Bucket 5", bucket.Name),
+                    bucket => Assert.Equal("Bucket 6", bucket.Name),
+                    bucket => Assert.Equal("Bucket 7", bucket.Name),
+                    bucket => Assert.Equal("Bucket 8", bucket.Name),
+                    bucket => Assert.Equal("Bucket 9", bucket.Name),
+                    bucket => Assert.Equal("Bucket 10", bucket.Name));
             }
 
             [Fact]
@@ -659,13 +663,18 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 Assert.Equal(MediaTypeNames.Application.Json, response.Content.Headers.ContentType.MediaType);
 
-                Assert.NotEmpty(result);
-                Assert.Equal(bucket.Size, result.Count);
-
-                for (int i = 1; i <= bucket.Size; i++)
-                {
-                    Assert.Equal($"Item {i}", result[i - 1].Name);
-                }
+                Assert.Collection(
+                    result,
+                    bucket => Assert.Equal("Item 1", bucket.Name),
+                    bucket => Assert.Equal("Item 2", bucket.Name),
+                    bucket => Assert.Equal("Item 3", bucket.Name),
+                    bucket => Assert.Equal("Item 4", bucket.Name),
+                    bucket => Assert.Equal("Item 5", bucket.Name),
+                    bucket => Assert.Equal("Item 6", bucket.Name),
+                    bucket => Assert.Equal("Item 7", bucket.Name),
+                    bucket => Assert.Equal("Item 8", bucket.Name),
+                    bucket => Assert.Equal("Item 9", bucket.Name),
+                    bucket => Assert.Equal("Item 10", bucket.Name));
             }
 
             [Fact]
