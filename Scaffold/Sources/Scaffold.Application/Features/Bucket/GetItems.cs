@@ -23,12 +23,12 @@ namespace Scaffold.Application.Features.Bucket
 
         public class Response
         {
-            public Response(IList<Item> items)
+            public Response(IEnumerable<Item> items)
             {
                 this.Items = items ?? throw new ArgumentNullException(nameof(items));
             }
 
-            public IList<Item> Items { get; }
+            public IEnumerable<Item> Items { get; }
         }
 
         public class Handler : IRequestHandler<Query, Response>
@@ -45,7 +45,7 @@ namespace Scaffold.Application.Features.Bucket
                 Bucket bucket = await this.repository.GetAsync(request.BucketId, cancellationToken) ??
                     throw new BucketNotFoundException(request.BucketId);
 
-                return new Response(bucket.Items.ToList());
+                return new Response(bucket.Items.ToArray());
             }
         }
     }

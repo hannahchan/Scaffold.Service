@@ -224,10 +224,18 @@ namespace Scaffold.Application.UnitTests.Common.Models
                     .ThenBy(nameof(TestClass.Property2));
 
                 // Assert
-                Assert.NotNull(result);
-                Assert.Equal(2, result.Count);
-                Assert.Equal(nameof(TestClass.Property2), result[1].PropertyName);
-                Assert.False(result[1].Descending);
+                Assert.Collection(
+                    result,
+                    orderBy =>
+                    {
+                        Assert.Equal(nameof(TestClass.Property1), orderBy.PropertyName);
+                        Assert.False(orderBy.Descending);
+                    },
+                    thenBy =>
+                    {
+                        Assert.Equal(nameof(TestClass.Property2), thenBy.PropertyName);
+                        Assert.False(thenBy.Descending);
+                    });
             }
 
             [Fact]
@@ -258,14 +266,23 @@ namespace Scaffold.Application.UnitTests.Common.Models
                     .ThenBy(nameof(TestClass.Property5));
 
                 // Assert
-                Assert.NotNull(result);
-                Assert.Equal(3, result.Count);
-
-                Assert.Equal(nameof(TestClass.Property4), result[1].PropertyName);
-                Assert.False(result[1].Descending);
-
-                Assert.Equal(nameof(TestClass.Property5), result[2].PropertyName);
-                Assert.False(result[2].Descending);
+                Assert.Collection(
+                    result,
+                    orderBy =>
+                    {
+                        Assert.Equal(nameof(TestClass.Property1), orderBy.PropertyName);
+                        Assert.False(orderBy.Descending);
+                    },
+                    thenBy =>
+                    {
+                        Assert.Equal(nameof(TestClass.Property4), thenBy.PropertyName);
+                        Assert.False(thenBy.Descending);
+                    },
+                    thenBy =>
+                    {
+                        Assert.Equal(nameof(TestClass.Property5), thenBy.PropertyName);
+                        Assert.False(thenBy.Descending);
+                    });
             }
 
             [Fact]
@@ -298,10 +315,18 @@ namespace Scaffold.Application.UnitTests.Common.Models
                     .ThenByDescending(nameof(TestClass.Property2));
 
                 // Assert
-                Assert.NotNull(result);
-                Assert.Equal(2, result.Count);
-                Assert.Equal(nameof(TestClass.Property2), result[1].PropertyName);
-                Assert.True(result[1].Descending);
+                Assert.Collection(
+                   result,
+                   orderBy =>
+                   {
+                       Assert.Equal(nameof(TestClass.Property1), orderBy.PropertyName);
+                       Assert.False(orderBy.Descending);
+                   },
+                   thenByDescending =>
+                   {
+                       Assert.Equal(nameof(TestClass.Property2), thenByDescending.PropertyName);
+                       Assert.True(thenByDescending.Descending);
+                   });
             }
 
             [Fact]
@@ -332,14 +357,23 @@ namespace Scaffold.Application.UnitTests.Common.Models
                     .ThenByDescending(nameof(TestClass.Property5));
 
                 // Assert
-                Assert.NotNull(result);
-                Assert.Equal(3, result.Count);
-
-                Assert.Equal(nameof(TestClass.Property4), result[1].PropertyName);
-                Assert.True(result[1].Descending);
-
-                Assert.Equal(nameof(TestClass.Property5), result[2].PropertyName);
-                Assert.True(result[2].Descending);
+                Assert.Collection(
+                    result,
+                    orderBy =>
+                    {
+                        Assert.Equal(nameof(TestClass.Property1), orderBy.PropertyName);
+                        Assert.False(orderBy.Descending);
+                    },
+                    thenByDescending =>
+                    {
+                        Assert.Equal(nameof(TestClass.Property4), thenByDescending.PropertyName);
+                        Assert.True(thenByDescending.Descending);
+                    },
+                    thenByDescending =>
+                    {
+                        Assert.Equal(nameof(TestClass.Property5), thenByDescending.PropertyName);
+                        Assert.True(thenByDescending.Descending);
+                    });
             }
 
             [Fact]

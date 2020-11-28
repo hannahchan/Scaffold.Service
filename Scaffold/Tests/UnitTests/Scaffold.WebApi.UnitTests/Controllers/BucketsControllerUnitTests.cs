@@ -59,11 +59,11 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 // Arrange
                 Mock<IMediator> mock = new Mock<IMediator>();
                 mock.Setup(m => m.Send(It.IsAny<GetBuckets.Query>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new GetBuckets.Response(new List<Domain.Aggregates.Bucket.Bucket>()));
+                    .ReturnsAsync(new GetBuckets.Response(Array.Empty<Domain.Aggregates.Bucket.Bucket>()));
 
                 BucketsController controller = new BucketsController(this.mapper, mock.Object);
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 result = await controller.GetBuckets(null, null);
@@ -184,11 +184,11 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 // Arrange
                 Mock<IMediator> mock = new Mock<IMediator>();
                 mock.Setup(m => m.Send(It.IsAny<GetItems.Query>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new GetItems.Response(new List<Domain.Aggregates.Bucket.Item>()));
+                    .ReturnsAsync(new GetItems.Response(Array.Empty<Domain.Aggregates.Bucket.Item>()));
 
                 BucketsController controller = new BucketsController(this.mapper, mock.Object);
 
-                IList<Item> result;
+                IEnumerable<Item> result;
 
                 // Act
                 result = await controller.GetItems(new Random().Next());

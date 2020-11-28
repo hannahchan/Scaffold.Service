@@ -1,7 +1,6 @@
 namespace Scaffold.Application.UnitTests.Features.Bucket
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Features.Bucket;
@@ -29,7 +28,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public void When_InstantiatingResponseWithItems_Expect_ResponseWithItems()
             {
                 // Arrange
-                List<Item> items = new List<Item>();
+                Item[] items = Array.Empty<Item>();
 
                 // Act
                 GetItems.Response response = new GetItems.Response(items);
@@ -57,9 +56,9 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             {
                 // Arrange
                 Bucket bucket = new Bucket();
-                bucket.AddItem(new Item());
-                bucket.AddItem(new Item());
-                bucket.AddItem(new Item());
+                bucket.AddItem(new Item { Name = "Item 1" });
+                bucket.AddItem(new Item { Name = "Item 2" });
+                bucket.AddItem(new Item { Name = "Item 3" });
 
                 await this.repository.AddAsync(bucket);
 
@@ -70,13 +69,15 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 GetItems.Response response = await handler.Handle(query, default);
 
                 // Assert
-                Assert.NotNull(response.Items);
-                Assert.NotEmpty(response.Items);
-                Assert.Equal(3, response.Items.Count);
+                Assert.Collection(
+                    response.Items,
+                    item => Assert.Equal("Item 1", item.Name),
+                    item => Assert.Equal("Item 2", item.Name),
+                    item => Assert.Equal("Item 3", item.Name));
             }
 
             [Fact]
-            public async Task When_GettingNonExistingItemsFromBucket_Expect_EmptyList()
+            public async Task When_GettingNonExistingItemsFromBucket_Expect_Empty()
             {
                 // Arrange
                 Bucket bucket = new Bucket();

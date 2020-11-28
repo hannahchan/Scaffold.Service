@@ -64,7 +64,7 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
                 bucket.AddItem(item);
 
                 // Assert
-                Assert.Equal(1, bucket.Items.Count);
+                Assert.Single(bucket.Items);
             }
 
             [Fact]
@@ -87,17 +87,22 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
             {
                 // Arrange
                 Bucket bucket = new Bucket { Size = 3 };
-                bucket.AddItem(new Item());
-                bucket.AddItem(new Item());
-                bucket.AddItem(new Item());
+                bucket.AddItem(new Item { Name = "Item 1" });
+                bucket.AddItem(new Item { Name = "Item 2" });
+                bucket.AddItem(new Item { Name = "Item 3" });
 
                 // Act
-                Exception exception = Record.Exception(() => bucket.AddItem(new Item()));
+                Exception exception = Record.Exception(() => bucket.AddItem(new Item { Name = "Item 4" }));
 
                 // Assert
                 Assert.IsType<BucketFullException>(exception);
-                Assert.Equal(bucket.Size, bucket.Items.Count);
                 Assert.NotEmpty(exception.Message);
+
+                Assert.Collection(
+                    bucket.Items,
+                    item => Assert.Equal("Item 1", item.Name),
+                    item => Assert.Equal("Item 2", item.Name),
+                    item => Assert.Equal("Item 3", item.Name));
             }
 
             [Fact]
@@ -109,14 +114,19 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
                 // Act
                 Exception exception = Record.Exception(() =>
                 {
-                    bucket.AddItem(new Item());
-                    bucket.AddItem(new Item());
-                    bucket.AddItem(new Item());
+                    bucket.AddItem(new Item { Name = "Item 1" });
+                    bucket.AddItem(new Item { Name = "Item 2" });
+                    bucket.AddItem(new Item { Name = "Item 3" });
                 });
 
                 // Assert
                 Assert.Null(exception);
-                Assert.Equal(bucket.Size, bucket.Items.Count);
+
+                Assert.Collection(
+                    bucket.Items,
+                    item => Assert.Equal("Item 1", item.Name),
+                    item => Assert.Equal("Item 2", item.Name),
+                    item => Assert.Equal("Item 3", item.Name));
             }
         }
 
@@ -152,7 +162,7 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
 
                 // Assert
                 Assert.Contains(item, bucket.Items);
-                Assert.Equal(1, bucket.Items.Count);
+                Assert.Single(bucket.Items);
             }
 
             [Fact]
@@ -171,7 +181,7 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
                 ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
                 Assert.Equal("item", argumentNullException.ParamName);
                 Assert.Contains(item, bucket.Items);
-                Assert.Equal(1, bucket.Items.Count);
+                Assert.Single(bucket.Items);
             }
         }
 

@@ -43,12 +43,12 @@ namespace Scaffold.Application.Features.Bucket
 
         public class Response
         {
-            public Response(IList<Bucket> buckets)
+            public Response(IEnumerable<Bucket> buckets)
             {
                 this.Buckets = buckets ?? throw new ArgumentNullException(nameof(buckets));
             }
 
-            public IList<Bucket> Buckets { get; }
+            public IEnumerable<Bucket> Buckets { get; }
         }
 
         public class Handler : IRequestHandler<Query, Response>

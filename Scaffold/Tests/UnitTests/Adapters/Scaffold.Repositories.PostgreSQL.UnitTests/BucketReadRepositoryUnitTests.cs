@@ -101,7 +101,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     context.SaveChanges();
                 }
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -119,7 +119,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
             }
 
             [Fact]
-            public void When_GettingBucketsWithPredicate_Expect_EmptyList()
+            public void When_GettingBucketsWithPredicate_Expect_Empty()
             {
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -134,7 +134,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     context.SaveChanges();
                 }
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -166,7 +166,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     context.SaveChanges();
                 }
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -217,7 +217,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     context.SaveChanges();
                 }
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -250,7 +250,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     context.SaveChanges();
                 }
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -282,7 +282,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     context.SaveChanges();
                 }
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -315,7 +315,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     context.SaveChanges();
                 }
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -347,7 +347,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     context.SaveChanges();
                 }
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -445,7 +445,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     await context.SaveChangesAsync();
                 }
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -463,7 +463,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
             }
 
             [Fact]
-            public async Task When_GettingBucketsWithPredicate_Expect_EmptyList()
+            public async Task When_GettingBucketsWithPredicate_Expect_Empty()
             {
                 // Arrange
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -478,7 +478,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     await context.SaveChangesAsync();
                 }
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -510,7 +510,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     await context.SaveChangesAsync();
                 }
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -561,7 +561,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     await context.SaveChangesAsync();
                 }
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -594,7 +594,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     await context.SaveChangesAsync();
                 }
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -626,7 +626,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     await context.SaveChangesAsync();
                 }
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -659,7 +659,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     await context.SaveChangesAsync();
                 }
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -691,7 +691,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     await context.SaveChangesAsync();
                 }
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -741,7 +741,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderBy("Size");
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -780,7 +780,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderByDescending("Size");
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -819,7 +819,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderBy("Size");
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -852,7 +852,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderBy("Size");
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -885,7 +885,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderBy("Size");
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -919,7 +919,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     .OrderBy("Name")
                     .ThenBy("Description");
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -1007,7 +1007,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     .OrderByDescending("Name")
                     .ThenByDescending("Description");
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -1095,7 +1095,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     .OrderBy("Name")
                     .ThenByDescending("Description");
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -1183,7 +1183,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     .OrderByDescending("Name")
                     .ThenBy("Description");
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -1273,7 +1273,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderBy("Size");
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -1312,7 +1312,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderByDescending("Size");
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -1351,7 +1351,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderBy("Size");
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -1384,7 +1384,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderBy("Size");
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -1417,7 +1417,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                     .OrderBy("Size");
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -1451,7 +1451,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     .OrderBy("Name")
                     .ThenBy("Description");
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -1539,7 +1539,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     .OrderByDescending("Name")
                     .ThenByDescending("Description");
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -1627,7 +1627,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     .OrderBy("Name")
                     .ThenByDescending("Description");
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -1715,7 +1715,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                     .OrderByDescending("Name")
                     .ThenBy("Description");
 
-                IList<Bucket> result;
+                IEnumerable<Bucket> result;
 
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))

@@ -55,7 +55,7 @@
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<IList<Bucket>> GetBuckets([FromQuery] int? limit, [FromQuery] int? offset)
+        public async Task<IEnumerable<Bucket>> GetBuckets([FromQuery] int? limit, [FromQuery] int? offset)
         {
             GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
@@ -65,7 +65,7 @@
 
             GetBuckets.Response response = await this.mediator.Send(query);
 
-            return this.mapper.Map<List<Bucket>>(response.Buckets);
+            return this.mapper.Map<Bucket[]>(response.Buckets);
         }
 
         /// <summary>Retrieves a bucket.</summary>
@@ -156,10 +156,10 @@
         [HttpGet("{bucketId}/Items")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<IList<Item>> GetItems(int bucketId)
+        public async Task<IEnumerable<Item>> GetItems(int bucketId)
         {
             GetItems.Response response = await this.mediator.Send(new GetItems.Query(bucketId));
-            return this.mapper.Map<List<Item>>(response.Items);
+            return this.mapper.Map<Item[]>(response.Items);
         }
 
         /// <summary>Retrieves an item from a bucket.</summary>

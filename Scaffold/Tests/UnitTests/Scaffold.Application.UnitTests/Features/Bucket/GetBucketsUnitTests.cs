@@ -1,7 +1,6 @@
 namespace Scaffold.Application.UnitTests.Features.Bucket
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
@@ -97,7 +96,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             public void When_InstantiatingResponseWithBuckets_Expect_ResponseWithBuckets()
             {
                 // Arrange
-                List<Bucket> buckets = new List<Bucket>();
+                Bucket[] buckets = Array.Empty<Bucket>();
 
                 // Act
                 GetBuckets.Response response = new GetBuckets.Response(buckets);
@@ -146,7 +145,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             }
 
             [Fact]
-            public async Task When_GettingNonExistingBuckets_Expect_EmptyList()
+            public async Task When_GettingNonExistingBuckets_Expect_Empty()
             {
                 // Arrange
                 GetBuckets.Query query = new GetBuckets.Query();

@@ -1,7 +1,6 @@
 namespace Scaffold.WebApi.IntegrationTests.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -175,7 +174,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Act
                 HttpResponseMessage response = await client.GetAsync("/Buckets");
 
-                List<Bucket> result = JsonSerializer.Deserialize<List<Bucket>>(
+                Bucket[] result = JsonSerializer.Deserialize<Bucket[]>(
                     await response.Content.ReadAsStringAsync(),
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
@@ -655,7 +654,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Act
                 response = await client.GetAsync($"{response.Headers.Location}/Items");
 
-                List<Item> result = JsonSerializer.Deserialize<List<Item>>(
+                Item[] result = JsonSerializer.Deserialize<Item[]>(
                     await response.Content.ReadAsStringAsync(),
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
