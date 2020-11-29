@@ -30,8 +30,7 @@ namespace Scaffold.Repositories.PostgreSQL
 
         public Bucket? Get(int id)
         {
-            return this.context.Buckets
-                .Where(bucket => bucket.Id == id)
+            return this.BuildQuery(bucket => bucket.Id == id)
                 .Include(bucket => bucket.Items)
                 .SingleOrDefault();
         }
@@ -45,8 +44,7 @@ namespace Scaffold.Repositories.PostgreSQL
 
         public Task<Bucket?> GetAsync(int id, CancellationToken cancellationToken = default)
         {
-            return this.context.Buckets
-                .Where(bucket => bucket.Id == id)
+            return this.BuildQuery(bucket => bucket.Id == id)
                 .Include(bucket => bucket.Items)
                 .SingleOrDefaultAsync(cancellationToken);
         }
@@ -75,7 +73,7 @@ namespace Scaffold.Repositories.PostgreSQL
             return keySelectors;
         }
 
-        private IQueryable<Bucket> BuildQuery(Expression<Func<Bucket, bool>> predicate, int? limit, int? offset, SortOrder<Bucket>? sortOrder = null)
+        private IQueryable<Bucket> BuildQuery(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, SortOrder<Bucket>? sortOrder = null)
         {
             if (predicate is null)
             {
