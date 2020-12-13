@@ -76,7 +76,7 @@ namespace Scaffold.WebApi.Factories
                 Instance = instance,
             };
 
-            if (title is not null)
+            if (title != null)
             {
                 problemDetails.Title = title;
             }
@@ -96,7 +96,7 @@ namespace Scaffold.WebApi.Factories
 
             ITracer? tracer = httpContext.RequestServices?.GetService<ITracer>();
 
-            if (tracer is not null && tracer.ActiveSpan is ISpan span)
+            if (tracer != null && tracer.ActiveSpan is ISpan span)
             {
                 problemDetails.Extensions["traceId"] = span.Context.TraceId;
             }
