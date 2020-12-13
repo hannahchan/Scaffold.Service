@@ -13,7 +13,6 @@ namespace Scaffold.WebApi.Extensions
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.OpenApi.Models;
-    using OpenTracing.Contrib.NetCore.Internal;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
     using Scaffold.HttpClients;
@@ -92,7 +91,6 @@ namespace Scaffold.WebApi.Extensions
 
             services
                 .Configure<ForwardedHeadersOptions>(options => options.ForwardedHeaders = ForwardedHeaders.All)
-                .Configure<GenericEventOptions>(options => options.IgnoreAll = true)
                 .Configure<RequestLoggingMiddleware.Options>(options => options.IgnorePatterns = new string[]
                 {
                     "^/health$",
@@ -137,7 +135,7 @@ namespace Scaffold.WebApi.Extensions
             services
                 .AddAutoMapper(typeof(Startup).Assembly)
                 .AddMediatR(typeof(GetBucket).Assembly)
-                .AddOpenTracing()
+                .AddOpenTracing(builder => builder.RemoveGenericDiagnostics())
                 .AddSingleton<ProblemDetailsFactory, CustomProblemDetailsFactory>();
 
             return services;
