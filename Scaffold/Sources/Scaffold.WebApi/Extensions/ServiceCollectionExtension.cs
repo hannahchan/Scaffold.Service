@@ -6,9 +6,7 @@ namespace Scaffold.WebApi.Extensions
     using AutoMapper;
     using MediatR;
     using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.HttpOverrides;
-    using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +16,6 @@ namespace Scaffold.WebApi.Extensions
     using Scaffold.HttpClients;
     using Scaffold.Repositories.PostgreSQL;
     using Scaffold.WebApi.Controllers;
-    using Scaffold.WebApi.Factories;
     using Scaffold.WebApi.HttpMessageHandlers;
     using Scaffold.WebApi.Middleware;
     using Swashbuckle.AspNetCore.SwaggerGen;
@@ -62,16 +59,12 @@ namespace Scaffold.WebApi.Extensions
             }
 
             services
-                .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
-                .AddTransient<OpenTracingSpanTaggingHttpMessageHandler>()
                 .AddTransient<RequestLoggingHttpMessageHandler>();
 
             services.AddHttpClient<IExampleHttpClient, ExampleHttpClient>()
-                .AddHttpMessageHandler<OpenTracingSpanTaggingHttpMessageHandler>()
                 .AddHttpMessageHandler<RequestLoggingHttpMessageHandler>();
 
             services.AddHttpClient<TracingDemoController.IClient, TracingDemoController.Client>()
-                .AddHttpMessageHandler<OpenTracingSpanTaggingHttpMessageHandler>()
                 .AddHttpMessageHandler<RequestLoggingHttpMessageHandler>();
 
             return services;
@@ -134,9 +127,7 @@ namespace Scaffold.WebApi.Extensions
 
             services
                 .AddAutoMapper(typeof(Startup).Assembly)
-                .AddMediatR(typeof(GetBucket).Assembly)
-                .AddOpenTracing(builder => builder.RemoveGenericDiagnostics())
-                .AddSingleton<ProblemDetailsFactory, CustomProblemDetailsFactory>();
+                .AddMediatR(typeof(GetBucket).Assembly);
 
             return services;
         }

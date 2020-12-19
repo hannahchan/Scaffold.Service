@@ -34,19 +34,5 @@ namespace Scaffold.WebApi.UnitTests.Extensions
             ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
             Assert.Equal("host", argumentNullException.ParamName);
         }
-
-        [Fact]
-        public void When_RegisteringGlobalTracerWithNullHost_Expect_ArgumentNullException()
-        {
-            // Arrange
-            IHost host = null;
-
-            // Act
-            Exception exception = Record.Exception(() => host.RegisterGlobalTracer());
-
-            // Assert
-            ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-            Assert.Equal("host", argumentNullException.ParamName);
-        }
     }
 }

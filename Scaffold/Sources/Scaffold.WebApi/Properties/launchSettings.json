@@ -7,8 +7,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HEALTHCHECKPORT": "8081",
         "ASPNETCORE_METRICSPORT": "8081",
-        "ASPNETCORE_URLS": "http://+:5000;http://+:8081",
-        "JAEGER_SERVICE_NAME": "Scaffold"
+        "ASPNETCORE_URLS": "http://+:5000;http://+:8081"
       }
     }
   }

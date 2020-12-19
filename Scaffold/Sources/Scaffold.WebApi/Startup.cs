@@ -65,7 +65,6 @@
 
             app
                 .UseMiddleware<RequestLoggingMiddleware>()
-                .UseMiddleware<OpenTracingSpanTaggingMiddleware>()
                 .UseSwagger()
                 .UseSwaggerUI(options =>
                 {
