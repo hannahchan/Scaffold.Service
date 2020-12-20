@@ -38,6 +38,7 @@
 
             services
                 .AddHttpClients()
+                .AddOpenTelemetry(this.Configuration)
                 .AddOptions(this.Configuration)
                 .AddRepositories(this.Configuration)
                 .AddServices();

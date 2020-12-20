@@ -1,16 +1,22 @@
 namespace Scaffold.WebApi.Extensions
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Reflection;
+    using System.Text.RegularExpressions;
     using AutoMapper;
     using MediatR;
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.HttpOverrides;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.OpenApi.Models;
+    using OpenTelemetry;
+    using OpenTelemetry.Resources;
+    using OpenTelemetry.Trace;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
     using Scaffold.HttpClients;
@@ -20,8 +26,14 @@ namespace Scaffold.WebApi.Extensions
     using Scaffold.WebApi.Middleware;
     using Swashbuckle.AspNetCore.SwaggerGen;
 
-    public static class ServiceCollectionExtension
+    public static class ServiceCollectionExtensions
     {
+        private static readonly string[] IgnorePatterns =
+        {
+            "^/health$",
+            "^/metrics$",
+        };
+
         public static IServiceCollection AddApiDocumentation(this IServiceCollection services)
         {
             if (services is null)
@@ -70,6 +82,30 @@ namespace Scaffold.WebApi.Extensions
             return services;
         }
 
+        public static IServiceCollection AddOpenTelemetry(this IServiceCollection services, IConfiguration config)
+        {
+            string serviceName = config.GetValue("OpenTelemetry:ServiceName", "Scaffold");
+            string serviceNamespace = config.GetValue("OpenTelemetry:ServiceNamespace", string.Empty);
+
+            ResourceBuilder resourceBuilder = ResourceBuilder.CreateDefault()
+                .AddService(serviceName, serviceNamespace);
+
+            services.AddOpenTelemetryTracing(builder => builder
+                .SetResourceBuilder(resourceBuilder)
+                .AddAspNetCoreInstrumentation(options =>
+                {
+                    options.Filter = httpContext => !httpContext.Request.Path.IgnorePath(IgnorePatterns);
+                })
+                .AddHttpClientInstrumentation()
+                .AddJaegerExporter(options =>
+                {
+                    options.AgentHost = config.GetValue("Jaeger:AgentHost", "localhost");
+                    options.AgentPort = config.GetValue("Jaeger:AgentPort", 6831);
+                }));
+
+            return services;
+        }
+
         public static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration config)
         {
             if (services is null)
@@ -84,11 +120,7 @@ namespace Scaffold.WebApi.Extensions
 
             services
                 .Configure<ForwardedHeadersOptions>(options => options.ForwardedHeaders = ForwardedHeaders.All)
-                .Configure<RequestLoggingMiddleware.Options>(options => options.IgnorePatterns = new string[]
-                {
-                    "^/health$",
-                    "^/metrics$",
-                });
+                .Configure<RequestLoggingMiddleware.Options>(options => options.IgnorePatterns = IgnorePatterns);
 
             return services;
         }
@@ -130,6 +162,19 @@ namespace Scaffold.WebApi.Extensions
                 .AddMediatR(typeof(GetBucket).Assembly);
 
             return services;
+        }
+
+        private static bool IgnorePath(this PathString path, IEnumerable<string> ignorePatterns)
+        {
+            foreach (string ignorePattern in ignorePatterns)
+            {
+                if (Regex.IsMatch(path, ignorePattern, RegexOptions.Compiled | RegexOptions.IgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

@@ -1,6 +1,8 @@
 # Application Metrics
 
-Scaffold comes with basic instrumentation of application metrics using [prometheus-net](https://github.com/prometheus-net/prometheus-net). These metrics are by default exposed on the `/metrics` endpoint of the Web API and is intended to be _scraped_ by [Prometheus](https://prometheus.io/). You can change this endpoint by modifying the [`Startup.cs`](../Sources/Scaffold.WebApi/Startup.cs) file of the Web API. You'll need to further instrument your application if you require further metrics than those provided by the default implementation.
+Scaffold currently uses [prometheus-net](https://github.com/prometheus-net/prometheus-net) to instrument and expose application metrics. These metrics are by default exposed on the `/metrics` endpoint of the Web API and is intended to be _scraped_ by [Prometheus](https://prometheus.io/). You can change this endpoint by modifying the [`Startup.cs`](../Sources/Scaffold.WebApi/Startup.cs) file of the Web API. You'll need to further instrument your application if you require further metrics than those provided by the default implementation.
+
+A future version of Scaffold will switch away from [prometheus-net](https://github.com/prometheus-net/prometheus-net) and instead will use the [OpenTelemetry](https://opentelemetry.io) observability framework for application metrics.
 
 ## Metrics Port
 

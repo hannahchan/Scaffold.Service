@@ -7,7 +7,7 @@ namespace Scaffold.WebApi.UnitTests.Extensions
     using Scaffold.WebApi.Extensions;
     using Xunit;
 
-    public class ServiceCollectionExtensionUnitTests
+    public class ServiceCollectionExtensionsUnitTests
     {
         [Fact]
         public void When_AddingApiDocumentationWithNullServices_Expect_ArgumentNullException()

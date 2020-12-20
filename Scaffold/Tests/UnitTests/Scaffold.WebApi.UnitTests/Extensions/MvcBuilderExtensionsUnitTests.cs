@@ -5,7 +5,7 @@ namespace Scaffold.WebApi.UnitTests.Extensions
     using Scaffold.WebApi.Extensions;
     using Xunit;
 
-    public class MvcBuilderExtensionUnitTests
+    public class MvcBuilderExtensionsUnitTests
     {
         [Fact]
         public void When_AddingCustomJsonOptionsWithNullMvcBuilder_Expect_ArgumentNullException()

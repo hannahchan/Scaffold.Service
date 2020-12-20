@@ -10,6 +10,7 @@ services:
     environment:
       ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=postgres;Username=postgres;
       ConnectionStrings__ReadOnlyConnection: Host=postgres;Port=5432;Database=postgres;Username=postgres;
+      Jaeger__AgentHost: jaeger
     image: "${DOCKER_REGISTRY}scaffold"
     ports:
       - mode: ingress

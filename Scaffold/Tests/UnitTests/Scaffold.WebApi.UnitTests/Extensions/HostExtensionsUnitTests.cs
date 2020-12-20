@@ -5,7 +5,7 @@ namespace Scaffold.WebApi.UnitTests.Extensions
     using Scaffold.WebApi.Extensions;
     using Xunit;
 
-    public class HostExtensionUnitTests
+    public class HostExtensionsUnitTests
     {
         [Fact]
         public void When_EnsuringCreatedDatabaseWithNullHost_Expect_ArgumentNullException()

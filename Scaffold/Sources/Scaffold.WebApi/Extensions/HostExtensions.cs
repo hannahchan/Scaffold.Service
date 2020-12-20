@@ -6,7 +6,7 @@ namespace Scaffold.WebApi.Extensions
     using Microsoft.Extensions.Hosting;
     using Scaffold.Repositories.PostgreSQL;
 
-    public static class HostExtension
+    public static class HostExtensions
     {
         public static IHost EnsureCreatedDatabase(this IHost host)
         {
