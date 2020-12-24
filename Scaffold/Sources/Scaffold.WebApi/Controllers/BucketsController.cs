@@ -47,7 +47,7 @@
         }
 
         /// <summary>Retrieves a list of buckets.</summary>
-        /// <param name="limit">The maximun number of buckets to return from the result set. Defaults to 10.</param>
+        /// <param name="limit">The maximun number of buckets to return from the result set.</param>
         /// <param name="offset">The number of buckets to omit from the start of the result set.</param>
         /// <returns>A list of Bucket objects.</returns>
         /// <response code="200">Buckets retrieved successfully.</response>
