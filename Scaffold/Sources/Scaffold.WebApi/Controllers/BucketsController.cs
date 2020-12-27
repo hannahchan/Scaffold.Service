@@ -47,20 +47,19 @@
         }
 
         /// <summary>Retrieves a list of buckets.</summary>
-        /// <param name="limit">The maximun number of buckets to return from the result set.</param>
-        /// <param name="offset">The number of buckets to omit from the start of the result set.</param>
+        /// <param name="requestQuery">The parameters for the request.</param>
         /// <returns>A list of Bucket objects.</returns>
         /// <response code="200">Buckets retrieved successfully.</response>
         /// <response code="default">Problem Details (RFC 7807) Response.</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<IEnumerable<Bucket>> GetBuckets([FromQuery] int? limit, [FromQuery] int? offset)
+        public async Task<IEnumerable<Bucket>> GetBuckets([FromQuery] GetBucketsRequestQuery requestQuery)
         {
             GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
-                    limit: limit,
-                    offset: offset,
+                    limit: requestQuery.Limit,
+                    offset: requestQuery.Offset,
                     sortOrder: null);
 
             GetBuckets.Response response = await this.mediator.Send(query);

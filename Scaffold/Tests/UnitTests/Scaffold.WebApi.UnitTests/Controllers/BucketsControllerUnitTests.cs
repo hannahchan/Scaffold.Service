@@ -66,7 +66,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
                 IEnumerable<Bucket> result;
 
                 // Act
-                result = await controller.GetBuckets(null, null);
+                result = await controller.GetBuckets(new GetBucketsRequestQuery());
 
                 // Assert
                 Assert.NotNull(result);
