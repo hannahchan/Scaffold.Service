@@ -57,10 +57,10 @@
         public async Task<IEnumerable<Bucket>> GetBuckets([FromQuery] GetBucketsRequestQuery requestQuery)
         {
             GetBuckets.Query query = new GetBuckets.Query(
-                    predicate: bucket => true,
-                    limit: requestQuery.Limit,
-                    offset: requestQuery.Offset,
-                    sortOrder: null);
+                predicate: bucket => true,
+                limit: requestQuery.Limit,
+                offset: requestQuery.Offset,
+                sortOrder: null);
 
             GetBuckets.Response response = await this.mediator.Send(query);
 
