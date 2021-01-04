@@ -739,7 +739,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderBy("Size");
+                    .OrderBy(bucket => bucket.Size);
 
                 IEnumerable<Bucket> result;
 
@@ -778,7 +778,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderByDescending("Size");
+                    .OrderByDescending(bucket => bucket.Size);
 
                 IEnumerable<Bucket> result;
 
@@ -817,7 +817,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderBy("Size");
+                    .OrderBy(bucket => bucket.Size);
 
                 IEnumerable<Bucket> result;
 
@@ -850,7 +850,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderBy("Size");
+                    .OrderBy(bucket => bucket.Size);
 
                 IEnumerable<Bucket> result;
 
@@ -883,7 +883,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderBy("Size");
+                    .OrderBy(bucket => bucket.Size);
 
                 IEnumerable<Bucket> result;
 
@@ -916,8 +916,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderBy("Name")
-                    .ThenBy("Description");
+                    .OrderBy(bucket => bucket.Name)
+                    .ThenBy(bucket => bucket.Description);
 
                 IEnumerable<Bucket> result;
 
@@ -1004,8 +1004,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderByDescending("Name")
-                    .ThenByDescending("Description");
+                    .OrderByDescending(bucket => bucket.Name)
+                    .ThenByDescending(bucket => bucket.Description);
 
                 IEnumerable<Bucket> result;
 
@@ -1092,8 +1092,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderBy("Name")
-                    .ThenByDescending("Description");
+                    .OrderBy(bucket => bucket.Name)
+                    .ThenByDescending(bucket => bucket.Description);
 
                 IEnumerable<Bucket> result;
 
@@ -1180,8 +1180,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderByDescending("Name")
-                    .ThenBy("Description");
+                    .OrderByDescending(bucket => bucket.Name)
+                    .ThenBy(bucket => bucket.Description);
 
                 IEnumerable<Bucket> result;
 
@@ -1271,7 +1271,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderBy("Size");
+                    .OrderBy(bucket => bucket.Size);
 
                 IEnumerable<Bucket> result;
 
@@ -1310,7 +1310,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderByDescending("Size");
+                    .OrderByDescending(bucket => bucket.Size);
 
                 IEnumerable<Bucket> result;
 
@@ -1349,7 +1349,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderBy("Size");
+                    .OrderBy(bucket => bucket.Size);
 
                 IEnumerable<Bucket> result;
 
@@ -1382,7 +1382,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderBy("Size");
+                    .OrderBy(bucket => bucket.Size);
 
                 IEnumerable<Bucket> result;
 
@@ -1415,7 +1415,7 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderBy("Size");
+                    .OrderBy(bucket => bucket.Size);
 
                 IEnumerable<Bucket> result;
 
@@ -1448,8 +1448,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderBy("Name")
-                    .ThenBy("Description");
+                    .OrderBy(bucket => bucket.Name)
+                    .ThenBy(bucket => bucket.Description);
 
                 IEnumerable<Bucket> result;
 
@@ -1536,8 +1536,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderByDescending("Name")
-                    .ThenByDescending("Description");
+                    .OrderByDescending(bucket => bucket.Name)
+                    .ThenByDescending(bucket => bucket.Description);
 
                 IEnumerable<Bucket> result;
 
@@ -1624,8 +1624,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderBy("Name")
-                    .ThenByDescending("Description");
+                    .OrderBy(bucket => bucket.Name)
+                    .ThenByDescending(bucket => bucket.Description);
 
                 IEnumerable<Bucket> result;
 
@@ -1712,8 +1712,8 @@ namespace Scaffold.Repositories.PostgreSQL.UnitTests
                 }
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderByDescending("Name")
-                    .ThenBy("Description");
+                    .OrderByDescending(bucket => bucket.Name)
+                    .ThenBy(bucket => bucket.Description);
 
                 IEnumerable<Bucket> result;
 

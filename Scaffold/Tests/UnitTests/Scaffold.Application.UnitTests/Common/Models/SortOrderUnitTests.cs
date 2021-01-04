@@ -2,7 +2,7 @@ namespace Scaffold.Application.UnitTests.Common.Models
 {
     using System;
     using System.Collections.Generic;
-    using Scaffold.Application.Common.Exceptions;
+    using System.Linq.Expressions;
     using Scaffold.Application.Common.Models;
     using Xunit;
 
@@ -15,9 +15,9 @@ namespace Scaffold.Application.UnitTests.Common.Models
             {
                 // Arrange
                 SortOrder<TestClass> sortOrder = SortOrder<TestClass>
-                    .OrderBy(nameof(TestClass.Property1))
-                    .ThenBy(nameof(TestClass.Property2))
-                    .ThenBy(nameof(TestClass.Property3));
+                    .OrderBy(testObject => testObject.Property1)
+                    .ThenBy(testObject => testObject.Property2)
+                    .ThenBy(testObject => testObject.Property3);
 
                 // Act
                 int result = sortOrder.Count;
@@ -34,10 +34,10 @@ namespace Scaffold.Application.UnitTests.Common.Models
             {
                 // Arrange
                 SortOrder<TestClass> sortOrder = SortOrder<TestClass>
-                    .OrderBy(nameof(TestClass.Property1));
+                    .OrderBy(testObject => testObject.Property1);
 
                 // Act
-                IEnumerator<(string PropertyName, bool Descending)> result = sortOrder.GetEnumerator();
+                IEnumerator<(LambdaExpression KeySelector, bool Descending)> result = sortOrder.GetEnumerator();
 
                 // Assert
                 Assert.NotNull(result);
@@ -51,15 +51,15 @@ namespace Scaffold.Application.UnitTests.Common.Models
             {
                 // Arrange
                 SortOrder<TestClass> sortOrder = SortOrder<TestClass>
-                    .OrderBy(nameof(TestClass.Property1))
-                    .ThenBy(nameof(TestClass.Property2))
-                    .ThenBy(nameof(TestClass.Property3));
+                    .OrderBy(testObject => testObject.Property1)
+                    .ThenBy(testObject => testObject.Property2)
+                    .ThenBy(testObject => testObject.Property3);
 
                 // Act
-                (string propertyName, bool descending) = sortOrder[1];
+                (LambdaExpression keySelector, bool descending) = sortOrder[1];
 
                 // Assert
-                Assert.Equal(nameof(TestClass.Property2), propertyName);
+                Assert.Equal("testObject => testObject.Property2", keySelector.ToString());
                 Assert.False(descending);
             }
         }
@@ -74,66 +74,30 @@ namespace Scaffold.Application.UnitTests.Common.Models
 
                 // Act
                 result = SortOrder<TestClass>
-                    .OrderBy(nameof(TestClass.Property1));
+                    .OrderBy(testObject => testObject.Property1);
 
                 // Assert
                 Assert.NotNull(result);
                 Assert.Single(result);
-                Assert.Equal(nameof(TestClass.Property1), result[0].PropertyName);
+                Assert.Equal("testObject => testObject.Property1", result[0].KeySelector.ToString());
                 Assert.False(result[0].Descending);
-            }
-
-            [Fact]
-            public void When_InitializingSortWithNonExistingProperty_Expect_PropertyNotFoundException()
-            {
-                // Arrange
-                Exception exception;
-
-                // Act
-                exception = Record.Exception(() => SortOrder<TestClass>
-                    .OrderBy("property1"));
-
-                // Assert
-                Assert.IsType<PropertyNotFoundException>(exception);
             }
 
             [Fact]
             public void When_InitializingSortWithComparableProperty_Expect_InitializedSortOrder()
             {
                 // Arrange
-                SortOrder<TestClass> result1, result2;
+                SortOrder<TestClass> result;
 
                 // Act
-                result1 = SortOrder<TestClass>
-                    .OrderBy(nameof(TestClass.Property4));
-
-                result2 = SortOrder<TestClass>
-                    .OrderBy(nameof(TestClass.Property5));
+                result = SortOrder<TestClass>
+                    .OrderBy(testObject => testObject.Property4);
 
                 // Assert
-                Assert.NotNull(result1);
-                Assert.Single(result1);
-                Assert.Equal(nameof(TestClass.Property4), result1[0].PropertyName);
-                Assert.False(result1[0].Descending);
-
-                Assert.NotNull(result2);
-                Assert.Single(result2);
-                Assert.Equal(nameof(TestClass.Property5), result2[0].PropertyName);
-                Assert.False(result2[0].Descending);
-            }
-
-            [Fact]
-            public void When_InitializingSortWithNonComparableProperty_Expect_PropertyNotComparableException()
-            {
-                // Arrange
-                Exception exception;
-
-                // Act
-                exception = Record.Exception(() => SortOrder<TestClass>
-                    .OrderBy(nameof(TestClass.Property6)));
-
-                // Assert
-                Assert.IsType<PropertyNotComparableException>(exception);
+                Assert.NotNull(result);
+                Assert.Single(result);
+                Assert.Equal("testObject => testObject.Property4", result[0].KeySelector.ToString());
+                Assert.False(result[0].Descending);
             }
         }
 
@@ -147,66 +111,30 @@ namespace Scaffold.Application.UnitTests.Common.Models
 
                 // Act
                 result = SortOrder<TestClass>
-                    .OrderByDescending(nameof(TestClass.Property1));
+                    .OrderByDescending(testObject => testObject.Property1);
 
                 // Assert
                 Assert.NotNull(result);
                 Assert.Single(result);
-                Assert.Equal(nameof(TestClass.Property1), result[0].PropertyName);
+                Assert.Equal("testObject => testObject.Property1", result[0].KeySelector.ToString());
                 Assert.True(result[0].Descending);
-            }
-
-            [Fact]
-            public void When_InitializingSortWithNonExistingProperty_Expect_PropertyNotFoundException()
-            {
-                // Arrange
-                Exception exception;
-
-                // Act
-                exception = Record.Exception(() => SortOrder<TestClass>
-                    .OrderByDescending("property1"));
-
-                // Assert
-                Assert.IsType<PropertyNotFoundException>(exception);
             }
 
             [Fact]
             public void When_InitializingSortWithComparableProperty_Expect_InitializedSortOrder()
             {
                 // Arrange
-                SortOrder<TestClass> result1, result2;
+                SortOrder<TestClass> result;
 
                 // Act
-                result1 = SortOrder<TestClass>
-                    .OrderByDescending(nameof(TestClass.Property4));
-
-                result2 = SortOrder<TestClass>
-                    .OrderByDescending(nameof(TestClass.Property5));
+                result = SortOrder<TestClass>
+                    .OrderByDescending(testObject => testObject.Property4);
 
                 // Assert
-                Assert.NotNull(result1);
-                Assert.Single(result1);
-                Assert.Equal(nameof(TestClass.Property4), result1[0].PropertyName);
-                Assert.True(result1[0].Descending);
-
-                Assert.NotNull(result2);
-                Assert.Single(result2);
-                Assert.Equal(nameof(TestClass.Property5), result2[0].PropertyName);
-                Assert.True(result2[0].Descending);
-            }
-
-            [Fact]
-            public void When_InitializingSortWithNonComparableProperty_Expect_PropertyNotComparableException()
-            {
-                // Arrange
-                Exception exception;
-
-                // Act
-                exception = Record.Exception(() => SortOrder<TestClass>
-                    .OrderByDescending(nameof(TestClass.Property6)));
-
-                // Assert
-                Assert.IsType<PropertyNotComparableException>(exception);
+                Assert.NotNull(result);
+                Assert.Single(result);
+                Assert.Equal("testObject => testObject.Property4", result[0].KeySelector.ToString());
+                Assert.True(result[0].Descending);
             }
         }
 
@@ -220,37 +148,22 @@ namespace Scaffold.Application.UnitTests.Common.Models
 
                 // Act
                 result = SortOrder<TestClass>
-                    .OrderBy(nameof(TestClass.Property1))
-                    .ThenBy(nameof(TestClass.Property2));
+                    .OrderBy(testObject => testObject.Property1)
+                    .ThenBy(testObject => testObject.Property2);
 
                 // Assert
                 Assert.Collection(
                     result,
                     orderBy =>
                     {
-                        Assert.Equal(nameof(TestClass.Property1), orderBy.PropertyName);
+                        Assert.Equal("testObject => testObject.Property1", orderBy.KeySelector.ToString());
                         Assert.False(orderBy.Descending);
                     },
                     thenBy =>
                     {
-                        Assert.Equal(nameof(TestClass.Property2), thenBy.PropertyName);
+                        Assert.Equal("testObject => testObject.Property2", thenBy.KeySelector.ToString());
                         Assert.False(thenBy.Descending);
                     });
-            }
-
-            [Fact]
-            public void When_AddingSecondarySortWithNonExistingProperty_Expect_PropertyNotFoundException()
-            {
-                // Arrange
-                Exception exception;
-
-                // Act
-                exception = Record.Exception(() => SortOrder<TestClass>
-                    .OrderBy(nameof(TestClass.Property1))
-                    .ThenBy("property2"));
-
-                // Assert
-                Assert.IsType<PropertyNotFoundException>(exception);
             }
 
             [Fact]
@@ -261,43 +174,22 @@ namespace Scaffold.Application.UnitTests.Common.Models
 
                 // Act
                 result = SortOrder<TestClass>
-                    .OrderBy(nameof(TestClass.Property1))
-                    .ThenBy(nameof(TestClass.Property4))
-                    .ThenBy(nameof(TestClass.Property5));
+                    .OrderBy(testObject => testObject.Property1)
+                    .ThenBy(testObject => testObject.Property4);
 
                 // Assert
                 Assert.Collection(
                     result,
                     orderBy =>
                     {
-                        Assert.Equal(nameof(TestClass.Property1), orderBy.PropertyName);
+                        Assert.Equal("testObject => testObject.Property1", orderBy.KeySelector.ToString());
                         Assert.False(orderBy.Descending);
                     },
                     thenBy =>
                     {
-                        Assert.Equal(nameof(TestClass.Property4), thenBy.PropertyName);
-                        Assert.False(thenBy.Descending);
-                    },
-                    thenBy =>
-                    {
-                        Assert.Equal(nameof(TestClass.Property5), thenBy.PropertyName);
+                        Assert.Equal("testObject => testObject.Property4", thenBy.KeySelector.ToString());
                         Assert.False(thenBy.Descending);
                     });
-            }
-
-            [Fact]
-            public void When_AddingSecondarySortWithNonComparableProperty_Expect_PropertyNotComparableException()
-            {
-                // Arrange
-                Exception exception;
-
-                // Act
-                exception = Record.Exception(() => SortOrder<TestClass>
-                    .OrderBy(nameof(TestClass.Property1))
-                    .ThenBy(nameof(TestClass.Property6)));
-
-                // Assert
-                Assert.IsType<PropertyNotComparableException>(exception);
             }
         }
 
@@ -311,37 +203,22 @@ namespace Scaffold.Application.UnitTests.Common.Models
 
                 // Act
                 result = SortOrder<TestClass>
-                    .OrderBy(nameof(TestClass.Property1))
-                    .ThenByDescending(nameof(TestClass.Property2));
+                    .OrderBy(testObject => testObject.Property1)
+                    .ThenByDescending(testObject => testObject.Property2);
 
                 // Assert
                 Assert.Collection(
                    result,
                    orderBy =>
                    {
-                       Assert.Equal(nameof(TestClass.Property1), orderBy.PropertyName);
+                       Assert.Equal("testObject => testObject.Property1", orderBy.KeySelector.ToString());
                        Assert.False(orderBy.Descending);
                    },
                    thenByDescending =>
                    {
-                       Assert.Equal(nameof(TestClass.Property2), thenByDescending.PropertyName);
+                       Assert.Equal("testObject => testObject.Property2", thenByDescending.KeySelector.ToString());
                        Assert.True(thenByDescending.Descending);
                    });
-            }
-
-            [Fact]
-            public void When_AddingSecondarySortWithNonExistingProperty_Expect_PropertyNotFoundException()
-            {
-                // Arrange
-                Exception exception;
-
-                // Act
-                exception = Record.Exception(() => SortOrder<TestClass>
-                    .OrderBy(nameof(TestClass.Property1))
-                    .ThenByDescending("property2"));
-
-                // Assert
-                Assert.IsType<PropertyNotFoundException>(exception);
             }
 
             [Fact]
@@ -352,43 +229,22 @@ namespace Scaffold.Application.UnitTests.Common.Models
 
                 // Act
                 result = SortOrder<TestClass>
-                    .OrderBy(nameof(TestClass.Property1))
-                    .ThenByDescending(nameof(TestClass.Property4))
-                    .ThenByDescending(nameof(TestClass.Property5));
+                    .OrderBy(testObject => testObject.Property1)
+                    .ThenByDescending(testObject => testObject.Property4);
 
                 // Assert
                 Assert.Collection(
                     result,
                     orderBy =>
                     {
-                        Assert.Equal(nameof(TestClass.Property1), orderBy.PropertyName);
+                        Assert.Equal("testObject => testObject.Property1", orderBy.KeySelector.ToString());
                         Assert.False(orderBy.Descending);
                     },
                     thenByDescending =>
                     {
-                        Assert.Equal(nameof(TestClass.Property4), thenByDescending.PropertyName);
-                        Assert.True(thenByDescending.Descending);
-                    },
-                    thenByDescending =>
-                    {
-                        Assert.Equal(nameof(TestClass.Property5), thenByDescending.PropertyName);
+                        Assert.Equal("testObject => testObject.Property4", thenByDescending.KeySelector.ToString());
                         Assert.True(thenByDescending.Descending);
                     });
-            }
-
-            [Fact]
-            public void When_AddingSecondarySortWithNonComparableProperty_Expect_PropertyNotComparableException()
-            {
-                // Arrange
-                Exception exception;
-
-                // Act
-                exception = Record.Exception(() => SortOrder<TestClass>
-                    .OrderBy(nameof(TestClass.Property1))
-                    .ThenByDescending(nameof(TestClass.Property6)));
-
-                // Assert
-                Assert.IsType<PropertyNotComparableException>(exception);
             }
         }
 
@@ -400,40 +256,17 @@ namespace Scaffold.Application.UnitTests.Common.Models
 
             public string Property3 { get; set; } = string.Empty;
 
-            public ComparableProperty1 Property4 { get; set; } = new ComparableProperty1();
-
-            public ComparableProperty2 Property5 { get; set; } = new ComparableProperty2();
-
-            public NonComparableProperty Property6 { get; set; } = new NonComparableProperty();
+            public ComparableProperty Property4 { get; set; } = new ComparableProperty();
         }
 
-        private class ComparableProperty1 : IComparable<ComparableProperty1>
+        private class ComparableProperty : IComparable<ComparableProperty>
         {
             public int Value { get; set; } = new Random().Next();
 
-            public int CompareTo(ComparableProperty1 other)
+            public int CompareTo(ComparableProperty other)
             {
                 return this.Value.CompareTo(other.Value);
             }
-        }
-
-        private class ComparableProperty2 : IComparable
-        {
-            public int Value { get; set; } = new Random().Next();
-
-            public int CompareTo(object obj)
-            {
-                if (obj is ComparableProperty2 other)
-                {
-                    return this.Value.CompareTo(other.Value);
-                }
-
-                throw new ArgumentException("Object is not comparable.");
-            }
-        }
-
-        private class NonComparableProperty
-        {
         }
     }
 }

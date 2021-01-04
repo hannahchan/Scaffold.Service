@@ -305,7 +305,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 await this.repository.AddAsync(this.testBuckets);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderBy("Size");
+                    .OrderBy(bucket => bucket.Size);
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
@@ -342,7 +342,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 await this.repository.AddAsync(this.testBuckets);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderByDescending("Size");
+                    .OrderByDescending(bucket => bucket.Size);
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
@@ -379,7 +379,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 await this.repository.AddAsync(this.testBuckets);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderBy("Size");
+                    .OrderBy(bucket => bucket.Size);
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
@@ -410,7 +410,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 await this.repository.AddAsync(this.testBuckets);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderBy("Size");
+                    .OrderBy(bucket => bucket.Size);
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
@@ -441,7 +441,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 await this.repository.AddAsync(this.testBuckets);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderBy("Size");
+                    .OrderBy(bucket => bucket.Size);
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
@@ -472,8 +472,8 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 await this.repository.AddAsync(this.testBuckets);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderBy("Name")
-                    .ThenBy("Description");
+                    .OrderBy(bucket => bucket.Name)
+                    .ThenBy(bucket => bucket.Description);
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
@@ -558,8 +558,8 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 await this.repository.AddAsync(this.testBuckets);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderByDescending("Name")
-                    .ThenByDescending("Description");
+                    .OrderByDescending(bucket => bucket.Name)
+                    .ThenByDescending(bucket => bucket.Description);
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
@@ -644,8 +644,8 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 await this.repository.AddAsync(this.testBuckets);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderBy("Name")
-                    .ThenByDescending("Description");
+                    .OrderBy(bucket => bucket.Name)
+                    .ThenByDescending(bucket => bucket.Description);
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,
@@ -730,8 +730,8 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
                 await this.repository.AddAsync(this.testBuckets);
 
                 SortOrder<Bucket> sortOrder = SortOrder<Bucket>
-                    .OrderByDescending("Name")
-                    .ThenBy("Description");
+                    .OrderByDescending(bucket => bucket.Name)
+                    .ThenBy(bucket => bucket.Description);
 
                 GetBuckets.Query query = new GetBuckets.Query(
                     predicate: bucket => true,

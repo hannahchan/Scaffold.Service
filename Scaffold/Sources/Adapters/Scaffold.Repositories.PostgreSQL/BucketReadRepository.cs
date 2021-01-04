@@ -4,7 +4,6 @@ namespace Scaffold.Repositories.PostgreSQL
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
@@ -14,8 +13,6 @@ namespace Scaffold.Repositories.PostgreSQL
 
     public class BucketReadRepository : IBucketReadRepository
     {
-        private static readonly Dictionary<string, LambdaExpression> KeySelectors = InitializeKeySelectors();
-
         private readonly BucketContext context;
 
         public BucketReadRepository(BucketContext.ReadOnly context)
@@ -56,23 +53,6 @@ namespace Scaffold.Repositories.PostgreSQL
                 .ToListAsync(cancellationToken);
         }
 
-        private static Dictionary<string, LambdaExpression> InitializeKeySelectors()
-        {
-            Dictionary<string, LambdaExpression> keySelectors = new Dictionary<string, LambdaExpression>();
-
-            ParameterExpression parameterExpression = Expression.Parameter(typeof(Bucket));
-
-            foreach (PropertyInfo property in typeof(Bucket).GetProperties())
-            {
-                MemberExpression memberExpression = Expression.Property(parameterExpression, typeof(Bucket).GetProperty(property.Name));
-                LambdaExpression lambdaExpression = Expression.Lambda(memberExpression, new ParameterExpression[] { parameterExpression });
-
-                keySelectors.Add(property.Name, lambdaExpression);
-            }
-
-            return keySelectors;
-        }
-
         private IQueryable<Bucket> BuildQuery(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, SortOrder<Bucket>? sortOrder = null)
         {
             if (predicate is null)
@@ -84,7 +64,7 @@ namespace Scaffold.Repositories.PostgreSQL
 
             if (sortOrder != null)
             {
-                foreach ((string PropertyName, bool Descending) sortItem in sortOrder)
+                foreach ((LambdaExpression KeySelector, bool Descending) sortItem in sortOrder)
                 {
                     string methodName = sortItem.Descending ? nameof(Queryable.ThenByDescending) : nameof(Queryable.ThenBy);
 
@@ -96,9 +76,9 @@ namespace Scaffold.Repositories.PostgreSQL
                     query = query.Provider.CreateQuery<Bucket>(Expression.Call(
                         typeof(Queryable),
                         methodName,
-                        new Type[] { typeof(Bucket), KeySelectors[sortItem.PropertyName].ReturnType },
+                        new Type[] { typeof(Bucket), sortItem.KeySelector.ReturnType },
                         query.Expression,
-                        Expression.Quote(KeySelectors[sortItem.PropertyName])));
+                        sortItem.KeySelector));
                 }
             }
 
