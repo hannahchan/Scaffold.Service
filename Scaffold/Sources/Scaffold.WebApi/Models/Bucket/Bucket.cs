@@ -1,4 +1,4 @@
-namespace Scaffold.WebApi.Views.Bucket
+namespace Scaffold.WebApi.Models.Bucket
 {
     using System.ComponentModel.DataAnnotations;
 

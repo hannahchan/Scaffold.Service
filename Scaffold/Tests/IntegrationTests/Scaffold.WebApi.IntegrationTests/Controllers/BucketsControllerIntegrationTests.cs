@@ -15,8 +15,8 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Scaffold.Repositories.PostgreSQL;
-    using Scaffold.WebApi.Views.Bucket;
-    using Scaffold.WebApi.Views.Item;
+    using Scaffold.WebApi.Models.Bucket;
+    using Scaffold.WebApi.Models.Item;
     using Xunit;
 
     public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFactory<Startup>>

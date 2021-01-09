@@ -10,8 +10,8 @@ namespace Scaffold.WebApi.UnitTests.Controllers
     using Moq;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.WebApi.Controllers;
-    using Scaffold.WebApi.Views.Bucket;
-    using Scaffold.WebApi.Views.Item;
+    using Scaffold.WebApi.Models.Bucket;
+    using Scaffold.WebApi.Models.Item;
     using Xunit;
 
     public class BucketsControllerUnitTests

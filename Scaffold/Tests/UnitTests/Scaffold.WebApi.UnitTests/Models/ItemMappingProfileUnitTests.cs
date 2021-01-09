@@ -1,16 +1,16 @@
-namespace Scaffold.WebApi.UnitTests.Views
+namespace Scaffold.WebApi.UnitTests.Models
 {
     using AutoMapper;
-    using Scaffold.WebApi.Views.Bucket;
+    using Scaffold.WebApi.Models.Item;
     using Xunit;
 
-    public class BucketMappingProfileUnitTests
+    public class ItemMappingProfileUnitTests
     {
         [Fact]
-        public void BucketMappingProfile_IsValid()
+        public void ItemMappingProfile_IsValid()
         {
             // Arrange
-            BucketMappingProfile profile = new BucketMappingProfile();
+            ItemMappingProfile profile = new ItemMappingProfile();
             MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(profile));
 
             // Act and Assert

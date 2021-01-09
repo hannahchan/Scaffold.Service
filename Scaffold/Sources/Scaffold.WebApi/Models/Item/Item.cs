@@ -1,4 +1,4 @@
-namespace Scaffold.WebApi.Views.Item
+namespace Scaffold.WebApi.Models.Item
 {
     using System.ComponentModel.DataAnnotations;
 
