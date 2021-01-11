@@ -18,7 +18,6 @@
 
   <!-- https://rules.sonarsource.com/csharp -->
   <Rules AnalyzerId="SonarAnalyzer.CSharp" RuleNamespace="SonarAnalyzer.CSharp">
-    <Rule Id="S1172" Action="None" /> <!-- https://github.com/SonarSource/sonar-dotnet/issues/3255 -->
     <Rule Id="S3626" Action="None" /> <!-- https://github.com/SonarSource/sonar-dotnet/issues/3105 -->
   </Rules>
 
