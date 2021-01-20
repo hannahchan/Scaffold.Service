@@ -41,7 +41,7 @@ To manually apply Entity Framework Migrations to the database, you can use the c
 
     dotnet ef database update --startup-project ./Sources/Scaffold.WebApi --context BucketContext
 
-By default the connection string that is used is the one that was specified in the `AddDbContext()` extension method in the startup project. To manually specify the connection string, you can add the `--connection` option followed by your connection string.
+By default the connection string used is the one that was specified in the `AddDbContext()` extension method in the startup project. To manually specify the connection string, you can add the `--connection` option followed by your connection string.
 
 Alternatively if you have different `appsettings.json` files set up for each of your different environments with different connections strings, you can [specify the environment](https://docs.microsoft.com/ef/core/cli/dotnet#aspnet-core-environment) instead of using the `--conection` option.
 
