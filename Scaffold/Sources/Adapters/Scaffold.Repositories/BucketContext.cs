@@ -1,8 +1,8 @@
-namespace Scaffold.Repositories.PostgreSQL
+namespace Scaffold.Repositories
 {
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Domain.Aggregates.Bucket;
-    using Scaffold.Repositories.PostgreSQL.Configurations;
+    using Scaffold.Repositories.Configurations;
 
     public class BucketContext : DbContext
     {

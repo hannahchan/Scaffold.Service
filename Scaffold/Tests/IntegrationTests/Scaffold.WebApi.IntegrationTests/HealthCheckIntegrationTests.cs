@@ -11,7 +11,7 @@ namespace Scaffold.WebApi.IntegrationTests
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
-    using Scaffold.Repositories.PostgreSQL;
+    using Scaffold.Repositories;
     using Xunit;
 
     public class HealthCheckIntegrationTests : IClassFixture<WebApplicationFactory<Startup>>

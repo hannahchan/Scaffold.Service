@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Sources\Adapters\Scaffold.Repositories.PostgreSQL\Scaffold.Repositories.PostgreSQL.csproj" />
+    <ProjectReference Include="..\..\..\..\Sources\Adapters\Scaffold.Repositories\Scaffold.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

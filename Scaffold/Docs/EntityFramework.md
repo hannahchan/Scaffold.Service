@@ -14,14 +14,14 @@ The command line tools are required to perform design-time tasks such as managin
 
 Because the Entity Framework Migrations are located in a different project from the Web API, you may need to specify the paths to the *target project* and the *startup project* when running `dotnet ef` commands using the `--project` and `--startup-project` options respectively. The target and startup projects are:
 
-- Target Project - [Scaffold.Repositories.PostgreSQL](../Sources/Adapters/Scaffold.Repositories.PostgreSQL)
+- Target Project - [Scaffold.Repositories](../Sources/Adapters/Scaffold.Repositories)
 - Startup Project- [Scaffold.WebApi](../Sources/Scaffold.WebApi)
 
 Scaffold also includes multiple DbContexts in the example app. When running `dotnet ef` commands you may also need to specify the DBContext class that you want to operate on using the `--context` option.
 
 For example, to add a migration you can use the following command;
 
-    dotnet ef migrations add "Initial_Create" --project ./Sources/Adapters/Scaffold.Repositories.PostgreSQL --startup-project ./Sources/Scaffold.WebApi --context BucketContext
+    dotnet ef migrations add "Initial_Create" --project ./Sources/Adapters/Scaffold.Repositories --startup-project ./Sources/Scaffold.WebApi --context BucketContext
 
 For more information about managing migrations, please check out the [official documentation](https://docs.microsoft.com/ef/core/managing-schemas/migrations/managing).
 

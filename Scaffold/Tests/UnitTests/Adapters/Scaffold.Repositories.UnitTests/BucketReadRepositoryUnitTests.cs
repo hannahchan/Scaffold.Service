@@ -1,4 +1,4 @@
-namespace Scaffold.Repositories.PostgreSQL.UnitTests
+namespace Scaffold.Repositories.UnitTests
 {
     using System;
     using System.Collections.Generic;

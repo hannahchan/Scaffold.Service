@@ -20,7 +20,7 @@ namespace Scaffold.WebApi.Extensions
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
     using Scaffold.HttpClients;
-    using Scaffold.Repositories.PostgreSQL;
+    using Scaffold.Repositories;
     using Scaffold.WebApi.Controllers;
     using Scaffold.WebApi.HttpMessageHandlers;
     using Scaffold.WebApi.Middleware;

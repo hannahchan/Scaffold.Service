@@ -31,7 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Adapters\Scaffold.HttpClients\Scaffold.HttpClients.csproj" />
-    <ProjectReference Include="..\Adapters\Scaffold.Repositories.PostgreSQL\Scaffold.Repositories.PostgreSQL.csproj" />
+    <ProjectReference Include="..\Adapters\Scaffold.Repositories\Scaffold.Repositories.csproj" />
     <ProjectReference Include="..\Scaffold.Application\Scaffold.Application.csproj" />
   </ItemGroup>
 

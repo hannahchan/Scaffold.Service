@@ -8,7 +8,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
     using Scaffold.Domain.Base;
-    using Scaffold.Repositories.PostgreSQL;
+    using Scaffold.Repositories;
     using Xunit;
 
     public class AddBucketUnitTests

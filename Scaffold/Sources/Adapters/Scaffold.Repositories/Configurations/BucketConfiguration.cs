@@ -1,4 +1,4 @@
-namespace Scaffold.Repositories.PostgreSQL.Configurations
+namespace Scaffold.Repositories.Configurations
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;

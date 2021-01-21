@@ -14,7 +14,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
     using Microsoft.EntityFrameworkCore.Storage;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
-    using Scaffold.Repositories.PostgreSQL;
+    using Scaffold.Repositories;
     using Scaffold.WebApi.Models.Bucket;
     using Scaffold.WebApi.Models.Item;
     using Xunit;

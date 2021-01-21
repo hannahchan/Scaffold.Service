@@ -1,4 +1,4 @@
-namespace Scaffold.Repositories.PostgreSQL
+namespace Scaffold.Repositories
 {
     using System;
     using System.Collections.Generic;

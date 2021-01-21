@@ -6,7 +6,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Prometheus;
-    using Scaffold.Repositories.PostgreSQL;
+    using Scaffold.Repositories;
     using Scaffold.WebApi.Extensions;
     using Scaffold.WebApi.Filters;
     using Scaffold.WebApi.Middleware;
