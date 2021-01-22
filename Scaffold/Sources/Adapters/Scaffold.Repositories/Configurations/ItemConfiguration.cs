@@ -15,9 +15,7 @@ namespace Scaffold.Repositories.Configurations
 
             builder.HasKey($"{nameof(Bucket)}Id", nameof(Item.Id));
 
-            builder
-                .ToTable(nameof(Item))
-                .UseXminAsConcurrencyToken();
+            builder.ToTable(nameof(Item));
         }
     }
 }

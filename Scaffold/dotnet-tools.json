@@ -7,7 +7,7 @@
       "commands": ["dotnet-cake"]
     },
     "dotnet-ef": {
-      "version": "5.0.1",
+      "version": "5.0.2",
       "commands": ["dotnet-ef"]
     },
     "dotnet-outdated-tool": {
@@ -15,11 +15,11 @@
       "commands": ["dotnet-outdated"]
     },
     "dotnet-stryker": {
-      "version": "0.20.0",
+      "version": "0.21.0",
       "commands": ["dotnet-stryker"]
     },
     "microsoft.dotnet-httprepl": {
-      "version": "5.0.1",
+      "version": "5.0.2",
       "commands": ["httprepl"]
     }
   }

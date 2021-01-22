@@ -15,9 +15,7 @@ namespace Scaffold.Repositories.Configurations
                 .FindNavigation(nameof(Bucket.Items))
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
 
-            builder
-                .ToTable(nameof(Bucket))
-                .UseXminAsConcurrencyToken();
+            builder.ToTable(nameof(Bucket));
         }
     }
 }

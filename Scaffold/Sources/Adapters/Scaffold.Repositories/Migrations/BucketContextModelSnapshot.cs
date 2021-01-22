@@ -13,7 +13,7 @@ namespace Scaffold.Repositories.Migrations
             modelBuilder
                 .UseIdentityByDefaultColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.0");
+                .HasAnnotation("ProductVersion", "5.0.2");
 
             modelBuilder.Entity("Scaffold.Domain.Aggregates.Bucket.Bucket", b =>
                 {
@@ -30,11 +30,6 @@ namespace Scaffold.Repositories.Migrations
 
                     b.Property<int>("Size")
                         .HasColumnType("integer");
-
-                    b.Property<uint>("xmin")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("xid");
 
                     b.HasKey("Id");
 
@@ -56,11 +51,6 @@ namespace Scaffold.Repositories.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
-
-                    b.Property<uint>("xmin")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("xid");
 
                     b.HasKey("BucketId", "Id");
 
