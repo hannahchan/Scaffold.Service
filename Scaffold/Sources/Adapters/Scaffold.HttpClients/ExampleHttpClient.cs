@@ -2,6 +2,7 @@
 {
     using System;
     using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
     using Scaffold.Application.Interfaces;
 
@@ -17,9 +18,11 @@
             this.httpClient = httpClient;
         }
 
-        public Task<HttpResponseMessage> Get(string path)
+        public Task<HttpResponseMessage> Get(string path, CancellationToken cancellationToken = default)
         {
-            return this.httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, new Uri(path ?? string.Empty, UriKind.Relative)));
+            HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri(path ?? string.Empty, UriKind.Relative));
+
+            return this.httpClient.SendAsync(httpRequestMessage, cancellationToken);
         }
     }
 }

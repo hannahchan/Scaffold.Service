@@ -42,6 +42,25 @@ namespace Scaffold.HttpClients.UnitTests
             Assert.Equal(content, await result.Content.ReadAsStringAsync());
         }
 
+        [Fact]
+        public async Task When_InvokingGetAndCancellationIsRequested_Expect_OperationCanceledException()
+        {
+            // Arrange
+            HttpRequestHandler httpRequestHandler = new HttpRequestHandler(new HttpResponseMessage());
+
+            Exception exception;
+
+            // Act
+            using (HttpClient httpClient = new HttpClient(httpRequestHandler))
+            {
+                ExampleHttpClient exampleHttpClient = new ExampleHttpClient(httpClient);
+                exception = await Record.ExceptionAsync(() => exampleHttpClient.Get(string.Empty, new CancellationToken(true)));
+            }
+
+            // Assert
+            Assert.IsType<OperationCanceledException>(exception);
+        }
+
         private class HttpRequestHandler : DelegatingHandler
         {
             private readonly HttpResponseMessage response;
@@ -53,7 +72,9 @@ namespace Scaffold.HttpClients.UnitTests
 
             protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 this.response.RequestMessage = request;
+
                 return Task.FromResult(this.response);
             }
         }
