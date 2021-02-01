@@ -1,6 +1,7 @@
 namespace Scaffold.Application.UnitTests.Common.Models
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq.Expressions;
     using Scaffold.Application.Common.Models;
@@ -30,14 +31,28 @@ namespace Scaffold.Application.UnitTests.Common.Models
         public class GetEnumerator
         {
             [Fact]
-            public void When_GettingEnumerator_Expect_Enumerator()
+            public void When_GettingGenericEnumerator_Expect_Enumerator()
             {
                 // Arrange
-                SortOrder<TestClass> sortOrder = SortOrder<TestClass>
+                IEnumerable<(LambdaExpression KeySelector, bool Descending)> sortOrder = SortOrder<TestClass>
                     .OrderBy(testObject => testObject.Property1);
 
                 // Act
                 IEnumerator<(LambdaExpression KeySelector, bool Descending)> result = sortOrder.GetEnumerator();
+
+                // Assert
+                Assert.NotNull(result);
+            }
+
+            [Fact]
+            public void When_GettingNonGenericEnumerator_Expect_Enumerator()
+            {
+                // Arrange
+                IEnumerable sortOrder = SortOrder<TestClass>
+                    .OrderBy(testObject => testObject.Property1);
+
+                // Act
+                IEnumerator result = sortOrder.GetEnumerator();
 
                 // Assert
                 Assert.NotNull(result);

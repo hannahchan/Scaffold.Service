@@ -18,8 +18,6 @@ namespace Scaffold.Repositories
 
         public DbSet<Bucket> Buckets => this.Set<Bucket>();
 
-        public DbSet<Item> Items => this.Set<Item>();
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

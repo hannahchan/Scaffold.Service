@@ -6,12 +6,13 @@ namespace Scaffold.Repositories.UnitTests
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Common.Models;
+    using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
     using Xunit;
 
     public class BucketReadRepositoryUnitTests
     {
-        private readonly DbContextOptions<BucketContext> dbContextOptions;
+        private readonly DbContextOptions<BucketContext.ReadOnly> dbContextOptions;
 
         private readonly Bucket[] testBuckets =
         {
@@ -31,7 +32,7 @@ namespace Scaffold.Repositories.UnitTests
 
         public BucketReadRepositoryUnitTests()
         {
-            this.dbContextOptions = new DbContextOptionsBuilder<BucketContext>()
+            this.dbContextOptions = new DbContextOptionsBuilder<BucketContext.ReadOnly>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
         }
@@ -44,7 +45,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Arrange
                 Bucket bucket = new Bucket();
 
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.Add(bucket);
                     context.SaveChanges();
@@ -53,9 +54,9 @@ namespace Scaffold.Repositories.UnitTests
                 Bucket result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = repository.Get(bucket.Id);
                 }
 
@@ -72,9 +73,9 @@ namespace Scaffold.Repositories.UnitTests
                 Bucket result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = repository.Get(new Random().Next());
                 }
 
@@ -89,7 +90,7 @@ namespace Scaffold.Repositories.UnitTests
             public void When_GettingBucketsWithPredicate_Expect_AllBuckets()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(new Bucket[]
                     {
@@ -104,9 +105,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = repository.Get(bucket => true);
                 }
 
@@ -122,7 +123,7 @@ namespace Scaffold.Repositories.UnitTests
             public void When_GettingBucketsWithPredicate_Expect_Empty()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(new Bucket[]
                     {
@@ -137,9 +138,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = repository.Get(bucket => false);
                 }
 
@@ -152,7 +153,7 @@ namespace Scaffold.Repositories.UnitTests
             public void When_GettingBucketsWithPredicate_Expect_SomeBuckets()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(new Bucket[]
                     {
@@ -169,9 +170,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = repository.Get(bucket => bucket.Size == 2 || bucket.Size == 5);
                 }
 
@@ -189,23 +190,23 @@ namespace Scaffold.Repositories.UnitTests
                 Exception exception;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     exception = Record.Exception(() => repository.Get(null));
                 }
 
                 // Assert
                 ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
                 Assert.Equal("predicate", argumentNullException.ParamName);
-                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
+                Assert.Equal(typeof(BucketReadRepository).Assembly.GetName().Name, exception.Source);
             }
 
             [Fact]
             public void When_GettingBucketsWithNoLimit_Expect_AllBuckets()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(new Bucket[]
                     {
@@ -220,9 +221,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = repository.Get(bucket => true, null);
                 }
 
@@ -238,7 +239,7 @@ namespace Scaffold.Repositories.UnitTests
             public void When_GettingBucketsWithLimit_Expect_LimitedBuckets()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(new Bucket[]
                     {
@@ -253,9 +254,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = repository.Get(bucket => true, 2);
                 }
 
@@ -270,7 +271,7 @@ namespace Scaffold.Repositories.UnitTests
             public void When_GettingBucketsWithNoOffset_Expect_AllBuckets()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(new Bucket[]
                     {
@@ -285,9 +286,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = repository.Get(bucket => true, null, null);
                 }
 
@@ -303,7 +304,7 @@ namespace Scaffold.Repositories.UnitTests
             public void When_GettingBucketsWithOffset_Expect_OffsetBuckets()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(new Bucket[]
                     {
@@ -318,9 +319,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = repository.Get(bucket => true, null, 1);
                 }
 
@@ -335,7 +336,7 @@ namespace Scaffold.Repositories.UnitTests
             public void When_GettingBucketsWithLimitAndOffset_Expect_LimitedAndOffsetBuckets()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(new Bucket[]
                     {
@@ -350,9 +351,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = repository.Get(bucket => true, 1, 1);
                 }
 
@@ -371,7 +372,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Arrange
                 Bucket bucket = new Bucket();
 
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.Add(bucket);
                     await context.SaveChangesAsync();
@@ -380,9 +381,9 @@ namespace Scaffold.Repositories.UnitTests
                 Bucket result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = await repository.GetAsync(bucket.Id);
                 }
 
@@ -399,9 +400,9 @@ namespace Scaffold.Repositories.UnitTests
                 Bucket result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = await repository.GetAsync(new Random().Next());
                 }
 
@@ -416,9 +417,9 @@ namespace Scaffold.Repositories.UnitTests
                 Exception exception;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     exception = await Record.ExceptionAsync(() => repository.GetAsync(new Random().Next(), new CancellationToken(true)));
                 }
 
@@ -433,7 +434,7 @@ namespace Scaffold.Repositories.UnitTests
             public async Task When_GettingBucketsWithPredicate_Expect_AllBuckets()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(new Bucket[]
                     {
@@ -448,9 +449,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true);
                 }
 
@@ -466,7 +467,7 @@ namespace Scaffold.Repositories.UnitTests
             public async Task When_GettingBucketsWithPredicate_Expect_Empty()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(new Bucket[]
                     {
@@ -481,9 +482,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = await repository.GetAsync(bucket => false);
                 }
 
@@ -496,7 +497,7 @@ namespace Scaffold.Repositories.UnitTests
             public async Task When_GettingBucketsWithPredicate_Expect_SomeBuckets()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(new Bucket[]
                     {
@@ -513,9 +514,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = await repository.GetAsync(bucket => bucket.Size == 2 || bucket.Size == 5);
                 }
 
@@ -533,23 +534,23 @@ namespace Scaffold.Repositories.UnitTests
                 Exception exception;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     exception = await Record.ExceptionAsync(() => repository.GetAsync(null));
                 }
 
                 // Assert
                 ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
                 Assert.Equal("predicate", argumentNullException.ParamName);
-                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
+                Assert.Equal(typeof(BucketReadRepository).Assembly.GetName().Name, exception.Source);
             }
 
             [Fact]
             public async Task When_GettingBucketsWithNoLimit_Expect_AllBuckets()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(new Bucket[]
                     {
@@ -564,9 +565,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, null);
                 }
 
@@ -582,7 +583,7 @@ namespace Scaffold.Repositories.UnitTests
             public async Task When_GettingBucketsWithLimit_Expect_LimitedBuckets()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(new Bucket[]
                     {
@@ -597,9 +598,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, 2);
                 }
 
@@ -614,7 +615,7 @@ namespace Scaffold.Repositories.UnitTests
             public async Task When_GettingBucketsWithNoOffset_Expect_AllBuckets()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(new Bucket[]
                     {
@@ -629,9 +630,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null);
                 }
 
@@ -647,7 +648,7 @@ namespace Scaffold.Repositories.UnitTests
             public async Task When_GettingBucketsWithOffset_Expect_OffsetBuckets()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(new Bucket[]
                     {
@@ -662,9 +663,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, null, 1);
                 }
 
@@ -679,7 +680,7 @@ namespace Scaffold.Repositories.UnitTests
             public async Task When_GettingBucketsWithLimitAndOffset_Expect_LimitedAndOffsetBuckets()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(new Bucket[]
                     {
@@ -694,9 +695,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, 1, 1);
                 }
 
@@ -713,9 +714,9 @@ namespace Scaffold.Repositories.UnitTests
                 Exception exception;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     exception = await Record.ExceptionAsync(() => repository.GetAsync(
                         predicate: bucket => true,
                         cancellationToken: new CancellationToken(true)));
@@ -732,7 +733,7 @@ namespace Scaffold.Repositories.UnitTests
             public void When_GettingBucketsOrderedBySizeAscending_Expect_OrderedBySizeAscending()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
@@ -744,9 +745,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = repository.Get(bucket => true, null, null, sortOrder);
                 }
 
@@ -771,7 +772,7 @@ namespace Scaffold.Repositories.UnitTests
             public void When_GettingBucketsOrderedBySizeDescending_Expect_OrderedBySizeDescending()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
@@ -783,9 +784,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = repository.Get(bucket => true, null, null, sortOrder);
                 }
 
@@ -810,7 +811,7 @@ namespace Scaffold.Repositories.UnitTests
             public void When_GettingBucketsOrderedBySizeWithLimit_Expect_OrderedLimitedBuckets()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
@@ -822,9 +823,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = repository.Get(bucket => true, 6, null, sortOrder);
                 }
 
@@ -843,7 +844,7 @@ namespace Scaffold.Repositories.UnitTests
             public void When_GettingBucketsOrderedBySizeWithOffset_Expect_OrderedOffsetBuckets()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
@@ -855,9 +856,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = repository.Get(bucket => true, null, 6, sortOrder);
                 }
 
@@ -876,7 +877,7 @@ namespace Scaffold.Repositories.UnitTests
             public void When_GettingBucketsOrderedBySizeWithLimtAndOffset_Expect_OrderedLimitedAndOffsetBuckets()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
@@ -888,9 +889,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = repository.Get(bucket => true, 6, 3, sortOrder);
                 }
 
@@ -909,7 +910,7 @@ namespace Scaffold.Repositories.UnitTests
             public void When_GettingBucketsOrderedByNameAscendingThenByDescriptionAscending_Expect_OrderedByNameAscendingThenByDescriptionAscending()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
@@ -922,9 +923,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = repository.Get(bucket => true, null, null, sortOrder);
                 }
 
@@ -997,7 +998,7 @@ namespace Scaffold.Repositories.UnitTests
             public void When_GettingBucketsOrderedByNameDescendingThenByDescriptionDescending_Expect_OrderedByNameDescendingThenByDescriptionDescending()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
@@ -1010,9 +1011,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = repository.Get(bucket => true, null, null, sortOrder);
                 }
 
@@ -1085,7 +1086,7 @@ namespace Scaffold.Repositories.UnitTests
             public void When_GettingBucketsOrderedByNameAscendingThenByDescriptionDescending_Expect_OrderedByNameAscendingThenByDescriptionDescending()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
@@ -1098,9 +1099,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = repository.Get(bucket => true, null, null, sortOrder);
                 }
 
@@ -1173,7 +1174,7 @@ namespace Scaffold.Repositories.UnitTests
             public void When_GettingBucketsOrderedByNameDescendingThenByDescriptionAscending_Expect_OrderedByNameDescendingThenByDescriptionAscending()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
@@ -1186,9 +1187,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = repository.Get(bucket => true, null, null, sortOrder);
                 }
 
@@ -1264,7 +1265,7 @@ namespace Scaffold.Repositories.UnitTests
             public async Task When_GettingBucketsOrderedBySizeAscending_Expect_OrderedBySizeAscending()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
@@ -1276,9 +1277,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null, sortOrder);
                 }
 
@@ -1303,7 +1304,7 @@ namespace Scaffold.Repositories.UnitTests
             public async Task When_GettingBucketsOrderedBySizeDescending_Expect_OrderedBySizeDescending()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
@@ -1315,9 +1316,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null, sortOrder);
                 }
 
@@ -1342,7 +1343,7 @@ namespace Scaffold.Repositories.UnitTests
             public async Task When_GettingBucketsOrderedBySizeWithLimit_Expect_OrderedLimitedBuckets()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
@@ -1354,9 +1355,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, 6, null, sortOrder);
                 }
 
@@ -1375,7 +1376,7 @@ namespace Scaffold.Repositories.UnitTests
             public async Task When_GettingBucketsOrderedBySizeWithOffset_Expect_OrderedOffsetBuckets()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
@@ -1387,9 +1388,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, null, 6, sortOrder);
                 }
 
@@ -1408,7 +1409,7 @@ namespace Scaffold.Repositories.UnitTests
             public async Task When_GettingBucketsOrderedBySizeWithLimtAndOffset_Expect_OrderedLimitedAndOffsetBuckets()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
@@ -1420,9 +1421,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, 6, 3, sortOrder);
                 }
 
@@ -1441,7 +1442,7 @@ namespace Scaffold.Repositories.UnitTests
             public async Task When_GettingBucketsOrderedByNameAscendingThenByDescriptionAscending_Expect_OrderedByNameAscendingThenByDescriptionAscending()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
@@ -1454,9 +1455,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null, sortOrder);
                 }
 
@@ -1529,7 +1530,7 @@ namespace Scaffold.Repositories.UnitTests
             public async Task When_GettingBucketsOrderedByNameDescendingThenByDescriptionDescending_Expect_OrderedByNameDescendingThenByDescriptionDescending()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
@@ -1542,9 +1543,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null, sortOrder);
                 }
 
@@ -1617,7 +1618,7 @@ namespace Scaffold.Repositories.UnitTests
             public async Task When_GettingBucketsOrderedByNameAscendingThenByDescriptionDescending_Expect_OrderedByNameAscendingThenByDescriptionDescending()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
@@ -1630,9 +1631,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null, sortOrder);
                 }
 
@@ -1705,7 +1706,7 @@ namespace Scaffold.Repositories.UnitTests
             public async Task When_GettingBucketsOrderedByNameDescendingThenByDescriptionAscending_Expect_OrderedByNameDescendingThenByDescriptionAscending()
             {
                 // Arrange
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
                     context.Buckets.AddRange(this.testBuckets);
                     context.SaveChanges();
@@ -1718,9 +1719,9 @@ namespace Scaffold.Repositories.UnitTests
                 IEnumerable<Bucket> result;
 
                 // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
+                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    BucketReadRepository repository = new BucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null, sortOrder);
                 }
 
