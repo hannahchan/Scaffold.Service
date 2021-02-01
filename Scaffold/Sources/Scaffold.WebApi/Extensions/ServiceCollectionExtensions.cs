@@ -14,7 +14,6 @@ namespace Scaffold.WebApi.Extensions
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.OpenApi.Models;
-    using OpenTelemetry;
     using OpenTelemetry.Resources;
     using OpenTelemetry.Trace;
     using Scaffold.Application.Features.Bucket;

@@ -42,7 +42,7 @@
         },
         "values": false
       },
-      "pluginVersion": "7.2.1",
+      "pluginVersion": "7.3.7",
       "targets": [
         {
           "expr": "sum(rate(http_request_duration_seconds_sum{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(rate(http_request_duration_seconds_count{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
@@ -165,7 +165,7 @@
         },
         "values": false
       },
-      "pluginVersion": "7.2.1",
+      "pluginVersion": "7.3.7",
       "targets": [
         {
           "expr": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
@@ -325,7 +325,7 @@
         },
         "values": false
       },
-      "pluginVersion": "7.2.1",
+      "pluginVersion": "7.3.7",
       "targets": [
         {
           "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) * 60",
@@ -447,7 +447,7 @@
         },
         "values": false
       },
-      "pluginVersion": "7.2.1",
+      "pluginVersion": "7.3.7",
       "targets": [
         {
           "expr": "sum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
@@ -607,7 +607,7 @@
         },
         "values": false
       },
-      "pluginVersion": "7.2.1",
+      "pluginVersion": "7.3.7",
       "targets": [
         {
           "expr": "sum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range])) /\nsum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
@@ -725,7 +725,7 @@
         },
         "values": false
       },
-      "pluginVersion": "7.2.1",
+      "pluginVersion": "7.3.7",
       "targets": [
         {
           "expr": "sum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range])) /\nsum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
@@ -843,7 +843,7 @@
         },
         "values": false
       },
-      "pluginVersion": "7.2.1",
+      "pluginVersion": "7.3.7",
       "targets": [
         {
           "expr": "sum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range])) /\nsum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
@@ -960,7 +960,7 @@
         },
         "values": false
       },
-      "pluginVersion": "7.2.1",
+      "pluginVersion": "7.3.7",
       "targets": [
         {
           "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range])) * 60",
@@ -1006,7 +1006,7 @@
         },
         "values": false
       },
-      "pluginVersion": "7.2.1",
+      "pluginVersion": "7.3.7",
       "targets": [
         {
           "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range])) * 60",
@@ -1052,7 +1052,7 @@
         },
         "values": false
       },
-      "pluginVersion": "7.2.1",
+      "pluginVersion": "7.3.7",
       "targets": [
         {
           "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range])) * 60",
