@@ -1,5 +1,3 @@
-#tool "nuget:?package=ReportGenerator"
-
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
@@ -75,35 +73,38 @@ Task("Test")
 
         DeleteDirectories(GetDirectories(coverageReports), deleteSettings);
 
-        string reportTitle = string.Empty;
-
-        ReportGeneratorSettings reportGeneratorSettings = new ReportGeneratorSettings
+        DotNetCoreTool("reportgenerator", new DotNetCoreToolSettings
         {
             ArgumentCustomization = args =>
-                args.Append($"--title:\"{reportTitle}\""),
-            Verbosity = ReportGeneratorVerbosity.Error
-        };
+                args
+                    .Append($"-reports:\"./Tests/**/coverage.cobertura.xml\"")
+                    .Append($"-targetdir:\"{coverageReports}/Combined\"")
+                    .Append($"-historydir:\"{coverageHistory}/Combined\"")
+                    .Append($"-title:\"{projectName} Combined (Integration + Unit) Tests\"")
+                    .Append($"-verbosity:Error")
+        });
 
-        reportTitle = $"{projectName} Combined (Integration + Unit) Tests";
-        reportGeneratorSettings.HistoryDirectory = $"{coverageHistory}/Combined";
-        ReportGenerator(
-            $"./Tests/**/coverage.cobertura.xml",
-            $"{coverageReports}/Combined",
-            reportGeneratorSettings);
+        DotNetCoreTool("reportgenerator", new DotNetCoreToolSettings
+        {
+            ArgumentCustomization = args =>
+                args
+                    .Append($"-reports:\"./Tests/**/*.IntegrationTests/**/coverage.cobertura.xml\"")
+                    .Append($"-targetdir:\"{coverageReports}/IntegrationTests\"")
+                    .Append($"-historydir:\"{coverageHistory}/IntegrationTests\"")
+                    .Append($"-title:\"{projectName} Integration Tests\"")
+                    .Append($"-verbosity:Error")
+        });
 
-        reportTitle = $"{projectName} Integration Tests";
-        reportGeneratorSettings.HistoryDirectory = $"{coverageHistory}/IntegrationTests";
-        ReportGenerator(
-            $"./Tests/**/*.IntegrationTests/**/coverage.cobertura.xml",
-            $"{coverageReports}/IntegrationTests",
-            reportGeneratorSettings);
-
-        reportTitle = $"{projectName} Unit Tests";
-        reportGeneratorSettings.HistoryDirectory = $"{coverageHistory}/UnitTests";
-        ReportGenerator(
-            $"./Tests/**/*.UnitTests/**/coverage.cobertura.xml",
-            $"{coverageReports}/UnitTests",
-            reportGeneratorSettings);
+        DotNetCoreTool("reportgenerator", new DotNetCoreToolSettings
+        {
+            ArgumentCustomization = args =>
+                args
+                    .Append($"-reports:\"./Tests/**/*.UnitTests/**/coverage.cobertura.xml\"")
+                    .Append($"-targetdir:\"{coverageReports}/UnitTests\"")
+                    .Append($"-historydir:\"{coverageHistory}/UnitTests\"")
+                    .Append($"-title:\"{projectName} Unit Tests\"")
+                    .Append($"-verbosity:Error")
+        });
     });
 
 Task("Publish")
