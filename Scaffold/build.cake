@@ -81,7 +81,7 @@ Task("Test")
                     .Append($"-targetdir:\"{coverageReports}/Combined\"")
                     .Append($"-historydir:\"{coverageHistory}/Combined\"")
                     .Append($"-title:\"{projectName} Combined (Integration + Unit) Tests\"")
-                    .Append($"-verbosity:Error")
+                    .Append($"-verbosity:\"Error\"")
         });
 
         DotNetCoreTool("reportgenerator", new DotNetCoreToolSettings
@@ -92,7 +92,7 @@ Task("Test")
                     .Append($"-targetdir:\"{coverageReports}/IntegrationTests\"")
                     .Append($"-historydir:\"{coverageHistory}/IntegrationTests\"")
                     .Append($"-title:\"{projectName} Integration Tests\"")
-                    .Append($"-verbosity:Error")
+                    .Append($"-verbosity:\"Error\"")
         });
 
         DotNetCoreTool("reportgenerator", new DotNetCoreToolSettings
@@ -103,7 +103,7 @@ Task("Test")
                     .Append($"-targetdir:\"{coverageReports}/UnitTests\"")
                     .Append($"-historydir:\"{coverageHistory}/UnitTests\"")
                     .Append($"-title:\"{projectName} Unit Tests\"")
-                    .Append($"-verbosity:Error")
+                    .Append($"-verbosity:\"Error\"")
         });
     });
 
@@ -112,19 +112,21 @@ Task("Publish")
     .IsDependentOn("Test")
     .Does(() =>
     {
+        string folderName = configuration.First().ToString().ToUpper() + configuration.Substring(1).ToLower();
+
         DeleteDirectorySettings deleteSettings = new DeleteDirectorySettings
         {
             Force = true,
             Recursive = true,
         };
 
-        DeleteDirectories(GetDirectories(buildArtifacts), deleteSettings);
+        DeleteDirectories(GetDirectories($"{buildArtifacts}/{folderName}"), deleteSettings);
 
         DotNetCorePublishSettings settings = new DotNetCorePublishSettings
         {
             Configuration = configuration,
             NoBuild = true,
-            OutputDirectory = $"{buildArtifacts}/Scaffold.WebApi"
+            OutputDirectory = $"{buildArtifacts}/{folderName}/Scaffold.WebApi"
         };
 
         DotNetCorePublish("./Sources/Scaffold.WebApi", settings);
