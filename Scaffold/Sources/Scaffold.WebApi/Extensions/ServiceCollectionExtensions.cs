@@ -5,7 +5,6 @@ namespace Scaffold.WebApi.Extensions
     using System.IO;
     using System.Reflection;
     using System.Text.RegularExpressions;
-    using AutoMapper;
     using MediatR;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;

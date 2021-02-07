@@ -6,7 +6,6 @@ namespace Scaffold.Repositories.UnitTests
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Common.Models;
-    using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
     using Xunit;
 
