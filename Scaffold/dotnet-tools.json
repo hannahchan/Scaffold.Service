@@ -3,11 +3,11 @@
   "isRoot": true,
   "tools": {
     "cake.tool": {
-      "version": "0.38.5",
+      "version": "1.0.0",
       "commands": ["dotnet-cake"]
     },
     "dotnet-ef": {
-      "version": "5.0.2",
+      "version": "5.0.3",
       "commands": ["dotnet-ef"]
     },
     "dotnet-outdated-tool": {
