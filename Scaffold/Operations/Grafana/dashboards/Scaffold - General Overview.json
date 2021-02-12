@@ -42,7 +42,7 @@
         },
         "values": false
       },
-      "pluginVersion": "7.3.7",
+      "pluginVersion": "7.4.1",
       "targets": [
         {
           "expr": "sum(rate(http_request_duration_seconds_sum{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(rate(http_request_duration_seconds_count{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
@@ -165,7 +165,7 @@
         },
         "values": false
       },
-      "pluginVersion": "7.3.7",
+      "pluginVersion": "7.4.1",
       "targets": [
         {
           "expr": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
@@ -321,20 +321,20 @@
               }
             ]
           },
-          "unit": "rpm"
+          "unit": "reqps"
         },
         "values": false
       },
-      "pluginVersion": "7.3.7",
+      "pluginVersion": "7.4.1",
       "targets": [
         {
-          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) * 60",
+          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
           "instant": true,
           "legendFormat": "Average Request Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) * 60",
+          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
           "instant": true,
           "legendFormat": "Instant Request Rate",
           "refId": "B"
@@ -381,12 +381,12 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) * 60",
+          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
           "legendFormat": "Average Request Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) * 60",
+          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
           "legendFormat": "Instant Request Rate",
           "refId": "B"
         }
@@ -404,7 +404,7 @@
       "yaxes": [
         {
           "$$hashKey": "object:316",
-          "format": "rpm",
+          "format": "reqps",
           "logBase": 2,
           "show": true
         },
@@ -447,7 +447,7 @@
         },
         "values": false
       },
-      "pluginVersion": "7.3.7",
+      "pluginVersion": "7.4.1",
       "targets": [
         {
           "expr": "sum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
@@ -607,7 +607,7 @@
         },
         "values": false
       },
-      "pluginVersion": "7.3.7",
+      "pluginVersion": "7.4.1",
       "targets": [
         {
           "expr": "sum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range])) /\nsum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
@@ -657,12 +657,12 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range])) * 60",
+          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
           "legendFormat": "Average Success (2xx) Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range])) * 60",
+          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
           "legendFormat": "Instant Success (2xx) Rate",
           "refId": "B"
         }
@@ -680,7 +680,7 @@
       "yaxes": [
         {
           "$$hashKey": "object:649",
-          "format": "rpm",
+          "format": "reqps",
           "logBase": 2,
           "show": true
         },
@@ -725,7 +725,7 @@
         },
         "values": false
       },
-      "pluginVersion": "7.3.7",
+      "pluginVersion": "7.4.1",
       "targets": [
         {
           "expr": "sum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range])) /\nsum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
@@ -775,12 +775,12 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range])) * 60",
+          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
           "legendFormat": "Average Client Error (4xx) Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range])) * 60",
+          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
           "legendFormat": "Instant Client Error (4xx) Rate",
           "refId": "B"
         }
@@ -798,7 +798,7 @@
       "yaxes": [
         {
           "$$hashKey": "object:649",
-          "format": "rpm",
+          "format": "reqps",
           "logBase": 2,
           "show": true
         },
@@ -843,7 +843,7 @@
         },
         "values": false
       },
-      "pluginVersion": "7.3.7",
+      "pluginVersion": "7.4.1",
       "targets": [
         {
           "expr": "sum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range])) /\nsum(increase(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
@@ -893,12 +893,12 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range])) * 60",
+          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
           "legendFormat": "Average Server Error (5xx) Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range])) * 60",
+          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
           "legendFormat": "Instant Server Error (5xx) Rate",
           "refId": "B"
         }
@@ -916,7 +916,7 @@
       "yaxes": [
         {
           "$$hashKey": "object:649",
-          "format": "rpm",
+          "format": "reqps",
           "logBase": 2,
           "show": true
         },
@@ -956,20 +956,20 @@
               }
             ]
           },
-          "unit": "rpm"
+          "unit": "reqps"
         },
         "values": false
       },
-      "pluginVersion": "7.3.7",
+      "pluginVersion": "7.4.1",
       "targets": [
         {
-          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range])) * 60",
+          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
           "instant": true,
           "legendFormat": "Average Success (2xx) Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range])) * 60",
+          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
           "instant": true,
           "legendFormat": "Instant Success (2xx) Rate",
           "refId": "B"
@@ -1002,20 +1002,20 @@
               }
             ]
           },
-          "unit": "rpm"
+          "unit": "reqps"
         },
         "values": false
       },
-      "pluginVersion": "7.3.7",
+      "pluginVersion": "7.4.1",
       "targets": [
         {
-          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range])) * 60",
+          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
           "instant": true,
           "legendFormat": "Average Client Error (4xx) Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range])) * 60",
+          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
           "instant": true,
           "legendFormat": "Instant Client Error (4xx) Rate",
           "refId": "B"
@@ -1048,20 +1048,20 @@
               }
             ]
           },
-          "unit": "rpm"
+          "unit": "reqps"
         },
         "values": false
       },
-      "pluginVersion": "7.3.7",
+      "pluginVersion": "7.4.1",
       "targets": [
         {
-          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range])) * 60",
+          "expr": "sum(rate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
           "instant": true,
           "legendFormat": "Average Server Error (5xx) Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range])) * 60",
+          "expr": "sum(irate(http_requests_received_total{job=~\"${job:regex}\", controller=~\"${controller:regex}\", action=~\"${action:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
           "instant": true,
           "legendFormat": "Instant Server Error (5xx) Rate",
           "refId": "B"
