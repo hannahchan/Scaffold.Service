@@ -8,12 +8,10 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
     using System.Text;
     using System.Text.Json;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Storage;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
     using Scaffold.Repositories;
     using Scaffold.WebApi.Models.Bucket;
     using Scaffold.WebApi.Models.Item;
@@ -37,7 +35,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
             return this.factory.WithWebHostBuilder(builder =>
             {
                 builder
-                    .ConfigureLogging(logging => logging.ClearProviders())
+                    .ConfigureWithDefaultsForTesting()
                     .ConfigureServices(services =>
                     {
                         services.Remove(services.SingleOrDefault(service =>

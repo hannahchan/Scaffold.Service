@@ -4,9 +4,7 @@ namespace Scaffold.WebApi.IntegrationTests
     using System.Net.Http;
     using System.Net.Mime;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
-    using Microsoft.Extensions.Logging;
     using Xunit;
 
     public class SwaggerEndpointIntegrationTests : IClassFixture<WebApplicationFactory<Startup>>
@@ -15,8 +13,7 @@ namespace Scaffold.WebApi.IntegrationTests
 
         public SwaggerEndpointIntegrationTests(WebApplicationFactory<Startup> factory)
         {
-            this.factory = factory.WithWebHostBuilder(builder =>
-                builder.ConfigureLogging(logging => logging.ClearProviders()));
+            this.factory = factory.WithWebHostBuilder(builder => builder.ConfigureWithDefaultsForTesting());
         }
 
         [Fact]

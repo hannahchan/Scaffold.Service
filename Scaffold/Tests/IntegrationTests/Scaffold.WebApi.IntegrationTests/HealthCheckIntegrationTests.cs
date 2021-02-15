@@ -7,12 +7,10 @@ namespace Scaffold.WebApi.IntegrationTests
     using System.Net.Http;
     using System.Net.Mime;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
     using Scaffold.Repositories;
     using Xunit;
 
@@ -24,7 +22,7 @@ namespace Scaffold.WebApi.IntegrationTests
         {
             this.factory = factory.WithWebHostBuilder(builder =>
             {
-                builder.ConfigureLogging(logging => logging.ClearProviders());
+                builder.ConfigureWithDefaultsForTesting();
 
                 // Override Connection Strings - Start off with unreachable database hosts
                 int invalidDbPort = new Random().Next(10000, 65535);

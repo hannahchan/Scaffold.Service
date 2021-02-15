@@ -6,9 +6,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
     using System.Text.Json;
     using System.Threading.Tasks;
     using System.Xml;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
-    using Microsoft.Extensions.Logging;
     using Microsoft.Net.Http.Headers;
     using Xunit;
 
@@ -18,8 +16,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
 
         public ErrorControllerIntegrationTests(WebApplicationFactory<Startup> factory)
         {
-            this.factory = factory.WithWebHostBuilder(builder =>
-                builder.ConfigureLogging(logging => logging.ClearProviders()));
+            this.factory = factory.WithWebHostBuilder(builder => builder.ConfigureWithDefaultsForTesting());
         }
 
         [Fact]
