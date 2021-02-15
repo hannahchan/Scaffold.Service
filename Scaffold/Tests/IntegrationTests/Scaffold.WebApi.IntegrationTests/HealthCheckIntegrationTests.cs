@@ -1,6 +1,7 @@
 namespace Scaffold.WebApi.IntegrationTests
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -9,6 +10,7 @@ namespace Scaffold.WebApi.IntegrationTests
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Scaffold.Repositories;
@@ -21,7 +23,19 @@ namespace Scaffold.WebApi.IntegrationTests
         public HealthCheckIntegrationTests(WebApplicationFactory<Startup> factory)
         {
             this.factory = factory.WithWebHostBuilder(builder =>
-                builder.ConfigureLogging(logging => logging.ClearProviders()));
+            {
+                builder.ConfigureLogging(logging => logging.ClearProviders());
+
+                // Override Connection Strings - Start off with unreachable database hosts
+                int invalidDbPort = new Random().Next(10000, 65535);
+
+                builder.ConfigureAppConfiguration((webHostBuilderContext, configurationBuilder) =>
+                    configurationBuilder.AddInMemoryCollection(new Dictionary<string, string>
+                    {
+                        { "ConnectionStrings:DefaultConnection", $"Host=localhost;Port={invalidDbPort};" },
+                        { "ConnectionStrings:ReadOnlyConnection", $"Host=localhost;Port={invalidDbPort};" },
+                    }));
+            });
         }
 
         [Fact]
