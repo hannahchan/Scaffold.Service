@@ -17,7 +17,7 @@ namespace Scaffold.WebApi.IntegrationTests
                         { "Jaeger:AgentHost", "localhost" },
                     });
                 })
-                .ConfigureLogging(logging => logging.ClearProviders());
+                .ConfigureLogging(logging => logging.ClearProviders().AddDebug());
         }
     }
 }
