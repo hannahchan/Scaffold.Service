@@ -10,7 +10,6 @@ Scaffold aims to make developing the following features in your next Web API or 
 - [Application Metrics](Docs/ApplicationMetrics.md)
 - [Distributed Tracing](Docs/DistributedTracing.md)
 - [Content Negotiation](Docs/ContentNegotiation.md)
-- [Forwarded Headers Handling](Docs/ForwardedHeadersHandling.md)
 - [Health Checks](Docs/HealthChecks.md)
 - [Problem Details (RFC 7807) Error Handling](Docs/ProblemDetails.md)
 
@@ -32,6 +31,7 @@ Stuff you might want to add to your Web API / microservice but not included with
 - [Authentication](https://docs.microsoft.com/aspnet/core/security/authentication) and [Authorization](https://docs.microsoft.com/aspnet/core/security/authorization)
 - [Console Log Formatting](https://docs.microsoft.com/dotnet/core/extensions/console-log-formatter)
 - [Cross-Origin Resource Sharing (CORS)](https://docs.microsoft.com/aspnet/core/security/cors)
+- [Forwarded Headers Handling](https://docs.microsoft.com/aspnet/core/host-and-deploy/proxy-load-balancer)
 - [Header Propagation](https://docs.microsoft.com/aspnet/core/fundamentals/http-requests#header-propagation-middleware)
 - [Secrets Management](https://docs.microsoft.com/aspnet/core/security/app-secrets)
 
