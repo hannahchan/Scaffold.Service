@@ -22,21 +22,21 @@ services:
         published: 8081
         target: 8081
   postgres:
-    image: "postgres:alpine"
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
+    image: "postgres:alpine"
     volumes:
       - source: postgres_pgdata
         target: /var/lib/postgresql/data
         type: volume
   grafana:
-    image: grafana/grafana
     depends_on:
       - jaeger
       - prometheus
     environment:
       GF_AUTH_ANONYMOUS_ENABLED: "true"
-      GF_AUTH_ANONYMOUS_ORG_ROLE: "Editor"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Editor
+    image: grafana/grafana
     ports:
       - mode: ingress
         protocol: tcp
@@ -79,7 +79,7 @@ services:
         type: bind
 version: "3.5"
 volumes:
-  postgres_pgdata: ~
   grafana: ~
   jaeger_tmp: ~
+  postgres_pgdata: ~
   prometheus: ~
