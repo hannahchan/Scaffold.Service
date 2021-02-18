@@ -1,0 +1,35 @@
+---
+services:
+  devcontainer:
+    build:
+      args:
+        INSTALL_AZURE_CLI: "false"
+        INSTALL_NODE: "false"
+        NODE_VERSION: lts/*
+        USER_GID: 1000
+        USER_UID: 1000
+        VARIANT: "5.0"
+      context: .devcontainer
+      dockerfile: Dockerfile
+    command: "sleep infinity"
+    entrypoint: /usr/local/share/docker-init.sh
+    environment:
+      ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=postgres;Username=postgres;
+      ConnectionStrings__ReadOnlyConnection: Host=postgres;Port=5432;Database=postgres;Username=postgres;
+      Jaeger__AgentHost: jaeger
+    image: scaffold-devcontainer
+    init: true
+    networks:
+      - default
+    ports:
+      - mode: ingress
+        protocol: tcp
+        published: 5000
+        target: 5000
+      - mode: ingress
+        protocol: tcp
+        published: 8081
+        target: 8081
+    volumes:
+      - ".:/workspace:cached"
+      - "/var/run/docker.sock:/var/run/docker.sock"

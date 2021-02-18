@@ -44,7 +44,7 @@
       },
       "dependsOn": ["Stop Infrastructure"],
       "type": "process",
-      "args": ["up", "-d", "postgres", "grafana", "jaeger", "prometheus"],
+      "args": ["up", "--detach", "postgres", "grafana", "jaeger", "prometheus"],
       "presentation": {
         "echo": true,
         "reveal": "never",
@@ -61,7 +61,15 @@
         "command": "docker-compose.exe"
       },
       "type": "process",
-      "args": ["down"],
+      "args": [
+        "rm",
+        "--force",
+        "--stop",
+        "postgres",
+        "grafana",
+        "jaeger",
+        "prometheus"
+      ],
       "presentation": {
         "echo": true,
         "reveal": "never",

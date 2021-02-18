@@ -1,0 +1,21 @@
+{
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "../docker-compose.override.yml",
+    "docker-compose.override.yml"
+  ],
+  "extensions": ["ms-azuretools.vscode-docker", "ms-dotnettools.csharp"],
+  "name": "Scaffold",
+  "remoteEnv": {
+    "COMPOSE_IGNORE_ORPHANS": "true",
+    "COMPOSE_PROJECT_NAME": "${localWorkspaceFolderBasename}",
+    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+  },
+  "remoteUser": "vscode",
+  "runServices": ["devcontainer"],
+  "service": "devcontainer",
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  },
+  "workspaceFolder": "/workspace"
+}
