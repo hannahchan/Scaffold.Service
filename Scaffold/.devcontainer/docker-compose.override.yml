@@ -33,3 +33,4 @@ services:
     volumes:
       - ".:/workspace:cached"
       - "/var/run/docker.sock:/var/run/docker.sock"
+version: "3.9"
