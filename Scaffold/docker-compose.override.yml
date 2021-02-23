@@ -40,4 +40,4 @@ services:
       - source: "${LOCAL_WORKSPACE_FOLDER:-.}/Operations/Prometheus/prometheus.yml"
         target: /etc/prometheus/prometheus.yml
         type: bind
-version: "3.9"
+version: "3.7"
