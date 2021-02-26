@@ -1,6 +1,6 @@
 # Entity Framework Support
 
-The example app included with Scaffold uses [Entity Framework Core](https://docs.microsoft.com/ef) with a PostgreSQL database. Before the example app can run, the required schema for the app needs to be created in the database. This is done using [Entity Framework Migrations](https://docs.microsoft.com/ef/core/managing-schemas/migrations).
+Scaffold uses [Entity Framework Core](https://docs.microsoft.com/ef) with a PostgreSQL database. Before the Scaffold can run, the required schema for the app needs to be created in the database. This is done using [Entity Framework Migrations](https://docs.microsoft.com/ef/core/managing-schemas/migrations).
 
 ## Entity Framework Core Command Line Tools
 
@@ -17,7 +17,7 @@ Because the Entity Framework Migrations are located in a different project from 
 - Target Project - [Scaffold.Repositories](../Sources/Adapters/Scaffold.Repositories)
 - Startup Project- [Scaffold.WebApi](../Sources/Scaffold.WebApi)
 
-Scaffold also includes multiple DbContexts in the example app. When running `dotnet ef` commands you may also need to specify the DBContext class that you want to operate on using the `--context` option.
+Scaffold also includes multiple DbContexts. When running `dotnet ef` commands you may also need to specify the DBContext class that you want to operate on using the `--context` option.
 
 For example, to add a migration you can use the following command;
 
