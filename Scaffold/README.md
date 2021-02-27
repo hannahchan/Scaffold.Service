@@ -2,6 +2,10 @@
 
 Scaffold is an opinionated template of a Web API built using ASP.NET Core. It is intended to be used as an example for, or as a bootstrap to, the development of other Web APIs and aims to address some common concerns when building microservices using Web APIs in ASP.NET Core. Scaffold is an example of a [Tailored Service Template](https://www.thoughtworks.com/radar/techniques/tailored-service-templates).
 
+## Getting Started
+
+Before you start developing Scaffold, please read our [Getting Started](Docs/GettingStarted.md) guide. It outlines what you need to install on your local machine as well as how to build, test and run the project.
+
 ## Features
 
 Scaffold aims to make developing the following features in your next Web API or microservice a little bit more easier.
@@ -21,7 +25,6 @@ Other stuff you inherit when you bootstrap with Scaffold.
 - [Docker Support](Docs/Docker.md)
 - [Entity Framework Support](Docs/EntityFramework.md)
 - [Roslyn Analyzers](Docs/RoslynAnalyzers.md)
-- [Visual Studio Code Support](Docs/VisualStudioCode.md)
 
 ### Not Included
 
@@ -42,11 +45,3 @@ Scaffold includes an example application which is intended to be replaced with y
 The example application is a simple CRUD application where you can create **Buckets** and put **Items** in them. The Buckets have a _size_ which represents the number of Items you can put in them. To _Create_, _Read_, _Update_ and _Delete_ Buckets or Items in the application, simply send HTTP _POST_, _GET_, _PUT_ or _DELETE_ requests to the Web API.
 
 Explore the Web API by going to `/swagger` in a web browser.
-
-## Developing and Running the Web API
-
-For the best experience when developing with and running Scaffold, it is recommended to have Docker installed. Docker is not required however parts of the documentation and support features has been written or built assuming that you have Docker installed.
-
-Scaffold requires a PostgreSQL database before it can run and one can be stood up quickly using Docker. Alternatively you could install PostgreSQL on to your local machine. For more information about on how to run the Web API with Docker, checkout our [Docker Support](Docs/Docker.md) page in the [Docs](Docs) directory.
-
-[Visual Studio Code Support](Docs/VisualStudioCode.md) in this project also assumes you have Docker installed.
