@@ -5,6 +5,7 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
     using System.Net;
     using System.Net.Http;
     using System.Net.Mime;
+    using System.Text.Json;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.AspNetCore.WebUtilities;
@@ -91,8 +92,14 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 HttpClient client = this.factory.CreateClient();
                 string name = Guid.NewGuid().ToString();
 
+                HttpResponseMessage response;
+
                 // Act
-                HttpResponseMessage response = await client.GetAsync($"/TracingDemo/Hello?name={name}");
+                do
+                {
+                    response = await client.GetAsync($"/TracingDemo/Hello?name={name}");
+                }
+                while (!response.IsSuccessStatusCode);
 
                 // Assert
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -106,13 +113,47 @@ namespace Scaffold.WebApi.IntegrationTests.Controllers
                 // Arrange
                 HttpClient client = this.factory.CreateClient();
 
+                HttpResponseMessage response;
+
                 // Act
-                HttpResponseMessage response = await client.GetAsync($"/TracingDemo/Hello");
+                do
+                {
+                    response = await client.GetAsync($"/TracingDemo/Hello");
+                }
+                while (!response.IsSuccessStatusCode);
 
                 // Assert
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 Assert.Equal(MediaTypeNames.Text.Plain, response.Content.Headers.ContentType.MediaType);
                 Assert.Equal($"Hello, random!", await response.Content.ReadAsStringAsync());
+            }
+
+            [Fact]
+            public async Task When_SayingHello_Expect_ServiceUnavailable()
+            {
+                // Arrange
+                HttpClient client = this.factory.CreateClient();
+
+                HttpResponseMessage response;
+
+                // Act
+                do
+                {
+                    response = await client.GetAsync($"/TracingDemo/Hello");
+                }
+                while (response.IsSuccessStatusCode);
+
+                // Assert
+                Assert.Equal(HttpStatusCode.ServiceUnavailable, response.StatusCode);
+                Assert.Equal(CustomMediaTypeNames.Application.ProblemJson, response.Content.Headers.ContentType.MediaType);
+
+                JsonDocument document = JsonDocument.Parse(await response.Content.ReadAsStreamAsync());
+                JsonElement rootElement = document.RootElement;
+
+                Assert.Equal("https://tools.ietf.org/html/rfc7231#section-6.6.4", rootElement.GetProperty("type").GetString());
+                Assert.Equal("Service Unavailable", rootElement.GetProperty("title").GetString());
+                Assert.Equal("This is intended 80% of the time. Please try again.", rootElement.GetProperty("detail").GetString());
+                Assert.Equal(503, rootElement.GetProperty("status").GetInt32());
             }
         }
     }

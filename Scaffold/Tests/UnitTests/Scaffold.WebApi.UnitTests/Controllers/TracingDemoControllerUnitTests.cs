@@ -78,30 +78,66 @@ namespace Scaffold.WebApi.UnitTests.Controllers
         public class Hello
         {
             [Fact]
-            public void When_SayingHelloToName_Expect_HelloMessage()
+            public async Task When_SayingHelloToName_Expect_HelloMessage()
             {
                 // Arrange
                 TracingDemoController controller = new TracingDemoController(null);
                 string name = Guid.NewGuid().ToString();
 
+                ActionResult<string> result;
+
                 // Act
-                string result = controller.Hello(name);
+                do
+                {
+                    result = await controller.Hello(name);
+                }
+                while (result.Value is null);
 
                 // Assert
-                Assert.Equal($"Hello, {name}!", result);
+                Assert.Null(result.Result);
+                Assert.Equal($"Hello, {name}!", result.Value);
             }
 
             [Fact]
-            public void When_SayingHelloToNullName_Expect_HelloMessage()
+            public async Task When_SayingHelloToNullName_Expect_HelloMessage()
             {
                 // Arrange
                 TracingDemoController controller = new TracingDemoController(null);
 
+                ActionResult<string> result;
+
                 // Act
-                string result = controller.Hello(null);
+                do
+                {
+                    result = await controller.Hello(null);
+                }
+                while (result.Value is null);
 
                 // Assert
-                Assert.Equal($"Hello, random!", result);
+                Assert.Null(result.Result);
+                Assert.Equal($"Hello, random!", result.Value);
+            }
+
+            [Fact]
+            public async Task When_SayingHello_Expect_ProblemDetails()
+            {
+                // Arrange
+                TracingDemoController controller = new TracingDemoController(null);
+
+                ActionResult<string> result;
+
+                // Act
+                do
+                {
+                    result = await controller.Hello(null);
+                }
+                while (result.Result is null);
+
+                // Assert
+                ObjectResult objectResult = Assert.IsType<ObjectResult>(result.Result);
+                Assert.IsType<ProblemDetails>(objectResult.Value);
+
+                Assert.Null(result.Value);
             }
         }
 

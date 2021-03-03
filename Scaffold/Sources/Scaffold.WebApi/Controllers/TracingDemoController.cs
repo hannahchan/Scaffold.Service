@@ -1,6 +1,7 @@
 namespace Scaffold.WebApi.Controllers
 {
     using System;
+    using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
@@ -40,7 +41,7 @@ namespace Scaffold.WebApi.Controllers
             return await response.Content.ReadAsStringAsync();
         }
 
-        /// <summary>Returns a 'Hello' message.</summary>
+        /// <summary>Returns a 'Hello' message or 'Service Unavailable'.</summary>
         /// <param name="name">The name of the person to say 'Hello' to.</param>
         /// <returns>A string containing the 'Hello' message.</returns>
         /// <response code="200">Message was successful.</response>
@@ -48,8 +49,19 @@ namespace Scaffold.WebApi.Controllers
         [HttpGet("Hello")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public string Hello([FromQuery] string? name)
+        public async Task<ActionResult<string>> Hello([FromQuery] string? name)
         {
+            await Task.Delay(new Random().Next(500));
+
+            if (new Random().NextDouble() <= 0.8)
+            {
+                return this.Problem(
+                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.4",
+                    title: "Service Unavailable",
+                    detail: "This is intended 80% of the time. Please try again.",
+                    statusCode: (int)HttpStatusCode.ServiceUnavailable);
+            }
+
             return $"Hello, {name ?? "random"}!";
         }
 
