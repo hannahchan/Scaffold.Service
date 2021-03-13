@@ -88,7 +88,7 @@ Task("Test")
         {
             ArgumentCustomization = args =>
                 args
-                    .Append($"-reports:\"./Tests/**/*.IntegrationTests/**/coverage.cobertura.xml\"")
+                    .Append($"-reports:\"./Tests/IntegrationTests/**/coverage.cobertura.xml\"")
                     .Append($"-targetdir:\"{coverageReports}/IntegrationTests\"")
                     .Append($"-historydir:\"{coverageHistory}/IntegrationTests\"")
                     .Append($"-title:\"{projectName} Integration Tests\"")
@@ -99,7 +99,7 @@ Task("Test")
         {
             ArgumentCustomization = args =>
                 args
-                    .Append($"-reports:\"./Tests/**/*.UnitTests/**/coverage.cobertura.xml\"")
+                    .Append($"-reports:\"./Tests/UnitTests/**/coverage.cobertura.xml\"")
                     .Append($"-targetdir:\"{coverageReports}/UnitTests\"")
                     .Append($"-historydir:\"{coverageHistory}/UnitTests\"")
                     .Append($"-title:\"{projectName} Unit Tests\"")
