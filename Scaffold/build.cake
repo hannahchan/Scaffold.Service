@@ -60,10 +60,11 @@ Task("Test")
 
         DotNetCoreTestSettings testSettings = new DotNetCoreTestSettings
         {
-            ArgumentCustomization = args =>
-                args
-                    .Append("--collect:\"XPlat Code Coverage\"")
-                    .Append("--logger:\"trx\""),
+            ArgumentCustomization = args => args
+                .Append("--collect:\"XPlat Code Coverage\"")
+                .Append("--logger:\"console;verbosity=minimal\"")
+                .Append("--logger:\"trx\"")
+                .Append("--nologo"),
             Configuration = configuration,
             NoBuild = true
         };
@@ -77,35 +78,32 @@ Task("Test")
 
         DotNetCoreTool("reportgenerator", new DotNetCoreToolSettings
         {
-            ArgumentCustomization = args =>
-                args
-                    .Append($"-reports:\"./Tests/**/TestResults/*/coverage.cobertura.xml\"")
-                    .Append($"-targetdir:\"{coverageReports}/Combined\"")
-                    .Append($"-historydir:\"{coverageHistory}/Combined\"")
-                    .Append($"-title:\"{projectName} Combined (Integration + Unit) Tests\"")
-                    .Append($"-verbosity:\"Error\"")
+            ArgumentCustomization = args => args
+                .Append($"-reports:\"./Tests/**/TestResults/*/coverage.cobertura.xml\"")
+                .Append($"-targetdir:\"{coverageReports}/Combined\"")
+                .Append($"-historydir:\"{coverageHistory}/Combined\"")
+                .Append($"-title:\"{projectName} Combined (Integration + Unit) Tests\"")
+                .Append($"-verbosity:\"Error\"")
         });
 
         DotNetCoreTool("reportgenerator", new DotNetCoreToolSettings
         {
-            ArgumentCustomization = args =>
-                args
-                    .Append($"-reports:\"./Tests/IntegrationTests/**/TestResults/*/coverage.cobertura.xml\"")
-                    .Append($"-targetdir:\"{coverageReports}/IntegrationTests\"")
-                    .Append($"-historydir:\"{coverageHistory}/IntegrationTests\"")
-                    .Append($"-title:\"{projectName} Integration Tests\"")
-                    .Append($"-verbosity:\"Error\"")
+            ArgumentCustomization = args => args
+                .Append($"-reports:\"./Tests/IntegrationTests/**/TestResults/*/coverage.cobertura.xml\"")
+                .Append($"-targetdir:\"{coverageReports}/IntegrationTests\"")
+                .Append($"-historydir:\"{coverageHistory}/IntegrationTests\"")
+                .Append($"-title:\"{projectName} Integration Tests\"")
+                .Append($"-verbosity:\"Error\"")
         });
 
         DotNetCoreTool("reportgenerator", new DotNetCoreToolSettings
         {
-            ArgumentCustomization = args =>
-                args
-                    .Append($"-reports:\"./Tests/UnitTests/**/TestResults/*/coverage.cobertura.xml\"")
-                    .Append($"-targetdir:\"{coverageReports}/UnitTests\"")
-                    .Append($"-historydir:\"{coverageHistory}/UnitTests\"")
-                    .Append($"-title:\"{projectName} Unit Tests\"")
-                    .Append($"-verbosity:\"Error\"")
+            ArgumentCustomization = args => args
+                .Append($"-reports:\"./Tests/UnitTests/**/TestResults/*/coverage.cobertura.xml\"")
+                .Append($"-targetdir:\"{coverageReports}/UnitTests\"")
+                .Append($"-historydir:\"{coverageHistory}/UnitTests\"")
+                .Append($"-title:\"{projectName} Unit Tests\"")
+                .Append($"-verbosity:\"Error\"")
         });
     });
 
