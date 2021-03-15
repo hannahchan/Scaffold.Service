@@ -63,7 +63,7 @@ Task("Test")
             ArgumentCustomization = args => args
                 .Append("--collect:\"XPlat Code Coverage\"")
                 .Append("--logger:\"console;verbosity=minimal\"")
-                .Append("--logger:\"trx\"")
+                .Append("--logger:\"trx;\"")
                 .Append("--nologo"),
             Configuration = configuration,
             NoBuild = true
@@ -73,6 +73,7 @@ Task("Test")
 
         string coverageHistory = $"{testArtifacts}/CoverageHistory";
         string coverageReports = $"{testArtifacts}/CoverageReports";
+        string reportTypes = "Html;Cobertura;";
 
         DeleteDirectories(GetDirectories(coverageReports), deleteSettings);
 
@@ -80,6 +81,7 @@ Task("Test")
         {
             ArgumentCustomization = args => args
                 .Append($"-reports:\"./Tests/**/TestResults/*/coverage.cobertura.xml\"")
+                .Append($"-reporttypes:\"{reportTypes}\"")
                 .Append($"-targetdir:\"{coverageReports}/Combined\"")
                 .Append($"-historydir:\"{coverageHistory}/Combined\"")
                 .Append($"-title:\"{projectName} Combined (Integration + Unit) Tests\"")
@@ -90,6 +92,7 @@ Task("Test")
         {
             ArgumentCustomization = args => args
                 .Append($"-reports:\"./Tests/IntegrationTests/**/TestResults/*/coverage.cobertura.xml\"")
+                .Append($"-reporttypes:\"{reportTypes}\"")
                 .Append($"-targetdir:\"{coverageReports}/IntegrationTests\"")
                 .Append($"-historydir:\"{coverageHistory}/IntegrationTests\"")
                 .Append($"-title:\"{projectName} Integration Tests\"")
@@ -100,6 +103,7 @@ Task("Test")
         {
             ArgumentCustomization = args => args
                 .Append($"-reports:\"./Tests/UnitTests/**/TestResults/*/coverage.cobertura.xml\"")
+                .Append($"-reporttypes:\"{reportTypes}\"")
                 .Append($"-targetdir:\"{coverageReports}/UnitTests\"")
                 .Append($"-historydir:\"{coverageHistory}/UnitTests\"")
                 .Append($"-title:\"{projectName} Unit Tests\"")
