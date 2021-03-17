@@ -36,6 +36,7 @@ Task("Restore")
     });
 
 Task("Build")
+    .IsDependentOn("Clean")
     .IsDependentOn("Restore")
     .Does(() =>
     {
@@ -77,6 +78,7 @@ Task("Test")
 
         DeleteDirectories(GetDirectories(coverageReports), deleteSettings);
 
+        // Coverage Report - Combined (Integration + Unit) Tests
         DotNetCoreTool("reportgenerator", new DotNetCoreToolSettings
         {
             ArgumentCustomization = args => args
@@ -88,6 +90,7 @@ Task("Test")
                 .Append($"-verbosity:\"Error\"")
         });
 
+        // Coverage Report - Integration Tests
         DotNetCoreTool("reportgenerator", new DotNetCoreToolSettings
         {
             ArgumentCustomization = args => args
@@ -99,6 +102,7 @@ Task("Test")
                 .Append($"-verbosity:\"Error\"")
         });
 
+        // Coverage Report - Unit Tests
         DotNetCoreTool("reportgenerator", new DotNetCoreToolSettings
         {
             ArgumentCustomization = args => args
@@ -112,7 +116,6 @@ Task("Test")
     });
 
 Task("Publish")
-    .IsDependentOn("Clean")
     .IsDependentOn("Test")
     .Does(() =>
     {
