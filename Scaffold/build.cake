@@ -135,16 +135,12 @@ Task("Publish")
         };
 
         DotNetCorePublish("./Sources/Scaffold.WebApi", settings);
-        Zip(settings.OutputDirectory, $"{settings.OutputDirectory}.zip");
-        DeleteDirectories(GetDirectories(settings.OutputDirectory.ToString()), deleteSettings);
     });
 
 Task("Containerize")
     .IsDependentOn("Publish")
     .Does(() =>
     {
-        Unzip($"{buildArtifacts}/Scaffold.WebApi.zip", $"{buildArtifacts}/Scaffold.WebApi");
-
         StartProcess("docker", new ProcessSettings
         {
             Arguments = new ProcessArgumentBuilder()
