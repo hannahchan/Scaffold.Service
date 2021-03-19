@@ -135,17 +135,20 @@ Task("Publish")
         };
 
         DotNetCorePublish("./Sources/Scaffold.WebApi", settings);
+        Zip(settings.OutputDirectory, $"{settings.OutputDirectory}.zip");
+        DeleteDirectories(GetDirectories(settings.OutputDirectory.ToString()), deleteSettings);
     });
 
 Task("Containerize")
     .IsDependentOn("Publish")
     .Does(() =>
     {
+        Unzip($"{buildArtifacts}/Scaffold.WebApi.zip", $"{buildArtifacts}/Scaffold.WebApi");
+
         StartProcess("docker", new ProcessSettings
         {
             Arguments = new ProcessArgumentBuilder()
-                .Append("image build")
-                .Append("--file ./Sources/Scaffold.WebApi/Dockerfile-Cake")
+                .Append("build")
                 .Append("--force-rm")
                 .Append("--pull")
                 .Append("--tag scaffold:latest")

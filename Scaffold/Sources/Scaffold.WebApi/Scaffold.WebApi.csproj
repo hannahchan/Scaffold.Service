@@ -36,4 +36,8 @@
     <ProjectReference Include="..\Scaffold.Application\Scaffold.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="AdditionalFiles\**\*" CopyToPublishDirectory="PreserveNewest" Link="%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+
 </Project>
