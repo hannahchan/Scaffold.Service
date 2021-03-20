@@ -23,13 +23,17 @@ Likewise to run the tests, run;
 
     dotnet test
 
-### Cake Script
+### Creating a Release
 
 To help different developers build and test the project consistently on different machines, a [Cake script](../build.cake) has been included at the root of this project. To run the script, run the command;
 
     dotnet cake
 
-You may need to run `dotnet tool restore` first if you don't have the dotnet tool `Cake.Tool` installed. By default, the Cake script will build, test and publish the project and copy all related artifacts into the `Artifacts` directory. This directory is where you will find your build output and test coverage reports.
+You may need to run `dotnet tool restore` first if you don't have the dotnet tool `Cake.Tool` installed. By default, the Cake script will build, test and publish the project and copy all related artifacts into the `Artifacts` directory. This directory is where you will find your release ready build output and test coverage reports.
+
+By default, the Cake script does not produce any container images as output. To produce release ready container images, use the following command instead;
+
+    dotnet cake --Target=Containerize
 
 For more information about Cake, please visit <https://cakebuild.net>.
 
