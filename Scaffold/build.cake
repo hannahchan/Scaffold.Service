@@ -9,8 +9,8 @@ string target = Argument("Target", "Publish");
 //////////////////////////////////////////////////////////////////////
 
 string artifacts = "./Artifacts";
-string buildArtifacts = $"{artifacts}/Build";
-string testArtifacts = $"{artifacts}/Test";
+string buildArtifacts = $"{artifacts}/Release";
+string testArtifacts = $"{artifacts}";
 
 string projectName = "Scaffold";
 string solution = "./Scaffold.sln";
@@ -135,16 +135,12 @@ Task("Publish")
         };
 
         DotNetCorePublish("./Sources/Scaffold.WebApi", settings);
-        Zip(settings.OutputDirectory, $"{settings.OutputDirectory}.zip");
-        DeleteDirectories(GetDirectories(settings.OutputDirectory.ToString()), deleteSettings);
     });
 
 Task("Containerize")
     .IsDependentOn("Publish")
     .Does(() =>
     {
-        Unzip($"{buildArtifacts}/Scaffold.WebApi.zip", $"{buildArtifacts}/Scaffold.WebApi");
-
         StartProcess("docker", new ProcessSettings
         {
             Arguments = new ProcessArgumentBuilder()
