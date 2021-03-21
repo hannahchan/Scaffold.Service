@@ -1,0 +1,50 @@
+# Example / Starter Pipline for Azure DevOps
+
+trigger:
+  - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: DotNetCoreCLI@2
+    displayName: Restore .NET Tools
+    inputs:
+      command: custom
+      custom: tool
+      arguments: restore
+
+  - task: DotNetCoreCLI@2
+    displayName: Run Cake Build Script
+    inputs:
+      command: custom
+      custom: cake
+      arguments: --Target=Publish
+
+  - task: PublishTestResults@2
+    displayName: Publish Test Results
+    inputs:
+      failTaskOnFailedTests: true
+      mergeTestResults: true
+      testResultsFiles: Tests/**/TestResults/*.trx
+      testResultsFormat: VSTest
+      testRunTitle: Integration and Unit Tests
+
+  - task: PublishCodeCoverageResults@1
+    displayName: Publish Code Coverage Results
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: Artifacts/CoverageReports/Combined/Cobertura.xml
+      failIfCoverageEmpty: true
+
+  - task: Docker@2
+    displayName: Publish Container Image
+    inputs:
+      command: buildAndPush
+      buildContext: Artifacts/Release/Scaffold.WebApi
+      Dockerfile: Artifacts/Release/Scaffold.WebApi/Dockerfile
+      containerRegistry: $(containerRegistry)
+      repository: $(repository)
+      tags: |
+        latest
+        $(Build.SourceVersion)
