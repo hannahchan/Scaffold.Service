@@ -7,14 +7,13 @@ Artifacts
 Docs
 Operations
 tools
-.dockerignore
 .env
 .gitattributes
 .gitignore
 docker-compose.yml
 docker-compose.*.yml
 README.md
+**/.dockerignore
 **/Dockerfile
-**/PostPublish
 **/bin
 **/obj
