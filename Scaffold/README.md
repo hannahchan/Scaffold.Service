@@ -1,6 +1,6 @@
 # Scaffold
 
-Scaffold is an opinionated template of a Web API built using ASP.NET Core. It is intended to be used as an example for, or as a bootstrap to, the development of other Web APIs and aims to address some common concerns when building microservices using Web APIs in ASP.NET Core. Scaffold is an example of a [Tailored Service Template](https://www.thoughtworks.com/radar/techniques/tailored-service-templates).
+Scaffold is an opinionated template of a Web API built using ASP.NET Core. It is intended to be used as an example for, or as a bootstrap to, the development of other Web APIs or services and aims to address some common concerns when building microservices in ASP.NET Core. Scaffold is an example of a [Tailored Service Template](https://www.thoughtworks.com/radar/techniques/tailored-service-templates).
 
 ## Getting Started
 
