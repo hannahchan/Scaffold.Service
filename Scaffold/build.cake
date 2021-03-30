@@ -9,6 +9,7 @@ string target = Argument("Target", "Publish");
 //////////////////////////////////////////////////////////////////////
 
 string artifacts = "./Artifacts";
+string auditArtifacts = $"{artifacts}/Audit";
 string buildArtifacts = $"{artifacts}/Release";
 string testArtifacts = $"{artifacts}";
 
@@ -19,6 +20,26 @@ string configuration = "Release";
 //////////////////////////////////////////////////////////////////////
 // TASKS
 //////////////////////////////////////////////////////////////////////
+
+Task("Audit")
+    .Does(() =>
+    {
+        DeleteDirectorySettings deleteSettings = new DeleteDirectorySettings
+        {
+            Force = true,
+            Recursive = true,
+        };
+
+        DeleteDirectories(GetDirectories(auditArtifacts), deleteSettings);
+
+        DotNetCoreTool("CycloneDX", new DotNetCoreToolSettings
+        {
+            ArgumentCustomization = args => args
+                .Append(solution)
+                .Append($"--json")
+                .Append($"--out {auditArtifacts}")
+        });
+    });
 
 Task("Clean")
     .Does(() =>
