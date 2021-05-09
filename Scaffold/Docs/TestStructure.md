@@ -48,6 +48,16 @@ It is generally accepted that achieving 100% code coverage in an application is 
 
 - Since the application and domain layers do not have any external dependencies (because dependencies go inwards), all code in these layers are testable. 100% code coverage should be expected in these layers.
 
-- Difficult to test or untestable code will be located in each adapter (outermost layer) where interaction with an external dependency happens. In these areas you will not be able to achieve 100% code coverage.
+- Difficult to test or untestable code will be located in each adapter (outermost layer) where interactions with external dependencies happen. In these areas you will not be able to achieve 100% code coverage.
 
 - The total amount of testable code is greater than all the code in the application and domain layers. The maximum possible code coverage for Scaffold will be around here.
+
+## Mutation Testing
+
+Mutation testing is the practice of introducing bugs or mutants into your code to see how good your tests are. Included in each test project in Scaffold is a configuration file for mutation testing with [Styker.NET](https://stryker-mutator.io).
+
+To run a mutation test in Scaffold, navigate to a test project and run;
+
+    dotnet stryker
+
+A mutation report will be produced at end of the test run.
