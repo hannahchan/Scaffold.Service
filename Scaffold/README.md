@@ -25,6 +25,7 @@ Other stuff you inherit when you bootstrap with Scaffold.
 - [Code Analysis](Docs/CodeAnalysis.md)
 - [Docker Support](Docs/Docker.md)
 - [Entity Framework Support](Docs/EntityFramework.md)
+- [Test Structure](Docs/TestStructure.md)
 
 ### Not Included
 

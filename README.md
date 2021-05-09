@@ -41,6 +41,7 @@ Other stuff you inherit when you bootstrap with Scaffold.WebApi.
 - [Code Analysis](Scaffold/Docs/CodeAnalysis.md)
 - [Docker Support](Scaffold/Docs/Docker.md)
 - [Entity Framework Support](Scaffold/Docs/EntityFramework.md)
+- [Test Structure](Scaffold/Docs/TestStructure.md)
 
 ### Not Included
 
