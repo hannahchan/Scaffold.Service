@@ -1,9 +1,11 @@
 namespace Scaffold.Application.Features.Bucket
 {
+    using System.Diagnostics;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using MediatR;
+    using Scaffold.Application.Common.Instrumentation;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
 
@@ -33,6 +35,8 @@ namespace Scaffold.Application.Features.Bucket
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
+                using Activity? activity = ActivityProvider.StartActivity(nameof(RemoveItem));
+
                 Bucket bucket = await this.repository.GetAsync(request.BucketId, cancellationToken) ?? throw new BucketNotFoundException(request.BucketId);
                 Item item = bucket.Items.SingleOrDefault(x => x.Id == request.ItemId) ?? throw new ItemNotFoundException(request.ItemId);
 

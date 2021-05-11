@@ -2,10 +2,12 @@ namespace Scaffold.Application.Features.Bucket
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq.Expressions;
     using System.Threading;
     using System.Threading.Tasks;
     using MediatR;
+    using Scaffold.Application.Common.Instrumentation;
     using Scaffold.Application.Common.Models;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
@@ -62,6 +64,7 @@ namespace Scaffold.Application.Features.Bucket
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
+                using Activity? activity = ActivityProvider.StartActivity(nameof(GetBuckets));
                 return new Response(await this.repository.GetAsync(request.Predicate, request.Limit, request.Offset, request.SortOrder, cancellationToken));
             }
         }

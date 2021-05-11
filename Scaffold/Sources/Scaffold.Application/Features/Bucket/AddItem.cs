@@ -1,10 +1,12 @@
 namespace Scaffold.Application.Features.Bucket
 {
     using System;
+    using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
     using MediatR;
+    using Scaffold.Application.Common.Instrumentation;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
 
@@ -47,6 +49,8 @@ namespace Scaffold.Application.Features.Bucket
 
             public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
             {
+                using Activity? activity = ActivityProvider.StartActivity(nameof(AddItem));
+
                 Bucket bucket = await this.repository.GetAsync(request.BucketId, cancellationToken) ??
                     throw new BucketNotFoundException(request.BucketId);
 
