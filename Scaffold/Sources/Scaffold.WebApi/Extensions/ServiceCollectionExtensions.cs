@@ -14,6 +14,7 @@ namespace Scaffold.WebApi.Extensions
     using OpenTelemetry.Resources;
     using OpenTelemetry.Trace;
     using Polly;
+    using Scaffold.Application.Common.Instrumentation;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
     using Scaffold.HttpClients;
@@ -96,6 +97,7 @@ namespace Scaffold.WebApi.Extensions
                     options.Filter = httpContext => !httpContext.Request.Path.IgnorePath(IgnorePatterns);
                 })
                 .AddHttpClientInstrumentation()
+                .AddSource(ActivityProvider.ActivitySourceName)
                 .AddJaegerExporter(options =>
                 {
                     options.AgentHost = config.GetValue("Jaeger:AgentHost", "localhost");
