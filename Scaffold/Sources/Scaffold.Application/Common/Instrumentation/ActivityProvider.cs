@@ -1,17 +1,14 @@
 namespace Scaffold.Application.Common.Instrumentation
 {
-    using System;
     using System.Diagnostics;
+    using Scaffold.Application.Common.Constants;
 
-    public static class ActivityProvider
+    internal static class ActivityProvider
     {
-        public static readonly string ActivitySourceName = typeof(ActivityProvider).Assembly.GetName().Name;
+        private static readonly ActivitySource ActivitySource =
+            new ActivitySource(Application.ActivitySource.Name, Application.ActivitySource.Version);
 
-        public static readonly Version ActivitySourceVersion = typeof(ActivityProvider).Assembly.GetName().Version;
-
-        private static readonly ActivitySource ActivitySource = new ActivitySource(ActivitySourceName, ActivitySourceVersion.ToString());
-
-        internal static Activity? StartActivity(string name)
+        public static Activity? StartActivity(string name)
         {
             return ActivitySource.StartActivity(name, ActivityKind.Internal);
         }
