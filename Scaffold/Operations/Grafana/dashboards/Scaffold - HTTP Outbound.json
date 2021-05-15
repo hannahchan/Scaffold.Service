@@ -1,0 +1,1163 @@
+{
+  "editable": true,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "title": "Latency",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 0,
+        "y": 1
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal"
+      },
+      "fieldConfig": {
+        "calcs": ["lastNotNull"],
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "grey"
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "values": false
+      },
+      "pluginVersion": "7.4.1",
+      "targets": [
+        {
+          "expr": "sum(rate(httpclient_request_duration_seconds_sum{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(rate(httpclient_request_duration_seconds_count{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "Average Request Duration",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(httpclient_request_duration_seconds_sum{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(irate(httpclient_request_duration_seconds_count{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "Instant Request Duration",
+          "refId": "B"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "aliasColors": {
+        "Average Request Duration": "green",
+        "Instant Request Duration": "super-light-green"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 9,
+        "x": 3,
+        "y": 1
+      },
+      "hiddenSeries": false,
+      "id": 3,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(rate(httpclient_request_duration_seconds_sum{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(rate(httpclient_request_duration_seconds_count{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "legendFormat": "Average Request Duration",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(httpclient_request_duration_seconds_sum{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(irate(httpclient_request_duration_seconds_count{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "legendFormat": "Instant Request Duration",
+          "refId": "B"
+        }
+      ],
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:149",
+          "format": "s",
+          "logBase": 2,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:150",
+          "format": "short",
+          "logBase": 2,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 12,
+        "y": 1
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal"
+      },
+      "fieldConfig": {
+        "calcs": ["lastNotNull"],
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "grey"
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "values": false
+      },
+      "pluginVersion": "7.4.1",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "99th Percentile",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
+          "instant": true,
+          "legendFormat": "95th Percentile",
+          "refId": "B"
+        },
+        {
+          "expr": "histogram_quantile(0.85, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
+          "instant": true,
+          "legendFormat": "85th Percentile",
+          "refId": "C"
+        },
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
+          "instant": true,
+          "legendFormat": "50th Percentile",
+          "refId": "D"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "aliasColors": {
+        "50th Percentile": "green",
+        "85th Percentile": "yellow",
+        "95th Percentile": "orange",
+        "99th Percentile": "red"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 9,
+        "x": 15,
+        "y": 1
+      },
+      "hiddenSeries": false,
+      "id": 5,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
+          "legendFormat": "99th Percentile",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
+          "legendFormat": "95th Percentile",
+          "refId": "B"
+        },
+        {
+          "expr": "histogram_quantile(0.85, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
+          "legendFormat": "85th Percentile",
+          "refId": "C"
+        },
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
+          "legendFormat": "50th Percentile",
+          "refId": "D"
+        }
+      ],
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:596",
+          "format": "s",
+          "logBase": 10,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:597",
+          "format": "short",
+          "logBase": 10,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 6,
+      "title": "Traffic",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 0,
+        "y": 9
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal"
+      },
+      "fieldConfig": {
+        "calcs": ["lastNotNull"],
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "grey"
+              }
+            ]
+          },
+          "unit": "reqps"
+        },
+        "values": false
+      },
+      "pluginVersion": "7.4.1",
+      "targets": [
+        {
+          "expr": "sum(rate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "Average Request Rate",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "Instant Request Rate",
+          "refId": "B"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "aliasColors": {
+        "Average Request Rate": "blue",
+        "Instant Request Rate": "super-light-blue"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 9,
+        "x": 3,
+        "y": 9
+      },
+      "hiddenSeries": false,
+      "id": 8,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(rate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "legendFormat": "Average Request Rate",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "legendFormat": "Instant Request Rate",
+          "refId": "B"
+        }
+      ],
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:316",
+          "format": "reqps",
+          "logBase": 2,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:317",
+          "format": "short",
+          "logBase": 2,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 12,
+        "y": 9
+      },
+      "id": 9,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal"
+      },
+      "fieldConfig": {
+        "calcs": ["lastNotNull"],
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "grey"
+              }
+            ]
+          }
+        },
+        "values": false
+      },
+      "pluginVersion": "7.4.1",
+      "targets": [
+        {
+          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "All Requests",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "Successes (2xx)",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "Client Errors (4xx)",
+          "refId": "C"
+        },
+        {
+          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "Server Errors (5xx)",
+          "refId": "D"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "aliasColors": {
+        "All Requests": "blue",
+        "Client Errors (4xx)": "yellow",
+        "Server Errors (5xx)": "red",
+        "Successes (2xx)": "green"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 9,
+        "x": 15,
+        "y": 9
+      },
+      "hiddenSeries": false,
+      "id": 10,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "legendFormat": "All Requests",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
+          "legendFormat": "Successes (2xx)",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
+          "legendFormat": "Client Errors (4xx)",
+          "refId": "C"
+        },
+        {
+          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
+          "legendFormat": "Server Errors (5xx)",
+          "refId": "D"
+        }
+      ],
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:221",
+          "format": "short",
+          "logBase": 10,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:222",
+          "format": "short",
+          "logBase": 10,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 11,
+      "title": "Errors",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 0,
+        "y": 17
+      },
+      "id": 12,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal"
+      },
+      "fieldConfig": {
+        "calcs": ["lastNotNull"],
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "grey"
+              }
+            ]
+          },
+          "title": "${__series.name}",
+          "unit": "percentunit"
+        },
+        "values": false
+      },
+      "pluginVersion": "7.4.1",
+      "targets": [
+        {
+          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range])) /\nsum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "% Successes (2xx)",
+          "refId": "A"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "aliasColors": {
+        "Average Success (2xx) Rate": "green",
+        "Instant Success (2xx) Rate": "super-light-green"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 2,
+        "y": 17
+      },
+      "hiddenSeries": false,
+      "id": 13,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(rate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
+          "legendFormat": "Average Success (2xx) Rate",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
+          "legendFormat": "Instant Success (2xx) Rate",
+          "refId": "B"
+        }
+      ],
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:649",
+          "format": "reqps",
+          "logBase": 2,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:650",
+          "format": "short",
+          "logBase": 2,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 8,
+        "y": 17
+      },
+      "id": 14,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal"
+      },
+      "fieldConfig": {
+        "calcs": ["lastNotNull"],
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "grey"
+              }
+            ]
+          },
+          "title": "${__series.name}",
+          "unit": "percentunit"
+        },
+        "values": false
+      },
+      "pluginVersion": "7.4.1",
+      "targets": [
+        {
+          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range])) /\nsum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "% Client Errors (4xx)",
+          "refId": "A"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "aliasColors": {
+        "Average Client Error (4xx) Rate": "yellow",
+        "Instant Client Error (4xx) Rate": "super-light-yellow"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 10,
+        "y": 17
+      },
+      "hiddenSeries": false,
+      "id": 15,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(rate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
+          "legendFormat": "Average Client Error (4xx) Rate",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
+          "legendFormat": "Instant Client Error (4xx) Rate",
+          "refId": "B"
+        }
+      ],
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:649",
+          "format": "reqps",
+          "logBase": 2,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:650",
+          "format": "short",
+          "logBase": 2,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 16,
+        "y": 17
+      },
+      "id": 16,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal"
+      },
+      "fieldConfig": {
+        "calcs": ["lastNotNull"],
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "grey"
+              }
+            ]
+          },
+          "title": "${__series.name}",
+          "unit": "percentunit"
+        },
+        "values": false
+      },
+      "pluginVersion": "7.4.1",
+      "targets": [
+        {
+          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range])) /\nsum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "% Server Errors (5xx)",
+          "refId": "A"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "aliasColors": {
+        "Average Server Error (5xx) Rate": "red",
+        "Instant Server Error (5xx) Rate": "super-light-red"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 18,
+        "y": 17
+      },
+      "hiddenSeries": false,
+      "id": 17,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(rate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
+          "legendFormat": "Average Server Error (5xx) Rate",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
+          "legendFormat": "Instant Server Error (5xx) Rate",
+          "refId": "B"
+        }
+      ],
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:649",
+          "format": "reqps",
+          "logBase": 2,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:650",
+          "format": "short",
+          "logBase": 2,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 0,
+        "y": 20
+      },
+      "id": 18,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal"
+      },
+      "fieldConfig": {
+        "calcs": ["lastNotNull"],
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "grey"
+              }
+            ]
+          },
+          "unit": "reqps"
+        },
+        "values": false
+      },
+      "pluginVersion": "7.4.1",
+      "targets": [
+        {
+          "expr": "sum(rate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "Average Success (2xx) Rate",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "Instant Success (2xx) Rate",
+          "refId": "B"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 8,
+        "y": 20
+      },
+      "id": 19,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal"
+      },
+      "fieldConfig": {
+        "calcs": ["lastNotNull"],
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "grey"
+              }
+            ]
+          },
+          "unit": "reqps"
+        },
+        "values": false
+      },
+      "pluginVersion": "7.4.1",
+      "targets": [
+        {
+          "expr": "sum(rate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "Average Client Error (4xx) Rate",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "Instant Client Error (4xx) Rate",
+          "refId": "B"
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 16,
+        "y": 20
+      },
+      "id": 20,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal"
+      },
+      "fieldConfig": {
+        "calcs": ["lastNotNull"],
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "grey"
+              }
+            ]
+          },
+          "unit": "reqps"
+        },
+        "values": false
+      },
+      "pluginVersion": "7.4.1",
+      "targets": [
+        {
+          "expr": "sum(rate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "Average Server Error (5xx) Rate",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(irate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
+          "instant": true,
+          "legendFormat": "Instant Server Error (5xx) Rate",
+          "refId": "B"
+        }
+      ],
+      "type": "stat"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 22,
+  "templating": {
+    "list": [
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": ["$__all"]
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(httpclient_requests_received_total, job)",
+        "hide": 0,
+        "includeAll": true,
+        "index": -1,
+        "label": "Job",
+        "multi": true,
+        "name": "job",
+        "query": "label_values(httpclient_requests_received_total, job)",
+        "refresh": 1,
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": ["$__all"]
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(httpclient_requests_received_total, host)",
+        "hide": 0,
+        "includeAll": true,
+        "index": -1,
+        "label": "Host",
+        "multi": true,
+        "name": "host",
+        "query": "label_values(httpclient_requests_received_total, host)",
+        "refresh": 1,
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": ["$__all"]
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(httpclient_requests_received_total, method)",
+        "hide": 0,
+        "includeAll": true,
+        "index": -1,
+        "label": "Method",
+        "multi": true,
+        "name": "method",
+        "query": "label_values(httpclient_requests_received_total, method)",
+        "refresh": 1,
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "Scaffold - HTTP Outbound",
+  "version": 0
+}
