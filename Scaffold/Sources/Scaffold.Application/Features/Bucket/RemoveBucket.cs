@@ -34,7 +34,7 @@ namespace Scaffold.Application.Features.Bucket
                 using Activity? activity = ActivityProvider.StartActivity(nameof(RemoveBucket));
 
                 Bucket bucket = await this.repository.GetAsync(request.Id, cancellationToken) ?? throw new BucketNotFoundException(request.Id);
-                await this.repository.RemoveAsync(bucket);
+                await this.repository.RemoveAsync(bucket, cancellationToken);
 
                 return default;
             }

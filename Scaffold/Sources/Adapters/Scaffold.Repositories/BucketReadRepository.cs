@@ -68,7 +68,7 @@ namespace Scaffold.Repositories
                 {
                     string methodName = sortItem.Descending ? nameof(Queryable.ThenByDescending) : nameof(Queryable.ThenBy);
 
-                    if (sortItem == sortOrder.First())
+                    if (sortItem == sortOrder[0])
                     {
                         methodName = sortItem.Descending ? nameof(Queryable.OrderByDescending) : nameof(Queryable.OrderBy);
                     }

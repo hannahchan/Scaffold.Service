@@ -63,7 +63,7 @@ namespace Scaffold.Application.Features.Bucket
                 Bucket bucket = await this.repository.GetAsync(request.BucketId, cancellationToken) ??
                     throw new BucketNotFoundException(request.BucketId);
 
-                Item item = bucket.Items.SingleOrDefault(x => x.Id == request.ItemId);
+                Item? item = bucket.Items.SingleOrDefault(x => x.Id == request.ItemId);
 
                 MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(new MappingProfile()));
 
