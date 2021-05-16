@@ -14,14 +14,12 @@ namespace Scaffold.WebApi.Extensions
     using OpenTelemetry.Resources;
     using OpenTelemetry.Trace;
     using Polly;
-    using Prometheus;
     using Scaffold.Application.Common.Constants;
     using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
     using Scaffold.HttpClients;
     using Scaffold.Repositories;
     using Scaffold.WebApi.Controllers;
-    using Scaffold.WebApi.HttpMessageHandlers;
     using Scaffold.WebApi.Middleware;
     using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -69,18 +67,15 @@ namespace Scaffold.WebApi.Extensions
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services
-                .AddTransient<RequestLoggingHttpMessageHandler>();
-
             services.AddHttpClient<IExampleHttpClient, ExampleHttpClient>()
                 .AddTransientHttpErrorPolicy(builder => builder.RetryAsync(3))
-                .AddHttpMessageHandler<RequestLoggingHttpMessageHandler>()
-                .UseHttpClientMetrics();
+                .AddRequestLogging()
+                .AddHttpClientMetrics();
 
             services.AddHttpClient<TracingDemoController.IClient, TracingDemoController.Client>()
                 .AddTransientHttpErrorPolicy(builder => builder.RetryAsync(10))
-                .AddHttpMessageHandler<RequestLoggingHttpMessageHandler>()
-                .UseHttpClientMetrics();
+                .AddRequestLogging()
+                .AddHttpClientMetrics();
 
             return services;
         }
