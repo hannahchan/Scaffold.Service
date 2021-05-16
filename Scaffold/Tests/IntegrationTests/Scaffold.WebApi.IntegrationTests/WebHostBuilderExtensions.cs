@@ -5,7 +5,7 @@ namespace Scaffold.WebApi.IntegrationTests
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 
-    public static class WebHostBuilderExtensions
+    internal static class WebHostBuilderExtensions
     {
         public static IWebHostBuilder ConfigureWithDefaultsForTesting(this IWebHostBuilder builder)
         {

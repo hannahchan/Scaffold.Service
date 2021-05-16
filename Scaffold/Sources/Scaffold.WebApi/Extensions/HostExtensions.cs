@@ -6,7 +6,7 @@ namespace Scaffold.WebApi.Extensions
     using Microsoft.Extensions.Hosting;
     using Scaffold.Repositories;
 
-    public static class HostExtensions
+    internal static class HostExtensions
     {
         public static IHost EnsureCreatedDatabase(this IHost host)
         {

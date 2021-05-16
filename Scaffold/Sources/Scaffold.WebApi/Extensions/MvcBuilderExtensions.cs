@@ -3,7 +3,7 @@ namespace Scaffold.WebApi.Extensions
     using System;
     using Microsoft.Extensions.DependencyInjection;
 
-    public static class MvcBuilderExtensions
+    internal static class MvcBuilderExtensions
     {
         public static IMvcBuilder AddCustomJsonOptions(this IMvcBuilder builder)
         {

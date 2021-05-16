@@ -23,7 +23,7 @@ namespace Scaffold.WebApi.Extensions
     using Scaffold.WebApi.Middleware;
     using Swashbuckle.AspNetCore.SwaggerGen;
 
-    public static class ServiceCollectionExtensions
+    internal static class ServiceCollectionExtensions
     {
         private static readonly string[] IgnorePatterns =
         {
