@@ -15,4 +15,4 @@ using (Activity? activity = ActivityProvider.StartActivity("ActivityName"))
 }
 ```
 
- For for more information on how to instrument code for OpenTelemetry, please refer to documentation in the [OpenTelemetry .NET API](https://github.com/open-telemetry/opentelemetry-dotnet/tree/main/src/OpenTelemetry.Api).
+For for more information on how to instrument code for OpenTelemetry, please refer to documentation in the [OpenTelemetry .NET API](https://github.com/open-telemetry/opentelemetry-dotnet/tree/main/src/OpenTelemetry.Api).
