@@ -68,21 +68,6 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
             }
 
             [Fact]
-            public void When_AddingNull_Expect_ArgumentNullException()
-            {
-                // Arrange
-                Bucket bucket = new Bucket();
-
-                // Act
-                Exception exception = Record.Exception(() => bucket.AddItem(null));
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("item", argumentNullException.ParamName);
-                Assert.Empty(bucket.Items);
-            }
-
-            [Fact]
             public void When_AddingItemToFullBucket_ExpectBucketFullException()
             {
                 // Arrange
@@ -161,25 +146,6 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
                 bucket.RemoveItem(new Item());
 
                 // Assert
-                Assert.Contains(item, bucket.Items);
-                Assert.Single(bucket.Items);
-            }
-
-            [Fact]
-            public void When_RemovingNull_Expect_ArgumentNullException()
-            {
-                // Arrange
-                Bucket bucket = new Bucket();
-                Item item = new Item();
-
-                bucket.AddItem(item);
-
-                // Act
-                Exception exception = Record.Exception(() => bucket.RemoveItem(null));
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("item", argumentNullException.ParamName);
                 Assert.Contains(item, bucket.Items);
                 Assert.Single(bucket.Items);
             }

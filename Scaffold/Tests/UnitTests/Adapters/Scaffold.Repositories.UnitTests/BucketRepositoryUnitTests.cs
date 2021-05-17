@@ -43,22 +43,6 @@ namespace Scaffold.Repositories.UnitTests
                     Assert.Equal(bucket.Id, result.Id);
                 }
             }
-
-            [Fact]
-            public void When_AddingNull_Expect_ArgumentNullException()
-            {
-                // Arrange
-                BucketContext context = new BucketContext(this.dbContextOptions);
-                BucketRepository repository = new BucketRepository(context);
-
-                // Act
-                Exception exception = Record.Exception(() => repository.Add(null as Bucket));
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("bucket", argumentNullException.ParamName);
-                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
-            }
         }
 
         public class AddBuckets : BucketRepositoryUnitTests
@@ -113,54 +97,6 @@ namespace Scaffold.Repositories.UnitTests
                     Assert.Empty(context.Buckets);
                 }
             }
-
-            [Fact]
-            public void When_AddingNullEnumerable_Expect_ArgumentNullException()
-            {
-                // Arrange
-                BucketContext context = new BucketContext(this.dbContextOptions);
-                BucketRepository repository = new BucketRepository(context);
-
-                // Act
-                Exception exception = Record.Exception(() => repository.Add(null as Bucket[]));
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("buckets", argumentNullException.ParamName);
-                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
-            }
-
-            [Fact]
-            public void When_AddingEnumerableOfBucketsWithNullBucket_Expect_ArgumentException()
-            {
-                // Arrange
-                Bucket[] buckets =
-                {
-                    new Bucket { Name = "Bucket 1" },
-                    null,
-                    new Bucket { Name = "Bucket 3" },
-                };
-
-                Exception exception;
-
-                // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
-                {
-                    BucketRepository repository = new BucketRepository(context);
-                    exception = Record.Exception(() => repository.Add(buckets));
-                }
-
-                // Assert
-                ArgumentException argumentException = Assert.IsType<ArgumentException>(exception);
-                Assert.Equal("buckets", argumentException.ParamName);
-                Assert.Equal("Enumerable cannot contain null. (Parameter 'buckets')", argumentException.Message);
-                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
-
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
-                {
-                    Assert.Empty(context.Buckets);
-                }
-            }
         }
 
         public class AddBucketAsync : BucketRepositoryUnitTests
@@ -187,22 +123,6 @@ namespace Scaffold.Repositories.UnitTests
                     Assert.NotEqual(bucket, result);
                     Assert.Equal(bucket.Id, result.Id);
                 }
-            }
-
-            [Fact]
-            public async Task When_AddingNull_Expect_ArgumentNullException()
-            {
-                // Arrange
-                BucketContext context = new BucketContext(this.dbContextOptions);
-                BucketRepository repository = new BucketRepository(context);
-
-                // Act
-                Exception exception = await Record.ExceptionAsync(() => repository.AddAsync(null as Bucket));
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("bucket", argumentNullException.ParamName);
-                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
 
             [Fact(Skip = "Not testable with Entity Framework Core In-Memory Database")]
@@ -275,54 +195,6 @@ namespace Scaffold.Repositories.UnitTests
                 }
             }
 
-            [Fact]
-            public async Task When_AddingNullEnumerable_Expect_ArgumentNullException()
-            {
-                // Arrange
-                BucketContext context = new BucketContext(this.dbContextOptions);
-                BucketRepository repository = new BucketRepository(context);
-
-                // Act
-                Exception exception = await Record.ExceptionAsync(() => repository.AddAsync(null as Bucket[]));
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("buckets", argumentNullException.ParamName);
-                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
-            }
-
-            [Fact]
-            public async Task When_AddingEnumerableOfBucketsWithNullBucket_Expect_ArgumentException()
-            {
-                // Arrange
-                Bucket[] buckets =
-                {
-                    new Bucket { Name = "Bucket 1" },
-                    null,
-                    new Bucket { Name = "Bucket 3" },
-                };
-
-                Exception exception;
-
-                // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
-                {
-                    BucketRepository repository = new BucketRepository(context);
-                    exception = await Record.ExceptionAsync(() => repository.AddAsync(buckets));
-                }
-
-                // Assert
-                ArgumentException argumentException = Assert.IsType<ArgumentException>(exception);
-                Assert.Equal("buckets", argumentException.ParamName);
-                Assert.Equal("Enumerable cannot contain null. (Parameter 'buckets')", argumentException.Message);
-                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
-
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
-                {
-                    Assert.Empty(context.Buckets);
-                }
-            }
-
             [Fact(Skip = "Not testable with Entity Framework Core In-Memory Database")]
             public async Task When_AddingEnumerableOfBucketsAndCancellationIsRequested_Expect_OperationCanceledException()
             {
@@ -385,22 +257,6 @@ namespace Scaffold.Repositories.UnitTests
                         bucket => Assert.Equal("Bucket 4", bucket.Name),
                         bucket => Assert.Equal("Bucket 5", bucket.Name));
                 }
-            }
-
-            [Fact]
-            public void When_RemovingNull_Expect_ArgumentNullException()
-            {
-                // Arrange
-                BucketContext context = new BucketContext(this.dbContextOptions);
-                BucketRepository repository = new BucketRepository(context);
-
-                // Act
-                Exception exception = Record.Exception(() => repository.Remove(null as Bucket));
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("bucket", argumentNullException.ParamName);
-                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
         }
 
@@ -488,54 +344,6 @@ namespace Scaffold.Repositories.UnitTests
                         bucket => Assert.Equal("Bucket 5", bucket.Name));
                 }
             }
-
-            [Fact]
-            public void When_RemovingNullEnumerable_Expect_ArgumentNullException()
-            {
-                // Arrange
-                BucketContext context = new BucketContext(this.dbContextOptions);
-                BucketRepository repository = new BucketRepository(context);
-
-                // Act
-                Exception exception = Record.Exception(() => repository.Remove(null as Bucket[]));
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("buckets", argumentNullException.ParamName);
-                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
-            }
-
-            [Fact]
-            public void When_RemovingEnumerableOfBucketsWithNullBucket_Expect_ArgumentException()
-            {
-                // Arrange
-                Bucket[] buckets =
-                {
-                    new Bucket { Name = "Bucket 1" },
-                    null,
-                    new Bucket { Name = "Bucket 3" },
-                };
-
-                Exception exception;
-
-                // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
-                {
-                    BucketRepository repository = new BucketRepository(context);
-                    exception = Record.Exception(() => repository.Remove(buckets));
-                }
-
-                // Assert
-                ArgumentException argumentException = Assert.IsType<ArgumentException>(exception);
-                Assert.Equal("buckets", argumentException.ParamName);
-                Assert.Equal("Enumerable cannot contain null. (Parameter 'buckets')", argumentException.Message);
-                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
-
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
-                {
-                    Assert.Empty(context.Buckets);
-                }
-            }
         }
 
         public class RemoveBucketAsync : BucketRepositoryUnitTests
@@ -578,22 +386,6 @@ namespace Scaffold.Repositories.UnitTests
                         bucket => Assert.Equal("Bucket 4", bucket.Name),
                         bucket => Assert.Equal("Bucket 5", bucket.Name));
                 }
-            }
-
-            [Fact]
-            public async Task When_RemovingNull_Expect_ArgumentNullException()
-            {
-                // Arrange
-                BucketContext context = new BucketContext(this.dbContextOptions);
-                BucketRepository repository = new BucketRepository(context);
-
-                // Act
-                Exception exception = await Record.ExceptionAsync(() => repository.RemoveAsync(null as Bucket));
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("bucket", argumentNullException.ParamName);
-                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
 
             [Fact(Skip = "Not testable with Entity Framework Core In-Memory Database")]
@@ -698,54 +490,6 @@ namespace Scaffold.Repositories.UnitTests
                 }
             }
 
-            [Fact]
-            public async Task When_RemovingNullEnumerable_Expect_ArgumentNullException()
-            {
-                // Arrange
-                BucketContext context = new BucketContext(this.dbContextOptions);
-                BucketRepository repository = new BucketRepository(context);
-
-                // Act
-                Exception exception = await Record.ExceptionAsync(() => repository.RemoveAsync(null as Bucket[]));
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("buckets", argumentNullException.ParamName);
-                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
-            }
-
-            [Fact]
-            public async Task When_RemovingEnumerableOfBucketsWithNullBucket_Expect_ArgumentException()
-            {
-                // Arrange
-                Bucket[] buckets =
-                {
-                    new Bucket { Name = "Bucket 1" },
-                    null,
-                    new Bucket { Name = "Bucket 3" },
-                };
-
-                Exception exception;
-
-                // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
-                {
-                    BucketRepository repository = new BucketRepository(context);
-                    exception = await Record.ExceptionAsync(() => repository.RemoveAsync(buckets));
-                }
-
-                // Assert
-                ArgumentException argumentException = Assert.IsType<ArgumentException>(exception);
-                Assert.Equal("buckets", argumentException.ParamName);
-                Assert.Equal("Enumerable cannot contain null. (Parameter 'buckets')", argumentException.Message);
-                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
-
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
-                {
-                    Assert.Empty(context.Buckets);
-                }
-            }
-
             [Fact(Skip = "Not testable with Entity Framework Core In-Memory Database")]
             public async Task When_RemovingEnumerableOfBucketsAndCancellationIsRequested_Expect_OperationCanceledException()
             {
@@ -810,22 +554,6 @@ namespace Scaffold.Repositories.UnitTests
                         bucket => Assert.Equal("Bucket 4", bucket.Name),
                         bucket => Assert.Equal("Bucket 5", bucket.Name));
                 }
-            }
-
-            [Fact]
-            public void When_UpdatingNull_Expect_ArgumentNullException()
-            {
-                // Arrange
-                BucketContext context = new BucketContext(this.dbContextOptions);
-                BucketRepository repository = new BucketRepository(context);
-
-                // Act
-                Exception exception = Record.Exception(() => repository.Update(null as Bucket));
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("bucket", argumentNullException.ParamName);
-                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
         }
 
@@ -917,54 +645,6 @@ namespace Scaffold.Repositories.UnitTests
                         bucket => Assert.Equal("Bucket 5", bucket.Name));
                 }
             }
-
-            [Fact]
-            public void When_UpdatingMultipleBucketsWithNullEnumerable_Expect_ArgumentNullException()
-            {
-                // Arrange
-                BucketContext context = new BucketContext(this.dbContextOptions);
-                BucketRepository repository = new BucketRepository(context);
-
-                // Act
-                Exception exception = Record.Exception(() => repository.Update(null as Bucket[]));
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("buckets", argumentNullException.ParamName);
-                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
-            }
-
-            [Fact]
-            public void When_UpdatingMultipleBucketsWithEnumerableOfBucketsWithNullBucket_Expect_ArgumentException()
-            {
-                // Arrange
-                Bucket[] buckets =
-                {
-                    new Bucket { Name = "Bucket 1" },
-                    null,
-                    new Bucket { Name = "Bucket 3" },
-                };
-
-                Exception exception;
-
-                // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
-                {
-                    BucketRepository repository = new BucketRepository(context);
-                    exception = Record.Exception(() => repository.Update(buckets));
-                }
-
-                // Assert
-                ArgumentException argumentException = Assert.IsType<ArgumentException>(exception);
-                Assert.Equal("buckets", argumentException.ParamName);
-                Assert.Equal("Enumerable cannot contain null. (Parameter 'buckets')", argumentException.Message);
-                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
-
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
-                {
-                    Assert.Empty(context.Buckets);
-                }
-            }
         }
 
         public class UpdateBucketAsync : BucketRepositoryUnitTests
@@ -1009,22 +689,6 @@ namespace Scaffold.Repositories.UnitTests
                         bucket => Assert.Equal("Bucket 4", bucket.Name),
                         bucket => Assert.Equal("Bucket 5", bucket.Name));
                 }
-            }
-
-            [Fact]
-            public async Task When_UpdatingNull_Expect_ArgumentNullException()
-            {
-                // Arrange
-                BucketContext context = new BucketContext(this.dbContextOptions);
-                BucketRepository repository = new BucketRepository(context);
-
-                // Act
-                Exception exception = await Record.ExceptionAsync(() => repository.UpdateAsync(null as Bucket));
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("bucket", argumentNullException.ParamName);
-                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
             }
 
             [Fact(Skip = "Not testable with Entity Framework Core In-Memory Database")]
@@ -1130,54 +794,6 @@ namespace Scaffold.Repositories.UnitTests
                         bucket => Assert.Equal("Bucket 3", bucket.Name),
                         bucket => Assert.Equal("Bucket 4", bucket.Name),
                         bucket => Assert.Equal("Bucket 5", bucket.Name));
-                }
-            }
-
-            [Fact]
-            public async Task When_UpdatingMultipleBucketsWithNullEnumerable_Expect_ArgumentNullException()
-            {
-                // Arrange
-                BucketContext context = new BucketContext(this.dbContextOptions);
-                BucketRepository repository = new BucketRepository(context);
-
-                // Act
-                Exception exception = await Record.ExceptionAsync(() => repository.UpdateAsync(null as Bucket[]));
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("buckets", argumentNullException.ParamName);
-                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
-            }
-
-            [Fact]
-            public async Task When_UpdatingMultipleBucketsWithEnumerableOfBucketsWithNullBucket_Expect_ArgumentException()
-            {
-                // Arrange
-                Bucket[] buckets =
-                {
-                    new Bucket { Name = "Bucket 1" },
-                    null,
-                    new Bucket { Name = "Bucket 3" },
-                };
-
-                Exception exception;
-
-                // Act
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
-                {
-                    BucketRepository repository = new BucketRepository(context);
-                    exception = await Record.ExceptionAsync(() => repository.UpdateAsync(buckets));
-                }
-
-                // Assert
-                ArgumentException argumentException = Assert.IsType<ArgumentException>(exception);
-                Assert.Equal("buckets", argumentException.ParamName);
-                Assert.Equal("Enumerable cannot contain null. (Parameter 'buckets')", argumentException.Message);
-                Assert.Equal(typeof(BucketRepository).Assembly.GetName().Name, exception.Source);
-
-                using (BucketContext context = new BucketContext(this.dbContextOptions))
-                {
-                    Assert.Empty(context.Buckets);
                 }
             }
 

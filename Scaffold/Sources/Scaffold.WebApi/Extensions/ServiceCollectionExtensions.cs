@@ -33,11 +33,6 @@ namespace Scaffold.WebApi.Extensions
 
         public static IServiceCollection AddApiDocumentation(this IServiceCollection services)
         {
-            if (services is null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-
             services.AddSwaggerGen(options =>
             {
                 OpenApiInfo info = new OpenApiInfo
@@ -62,11 +57,6 @@ namespace Scaffold.WebApi.Extensions
 
         public static IServiceCollection AddHttpClients(this IServiceCollection services)
         {
-            if (services is null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-
             services.AddHttpClient<IExampleHttpClient, ExampleHttpClient>()
                 .AddTransientHttpErrorPolicy(builder => builder.RetryAsync(3))
                 .AddRequestLogging()
@@ -107,16 +97,6 @@ namespace Scaffold.WebApi.Extensions
 
         public static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration config)
         {
-            if (services is null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-
-            if (config is null)
-            {
-                throw new ArgumentNullException(nameof(config));
-            }
-
             services
                 .Configure<RequestLoggingMiddleware.Options>(options => options.IgnorePatterns = IgnorePatterns);
 
@@ -125,16 +105,6 @@ namespace Scaffold.WebApi.Extensions
 
         public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration config)
         {
-            if (services is null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-
-            if (config is null)
-            {
-                throw new ArgumentNullException(nameof(config));
-            }
-
             services.AddDbContext<BucketContext>(builder =>
                 builder.UseNpgsql(config.GetValue<string>("ConnectionStrings:DefaultConnection")));
 
@@ -150,11 +120,6 @@ namespace Scaffold.WebApi.Extensions
 
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
-            if (services is null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-
             services
                 .AddAutoMapper(typeof(Startup).Assembly)
                 .AddMediatR(typeof(GetBucket).Assembly);

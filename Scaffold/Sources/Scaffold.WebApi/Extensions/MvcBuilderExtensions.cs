@@ -1,17 +1,11 @@
 namespace Scaffold.WebApi.Extensions
 {
-    using System;
     using Microsoft.Extensions.DependencyInjection;
 
     internal static class MvcBuilderExtensions
     {
         public static IMvcBuilder AddCustomJsonOptions(this IMvcBuilder builder)
         {
-            if (builder is null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
-
             builder.AddJsonOptions(options =>
             {
             });
@@ -21,11 +15,6 @@ namespace Scaffold.WebApi.Extensions
 
         public static IMvcBuilder AddCustomXmlFormatters(this IMvcBuilder builder)
         {
-            if (builder is null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
-
             builder.AddXmlDataContractSerializerFormatters(options =>
             {
             });

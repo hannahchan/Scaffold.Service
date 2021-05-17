@@ -1,6 +1,5 @@
 namespace Scaffold.WebApi.UnitTests.Extensions
 {
-    using System;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Http;
     using Microsoft.Extensions.Options;
@@ -68,20 +67,6 @@ namespace Scaffold.WebApi.UnitTests.Extensions
                         Assert.Null(serviceDescriptor.ImplementationType);
                     });
             }
-
-            [Fact]
-            public void When_AddingHttpClientMetricsWithNullBuilder_Expect_ArgumentNullException()
-            {
-                // Arrange
-                IHttpClientBuilder builder = null;
-
-                // Act
-                Exception exception = Record.Exception(() => builder.AddHttpClientMetrics());
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("builder", argumentNullException.ParamName);
-            }
         }
 
         public class AddRequestLogging
@@ -141,20 +126,6 @@ namespace Scaffold.WebApi.UnitTests.Extensions
                         Assert.Equal(typeof(IConfigureOptions<HttpClientFactoryOptions>), serviceDescriptor.ServiceType);
                         Assert.Null(serviceDescriptor.ImplementationType);
                     });
-            }
-
-            [Fact]
-            public void When_AddingRequestLogginWithNullBuilder_Expect_ArgumentNullException()
-            {
-                // Arrange
-                IHttpClientBuilder builder = null;
-
-                // Act
-                Exception exception = Record.Exception(() => builder.AddRequestLogging());
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("builder", argumentNullException.ParamName);
             }
         }
 

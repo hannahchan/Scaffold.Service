@@ -55,11 +55,6 @@ namespace Scaffold.Repositories
 
         private IQueryable<Bucket> BuildQuery(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, SortOrder<Bucket>? sortOrder = null)
         {
-            if (predicate is null)
-            {
-                throw new ArgumentNullException(nameof(predicate));
-            }
-
             IQueryable<Bucket> query = this.context.Buckets.Where(predicate);
 
             if (sortOrder != null)

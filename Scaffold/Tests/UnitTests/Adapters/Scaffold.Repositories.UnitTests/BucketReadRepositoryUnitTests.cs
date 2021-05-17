@@ -183,25 +183,6 @@ namespace Scaffold.Repositories.UnitTests
             }
 
             [Fact]
-            public void When_GettingBucketsWithNullPredicate_Expect_ArgumentNullException()
-            {
-                // Arrange
-                Exception exception;
-
-                // Act
-                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
-                {
-                    BucketReadRepository repository = new BucketReadRepository(context);
-                    exception = Record.Exception(() => repository.Get(null));
-                }
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("predicate", argumentNullException.ParamName);
-                Assert.Equal(typeof(BucketReadRepository).Assembly.GetName().Name, exception.Source);
-            }
-
-            [Fact]
             public void When_GettingBucketsWithNoLimit_Expect_AllBuckets()
             {
                 // Arrange
@@ -524,25 +505,6 @@ namespace Scaffold.Repositories.UnitTests
                     result,
                     bucket => Assert.Equal(2, bucket.Size),
                     bucket => Assert.Equal(5, bucket.Size));
-            }
-
-            [Fact]
-            public async Task When_GettingBucketsWithNullPredicate_Expect_ArgumentNullException()
-            {
-                // Arrange
-                Exception exception;
-
-                // Act
-                using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
-                {
-                    BucketReadRepository repository = new BucketReadRepository(context);
-                    exception = await Record.ExceptionAsync(() => repository.GetAsync(null));
-                }
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("predicate", argumentNullException.ParamName);
-                Assert.Equal(typeof(BucketReadRepository).Assembly.GetName().Name, exception.Source);
             }
 
             [Fact]

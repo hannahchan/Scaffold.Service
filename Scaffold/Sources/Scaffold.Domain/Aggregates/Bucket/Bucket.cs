@@ -52,11 +52,6 @@ namespace Scaffold.Domain.Aggregates.Bucket
 
         public void AddItem(Item item)
         {
-            if (item is null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
-
             if (this.items.Contains(item))
             {
                 return;
@@ -77,11 +72,6 @@ namespace Scaffold.Domain.Aggregates.Bucket
 
         public void RemoveItem(Item item)
         {
-            if (item is null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
-
             if (!this.items.Contains(item))
             {
                 return;
