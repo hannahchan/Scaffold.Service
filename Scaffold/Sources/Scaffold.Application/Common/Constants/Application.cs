@@ -6,9 +6,9 @@ namespace Scaffold.Application.Common.Constants
     {
         public static class Assembly
         {
-            public static readonly string Name = typeof(Application).Assembly.GetName().Name;
+            public static readonly string Name = typeof(Application).Assembly.GetName().Name!;
 
-            public static readonly Version Version = typeof(Application).Assembly.GetName().Version;
+            public static readonly Version Version = typeof(Application).Assembly.GetName().Version!;
         }
 
         public static class ActivitySource
