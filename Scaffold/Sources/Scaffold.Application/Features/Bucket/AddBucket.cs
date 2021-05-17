@@ -70,7 +70,7 @@ namespace Scaffold.Application.Features.Bucket
             }
         }
 
-        public class MappingProfile : Profile
+        internal class MappingProfile : Profile
         {
             public MappingProfile()
             {
