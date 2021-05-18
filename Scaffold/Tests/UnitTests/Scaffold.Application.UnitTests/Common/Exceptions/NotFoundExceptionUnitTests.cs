@@ -2,6 +2,8 @@ namespace Scaffold.Application.UnitTests.Common.Exceptions
 {
     using System;
     using System.IO;
+    using System.Linq;
+    using System.Reflection;
     using System.Runtime.Serialization;
     using System.Runtime.Serialization.Formatters.Binary;
     using Scaffold.Application.Common.Exceptions;
@@ -50,7 +52,11 @@ namespace Scaffold.Application.UnitTests.Common.Exceptions
             // Act
             using (Stream stream = new MemoryStream())
             {
-                BinaryFormatter formatter = new BinaryFormatter();
+                BinaryFormatter formatter = new BinaryFormatter
+                {
+                    Binder = new CustomBinder(),
+                };
+
                 formatter.Serialize(stream, exception);
                 stream.Position = 0;
                 result = (TestException)formatter.Deserialize(stream);
@@ -80,6 +86,27 @@ namespace Scaffold.Application.UnitTests.Common.Exceptions
             protected TestException(SerializationInfo info, StreamingContext context)
                 : base(info, context)
             {
+            }
+        }
+
+        // Types allowed to be deserialized should be restricted
+        // See https://rules.sonarsource.com/csharp/RSPEC-5773
+        private sealed class CustomBinder : SerializationBinder
+        {
+            public override Type BindToType(string assemblyName, string typeName)
+            {
+                string[] allowedTypes = new string[]
+                {
+                    typeof(TestException).FullName,
+                    typeof(Exception).FullName,
+                };
+
+                if (allowedTypes.Contains(typeName))
+                {
+                    return Assembly.Load(assemblyName).GetType(typeName);
+                }
+
+                throw new SerializationException();
             }
         }
     }

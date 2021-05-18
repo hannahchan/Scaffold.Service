@@ -3,6 +3,9 @@
   <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
   <PropertyGroup>
+    <!-- Suppress 'BinaryFormatter' warnings for Unit Tests only. -->
+    <!-- We use BinaryFormatter to test 'Serializable' classes. -->
+    <!-- See https://aka.ms/binaryformatter for more information. -->
     <NoWarn>SYSLIB0011</NoWarn>
   </PropertyGroup>
 

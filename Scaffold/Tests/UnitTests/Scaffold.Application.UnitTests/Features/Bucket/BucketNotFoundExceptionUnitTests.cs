@@ -2,6 +2,9 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
 {
     using System;
     using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Runtime.Serialization;
     using System.Runtime.Serialization.Formatters.Binary;
     using Scaffold.Application.Features.Bucket;
     using Xunit;
@@ -33,7 +36,11 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             // Act
             using (Stream stream = new MemoryStream())
             {
-                BinaryFormatter formatter = new BinaryFormatter();
+                BinaryFormatter formatter = new BinaryFormatter
+                {
+                    Binder = new CustomBinder(),
+                };
+
                 formatter.Serialize(stream, exception);
                 stream.Position = 0;
                 result = (BucketNotFoundException)formatter.Deserialize(stream);
@@ -43,6 +50,26 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
             Assert.Equal(exception.Message, result.Message);
             Assert.Equal(exception.InnerException, result.InnerException);
             Assert.Null(result.InnerException);
+        }
+
+        // Types allowed to be deserialized should be restricted
+        // See https://rules.sonarsource.com/csharp/RSPEC-5773
+        private sealed class CustomBinder : SerializationBinder
+        {
+            public override Type BindToType(string assemblyName, string typeName)
+            {
+                string[] allowedTypes = new string[]
+                {
+                    typeof(BucketNotFoundException).FullName,
+                };
+
+                if (allowedTypes.Contains(typeName))
+                {
+                    return Assembly.Load(assemblyName).GetType(typeName);
+                }
+
+                throw new SerializationException();
+            }
         }
     }
 }
