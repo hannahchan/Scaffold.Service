@@ -1,8 +1,10 @@
-# See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.158.0/containers/dotnet/.devcontainer/base.Dockerfile
+# Dockerfile based on:
+# - https://github.com/microsoft/vscode-dev-containers/blob/v0.179.0/containers/dotnet/.devcontainer/Dockerfile
+# - https://github.com/microsoft/vscode-dev-containers/blob/v0.179.0/containers/docker-from-docker-compose/.devcontainer/Dockerfile
 
 # [Choice] .NET version: 5.0, 3.1, 2.1
 ARG VARIANT="5.0"
-FROM mcr.microsoft.com/vscode/devcontainers/dotnetcore:0-${VARIANT}
+FROM mcr.microsoft.com/vscode/devcontainers/dotnet:0-${VARIANT}
 
 # [Option] Install Node.js
 ARG INSTALL_NODE="false"
@@ -11,7 +13,7 @@ RUN if [ "${INSTALL_NODE}" = "true" ]; then su vscode -c "umask 0002 && . /usr/l
 
 # [Option] Install Azure CLI
 ARG INSTALL_AZURE_CLI="false"
-COPY library-scripts/azcli-debian.sh /tmp/library-scripts/
+COPY library-scripts/*.sh library-scripts/*.env /tmp/library-scripts/
 RUN if [ "$INSTALL_AZURE_CLI" = "true" ]; then bash /tmp/library-scripts/azcli-debian.sh; fi \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
 
@@ -31,7 +33,7 @@ ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 COPY library-scripts/*.sh /tmp/library-scripts/
 RUN apt-get update \
-    && /bin/bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" \
+    && /bin/bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" "true" "true" \
     # Use Docker script from script library to set things up
     && /bin/bash /tmp/library-scripts/docker-debian.sh "${ENABLE_NONROOT_DOCKER}" "/var/run/docker-host.sock" "/var/run/docker.sock" "${USERNAME}" \
     # Clean up

@@ -15,7 +15,7 @@
   "runServices": ["devcontainer"],
   "service": "devcontainer",
   "settings": {
-    "terminal.integrated.shell.linux": "/bin/bash"
+    "terminal.integrated.defaultProfile.linux": "bash"
   },
   "workspaceFolder": "/workspace"
 }
