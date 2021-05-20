@@ -52,7 +52,7 @@ namespace Scaffold.Domain.UnitTests.Aggregates.Bucket
             Assert.Null(result.InnerException);
         }
 
-        /// Types allowed to be deserialized should be restricted
+        // Types allowed to be deserialized should be restricted
         // See https://rules.sonarsource.com/csharp/RSPEC-5773
         private sealed class CustomBinder : SerializationBinder
         {
