@@ -16,12 +16,12 @@
     {
         private readonly IMapper mapper;
 
-        private readonly IMediator mediator;
+        private readonly ISender sender;
 
-        public BucketsController(IMapper mapper, IMediator mediator)
+        public BucketsController(IMapper mapper, ISender sender)
         {
             this.mapper = mapper;
-            this.mediator = mediator;
+            this.sender = sender;
         }
 
         /// <summary>Creates a bucket.</summary>
@@ -39,7 +39,7 @@
                 description: requestBody.Description,
                 size: requestBody.Size);
 
-            AddBucket.Response response = await this.mediator.Send(command);
+            AddBucket.Response response = await this.sender.Send(command);
 
             Bucket bucket = this.mapper.Map<Bucket>(response.Bucket);
 
@@ -62,7 +62,7 @@
                 offset: requestQuery.Offset,
                 sortOrder: null);
 
-            GetBuckets.Response response = await this.mediator.Send(query);
+            GetBuckets.Response response = await this.sender.Send(query);
 
             return this.mapper.Map<Bucket[]>(response.Buckets);
         }
@@ -77,7 +77,7 @@
         [ProducesDefaultResponseType]
         public async Task<Bucket> GetBucket(int bucketId)
         {
-            GetBucket.Response response = await this.mediator.Send(new GetBucket.Query(bucketId));
+            GetBucket.Response response = await this.sender.Send(new GetBucket.Query(bucketId));
             return this.mapper.Map<Bucket>(response.Bucket);
         }
 
@@ -100,7 +100,7 @@
                 description: requestBody.Description,
                 size: requestBody.Size);
 
-            UpdateBucket.Response response = await this.mediator.Send(command);
+            UpdateBucket.Response response = await this.sender.Send(command);
             Bucket bucket = this.mapper.Map<Bucket>(response.Bucket);
 
             if (response.Created)
@@ -121,7 +121,7 @@
         [ProducesDefaultResponseType]
         public async Task<ActionResult> RemoveBucket(int bucketId)
         {
-            await this.mediator.Send(new RemoveBucket.Command(bucketId));
+            await this.sender.Send(new RemoveBucket.Command(bucketId));
             return this.NoContent();
         }
 
@@ -141,7 +141,7 @@
                 name: requestBody.Name,
                 description: requestBody.Description);
 
-            AddItem.Response response = await this.mediator.Send(command);
+            AddItem.Response response = await this.sender.Send(command);
             Item item = this.mapper.Map<Item>(response.Item);
 
             return this.CreatedAtRoute("GetItem", new { bucketId, itemId = item.Id }, item);
@@ -157,7 +157,7 @@
         [ProducesDefaultResponseType]
         public async Task<IEnumerable<Item>> GetItems(int bucketId)
         {
-            GetItems.Response response = await this.mediator.Send(new GetItems.Query(bucketId));
+            GetItems.Response response = await this.sender.Send(new GetItems.Query(bucketId));
             return this.mapper.Map<Item[]>(response.Items);
         }
 
@@ -176,7 +176,7 @@
                 bucketId: bucketId,
                 itemId: itemId);
 
-            GetItem.Response response = await this.mediator.Send(query);
+            GetItem.Response response = await this.sender.Send(query);
 
             return this.mapper.Map<Item>(response.Item);
         }
@@ -201,7 +201,7 @@
                 name: requestBody.Name,
                 description: requestBody.Description);
 
-            UpdateItem.Response response = await this.mediator.Send(command);
+            UpdateItem.Response response = await this.sender.Send(command);
             Item item = this.mapper.Map<Item>(response.Item);
 
             if (response.Created)
@@ -227,7 +227,7 @@
                 bucketId: bucketId,
                 itemId: itemId);
 
-            await this.mediator.Send(command);
+            await this.sender.Send(command);
             return this.NoContent();
         }
     }

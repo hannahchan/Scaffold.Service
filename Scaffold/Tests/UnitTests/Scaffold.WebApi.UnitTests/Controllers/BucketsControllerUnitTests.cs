@@ -35,7 +35,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
             public async Task When_AddingBucket_Expect_CreatedAtRouteResult()
             {
                 // Arrange
-                Mock<IMediator> mock = new Mock<IMediator>();
+                Mock<ISender> mock = new Mock<ISender>();
                 mock.Setup(m => m.Send(It.IsAny<AddBucket.Command>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(new AddBucket.Response(new Domain.Aggregates.Bucket.Bucket()));
 
@@ -57,7 +57,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
             public async Task When_GettingBuckets_Expect_Buckets()
             {
                 // Arrange
-                Mock<IMediator> mock = new Mock<IMediator>();
+                Mock<ISender> mock = new Mock<ISender>();
                 mock.Setup(m => m.Send(It.IsAny<GetBuckets.Query>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(new GetBuckets.Response(Array.Empty<Domain.Aggregates.Bucket.Bucket>()));
 
@@ -76,7 +76,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
             public async Task When_GettingBucket_Expect_Bucket()
             {
                 // Arrange
-                Mock<IMediator> mock = new Mock<IMediator>();
+                Mock<ISender> mock = new Mock<ISender>();
                 mock.Setup(m => m.Send(It.IsAny<GetBucket.Query>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(new GetBucket.Response(new Domain.Aggregates.Bucket.Bucket()));
 
@@ -95,7 +95,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
             public async Task When_UpdatingBucket_Expect_UpdatedBucket()
             {
                 // Arrange
-                Mock<IMediator> mock = new Mock<IMediator>();
+                Mock<ISender> mock = new Mock<ISender>();
                 mock.Setup(m => m.Send(It.IsAny<UpdateBucket.Command>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(new UpdateBucket.Response(new Domain.Aggregates.Bucket.Bucket(), false));
 
@@ -115,7 +115,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
             public async Task When_UpdatingNonExistingBucket_Expect_CreatedAtRouteResult()
             {
                 // Arrange
-                Mock<IMediator> mock = new Mock<IMediator>();
+                Mock<ISender> mock = new Mock<ISender>();
                 mock.Setup(m => m.Send(It.IsAny<UpdateBucket.Command>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(new UpdateBucket.Response(new Domain.Aggregates.Bucket.Bucket(), true));
 
@@ -138,7 +138,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
             public async Task When_RemovingBucket_Expect_NoContentResult()
             {
                 // Arrange
-                Mock<IMediator> mock = new Mock<IMediator>();
+                Mock<ISender> mock = new Mock<ISender>();
                 mock.Setup(m => m.Send(It.IsAny<RemoveBucket.Command>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(default(Unit));
 
@@ -160,7 +160,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
             public async Task When_AddingItem_Expect_CreatedAtRouteResult()
             {
                 // Arrange
-                Mock<IMediator> mock = new Mock<IMediator>();
+                Mock<ISender> mock = new Mock<ISender>();
                 mock.Setup(m => m.Send(It.IsAny<AddItem.Command>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(new AddItem.Response(new Domain.Aggregates.Bucket.Item()));
 
@@ -182,7 +182,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
             public async Task When_GettingItems_Expect_Items()
             {
                 // Arrange
-                Mock<IMediator> mock = new Mock<IMediator>();
+                Mock<ISender> mock = new Mock<ISender>();
                 mock.Setup(m => m.Send(It.IsAny<GetItems.Query>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(new GetItems.Response(Array.Empty<Domain.Aggregates.Bucket.Item>()));
 
@@ -201,7 +201,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
             public async Task When_GettingItem_Expect_Item()
             {
                 // Arrange
-                Mock<IMediator> mock = new Mock<IMediator>();
+                Mock<ISender> mock = new Mock<ISender>();
                 mock.Setup(m => m.Send(It.IsAny<GetItem.Query>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(new GetItem.Response(new Domain.Aggregates.Bucket.Item()));
 
@@ -220,7 +220,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
             public async Task When_UpdatingItem_Expect_UpdatedItem()
             {
                 // Arrange
-                Mock<IMediator> mock = new Mock<IMediator>();
+                Mock<ISender> mock = new Mock<ISender>();
                 mock.Setup(m => m.Send(It.IsAny<UpdateItem.Command>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(new UpdateItem.Response(new Domain.Aggregates.Bucket.Item(), false));
 
@@ -240,7 +240,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
             public async Task When_UpdatingNonExistingItem_Expect_CreatedAtRouteResult()
             {
                 // Arrange
-                Mock<IMediator> mock = new Mock<IMediator>();
+                Mock<ISender> mock = new Mock<ISender>();
                 mock.Setup(m => m.Send(It.IsAny<UpdateItem.Command>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(new UpdateItem.Response(new Domain.Aggregates.Bucket.Item(), true));
 
@@ -263,7 +263,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
             public async Task When_RemovingItem_Expect_NoContentResult()
             {
                 // Arrange
-                Mock<IMediator> mock = new Mock<IMediator>();
+                Mock<ISender> mock = new Mock<ISender>();
                 mock.Setup(m => m.Send(It.IsAny<RemoveItem.Command>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(default(Unit));
 

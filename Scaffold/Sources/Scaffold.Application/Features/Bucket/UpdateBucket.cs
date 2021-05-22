@@ -47,7 +47,7 @@ namespace Scaffold.Application.Features.Bucket
             public bool Updated { get => !this.Created; }
         }
 
-        public class Handler : IRequestHandler<Command, Response>
+        internal class Handler : IRequestHandler<Command, Response>
         {
             private readonly IBucketRepository repository;
 

@@ -18,3 +18,7 @@ The Secondary / Driven Adapters for Scaffold are currently located in the [Adapt
 
 - [Scaffold.HttpClients](../Sources/Adapters/Scaffold.HttpClients)
 - [Scaffold.Repositories](../Sources/Adapters/Scaffold.Repositories)
+
+## Command Query Bus
+
+The command query bus in Scaffold uses the mediator pattern which has been implemented with the help of the [MediatR](https://github.com/jbogard/MediatR) library.

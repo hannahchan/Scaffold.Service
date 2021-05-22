@@ -33,7 +33,7 @@ namespace Scaffold.Application.Features.Bucket
             public IEnumerable<Item> Items { get; }
         }
 
-        public class Handler : IRequestHandler<Query, Response>
+        internal class Handler : IRequestHandler<Query, Response>
         {
             private readonly IBucketReadRepository repository;
 
