@@ -8,17 +8,17 @@ A software architecture provides a common language to help communicate the desig
 
 ## Primary / Driving Adapters
 
-The Primary / Driving Adapters for Scaffold currently live in the [Sources](../Sources) directory along with the Application and Domain Layer.
+The Primary / Driving Adapters for Scaffold currently live in the [Sources](../Sources) directory along with the Application and Domain Layer. Each individual Primary / Driving Adapter is its own [host](https://docs.microsoft.com/aspnet/core/fundamentals/host/generic-host) and communicates with the Application Layer via the Command / Query Bus.
 
 - [Scaffold.WebApi](../Sources/Scaffold.WebApi)
 
 ## Secondary / Driven Adapters
 
-The Secondary / Driven Adapters for Scaffold are currently located in the [Adapters](../Sources/Adapters) directory. These adapters implement [interfaces defined in the application layer](../Sources/Scaffold.Application/Interfaces) and their concrete versions are intended to be provided via dependency injection.
+The Secondary / Driven Adapters for Scaffold are currently located in the [Adapters](../Sources/Adapters) directory. These adapters implement [interfaces defined in the Application Layer](../Sources/Scaffold.Application/Interfaces) and their concrete versions are intended to be provided via dependency injection.
 
 - [Scaffold.HttpClients](../Sources/Adapters/Scaffold.HttpClients)
 - [Scaffold.Repositories](../Sources/Adapters/Scaffold.Repositories)
 
-## Command Query Bus
+## Command / Query Bus
 
-The command query bus in Scaffold uses the mediator pattern which has been implemented with the help of the [MediatR](https://github.com/jbogard/MediatR) library.
+The Command / Query Bus in Scaffold uses the mediator pattern which has been implemented with the help of the [MediatR](https://github.com/jbogard/MediatR) library. In this pattern, a Primary / Driving Adapter sends request objects to Command / Query Handlers in the Application Layer and receives responses via a mediator. The Primary / Driving Adapters and Command / Query Handlers do not know about each other.
