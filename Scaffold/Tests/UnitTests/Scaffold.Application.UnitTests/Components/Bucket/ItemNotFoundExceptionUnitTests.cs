@@ -1,4 +1,4 @@
-namespace Scaffold.Application.UnitTests.Features.Bucket
+namespace Scaffold.Application.UnitTests.Components.Bucket
 {
     using System;
     using System.IO;
@@ -6,7 +6,7 @@ namespace Scaffold.Application.UnitTests.Features.Bucket
     using System.Reflection;
     using System.Runtime.Serialization;
     using System.Runtime.Serialization.Formatters.Binary;
-    using Scaffold.Application.Features.Bucket;
+    using Scaffold.Application.Components.Bucket;
     using Xunit;
 
     public class ItemNotFoundExceptionUnitTests

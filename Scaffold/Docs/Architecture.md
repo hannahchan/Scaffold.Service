@@ -22,3 +22,7 @@ The Secondary / Driven Adapters for Scaffold are currently located in the [Adapt
 ## Command / Query Bus
 
 The Command / Query Bus in Scaffold uses the mediator pattern which has been implemented with the help of the [MediatR](https://github.com/jbogard/MediatR) library. In this pattern, a Primary / Driving Adapter sends request objects to Command / Query Handlers in the Application Layer and receives responses via a mediator. The Primary / Driving Adapters and Command / Query Handlers do not know about each other.
+
+## Components
+
+Scaffold primarily organizes code using a _Package by Layer_ approach and then secondarily by using a _Package by Component_ approach.

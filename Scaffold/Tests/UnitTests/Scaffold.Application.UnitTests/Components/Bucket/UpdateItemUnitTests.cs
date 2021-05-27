@@ -1,10 +1,10 @@
-namespace Scaffold.Application.UnitTests.Features.Bucket
+namespace Scaffold.Application.UnitTests.Components.Bucket
 {
     using System;
     using System.Threading.Tasks;
     using AutoMapper;
     using Microsoft.EntityFrameworkCore;
-    using Scaffold.Application.Features.Bucket;
+    using Scaffold.Application.Components.Bucket;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
     using Scaffold.Repositories;

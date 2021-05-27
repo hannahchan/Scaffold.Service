@@ -1,4 +1,4 @@
-namespace Scaffold.Application.Features.Bucket
+namespace Scaffold.Application.Components.Bucket
 {
     using System.Diagnostics;
     using System.Linq;

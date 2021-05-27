@@ -8,7 +8,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Moq;
-    using Scaffold.Application.Features.Bucket;
+    using Scaffold.Application.Components.Bucket;
     using Scaffold.WebApi.Controllers;
     using Scaffold.WebApi.Models.Bucket;
     using Scaffold.WebApi.Models.Item;

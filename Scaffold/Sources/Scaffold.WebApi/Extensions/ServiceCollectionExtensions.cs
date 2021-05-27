@@ -15,7 +15,6 @@ namespace Scaffold.WebApi.Extensions
     using OpenTelemetry.Trace;
     using Polly;
     using Scaffold.Application.Common.Constants;
-    using Scaffold.Application.Features.Bucket;
     using Scaffold.Application.Interfaces;
     using Scaffold.HttpClients;
     using Scaffold.Repositories;

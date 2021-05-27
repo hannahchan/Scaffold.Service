@@ -1,7 +1,9 @@
-namespace Scaffold.Application.Features.Bucket
+namespace Scaffold.Application.Components.Bucket
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using MediatR;
@@ -9,26 +11,26 @@ namespace Scaffold.Application.Features.Bucket
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
 
-    public static class GetBucket
+    public static class GetItems
     {
         public class Query : IRequest<Response>
         {
-            public Query(int id)
+            public Query(int bucketId)
             {
-                this.Id = id;
+                this.BucketId = bucketId;
             }
 
-            public int Id { get; }
+            public int BucketId { get; }
         }
 
         public class Response
         {
-            public Response(Bucket bucket)
+            public Response(IEnumerable<Item> items)
             {
-                this.Bucket = bucket ?? throw new ArgumentNullException(nameof(bucket));
+                this.Items = items ?? throw new ArgumentNullException(nameof(items));
             }
 
-            public Bucket Bucket { get; }
+            public IEnumerable<Item> Items { get; }
         }
 
         internal class Handler : IRequestHandler<Query, Response>
@@ -42,8 +44,12 @@ namespace Scaffold.Application.Features.Bucket
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                using Activity? activity = ActivityProvider.StartActivity(nameof(GetBucket));
-                return new Response(await this.repository.GetAsync(request.Id, cancellationToken) ?? throw new BucketNotFoundException(request.Id));
+                using Activity? activity = ActivityProvider.StartActivity(nameof(GetItems));
+
+                Bucket bucket = await this.repository.GetAsync(request.BucketId, cancellationToken) ??
+                    throw new BucketNotFoundException(request.BucketId);
+
+                return new Response(bucket.Items.ToArray());
             }
         }
     }
