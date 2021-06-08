@@ -2,7 +2,7 @@
 
 The software architecture of Scaffold has been heavily inspired by the **Explicit Architecture** presented in in _DDD, Hexagonal, Onion, Clean, CQRS, … How I put it all together_ by Herberto Graça. You can read his article by clicking [here](https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/).
 
-![Image from Herberto Graça's article](https://herbertograca.files.wordpress.com/2018/11/080-explicit-architecture-svg.png)
+![Image from Herberto Graça's article](https://herbertograca.files.wordpress.com/2018/11/100-explicit-architecture-svg.png)
 
 A software architecture provides a common language to help communicate the design and structure of a software system between different software developers.
 
@@ -23,6 +23,10 @@ The Secondary / Driven Adapters for Scaffold are currently located in the [Adapt
 
 The Command / Query Bus in Scaffold uses the mediator pattern which has been implemented with the help of the [MediatR](https://github.com/jbogard/MediatR) library. In this pattern, a Primary / Driving Adapter sends request objects to Command / Query Handlers in the Application Layer and receives responses via a mediator. The Primary / Driving Adapters and Command / Query Handlers do not know about each other.
 
+## Event Bus
+
+To facilitate Component-to-Component communication and to keep Components decoupled from each other, Scaffold uses an in-process Event Bus which has been implemented with the help of the [MediatR](https://github.com/jbogard/MediatR) library.
+
 ## Components
 
-Scaffold primarily organizes code using a _Package by Layer_ approach and then secondarily by using a _Package by Component_ approach.
+Scaffold primarily organizes code using a _Package by Layer_ approach and then secondarily by using a _Package by Component_ approach. Components are independent collections of code that relate to a sub-domain.
