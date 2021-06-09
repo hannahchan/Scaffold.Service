@@ -29,4 +29,4 @@ To facilitate Component-to-Component communication and to keep Components decoup
 
 ## Components
 
-Scaffold primarily organizes code using a _Package by Layer_ approach and then secondarily by using a _Package by Component_ approach. Components are independent collections of code that relate to a sub-domain.
+Scaffold primarily organizes code using a _Package by Layer_ approach and then secondarily by using a _Package by Component_ approach. Components are independent collections of code that relate to a sub-domain. A Component in this context can be _roughly_ equated to a Component in a _Level 3: Component Diagram_ in the [C4 Model](https://c4model.com).
