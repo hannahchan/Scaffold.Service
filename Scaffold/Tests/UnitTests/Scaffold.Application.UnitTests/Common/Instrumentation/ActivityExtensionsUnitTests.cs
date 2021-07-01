@@ -10,7 +10,7 @@ namespace Scaffold.Application.UnitTests.Common.Instrumentation
         public class InvokeIfNotNullAndIsAllDataRequested
         {
             [Fact]
-            public void When_ActivityIsNull_Expect_()
+            public void When_ActivityIsNull_Expect_NoException()
             {
                 // Arrange
                 Activity activity = null;
@@ -25,7 +25,7 @@ namespace Scaffold.Application.UnitTests.Common.Instrumentation
             }
 
             [Fact]
-            public void When_ActivityIsAllDataRequestIsFalse_Expect_()
+            public void When_ActivityIsAllDataRequestIsFalse_Expect_NoException()
             {
                 // Arrange
                 Activity activity = new Activity(Guid.NewGuid().ToString())
@@ -43,7 +43,7 @@ namespace Scaffold.Application.UnitTests.Common.Instrumentation
             }
 
             [Fact]
-            public void When_ActivityIsNotNullAndIsAllDataRequestedIsTrue_Expect_()
+            public void When_ActivityIsNotNullAndIsAllDataRequestedIsTrue_Expect_TagSet()
             {
                 // Arrange
                 Activity activity = new Activity(Guid.NewGuid().ToString())
