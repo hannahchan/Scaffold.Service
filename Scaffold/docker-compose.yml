@@ -53,6 +53,11 @@ services:
         target: /etc/grafana/provisioning/datasources
         type: bind
   jaeger:
+    environment:
+      BADGER_DIRECTORY_KEY: /badger/key
+      BADGER_DIRECTORY_VALUE: /badger/data
+      BADGER_EPHEMERAL: "false"
+      SPAN_STORAGE_TYPE: badger
     image: "jaegertracing/all-in-one:latest"
     ports:
       - mode: ingress
@@ -60,6 +65,9 @@ services:
         published: 16686
         target: 16686
     volumes:
+      - source: jaeger
+        target: /badger
+        type: volume
       - source: jaeger_tmp
         target: /tmp
         type: volume
@@ -80,6 +88,7 @@ services:
 version: "3.7"
 volumes:
   grafana: ~
+  jaeger: ~
   jaeger_tmp: ~
   postgres_pgdata: ~
   prometheus: ~

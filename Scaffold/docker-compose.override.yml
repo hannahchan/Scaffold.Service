@@ -35,6 +35,10 @@ services:
         protocol: tcp
         published: 14268
         target: 14268
+      - mode: ingress
+        protocol: tcp
+        published: 14250
+        target: 14250
   prometheus:
     volumes:
       - source: "${LOCAL_WORKSPACE_FOLDER:-.}/Operations/Prometheus/prometheus.yml"
