@@ -1,6 +1,5 @@
 namespace Scaffold.Application.Components.Bucket
 {
-    using System;
     using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
@@ -13,39 +12,9 @@ namespace Scaffold.Application.Components.Bucket
 
     public static class UpdateBucket
     {
-        public class Command : IRequest<Response>
-        {
-            public Command(int id, string? name, string? description, int? size)
-            {
-                this.Id = id;
-                this.Name = name;
-                this.Description = description;
-                this.Size = size;
-            }
+        public record Command(int Id, string? Name, string? Description, int? Size) : IRequest<Response>;
 
-            public int Id { get; }
-
-            public string? Name { get; }
-
-            public string? Description { get; }
-
-            public int? Size { get; }
-        }
-
-        public class Response
-        {
-            public Response(Bucket bucket, bool created = false)
-            {
-                this.Bucket = bucket ?? throw new ArgumentNullException(nameof(bucket));
-                this.Created = created;
-            }
-
-            public Bucket Bucket { get; }
-
-            public bool Created { get; }
-
-            public bool Updated { get => !this.Created; }
-        }
+        public record Response(Bucket Bucket, bool Created);
 
         internal class Handler : IRequestHandler<Command, Response>
         {
@@ -77,7 +46,7 @@ namespace Scaffold.Application.Components.Bucket
                     bucket = configuration.CreateMapper().Map(request, bucket);
                     await this.repository.UpdateAsync(bucket, cancellationToken);
 
-                    return new Response(bucket);
+                    return new Response(bucket, false);
                 }
                 catch (AutoMapperMappingException exception) when (exception.InnerException is DomainException)
                 {

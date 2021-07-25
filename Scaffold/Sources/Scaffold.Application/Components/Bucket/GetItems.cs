@@ -1,6 +1,5 @@
 namespace Scaffold.Application.Components.Bucket
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
@@ -13,25 +12,9 @@ namespace Scaffold.Application.Components.Bucket
 
     public static class GetItems
     {
-        public class Query : IRequest<Response>
-        {
-            public Query(int bucketId)
-            {
-                this.BucketId = bucketId;
-            }
+        public record Query(int BucketId) : IRequest<Response>;
 
-            public int BucketId { get; }
-        }
-
-        public class Response
-        {
-            public Response(IEnumerable<Item> items)
-            {
-                this.Items = items ?? throw new ArgumentNullException(nameof(items));
-            }
-
-            public IEnumerable<Item> Items { get; }
-        }
+        public record Response(IEnumerable<Item> Items);
 
         internal class Handler : IRequestHandler<Query, Response>
         {

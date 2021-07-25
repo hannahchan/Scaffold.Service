@@ -24,33 +24,6 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
             this.repository = new BucketRepository(context);
         }
 
-        public class Response
-        {
-            [Fact]
-            public void When_InstantiatingResponseWithBucket_Expect_ResponseWithBucket()
-            {
-                // Arrange
-                Bucket bucket = new Bucket();
-
-                // Act
-                AddBucket.Response response = new AddBucket.Response(bucket);
-
-                // Assert
-                Assert.Equal(bucket, response.Bucket);
-            }
-
-            [Fact]
-            public void When_InstantiatingResponseWithNull_Expect_ArgumentNullException()
-            {
-                // Act
-                Exception exception = Record.Exception(() => new AddBucket.Response(null));
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("bucket", argumentNullException.ParamName);
-            }
-        }
-
         public class Handler : AddBucketUnitTests
         {
             [Fact]
@@ -58,9 +31,9 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
             {
                 // Arrange
                 AddBucket.Command command = new AddBucket.Command(
-                    name: Guid.NewGuid().ToString(),
-                    description: null,
-                    size: null);
+                    Name: Guid.NewGuid().ToString(),
+                    Description: null,
+                    Size: null);
 
                 AddBucket.Handler handler = new AddBucket.Handler(this.repository);
 
@@ -78,9 +51,9 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
             {
                 // Arrange
                 AddBucket.Command command = new AddBucket.Command(
-                    name: Guid.NewGuid().ToString(),
-                    description: Guid.NewGuid().ToString(),
-                    size: -1);
+                    Name: Guid.NewGuid().ToString(),
+                    Description: Guid.NewGuid().ToString(),
+                    Size: -1);
 
                 AddBucket.Handler handler = new AddBucket.Handler(this.repository);
 

@@ -1,6 +1,5 @@
 namespace Scaffold.Application.Components.Bucket
 {
-    using System;
     using System.Diagnostics;
     using System.Linq;
     using System.Threading;
@@ -13,39 +12,9 @@ namespace Scaffold.Application.Components.Bucket
 
     public static class UpdateItem
     {
-        public class Command : IRequest<Response>
-        {
-            public Command(int bucketId, int itemId, string? name, string? description)
-            {
-                this.BucketId = bucketId;
-                this.ItemId = itemId;
-                this.Name = name;
-                this.Description = description;
-            }
+        public record Command(int BucketId, int ItemId, string? Name, string? Description) : IRequest<Response>;
 
-            public int BucketId { get; }
-
-            public int ItemId { get; }
-
-            public string? Name { get; }
-
-            public string? Description { get; }
-        }
-
-        public class Response
-        {
-            public Response(Item item, bool created = false)
-            {
-                this.Item = item ?? throw new ArgumentNullException(nameof(item));
-                this.Created = created;
-            }
-
-            public Item Item { get; }
-
-            public bool Created { get; }
-
-            public bool Updated { get => !this.Created; }
-        }
+        public record Response(Item Item, bool Created);
 
         internal class Handler : IRequestHandler<Command, Response>
         {
@@ -79,7 +48,7 @@ namespace Scaffold.Application.Components.Bucket
                 item = configuration.CreateMapper().Map(request, item);
                 await this.repository.UpdateAsync(bucket, cancellationToken);
 
-                return new Response(item);
+                return new Response(item, false);
             }
         }
 

@@ -35,9 +35,9 @@
         public async Task<ActionResult> AddBucket([FromBody] AddBucketRequestBody requestBody)
         {
             AddBucket.Command command = new AddBucket.Command(
-                name: requestBody.Name,
-                description: requestBody.Description,
-                size: requestBody.Size);
+                Name: requestBody.Name,
+                Description: requestBody.Description,
+                Size: requestBody.Size);
 
             AddBucket.Response response = await this.sender.Send(command);
 
@@ -57,10 +57,10 @@
         public async Task<IEnumerable<Bucket>> GetBuckets([FromQuery] GetBucketsRequestQuery requestQuery)
         {
             GetBuckets.Query query = new GetBuckets.Query(
-                predicate: bucket => true,
-                limit: requestQuery.Limit,
-                offset: requestQuery.Offset,
-                sortOrder: null);
+                Predicate: bucket => true,
+                Limit: requestQuery.Limit,
+                Offset: requestQuery.Offset,
+                SortOrder: null);
 
             GetBuckets.Response response = await this.sender.Send(query);
 
@@ -95,10 +95,10 @@
         public async Task<ActionResult<Bucket>> UpdateBucket(int bucketId, [FromBody] UpdateBucketRequestBody requestBody)
         {
             UpdateBucket.Command command = new UpdateBucket.Command(
-                id: bucketId,
-                name: requestBody.Name,
-                description: requestBody.Description,
-                size: requestBody.Size);
+                Id: bucketId,
+                Name: requestBody.Name,
+                Description: requestBody.Description,
+                Size: requestBody.Size);
 
             UpdateBucket.Response response = await this.sender.Send(command);
             Bucket bucket = this.mapper.Map<Bucket>(response.Bucket);
@@ -137,9 +137,9 @@
         public async Task<ActionResult> AddItem(int bucketId, [FromBody] AddItemRequestBody requestBody)
         {
             AddItem.Command command = new AddItem.Command(
-                bucketId: bucketId,
-                name: requestBody.Name,
-                description: requestBody.Description);
+                BucketId: bucketId,
+                Name: requestBody.Name,
+                Description: requestBody.Description);
 
             AddItem.Response response = await this.sender.Send(command);
             Item item = this.mapper.Map<Item>(response.Item);
@@ -173,8 +173,8 @@
         public async Task<Item> GetItem(int bucketId, int itemId)
         {
             GetItem.Query query = new GetItem.Query(
-                bucketId: bucketId,
-                itemId: itemId);
+                BucketId: bucketId,
+                ItemId: itemId);
 
             GetItem.Response response = await this.sender.Send(query);
 
@@ -196,10 +196,10 @@
         public async Task<ActionResult<Item>> UpdateItem(int bucketId, int itemId, [FromBody] UpdateItemRequestBody requestBody)
         {
             UpdateItem.Command command = new UpdateItem.Command(
-                bucketId: bucketId,
-                itemId: itemId,
-                name: requestBody.Name,
-                description: requestBody.Description);
+                BucketId: bucketId,
+                ItemId: itemId,
+                Name: requestBody.Name,
+                Description: requestBody.Description);
 
             UpdateItem.Response response = await this.sender.Send(command);
             Item item = this.mapper.Map<Item>(response.Item);
@@ -224,8 +224,8 @@
         public async Task<ActionResult> RemoveItem(int bucketId, int itemId)
         {
             RemoveItem.Command command = new RemoveItem.Command(
-                bucketId: bucketId,
-                itemId: itemId);
+                BucketId: bucketId,
+                ItemId: itemId);
 
             await this.sender.Send(command);
             return this.NoContent();

@@ -14,44 +14,9 @@ namespace Scaffold.Application.Components.Bucket
 
     public static class GetBuckets
     {
-        public class Query : IRequest<Response>
-        {
-            public Query()
-            {
-                this.Predicate = bucket => true;
-            }
+        public record Query(Expression<Func<Bucket, bool>> Predicate, int? Limit = null, int? Offset = null, SortOrder<Bucket>? SortOrder = null) : IRequest<Response>;
 
-            public Query(Expression<Func<Bucket, bool>> predicate)
-            {
-                this.Predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
-            }
-
-            public Query(Expression<Func<Bucket, bool>> predicate, int? limit, int? offset, SortOrder<Bucket>? sortOrder)
-                : this(predicate)
-            {
-                this.Limit = limit;
-                this.Offset = offset;
-                this.SortOrder = sortOrder;
-            }
-
-            public Expression<Func<Bucket, bool>> Predicate { get; }
-
-            public int? Limit { get; } = null;
-
-            public int? Offset { get; } = null;
-
-            public SortOrder<Bucket>? SortOrder { get; } = null;
-        }
-
-        public class Response
-        {
-            public Response(IEnumerable<Bucket> buckets)
-            {
-                this.Buckets = buckets ?? throw new ArgumentNullException(nameof(buckets));
-            }
-
-            public IEnumerable<Bucket> Buckets { get; }
-        }
+        public record Response(IEnumerable<Bucket> Buckets);
 
         internal class Handler : IRequestHandler<Query, Response>
         {

@@ -22,33 +22,6 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
             this.repository = new BucketRepository(context);
         }
 
-        public class Response
-        {
-            [Fact]
-            public void When_InstantiatingResponseWithItems_Expect_ResponseWithItems()
-            {
-                // Arrange
-                Item[] items = Array.Empty<Item>();
-
-                // Act
-                GetItems.Response response = new GetItems.Response(items);
-
-                // Assert
-                Assert.Equal(items, response.Items);
-            }
-
-            [Fact]
-            public void When_InstantiatingResponseWithNull_Expect_ArgumentNullException()
-            {
-                // Act
-                Exception exception = Record.Exception(() => new GetItems.Response(null));
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("items", argumentNullException.ParamName);
-            }
-        }
-
         public class Handler : GetItemsUnitTests
         {
             [Fact]

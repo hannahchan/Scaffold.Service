@@ -22,33 +22,6 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
             this.repository = new BucketRepository(context);
         }
 
-        public class Response
-        {
-            [Fact]
-            public void When_InstantiatingResponseWithItem_Expect_ResponseWithItem()
-            {
-                // Arrange
-                Item item = new Item();
-
-                // Act
-                GetItem.Response response = new GetItem.Response(item);
-
-                // Assert
-                Assert.Equal(item, response.Item);
-            }
-
-            [Fact]
-            public void When_InstantiatingResponseWithNull_Expect_ArgumentNullException()
-            {
-                // Act
-                Exception exception = Record.Exception(() => new GetItem.Response(null));
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("item", argumentNullException.ParamName);
-            }
-        }
-
         public class Handler : GetItemUnitTests
         {
             [Fact]
@@ -61,8 +34,8 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                 await this.repository.AddAsync(bucket);
 
                 GetItem.Query query = new GetItem.Query(
-                    bucketId: bucket.Id,
-                    itemId: item.Id);
+                    BucketId: bucket.Id,
+                    ItemId: item.Id);
 
                 GetItem.Handler handler = new GetItem.Handler(this.repository);
 
@@ -82,8 +55,8 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                 await this.repository.AddAsync(bucket);
 
                 GetItem.Query query = new GetItem.Query(
-                    bucketId: bucket.Id,
-                    itemId: new Random().Next());
+                    BucketId: bucket.Id,
+                    ItemId: new Random().Next());
 
                 GetItem.Handler handler = new GetItem.Handler(this.repository);
 
@@ -100,8 +73,8 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
             {
                 // Arrange
                 GetItem.Query query = new GetItem.Query(
-                    bucketId: new Random().Next(),
-                    itemId: new Random().Next());
+                    BucketId: new Random().Next(),
+                    ItemId: new Random().Next());
 
                 GetItem.Handler handler = new GetItem.Handler(this.repository);
 

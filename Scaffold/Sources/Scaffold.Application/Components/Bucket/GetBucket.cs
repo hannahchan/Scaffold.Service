@@ -1,6 +1,5 @@
 namespace Scaffold.Application.Components.Bucket
 {
-    using System;
     using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
@@ -11,25 +10,9 @@ namespace Scaffold.Application.Components.Bucket
 
     public static class GetBucket
     {
-        public class Query : IRequest<Response>
-        {
-            public Query(int id)
-            {
-                this.Id = id;
-            }
+        public record Query(int Id) : IRequest<Response>;
 
-            public int Id { get; }
-        }
-
-        public class Response
-        {
-            public Response(Bucket bucket)
-            {
-                this.Bucket = bucket ?? throw new ArgumentNullException(nameof(bucket));
-            }
-
-            public Bucket Bucket { get; }
-        }
+        public record Response(Bucket Bucket);
 
         internal class Handler : IRequestHandler<Query, Response>
         {

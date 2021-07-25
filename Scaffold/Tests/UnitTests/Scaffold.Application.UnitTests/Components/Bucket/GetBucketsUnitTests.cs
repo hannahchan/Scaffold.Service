@@ -40,83 +40,6 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
             this.repository = new BucketRepository(context);
         }
 
-        public class Query
-        {
-            [Fact]
-            public void When_InstantiatingQuery_Expect_PredicateNotNull()
-            {
-                // Arrange
-                GetBuckets.Query query;
-
-                // Act
-                query = new GetBuckets.Query();
-
-                // Assert
-                Assert.NotNull(query.Predicate);
-                Assert.Null(query.Limit);
-                Assert.Null(query.Offset);
-                Assert.Null(query.SortOrder);
-            }
-
-            [Fact]
-            public void When_InstantiatingQueryWithPredicate_Expect_Predicate()
-            {
-                // Arrange
-                Expression<Func<Bucket, bool>> predicate = bucket => false;
-                GetBuckets.Query query;
-
-                // Act
-                query = new GetBuckets.Query(predicate);
-
-                // Assert
-                Assert.Equal(predicate, query.Predicate);
-                Assert.Null(query.Limit);
-                Assert.Null(query.Offset);
-                Assert.Null(query.SortOrder);
-            }
-
-            [Fact]
-            public void When_InstantiatingQueryWithNullPredicate_Expect_ArgumentNullException()
-            {
-                // Arrange
-                Exception exception;
-
-                // Act
-                exception = Record.Exception(() => new GetBuckets.Query(null));
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("predicate", argumentNullException.ParamName);
-            }
-        }
-
-        public class Response
-        {
-            [Fact]
-            public void When_InstantiatingResponseWithBuckets_Expect_ResponseWithBuckets()
-            {
-                // Arrange
-                Bucket[] buckets = Array.Empty<Bucket>();
-
-                // Act
-                GetBuckets.Response response = new GetBuckets.Response(buckets);
-
-                // Assert
-                Assert.Equal(buckets, response.Buckets);
-            }
-
-            [Fact]
-            public void When_InstantiatingResponseWithNull_Expect_ArgumentNullException()
-            {
-                // Act
-                Exception exception = Record.Exception(() => new GetBuckets.Response(null));
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("buckets", argumentNullException.ParamName);
-            }
-        }
-
         public class Handler : GetBucketsUnitTests
         {
             [Fact]
@@ -130,7 +53,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     new Bucket { Name = "Bucket 3" },
                 });
 
-                GetBuckets.Query query = new GetBuckets.Query();
+                GetBuckets.Query query = new GetBuckets.Query(bucket => true);
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
@@ -148,7 +71,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
             public async Task When_GettingNonExistingBuckets_Expect_Empty()
             {
                 // Arrange
-                GetBuckets.Query query = new GetBuckets.Query();
+                GetBuckets.Query query = new GetBuckets.Query(bucket => true);
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
                 // Act
@@ -196,10 +119,10 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                 });
 
                 GetBuckets.Query query = new GetBuckets.Query(
-                    predicate: bucket => true,
-                    limit: null,
-                    offset: null,
-                    sortOrder: null);
+                    Predicate: bucket => true,
+                    Limit: null,
+                    Offset: null,
+                    SortOrder: null);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -226,10 +149,10 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                 });
 
                 GetBuckets.Query query = new GetBuckets.Query(
-                    predicate: bucket => true,
-                    limit: 2,
-                    offset: null,
-                    sortOrder: null);
+                    Predicate: bucket => true,
+                    Limit: 2,
+                    Offset: null,
+                    SortOrder: null);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -255,10 +178,10 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                 });
 
                 GetBuckets.Query query = new GetBuckets.Query(
-                    predicate: bucket => true,
-                    limit: null,
-                    offset: 1,
-                    sortOrder: null);
+                    Predicate: bucket => true,
+                    Limit: null,
+                    Offset: 1,
+                    SortOrder: null);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -284,10 +207,10 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                 });
 
                 GetBuckets.Query query = new GetBuckets.Query(
-                    predicate: bucket => true,
-                    limit: 1,
-                    offset: 1,
-                    sortOrder: null);
+                    Predicate: bucket => true,
+                    Limit: 1,
+                    Offset: 1,
+                    SortOrder: null);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -308,10 +231,10 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     .OrderBy(bucket => bucket.Size);
 
                 GetBuckets.Query query = new GetBuckets.Query(
-                    predicate: bucket => true,
-                    limit: null,
-                    offset: null,
-                    sortOrder: sortOrder);
+                    Predicate: bucket => true,
+                    Limit: null,
+                    Offset: null,
+                    SortOrder: sortOrder);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -345,10 +268,10 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     .OrderByDescending(bucket => bucket.Size);
 
                 GetBuckets.Query query = new GetBuckets.Query(
-                    predicate: bucket => true,
-                    limit: null,
-                    offset: null,
-                    sortOrder: sortOrder);
+                    Predicate: bucket => true,
+                    Limit: null,
+                    Offset: null,
+                    SortOrder: sortOrder);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -382,10 +305,10 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     .OrderBy(bucket => bucket.Size);
 
                 GetBuckets.Query query = new GetBuckets.Query(
-                    predicate: bucket => true,
-                    limit: 6,
-                    offset: null,
-                    sortOrder: sortOrder);
+                    Predicate: bucket => true,
+                    Limit: 6,
+                    Offset: null,
+                    SortOrder: sortOrder);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -413,10 +336,10 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     .OrderBy(bucket => bucket.Size);
 
                 GetBuckets.Query query = new GetBuckets.Query(
-                    predicate: bucket => true,
-                    limit: null,
-                    offset: 6,
-                    sortOrder: sortOrder);
+                    Predicate: bucket => true,
+                    Limit: null,
+                    Offset: 6,
+                    SortOrder: sortOrder);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -444,10 +367,10 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     .OrderBy(bucket => bucket.Size);
 
                 GetBuckets.Query query = new GetBuckets.Query(
-                    predicate: bucket => true,
-                    limit: 6,
-                    offset: 3,
-                    sortOrder: sortOrder);
+                    Predicate: bucket => true,
+                    Limit: 6,
+                    Offset: 3,
+                    SortOrder: sortOrder);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -476,10 +399,10 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     .ThenBy(bucket => bucket.Description);
 
                 GetBuckets.Query query = new GetBuckets.Query(
-                    predicate: bucket => true,
-                    limit: null,
-                    offset: null,
-                    sortOrder: sortOrder);
+                    Predicate: bucket => true,
+                    Limit: null,
+                    Offset: null,
+                    SortOrder: sortOrder);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -562,10 +485,10 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     .ThenByDescending(bucket => bucket.Description);
 
                 GetBuckets.Query query = new GetBuckets.Query(
-                    predicate: bucket => true,
-                    limit: null,
-                    offset: null,
-                    sortOrder: sortOrder);
+                    Predicate: bucket => true,
+                    Limit: null,
+                    Offset: null,
+                    SortOrder: sortOrder);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -648,10 +571,10 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     .ThenByDescending(bucket => bucket.Description);
 
                 GetBuckets.Query query = new GetBuckets.Query(
-                    predicate: bucket => true,
-                    limit: null,
-                    offset: null,
-                    sortOrder: sortOrder);
+                    Predicate: bucket => true,
+                    Limit: null,
+                    Offset: null,
+                    SortOrder: sortOrder);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 
@@ -734,10 +657,10 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     .ThenBy(bucket => bucket.Description);
 
                 GetBuckets.Query query = new GetBuckets.Query(
-                    predicate: bucket => true,
-                    limit: null,
-                    offset: null,
-                    sortOrder: sortOrder);
+                    Predicate: bucket => true,
+                    Limit: null,
+                    Offset: null,
+                    SortOrder: sortOrder);
 
                 GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
 

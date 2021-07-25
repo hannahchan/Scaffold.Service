@@ -11,18 +11,7 @@ namespace Scaffold.Application.Components.Bucket
 
     public static class RemoveItem
     {
-        public class Command : IRequest
-        {
-            public Command(int bucketId, int itemId)
-            {
-                this.BucketId = bucketId;
-                this.ItemId = itemId;
-            }
-
-            public int BucketId { get; }
-
-            public int ItemId { get; }
-        }
+        public record Command(int BucketId, int ItemId) : IRequest;
 
         internal class Handler : IRequestHandler<Command>
         {

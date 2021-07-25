@@ -23,65 +23,6 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
             this.repository = new BucketRepository(context);
         }
 
-        public class Response
-        {
-            [Fact]
-            public void When_InstantiatingResponseWithItem_Expect_ResponseWithItem()
-            {
-                // Arrange
-                Item item = new Item();
-
-                // Act
-                UpdateItem.Response response = new UpdateItem.Response(item);
-
-                // Assert
-                Assert.Equal(item, response.Item);
-                Assert.False(response.Created);
-                Assert.True(response.Updated);
-            }
-
-            [Fact]
-            public void When_InstantiatingResponseWithCreatedSetToTrue_Expect_CreatedTrue()
-            {
-                // Arrange
-                Item item = new Item();
-
-                // Act
-                UpdateItem.Response response = new UpdateItem.Response(item, true);
-
-                // Assert
-                Assert.Equal(item, response.Item);
-                Assert.True(response.Created);
-                Assert.False(response.Updated);
-            }
-
-            [Fact]
-            public void When_InstantiatingResponseWithCreatedSetToFalse_Expect_CreatedFalse()
-            {
-                // Arrange
-                Item item = new Item();
-
-                // Act
-                UpdateItem.Response response = new UpdateItem.Response(item, false);
-
-                // Assert
-                Assert.Equal(item, response.Item);
-                Assert.False(response.Created);
-                Assert.True(response.Updated);
-            }
-
-            [Fact]
-            public void When_InstantiatingResponseWithNull_Expect_ArgumentNullException()
-            {
-                // Act
-                Exception exception = Record.Exception(() => new UpdateItem.Response(null));
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("item", argumentNullException.ParamName);
-            }
-        }
-
         public class Handler : UpdateItemUnitTests
         {
             [Fact]
@@ -95,10 +36,10 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                 await this.repository.AddAsync(bucket);
 
                 UpdateItem.Command command = new UpdateItem.Command(
-                    bucketId: bucket.Id,
-                    itemId: item.Id,
-                    name: Guid.NewGuid().ToString(),
-                    description: Guid.NewGuid().ToString());
+                    BucketId: bucket.Id,
+                    ItemId: item.Id,
+                    Name: Guid.NewGuid().ToString(),
+                    Description: Guid.NewGuid().ToString());
 
                 UpdateItem.Handler handler = new UpdateItem.Handler(this.repository);
 
@@ -107,7 +48,6 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
 
                 // Assert
                 Assert.False(response.Created);
-                Assert.True(response.Updated);
                 Assert.Equal(item.Id, response.Item.Id);
                 Assert.Equal(command.Name, response.Item.Name);
                 Assert.Equal(command.Description, response.Item.Description);
@@ -122,10 +62,10 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                 await this.repository.AddAsync(bucket);
 
                 UpdateItem.Command command = new UpdateItem.Command(
-                    bucketId: bucket.Id,
-                    itemId: new Random().Next(),
-                    name: Guid.NewGuid().ToString(),
-                    description: Guid.NewGuid().ToString());
+                    BucketId: bucket.Id,
+                    ItemId: new Random().Next(),
+                    Name: Guid.NewGuid().ToString(),
+                    Description: Guid.NewGuid().ToString());
 
                 UpdateItem.Handler handler = new UpdateItem.Handler(this.repository);
 
@@ -134,7 +74,6 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
 
                 // Assert
                 Assert.True(response.Created);
-                Assert.False(response.Updated);
                 Assert.Equal(command.ItemId, response.Item.Id);
                 Assert.Equal(command.Name, response.Item.Name);
                 Assert.Equal(command.Description, response.Item.Description);
@@ -145,10 +84,10 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
             {
                 // Arrange
                 UpdateItem.Command command = new UpdateItem.Command(
-                    bucketId: new Random().Next(),
-                    itemId: new Random().Next(),
-                    name: Guid.NewGuid().ToString(),
-                    description: null);
+                    BucketId: new Random().Next(),
+                    ItemId: new Random().Next(),
+                    Name: Guid.NewGuid().ToString(),
+                    Description: null);
 
                 UpdateItem.Handler handler = new UpdateItem.Handler(this.repository);
 

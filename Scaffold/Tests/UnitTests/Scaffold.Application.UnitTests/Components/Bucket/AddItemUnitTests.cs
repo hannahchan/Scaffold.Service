@@ -23,33 +23,6 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
             this.repository = new BucketRepository(context);
         }
 
-        public class Response
-        {
-            [Fact]
-            public void When_InstantiatingResponseWithItem_Expect_ResponseWithItem()
-            {
-                // Arrange
-                Item item = new Item();
-
-                // Act
-                AddItem.Response response = new AddItem.Response(item);
-
-                // Assert
-                Assert.Equal(item, response.Item);
-            }
-
-            [Fact]
-            public void When_InstantiatingResponseWithNull_Expect_ArgumentNullException()
-            {
-                // Act
-                Exception exception = Record.Exception(() => new AddItem.Response(null));
-
-                // Assert
-                ArgumentNullException argumentNullException = Assert.IsType<ArgumentNullException>(exception);
-                Assert.Equal("item", argumentNullException.ParamName);
-            }
-        }
-
         public class Handler : AddItemUnitTests
         {
             [Fact]
@@ -60,9 +33,9 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                 await this.repository.AddAsync(bucket);
 
                 AddItem.Command command = new AddItem.Command(
-                    bucketId: bucket.Id,
-                    name: Guid.NewGuid().ToString(),
-                    description: null);
+                    BucketId: bucket.Id,
+                    Name: Guid.NewGuid().ToString(),
+                    Description: null);
 
                 AddItem.Handler handler = new AddItem.Handler(this.repository);
 
@@ -79,9 +52,9 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
             {
                 // Arrange
                 AddItem.Command command = new AddItem.Command(
-                    bucketId: new Random().Next(),
-                    name: Guid.NewGuid().ToString(),
-                    description: null);
+                    BucketId: new Random().Next(),
+                    Name: Guid.NewGuid().ToString(),
+                    Description: null);
 
                 AddItem.Handler handler = new AddItem.Handler(this.repository);
 
@@ -101,9 +74,9 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                 await this.repository.AddAsync(bucket);
 
                 AddItem.Command command = new AddItem.Command(
-                    bucketId: bucket.Id,
-                    name: Guid.NewGuid().ToString(),
-                    description: null);
+                    BucketId: bucket.Id,
+                    Name: Guid.NewGuid().ToString(),
+                    Description: null);
 
                 AddItem.Handler handler = new AddItem.Handler(this.repository);
 

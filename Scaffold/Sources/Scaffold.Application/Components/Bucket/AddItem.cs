@@ -1,6 +1,5 @@
 namespace Scaffold.Application.Components.Bucket
 {
-    using System;
     using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
@@ -12,31 +11,9 @@ namespace Scaffold.Application.Components.Bucket
 
     public static class AddItem
     {
-        public class Command : IRequest<Response>
-        {
-            public Command(int bucketId, string? name, string? description)
-            {
-                this.BucketId = bucketId;
-                this.Name = name;
-                this.Description = description;
-            }
+        public record Command(int BucketId, string? Name, string? Description) : IRequest<Response>;
 
-            public int BucketId { get; }
-
-            public string? Name { get; }
-
-            public string? Description { get; }
-        }
-
-        public class Response
-        {
-            public Response(Item item)
-            {
-                this.Item = item ?? throw new ArgumentNullException(nameof(item));
-            }
-
-            public Item Item { get; }
-        }
+        public record Response(Item Item);
 
         internal class Handler : IRequestHandler<Command, Response>
         {
