@@ -1,7 +1,6 @@
 namespace Scaffold.Application.UnitTests.Components.Bucket
 {
     using System;
-    using System.Linq.Expressions;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Common.Models;

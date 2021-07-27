@@ -1,6 +1,6 @@
 # Code Analysis
 
-The [.NET Compiler Platform (_Roslyn_)](https://github.com/dotnet/roslyn) can analyze your code for issues as you type using built-in or third-party analyzers. These analyzers are often called [_Roslyn Analyzers_](https://docs.microsoft.com/visualstudio/code-quality/roslyn-analyzers-overview) and are primarily used to help you write more maintainable code. Roslyn Analyzers can be configured by using either an [_EditorConfig_](https://docs.microsoft.com/dotnet/fundamentals/code-analysis/code-style-rule-options) file or a [_rule set_](https://docs.microsoft.com/visualstudio/code-quality/using-rule-sets-to-group-code-analysis-rules) file. Scaffold currently uses a rule set file.
+The [.NET Compiler Platform (_Roslyn_)](https://github.com/dotnet/roslyn) can analyze your code for issues as you type using built-in or third-party analyzers. These analyzers are often called [_Roslyn Analyzers_](https://docs.microsoft.com/visualstudio/code-quality/roslyn-analyzers-overview) and are primarily used to help you write more maintainable code. Roslyn Analyzers can be configured by using either an [_EditorConfig_](https://docs.microsoft.com/dotnet/fundamentals/code-analysis/code-style-rule-options) file or a [_rule set_](https://docs.microsoft.com/visualstudio/code-quality/using-rule-sets-to-group-code-analysis-rules) file.
 
 In Scaffold, Roslyn Analyzers and the rule set file are configured globally for all projects by using a [_Directory.Build.props_](../Directory.Build.props) file.
 
