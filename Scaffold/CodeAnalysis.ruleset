@@ -1,14 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="Code Analysis Rule Set" Description="Code Analysis Rules for Scaffold" ToolsVersion="15.0">
 
-  <!-- https://docs.microsoft.com/dotnet/fundamentals/code-analysis/style-rules -->
-  <Rules AnalyzerId="Microsoft.CodeAnalysis.Diagnostics" RuleNamespace="Microsoft.CodeAnalysis.Diagnostics">
-  </Rules>
-
-  <!-- https://docs.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules -->
-  <Rules AnalyzerId="Microsoft.CodeAnalysis.NetAnalyzers" RuleNamespace="Microsoft.CodeAnalysis.NetAnalyzers">
-  </Rules>
-
   <!-- https://rules.sonarsource.com/csharp -->
   <Rules AnalyzerId="SonarAnalyzer.CSharp" RuleNamespace="SonarAnalyzer.CSharp">
   </Rules>
@@ -21,6 +13,10 @@
     <Rule Id="SA1623" Action="None" />
     <Rule Id="SA1633" Action="None" />
     <Rule Id="SA1652" Action="None" />
+  </Rules>
+
+  <!-- https://xunit.net/xunit.analyzers/rules -->
+  <Rules AnalyzerId="xunit.analyzers" RuleNamespace="xunit.analyzers">
   </Rules>
 
 </RuleSet>
