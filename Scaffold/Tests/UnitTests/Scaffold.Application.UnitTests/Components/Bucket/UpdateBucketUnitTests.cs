@@ -52,10 +52,10 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
 
                 // Assert
                 Assert.False(response.Created);
-                Assert.Equal(bucket.Id, response.Bucket.Id);
-                Assert.Equal(bucket.Name, response.Bucket.Name);
-                Assert.Equal(bucket.Description, response.Bucket.Description);
-                Assert.Equal(bucket.Size, response.Bucket.Size);
+                Assert.Equal(command.Id, response.Bucket.Id);
+                Assert.Equal(command.Name, response.Bucket.Name);
+                Assert.Equal(command.Description, response.Bucket.Description);
+                Assert.Equal(command.Size, response.Bucket.Size);
             }
 
             [Fact]
