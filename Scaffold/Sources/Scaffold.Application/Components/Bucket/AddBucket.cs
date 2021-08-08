@@ -6,6 +6,7 @@ namespace Scaffold.Application.Components.Bucket
     using AutoMapper;
     using MediatR;
     using Scaffold.Application.Common.Instrumentation;
+    using Scaffold.Application.Common.Messaging;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
     using Scaffold.Domain.Base;
@@ -20,9 +21,12 @@ namespace Scaffold.Application.Components.Bucket
         {
             private readonly IBucketRepository repository;
 
-            public Handler(IBucketRepository repository)
+            private readonly IPublisher publisher;
+
+            public Handler(IBucketRepository repository, IPublisher publisher)
             {
                 this.repository = repository;
+                this.publisher = publisher;
             }
 
             public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
@@ -42,6 +46,7 @@ namespace Scaffold.Application.Components.Bucket
                 }
 
                 await this.repository.AddAsync(bucket, cancellationToken);
+                await this.publisher.Publish(new BucketAddedEvent<Handler>(bucket.Id), CancellationToken.None);
 
                 return new Response(bucket);
             }

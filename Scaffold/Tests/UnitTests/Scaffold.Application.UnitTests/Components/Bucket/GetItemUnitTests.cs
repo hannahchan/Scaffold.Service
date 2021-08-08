@@ -1,8 +1,10 @@
 namespace Scaffold.Application.UnitTests.Components.Bucket
 {
     using System;
+    using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
+    using Scaffold.Application.Common.Messaging;
     using Scaffold.Application.Components.Bucket;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
@@ -13,6 +15,8 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
     {
         private readonly IBucketRepository repository;
 
+        private readonly Mock.Publisher publisher;
+
         public GetItemUnitTests()
         {
             BucketContext context = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
@@ -20,6 +24,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                 .Options);
 
             this.repository = new BucketRepository(context);
+            this.publisher = new Mock.Publisher();
         }
 
         public class Handler : GetItemUnitTests
@@ -37,7 +42,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     BucketId: bucket.Id,
                     ItemId: item.Id);
 
-                GetItem.Handler handler = new GetItem.Handler(this.repository);
+                GetItem.Handler handler = new GetItem.Handler(this.repository, this.publisher);
 
                 // Act
                 GetItem.Response response = await handler.Handle(query, default);
@@ -45,6 +50,18 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                 // Assert
                 Assert.Equal(item.Id, response.Item.Id);
                 Assert.Equal(item.Name, response.Item.Name);
+
+                Assert.Collection(
+                    this.publisher.PublishedEvents,
+                    publishedEvent =>
+                    {
+                        ItemRetrievedEvent<GetItem.Handler> bucketEvent = Assert.IsType<ItemRetrievedEvent<GetItem.Handler>>(publishedEvent.Notification);
+                        Assert.Equal("ItemRetrieved", bucketEvent.Type);
+                        Assert.Equal($"Retrieved Item {item.Id} from Bucket {bucket.Id}", bucketEvent.Description);
+                        Assert.Equal(bucket.Id, bucketEvent.BucketId);
+                        Assert.Equal(item.Id, bucketEvent.ItemId);
+                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
+                    });
             }
 
             [Fact]
@@ -58,7 +75,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     BucketId: bucket.Id,
                     ItemId: new Random().Next());
 
-                GetItem.Handler handler = new GetItem.Handler(this.repository);
+                GetItem.Handler handler = new GetItem.Handler(this.repository, this.publisher);
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() =>
@@ -66,6 +83,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
 
                 // Assert
                 Assert.IsType<ItemNotFoundException>(exception);
+                Assert.Empty(this.publisher.PublishedEvents);
             }
 
             [Fact]
@@ -76,7 +94,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     BucketId: new Random().Next(),
                     ItemId: new Random().Next());
 
-                GetItem.Handler handler = new GetItem.Handler(this.repository);
+                GetItem.Handler handler = new GetItem.Handler(this.repository, this.publisher);
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() =>
@@ -84,6 +102,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
 
                 // Assert
                 Assert.IsType<BucketNotFoundException>(exception);
+                Assert.Empty(this.publisher.PublishedEvents);
             }
         }
     }

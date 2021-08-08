@@ -1,9 +1,11 @@
 namespace Scaffold.Application.UnitTests.Components.Bucket
 {
     using System;
+    using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
     using Microsoft.EntityFrameworkCore;
+    using Scaffold.Application.Common.Messaging;
     using Scaffold.Application.Components.Bucket;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
@@ -15,6 +17,8 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
     {
         private readonly IBucketRepository repository;
 
+        private readonly Mock.Publisher publisher;
+
         public UpdateBucketUnitTests()
         {
             BucketContext context = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
@@ -22,6 +26,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                 .Options);
 
             this.repository = new BucketRepository(context);
+            this.publisher = new Mock.Publisher();
         }
 
         public class Handler : UpdateBucketUnitTests
@@ -45,7 +50,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     Description: Guid.NewGuid().ToString(),
                     Size: new Random().Next());
 
-                UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository);
+                UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository, this.publisher);
 
                 // Act
                 UpdateBucket.Response response = await handler.Handle(command, default);
@@ -56,6 +61,17 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                 Assert.Equal(command.Name, response.Bucket.Name);
                 Assert.Equal(command.Description, response.Bucket.Description);
                 Assert.Equal(command.Size, response.Bucket.Size);
+
+                Assert.Collection(
+                    this.publisher.PublishedEvents,
+                    publishedEvent =>
+                    {
+                        BucketUpdatedEvent<UpdateBucket.Handler> bucketEvent = Assert.IsType<BucketUpdatedEvent<UpdateBucket.Handler>>(publishedEvent.Notification);
+                        Assert.Equal("BucketUpdated", bucketEvent.Type);
+                        Assert.Equal($"Updated Bucket {response.Bucket.Id}", bucketEvent.Description);
+                        Assert.Equal(response.Bucket.Id, bucketEvent.BucketId);
+                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
+                    });
             }
 
             [Fact]
@@ -68,7 +84,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     Description: Guid.NewGuid().ToString(),
                     Size: new Random().Next());
 
-                UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository);
+                UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository, this.publisher);
 
                 // Act
                 UpdateBucket.Response response = await handler.Handle(command, default);
@@ -79,6 +95,17 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                 Assert.Equal(command.Name, response.Bucket.Name);
                 Assert.Equal(command.Description, response.Bucket.Description);
                 Assert.Equal(command.Size, response.Bucket.Size);
+
+                Assert.Collection(
+                    this.publisher.PublishedEvents,
+                    publishedEvent =>
+                    {
+                        BucketAddedEvent<UpdateBucket.Handler> bucketEvent = Assert.IsType<BucketAddedEvent<UpdateBucket.Handler>>(publishedEvent.Notification);
+                        Assert.Equal("BucketAdded", bucketEvent.Type);
+                        Assert.Equal($"Added Bucket {response.Bucket.Id}", bucketEvent.Description);
+                        Assert.Equal(response.Bucket.Id, bucketEvent.BucketId);
+                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
+                    });
             }
 
             [Fact]
@@ -95,7 +122,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     Description: null,
                     Size: 0);
 
-                UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository);
+                UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository, this.publisher);
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() =>
@@ -103,6 +130,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
 
                 // Assert
                 Assert.IsAssignableFrom<DomainException>(exception);
+                Assert.Empty(this.publisher.PublishedEvents);
             }
 
             [Fact]
@@ -115,7 +143,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     Description: null,
                     Size: -1);
 
-                UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository);
+                UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository, this.publisher);
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() =>
@@ -123,6 +151,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
 
                 // Assert
                 Assert.IsAssignableFrom<DomainException>(exception);
+                Assert.Empty(this.publisher.PublishedEvents);
             }
         }
 

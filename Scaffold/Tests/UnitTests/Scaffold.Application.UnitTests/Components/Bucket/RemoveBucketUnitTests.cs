@@ -1,8 +1,10 @@
 namespace Scaffold.Application.UnitTests.Components.Bucket
 {
     using System;
+    using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
+    using Scaffold.Application.Common.Messaging;
     using Scaffold.Application.Components.Bucket;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
@@ -13,6 +15,8 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
     {
         private readonly IBucketRepository repository;
 
+        private readonly Mock.Publisher publisher;
+
         public RemoveBucketUnitTests()
         {
             BucketContext context = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
@@ -20,6 +24,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                 .Options);
 
             this.repository = new BucketRepository(context);
+            this.publisher = new Mock.Publisher();
         }
 
         public class Handler : RemoveBucketUnitTests
@@ -32,13 +37,24 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                 await this.repository.AddAsync(bucket);
 
                 RemoveBucket.Command command = new RemoveBucket.Command(bucket.Id);
-                RemoveBucket.Handler handler = new RemoveBucket.Handler(this.repository);
+                RemoveBucket.Handler handler = new RemoveBucket.Handler(this.repository, this.publisher);
 
                 // Act
                 await handler.Handle(command, default);
 
                 // Assert
                 Assert.Null(this.repository.Get(bucket.Id));
+
+                Assert.Collection(
+                    this.publisher.PublishedEvents,
+                    publishedEvent =>
+                    {
+                        BucketRemovedEvent<RemoveBucket.Handler> bucketEvent = Assert.IsType<BucketRemovedEvent<RemoveBucket.Handler>>(publishedEvent.Notification);
+                        Assert.Equal("BucketRemoved", bucketEvent.Type);
+                        Assert.Equal($"Removed Bucket {bucket.Id}", bucketEvent.Description);
+                        Assert.Equal(bucket.Id, bucketEvent.BucketId);
+                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
+                    });
             }
 
             [Fact]
@@ -46,13 +62,14 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
             {
                 // Arrange
                 RemoveBucket.Command command = new RemoveBucket.Command(new Random().Next());
-                RemoveBucket.Handler handler = new RemoveBucket.Handler(this.repository);
+                RemoveBucket.Handler handler = new RemoveBucket.Handler(this.repository, this.publisher);
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() => handler.Handle(command, default));
 
                 // Assert
                 Assert.IsType<BucketNotFoundException>(exception);
+                Assert.Empty(this.publisher.PublishedEvents);
             }
         }
     }

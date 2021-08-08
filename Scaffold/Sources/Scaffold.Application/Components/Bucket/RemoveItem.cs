@@ -6,6 +6,7 @@ namespace Scaffold.Application.Components.Bucket
     using System.Threading.Tasks;
     using MediatR;
     using Scaffold.Application.Common.Instrumentation;
+    using Scaffold.Application.Common.Messaging;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
 
@@ -17,9 +18,12 @@ namespace Scaffold.Application.Components.Bucket
         {
             private readonly IBucketRepository repository;
 
-            public Handler(IBucketRepository repository)
+            private readonly IPublisher publisher;
+
+            public Handler(IBucketRepository repository, IPublisher publisher)
             {
                 this.repository = repository;
+                this.publisher = publisher;
             }
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
@@ -30,7 +34,9 @@ namespace Scaffold.Application.Components.Bucket
                 Item item = bucket.Items.SingleOrDefault(x => x.Id == request.ItemId) ?? throw new ItemNotFoundException(request.ItemId);
 
                 bucket.RemoveItem(item);
+
                 await this.repository.UpdateAsync(bucket, cancellationToken);
+                await this.publisher.Publish(new ItemRemovedEvent<Handler>(bucket.Id, item.Id), CancellationToken.None);
 
                 return default;
             }

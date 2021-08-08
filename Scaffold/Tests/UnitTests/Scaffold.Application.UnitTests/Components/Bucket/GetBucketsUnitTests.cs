@@ -1,8 +1,11 @@
 namespace Scaffold.Application.UnitTests.Components.Bucket
 {
     using System;
+    using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
+    using Scaffold.Application.Common.Messaging;
     using Scaffold.Application.Common.Models;
     using Scaffold.Application.Components.Bucket;
     using Scaffold.Application.Interfaces;
@@ -13,6 +16,8 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
     public class GetBucketsUnitTests
     {
         private readonly IBucketRepository repository;
+
+        private readonly Mock.Publisher publisher;
 
         private readonly Bucket[] testBuckets =
         {
@@ -37,6 +42,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                 .Options);
 
             this.repository = new BucketRepository(context);
+            this.publisher = new Mock.Publisher();
         }
 
         public class Handler : GetBucketsUnitTests
@@ -53,7 +59,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                 });
 
                 GetBuckets.Query query = new GetBuckets.Query(bucket => true);
-                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
+                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
 
                 // Act
                 GetBuckets.Response response = await handler.Handle(query, default);
@@ -64,6 +70,17 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     bucket => Assert.Equal("Bucket 1", bucket.Name),
                     bucket => Assert.Equal("Bucket 2", bucket.Name),
                     bucket => Assert.Equal("Bucket 3", bucket.Name));
+
+                Assert.Collection(
+                    this.publisher.PublishedEvents,
+                    publishedEvent =>
+                    {
+                        BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                        Assert.Equal("BucketsRetrieved", bucketEvent.Type);
+                        Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
+                        Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
+                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
+                    });
             }
 
             [Fact]
@@ -71,13 +88,24 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
             {
                 // Arrange
                 GetBuckets.Query query = new GetBuckets.Query(bucket => true);
-                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
+                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
 
                 // Act
                 GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
                 Assert.Empty(response.Buckets);
+
+                Assert.Collection(
+                    this.publisher.PublishedEvents,
+                    publishedEvent =>
+                    {
+                        BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                        Assert.Equal("BucketsRetrieved", bucketEvent.Type);
+                        Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
+                        Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
+                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
+                    });
             }
 
             [Fact]
@@ -94,7 +122,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                 });
 
                 GetBuckets.Query query = new GetBuckets.Query(bucket => bucket.Size == 2 || bucket.Size == 5);
-                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
+                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
 
                 // Act
                 GetBuckets.Response response = await handler.Handle(query, default);
@@ -104,6 +132,17 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     response.Buckets,
                     bucket => Assert.Equal(2, bucket.Size),
                     bucket => Assert.Equal(5, bucket.Size));
+
+                Assert.Collection(
+                    this.publisher.PublishedEvents,
+                    publishedEvent =>
+                    {
+                        BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                        Assert.Equal("BucketsRetrieved", bucketEvent.Type);
+                        Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
+                        Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
+                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
+                    });
             }
 
             [Fact]
@@ -123,7 +162,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     Offset: null,
                     SortOrder: null);
 
-                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
+                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
 
                 // Act
                 GetBuckets.Response response = await handler.Handle(query, default);
@@ -134,6 +173,17 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     bucket => Assert.Equal("Bucket 1", bucket.Name),
                     bucket => Assert.Equal("Bucket 2", bucket.Name),
                     bucket => Assert.Equal("Bucket 3", bucket.Name));
+
+                Assert.Collection(
+                    this.publisher.PublishedEvents,
+                    publishedEvent =>
+                    {
+                        BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                        Assert.Equal("BucketsRetrieved", bucketEvent.Type);
+                        Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
+                        Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
+                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
+                    });
             }
 
             [Fact]
@@ -153,7 +203,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     Offset: null,
                     SortOrder: null);
 
-                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
+                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
 
                 // Act
                 GetBuckets.Response response = await handler.Handle(query, default);
@@ -163,6 +213,17 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     response.Buckets,
                     bucket => Assert.Equal("Bucket 1", bucket.Name),
                     bucket => Assert.Equal("Bucket 2", bucket.Name));
+
+                Assert.Collection(
+                    this.publisher.PublishedEvents,
+                    publishedEvent =>
+                    {
+                        BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                        Assert.Equal("BucketsRetrieved", bucketEvent.Type);
+                        Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
+                        Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
+                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
+                    });
             }
 
             [Fact]
@@ -182,7 +243,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     Offset: 1,
                     SortOrder: null);
 
-                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
+                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
 
                 // Act
                 GetBuckets.Response response = await handler.Handle(query, default);
@@ -192,6 +253,17 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     response.Buckets,
                     bucket => Assert.Equal("Bucket 2", bucket.Name),
                     bucket => Assert.Equal("Bucket 3", bucket.Name));
+
+                Assert.Collection(
+                    this.publisher.PublishedEvents,
+                    publishedEvent =>
+                    {
+                        BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                        Assert.Equal("BucketsRetrieved", bucketEvent.Type);
+                        Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
+                        Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
+                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
+                    });
             }
 
             [Fact]
@@ -211,13 +283,24 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     Offset: 1,
                     SortOrder: null);
 
-                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
+                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
 
                 // Act
                 GetBuckets.Response response = await handler.Handle(query, default);
 
                 // Assert
                 Assert.Collection(response.Buckets, bucket => Assert.Equal("Bucket 2", bucket.Name));
+
+                Assert.Collection(
+                    this.publisher.PublishedEvents,
+                    publishedEvent =>
+                    {
+                        BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                        Assert.Equal("BucketsRetrieved", bucketEvent.Type);
+                        Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
+                        Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
+                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
+                    });
             }
 
             [Fact]
@@ -235,7 +318,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     Offset: null,
                     SortOrder: sortOrder);
 
-                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
+                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
 
                 // Act
                 GetBuckets.Response response = await handler.Handle(query, default);
@@ -255,6 +338,17 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     bucket => Assert.Equal(10, bucket.Size),
                     bucket => Assert.Equal(11, bucket.Size),
                     bucket => Assert.Equal(12, bucket.Size));
+
+                Assert.Collection(
+                    this.publisher.PublishedEvents,
+                    publishedEvent =>
+                    {
+                        BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                        Assert.Equal("BucketsRetrieved", bucketEvent.Type);
+                        Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
+                        Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
+                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
+                    });
             }
 
             [Fact]
@@ -272,7 +366,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     Offset: null,
                     SortOrder: sortOrder);
 
-                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
+                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
 
                 // Act
                 GetBuckets.Response response = await handler.Handle(query, default);
@@ -292,6 +386,17 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     bucket => Assert.Equal(3, bucket.Size),
                     bucket => Assert.Equal(2, bucket.Size),
                     bucket => Assert.Equal(1, bucket.Size));
+
+                Assert.Collection(
+                    this.publisher.PublishedEvents,
+                    publishedEvent =>
+                    {
+                        BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                        Assert.Equal("BucketsRetrieved", bucketEvent.Type);
+                        Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
+                        Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
+                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
+                    });
             }
 
             [Fact]
@@ -309,7 +414,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     Offset: null,
                     SortOrder: sortOrder);
 
-                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
+                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
 
                 // Act
                 GetBuckets.Response response = await handler.Handle(query, default);
@@ -323,6 +428,17 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     bucket => Assert.Equal(4, bucket.Size),
                     bucket => Assert.Equal(5, bucket.Size),
                     bucket => Assert.Equal(6, bucket.Size));
+
+                Assert.Collection(
+                    this.publisher.PublishedEvents,
+                    publishedEvent =>
+                    {
+                        BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                        Assert.Equal("BucketsRetrieved", bucketEvent.Type);
+                        Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
+                        Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
+                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
+                    });
             }
 
             [Fact]
@@ -340,7 +456,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     Offset: 6,
                     SortOrder: sortOrder);
 
-                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
+                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
 
                 // Act
                 GetBuckets.Response response = await handler.Handle(query, default);
@@ -354,6 +470,17 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     bucket => Assert.Equal(10, bucket.Size),
                     bucket => Assert.Equal(11, bucket.Size),
                     bucket => Assert.Equal(12, bucket.Size));
+
+                Assert.Collection(
+                    this.publisher.PublishedEvents,
+                    publishedEvent =>
+                    {
+                        BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                        Assert.Equal("BucketsRetrieved", bucketEvent.Type);
+                        Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
+                        Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
+                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
+                    });
             }
 
             [Fact]
@@ -371,7 +498,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     Offset: 3,
                     SortOrder: sortOrder);
 
-                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
+                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
 
                 // Act
                 GetBuckets.Response response = await handler.Handle(query, default);
@@ -385,6 +512,17 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     bucket => Assert.Equal(7, bucket.Size),
                     bucket => Assert.Equal(8, bucket.Size),
                     bucket => Assert.Equal(9, bucket.Size));
+
+                Assert.Collection(
+                    this.publisher.PublishedEvents,
+                    publishedEvent =>
+                    {
+                        BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                        Assert.Equal("BucketsRetrieved", bucketEvent.Type);
+                        Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
+                        Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
+                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
+                    });
             }
 
             [Fact]
@@ -403,7 +541,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     Offset: null,
                     SortOrder: sortOrder);
 
-                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
+                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
 
                 // Act
                 GetBuckets.Response response = await handler.Handle(query, default);
@@ -470,6 +608,17 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     {
                         Assert.Equal("B", bucket.Name);
                         Assert.Equal("3", bucket.Description);
+                    });
+
+                Assert.Collection(
+                    this.publisher.PublishedEvents,
+                    publishedEvent =>
+                    {
+                        BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                        Assert.Equal("BucketsRetrieved", bucketEvent.Type);
+                        Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
+                        Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
+                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
                     });
             }
 
@@ -489,7 +638,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     Offset: null,
                     SortOrder: sortOrder);
 
-                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
+                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
 
                 // Act
                 GetBuckets.Response response = await handler.Handle(query, default);
@@ -556,6 +705,17 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     {
                         Assert.Equal("A", bucket.Name);
                         Assert.Equal("1", bucket.Description);
+                    });
+
+                Assert.Collection(
+                    this.publisher.PublishedEvents,
+                    publishedEvent =>
+                    {
+                        BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                        Assert.Equal("BucketsRetrieved", bucketEvent.Type);
+                        Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
+                        Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
+                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
                     });
             }
 
@@ -575,7 +735,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     Offset: null,
                     SortOrder: sortOrder);
 
-                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
+                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
 
                 // Act
                 GetBuckets.Response response = await handler.Handle(query, default);
@@ -643,6 +803,17 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                         Assert.Equal("B", bucket.Name);
                         Assert.Equal("1", bucket.Description);
                     });
+
+                Assert.Collection(
+                    this.publisher.PublishedEvents,
+                    publishedEvent =>
+                    {
+                        BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                        Assert.Equal("BucketsRetrieved", bucketEvent.Type);
+                        Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
+                        Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
+                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
+                    });
             }
 
             [Fact]
@@ -661,7 +832,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     Offset: null,
                     SortOrder: sortOrder);
 
-                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository);
+                GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
 
                 // Act
                 GetBuckets.Response response = await handler.Handle(query, default);
@@ -728,6 +899,17 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     {
                         Assert.Equal("A", bucket.Name);
                         Assert.Equal("3", bucket.Description);
+                    });
+
+                Assert.Collection(
+                    this.publisher.PublishedEvents,
+                    publishedEvent =>
+                    {
+                        BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                        Assert.Equal("BucketsRetrieved", bucketEvent.Type);
+                        Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
+                        Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
+                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
                     });
             }
         }

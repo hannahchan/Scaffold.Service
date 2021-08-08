@@ -3,11 +3,13 @@ namespace Scaffold.Application.Components.Bucket
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
     using System.Linq.Expressions;
     using System.Threading;
     using System.Threading.Tasks;
     using MediatR;
     using Scaffold.Application.Common.Instrumentation;
+    using Scaffold.Application.Common.Messaging;
     using Scaffold.Application.Common.Models;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
@@ -22,15 +24,22 @@ namespace Scaffold.Application.Components.Bucket
         {
             private readonly IBucketReadRepository repository;
 
-            public Handler(IBucketReadRepository repository)
+            private readonly IPublisher publisher;
+
+            public Handler(IBucketReadRepository repository, IPublisher publisher)
             {
                 this.repository = repository;
+                this.publisher = publisher;
             }
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
                 using Activity? activity = ActivityProvider.StartActivity(nameof(GetBuckets));
-                return new Response(await this.repository.GetAsync(request.Predicate, request.Limit, request.Offset, request.SortOrder, cancellationToken));
+
+                List<Bucket> buckets = await this.repository.GetAsync(request.Predicate, request.Limit, request.Offset, request.SortOrder, cancellationToken);
+                await this.publisher.Publish(new BucketsRetrievedEvent<Handler>(buckets.Select(bucket => bucket.Id).ToArray()), CancellationToken.None);
+
+                return new Response(buckets);
             }
         }
     }

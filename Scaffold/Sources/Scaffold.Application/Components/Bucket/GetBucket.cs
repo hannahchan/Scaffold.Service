@@ -5,6 +5,7 @@ namespace Scaffold.Application.Components.Bucket
     using System.Threading.Tasks;
     using MediatR;
     using Scaffold.Application.Common.Instrumentation;
+    using Scaffold.Application.Common.Messaging;
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
 
@@ -18,15 +19,22 @@ namespace Scaffold.Application.Components.Bucket
         {
             private readonly IBucketReadRepository repository;
 
-            public Handler(IBucketReadRepository repository)
+            private readonly IPublisher publisher;
+
+            public Handler(IBucketReadRepository repository, IPublisher publisher)
             {
                 this.repository = repository;
+                this.publisher = publisher;
             }
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
                 using Activity? activity = ActivityProvider.StartActivity(nameof(GetBucket));
-                return new Response(await this.repository.GetAsync(request.Id, cancellationToken) ?? throw new BucketNotFoundException(request.Id));
+
+                Bucket bucket = await this.repository.GetAsync(request.Id, cancellationToken) ?? throw new BucketNotFoundException(request.Id);
+                await this.publisher.Publish(new BucketRetrievedEvent<Handler>(bucket.Id), CancellationToken.None);
+
+                return new Response(bucket);
             }
         }
     }

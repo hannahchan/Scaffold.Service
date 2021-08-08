@@ -25,7 +25,7 @@ The Command / Query Bus in Scaffold uses the mediator pattern which has been imp
 
 ## Event Bus
 
-To facilitate Component-to-Component communication and to keep Components decoupled from each other, Scaffold uses an in-process Event Bus which has been implemented with the help of the [MediatR](https://github.com/jbogard/MediatR) library.
+To facilitate Component-to-Component communication and to keep Components decoupled from each other, Scaffold uses an in-process Event Bus which has been implemented with the help of the [MediatR](https://github.com/jbogard/MediatR) library. Instead of taking direct dependencies on each other, Components instead take a dependency on shared [message formats](../Sources/Scaffold.Application/Common/Messaging).
 
 ## Components
 

@@ -27,7 +27,7 @@
       "commands": ["reportgenerator"]
     },
     "dotnet-stryker": {
-      "version": "0.22.7",
+      "version": "0.22.9",
       "commands": ["dotnet-stryker"]
     },
     "microsoft.dotnet-httprepl": {
