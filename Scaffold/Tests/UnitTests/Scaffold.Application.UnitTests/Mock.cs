@@ -11,10 +11,13 @@ namespace Scaffold.Application.UnitTests
     {
         public class Logger<T> : ILogger<T>
         {
-            public List<LogEntry> LogEntries { get; set; } = new List<LogEntry>();
+            public List<LogEntry> LogEntries { get; } = new List<LogEntry>();
+
+            public List<object> Scopes { get; } = new List<object>();
 
             public IDisposable BeginScope<TState>(TState state)
             {
+                this.Scopes.Add(state);
                 return NullScope.Instance;
             }
 
