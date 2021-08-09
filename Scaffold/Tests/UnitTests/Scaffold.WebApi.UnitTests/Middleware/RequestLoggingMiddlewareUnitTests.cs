@@ -5,7 +5,6 @@ namespace Scaffold.WebApi.UnitTests.Middleware
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using Moq;
     using Scaffold.WebApi.Middleware;
     using Xunit;
 
@@ -22,12 +21,11 @@ namespace Scaffold.WebApi.UnitTests.Middleware
         public async Task When_InvokingMiddlewareWithStatusCode_Expect_LogLevel(int statusCode, LogLevel expectedLogLevel)
         {
             // Arrange
-            Mock<ILogger<RequestLoggingMiddleware>> mock = new Mock<ILogger<RequestLoggingMiddleware>>();
-            mock.Setup(m => m.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
+            Mock.Logger<RequestLoggingMiddleware> logger = new Mock.Logger<RequestLoggingMiddleware>();
 
             RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
                 (httpContext) => Task.CompletedTask,
-                mock.Object,
+                logger,
                 Options.Create(new RequestLoggingMiddleware.Options()));
 
             HttpContext context = new DefaultHttpContext();
@@ -37,23 +35,18 @@ namespace Scaffold.WebApi.UnitTests.Middleware
             await middleware.Invoke(context);
 
             // Assert
-            mock.Verify(
-                m => m.Log(
-                    LogLevel.Information,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((@object, type) => @object.ToString().Equals("Inbound HTTP   started")),
-                    null,
-                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-                Times.Once);
-
-            mock.Verify(
-                m => m.Log(
-                    expectedLogLevel,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((@object, type) => @object.ToString().Equals($"Inbound HTTP   finished - {statusCode}")),
-                    null,
-                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-                Times.Once());
+            Assert.Collection(
+                logger.LogEntries,
+                logEntry =>
+                {
+                    Assert.Equal(LogLevel.Information, logEntry.LogLevel);
+                    Assert.Equal("Inbound HTTP   started", logEntry.Message);
+                },
+                logEntry =>
+                {
+                    Assert.Equal(expectedLogLevel, logEntry.LogLevel);
+                    Assert.Equal($"Inbound HTTP   finished - {statusCode}", logEntry.Message);
+                });
         }
 
         [Theory]
@@ -64,8 +57,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
         public async Task When_InvokingMiddlewareWithPathAndIgnorePattern_Expect_Logged(string path, string ignorePattern, bool logged)
         {
             // Arrange
-            Mock<ILogger<RequestLoggingMiddleware>> mock = new Mock<ILogger<RequestLoggingMiddleware>>();
-            mock.Setup(m => m.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
+            Mock.Logger<RequestLoggingMiddleware> logger = new Mock.Logger<RequestLoggingMiddleware>();
 
             RequestLoggingMiddleware.Options options = new RequestLoggingMiddleware.Options
             {
@@ -74,7 +66,7 @@ namespace Scaffold.WebApi.UnitTests.Middleware
 
             RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
                 (httpContext) => Task.CompletedTask,
-                mock.Object,
+                logger,
                 Options.Create(options));
 
             HttpContext context = new DefaultHttpContext();
@@ -84,14 +76,14 @@ namespace Scaffold.WebApi.UnitTests.Middleware
             await middleware.Invoke(context);
 
             // Assert
-            mock.Verify(
-                m => m.Log(
-                    It.IsAny<LogLevel>(),
-                    It.IsAny<EventId>(),
-                    It.IsAny<It.IsAnyType>(),
-                    null,
-                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-                Times.Exactly(logged ? 2 : 0));
+            if (logged)
+            {
+                Assert.Equal(2, logger.LogEntries.Count);
+            }
+            else
+            {
+                Assert.Empty(logger.LogEntries);
+            }
         }
 
         [Fact]
@@ -99,13 +91,11 @@ namespace Scaffold.WebApi.UnitTests.Middleware
         {
             // Arrange
             Exception exception = new Exception("Unit Test");
-
-            Mock<ILogger<RequestLoggingMiddleware>> mock = new Mock<ILogger<RequestLoggingMiddleware>>();
-            mock.Setup(m => m.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
+            Mock.Logger<RequestLoggingMiddleware> logger = new Mock.Logger<RequestLoggingMiddleware>();
 
             RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
                 (httpContext) => throw exception,
-                mock.Object,
+                logger,
                 Options.Create(new RequestLoggingMiddleware.Options()));
 
             HttpContext context = new DefaultHttpContext();
@@ -114,23 +104,18 @@ namespace Scaffold.WebApi.UnitTests.Middleware
             Exception result = await Record.ExceptionAsync(() => middleware.Invoke(context));
 
             // Assert
-            mock.Verify(
-                m => m.Log(
-                    LogLevel.Information,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((@object, type) => @object.ToString().Equals("Inbound HTTP   started")),
-                    null,
-                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-                Times.Once);
-
-            mock.Verify(
-                m => m.Log(
-                    LogLevel.Critical,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((@object, type) => @object.ToString().Equals("Inbound HTTP   finished - Unhandled Exception")),
-                    exception,
-                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-                Times.Once);
+            Assert.Collection(
+                logger.LogEntries,
+                logEntry =>
+                {
+                    Assert.Equal(LogLevel.Information, logEntry.LogLevel);
+                    Assert.Equal("Inbound HTTP   started", logEntry.Message);
+                },
+                logEntry =>
+                {
+                    Assert.Equal(LogLevel.Critical, logEntry.LogLevel);
+                    Assert.Equal("Inbound HTTP   finished - Unhandled Exception", logEntry.Message);
+                });
 
             Assert.NotNull(result);
             Assert.Equal(exception, result);

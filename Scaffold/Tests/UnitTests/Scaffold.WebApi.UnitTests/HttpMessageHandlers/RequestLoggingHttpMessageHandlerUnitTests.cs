@@ -7,7 +7,6 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
     using System.Threading.Tasks;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Abstractions;
-    using Moq;
     using Scaffold.WebApi.HttpMessageHandlers;
     using Xunit;
 
@@ -24,10 +23,9 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
         public async Task When_SendingAsyncRespondsWithStatusCode_Expect_LogLevel(int statusCode, LogLevel expectedLogLevel)
         {
             // Arrange
-            Mock<ILogger<RequestLoggingHttpMessageHandler>> mock = new Mock<ILogger<RequestLoggingHttpMessageHandler>>();
-            mock.Setup(m => m.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
+            Mock.Logger<RequestLoggingHttpMessageHandler> logger = new Mock.Logger<RequestLoggingHttpMessageHandler>();
 
-            RequestLoggingHttpMessageHandler handler = new RequestLoggingHttpMessageHandler(mock.Object)
+            RequestLoggingHttpMessageHandler handler = new RequestLoggingHttpMessageHandler(logger)
             {
                 InnerHandler = new MockResponseReturningInnerHandler(statusCode),
             };
@@ -39,35 +37,28 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
             }
 
             // Assert
-            mock.Verify(
-                m => m.Log(
-                    LogLevel.Information,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((@object, type) => @object.ToString().Equals("Outbound HTTP GET http://localhost/ started")),
-                    null,
-                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-                Times.Once());
-
-            mock.Verify(
-                m => m.Log(
-                    expectedLogLevel,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((@object, type) => @object.ToString().Equals($"Outbound HTTP GET http://localhost/ finished - {statusCode}")),
-                    null,
-                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-                Times.Once());
+            Assert.Collection(
+                logger.LogEntries,
+                logEntry =>
+                {
+                    Assert.Equal(LogLevel.Information, logEntry.LogLevel);
+                    Assert.Equal("Outbound HTTP GET http://localhost/ started", logEntry.Message);
+                },
+                logEntry =>
+                {
+                    Assert.Equal(expectedLogLevel, logEntry.LogLevel);
+                    Assert.Equal($"Outbound HTTP GET http://localhost/ finished - {statusCode}", logEntry.Message);
+                });
         }
 
         [Fact]
         public async Task When_SendingAsyncRespondsWithStatusCode_Expect_LogLevelCritical()
         {
             // Arrange
-            Mock<ILogger<RequestLoggingHttpMessageHandler>> mock = new Mock<ILogger<RequestLoggingHttpMessageHandler>>();
-            mock.Setup(m => m.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
-
+            Mock.Logger<RequestLoggingHttpMessageHandler> logger = new Mock.Logger<RequestLoggingHttpMessageHandler>();
             Exception exception = new Exception();
 
-            RequestLoggingHttpMessageHandler handler = new RequestLoggingHttpMessageHandler(mock.Object)
+            RequestLoggingHttpMessageHandler handler = new RequestLoggingHttpMessageHandler(logger)
             {
                 InnerHandler = new MockExceptionThrowingInnerHandler(exception),
             };
@@ -81,23 +72,18 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
             }
 
             // Assert
-            mock.Verify(
-                m => m.Log(
-                    LogLevel.Information,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((@object, type) => @object.ToString().Equals("Outbound HTTP GET http://localhost/ started")),
-                    null,
-                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-                Times.Once);
-
-            mock.Verify(
-                m => m.Log(
-                    LogLevel.Critical,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((@object, type) => @object.ToString().Equals("Outbound HTTP GET http://localhost/ finished - Unhandled Exception")),
-                    exception,
-                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-                Times.Once);
+            Assert.Collection(
+                logger.LogEntries,
+                logEntry =>
+                {
+                    Assert.Equal(LogLevel.Information, logEntry.LogLevel);
+                    Assert.Equal("Outbound HTTP GET http://localhost/ started", logEntry.Message);
+                },
+                logEntry =>
+                {
+                    Assert.Equal(LogLevel.Critical, logEntry.LogLevel);
+                    Assert.Equal("Outbound HTTP GET http://localhost/ finished - Unhandled Exception", logEntry.Message);
+                });
 
             Assert.NotNull(result);
             Assert.Equal(exception, result);
