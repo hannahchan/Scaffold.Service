@@ -15,7 +15,7 @@ namespace Scaffold.Application.UnitTests
 
             public IDisposable BeginScope<TState>(TState state)
             {
-                throw new NotImplementedException();
+                return NullScope.Instance;
             }
 
             public bool IsEnabled(LogLevel logLevel)
@@ -26,6 +26,20 @@ namespace Scaffold.Application.UnitTests
             public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
             {
                 this.LogEntries.Add(new LogEntry(typeof(T).FullName, logLevel, eventId, formatter(state, exception), exception));
+            }
+
+            public sealed class NullScope : IDisposable
+            {
+                private NullScope()
+                {
+                }
+
+                public static NullScope Instance { get; } = new NullScope();
+
+                public void Dispose()
+                {
+                    // Do nothing
+                }
             }
 
             public record LogEntry(string CategoryName, LogLevel LogLevel, EventId EventId, string Message, Exception Exception);
