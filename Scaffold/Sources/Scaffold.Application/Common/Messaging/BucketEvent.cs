@@ -2,14 +2,15 @@ namespace Scaffold.Application.Common.Messaging
 {
     using System;
     using System.Diagnostics;
+    using MediatR;
     using Scaffold.Application.Common.Instrumentation;
 
-    internal abstract record BucketEvent(string? Source, string Type, string Description) : ApplicationEvent(
-        Timestamp: DateTime.UtcNow,
-        TraceId: Activity.Current?.GetTraceId(),
-        Source: Source,
-        Type: Type,
-        Description: Description);
+    internal abstract record BucketEvent(string? Source, string Type, string Description) : IAuditableEvent, INotification
+    {
+        public DateTime Timestamp { get; } = DateTime.UtcNow;
+
+        public string? TraceId { get; } = Activity.Current?.GetTraceId();
+    }
 
     internal record BucketAddedEvent<TSource>(int BucketId) : BucketEvent(
         Source: typeof(TSource).FullName,
