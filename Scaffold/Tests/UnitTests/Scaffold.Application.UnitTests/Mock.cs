@@ -7,6 +7,7 @@ namespace Scaffold.Application.UnitTests
     using MediatR;
     using Microsoft.Extensions.Logging;
 
+    // Contains shared and reusable mocks
     public static class Mock
     {
         public class Logger<T> : ILogger<T>

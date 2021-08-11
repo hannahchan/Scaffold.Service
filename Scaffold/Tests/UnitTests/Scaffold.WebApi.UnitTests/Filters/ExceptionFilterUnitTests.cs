@@ -8,8 +8,6 @@ namespace Scaffold.WebApi.UnitTests.Filters
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Abstractions;
     using Microsoft.AspNetCore.Mvc.Filters;
-    using Microsoft.AspNetCore.Mvc.Infrastructure;
-    using Microsoft.AspNetCore.Mvc.ModelBinding;
     using Microsoft.AspNetCore.Routing;
     using Scaffold.Application.Common.Exceptions;
     using Scaffold.Domain.Base;
@@ -43,7 +41,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     Exception = exception,
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter(new MockProblemDetailsFactory());
+                ExceptionFilter exceptionFilter = new ExceptionFilter(new Mock.ProblemDetailsFactory());
 
                 // Act
                 exceptionFilter.OnException(context);
@@ -67,7 +65,7 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     Exception = exception,
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter(new MockProblemDetailsFactory());
+                ExceptionFilter exceptionFilter = new ExceptionFilter(new Mock.ProblemDetailsFactory());
 
                 // Act
                 exceptionFilter.OnException(context);
@@ -89,53 +87,13 @@ namespace Scaffold.WebApi.UnitTests.Filters
                     Exception = new Exception(),
                 };
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter(new MockProblemDetailsFactory());
+                ExceptionFilter exceptionFilter = new ExceptionFilter(new Mock.ProblemDetailsFactory());
 
                 // Act
                 exceptionFilter.OnException(context);
 
                 // Assert
                 Assert.Null(context.Result);
-            }
-        }
-
-        private class MockProblemDetailsFactory : ProblemDetailsFactory
-        {
-            public override ProblemDetails CreateProblemDetails(
-                HttpContext httpContext,
-                int? statusCode = null,
-                string title = null,
-                string type = null,
-                string detail = null,
-                string instance = null)
-            {
-                return new ProblemDetails
-                {
-                    Status = statusCode,
-                    Title = title,
-                    Type = type,
-                    Detail = detail,
-                    Instance = instance,
-                };
-            }
-
-            public override ValidationProblemDetails CreateValidationProblemDetails(
-                HttpContext httpContext,
-                ModelStateDictionary modelStateDictionary,
-                int? statusCode = null,
-                string title = null,
-                string type = null,
-                string detail = null,
-                string instance = null)
-            {
-                return new ValidationProblemDetails
-                {
-                    Status = statusCode,
-                    Title = title,
-                    Type = type,
-                    Detail = detail,
-                    Instance = instance,
-                };
             }
         }
 

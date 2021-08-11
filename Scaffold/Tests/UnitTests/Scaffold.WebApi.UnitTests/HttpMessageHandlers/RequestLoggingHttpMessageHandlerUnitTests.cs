@@ -27,7 +27,7 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
 
             RequestLoggingHttpMessageHandler handler = new RequestLoggingHttpMessageHandler(logger)
             {
-                InnerHandler = new MockResponseReturningInnerHandler(statusCode),
+                InnerHandler = new Mock.HttpRequestHandler(new HttpResponseMessage { StatusCode = (HttpStatusCode)statusCode }),
             };
 
             // Act
@@ -60,7 +60,7 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
 
             RequestLoggingHttpMessageHandler handler = new RequestLoggingHttpMessageHandler(logger)
             {
-                InnerHandler = new MockExceptionThrowingInnerHandler(exception),
+                InnerHandler = new Mock.HttpRequestHandler(exception),
             };
 
             Exception result;
@@ -93,7 +93,7 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
         public async Task When_SendingAsyncWithNullRequestUri_Expect_InvalidOperationException()
         {
             // Arrange
-            TestRequestLoggingHttpMessageHandler handler = new TestRequestLoggingHttpMessageHandler();
+            WrappedRequestLoggingHttpMessageHandler handler = new WrappedRequestLoggingHttpMessageHandler();
             HttpRequestMessage request = new HttpRequestMessage()
             {
                 RequestUri = null,
@@ -108,39 +108,10 @@ namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers
             Assert.Equal("Missing RequestUri while processing request.", invalidOperationException.Message);
         }
 
-        private class MockResponseReturningInnerHandler : DelegatingHandler
+        // Required to call protected methods
+        private class WrappedRequestLoggingHttpMessageHandler : RequestLoggingHttpMessageHandler
         {
-            private readonly int statusCode;
-
-            public MockResponseReturningInnerHandler(int statusCode)
-            {
-                this.statusCode = statusCode;
-            }
-
-            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-            {
-                return Task.FromResult(new HttpResponseMessage { StatusCode = (HttpStatusCode)this.statusCode });
-            }
-        }
-
-        private class MockExceptionThrowingInnerHandler : DelegatingHandler
-        {
-            private readonly Exception exception;
-
-            public MockExceptionThrowingInnerHandler(Exception exception)
-            {
-                this.exception = exception;
-            }
-
-            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-            {
-                return Task.FromException<HttpResponseMessage>(this.exception);
-            }
-        }
-
-        private class TestRequestLoggingHttpMessageHandler : RequestLoggingHttpMessageHandler
-        {
-            public TestRequestLoggingHttpMessageHandler()
+            public WrappedRequestLoggingHttpMessageHandler()
                 : base(new NullLogger<RequestLoggingHttpMessageHandler>())
             {
             }

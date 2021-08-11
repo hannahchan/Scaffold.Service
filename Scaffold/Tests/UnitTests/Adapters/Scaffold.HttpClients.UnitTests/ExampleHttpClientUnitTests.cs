@@ -25,7 +25,7 @@ namespace Scaffold.HttpClients.UnitTests
                 StatusCode = HttpStatusCode.OK,
             };
 
-            HttpRequestHandler httpRequestHandler = new HttpRequestHandler(response);
+            Mock.HttpRequestHandler httpRequestHandler = new Mock.HttpRequestHandler(response);
 
             HttpResponseMessage result;
 
@@ -46,7 +46,7 @@ namespace Scaffold.HttpClients.UnitTests
         public async Task When_InvokingGetAndCancellationIsRequested_Expect_OperationCanceledException()
         {
             // Arrange
-            HttpRequestHandler httpRequestHandler = new HttpRequestHandler(new HttpResponseMessage());
+            Mock.HttpRequestHandler httpRequestHandler = new Mock.HttpRequestHandler(new HttpResponseMessage());
 
             Exception exception;
 
@@ -59,24 +59,6 @@ namespace Scaffold.HttpClients.UnitTests
 
             // Assert
             Assert.IsType<OperationCanceledException>(exception);
-        }
-
-        private class HttpRequestHandler : DelegatingHandler
-        {
-            private readonly HttpResponseMessage response;
-
-            public HttpRequestHandler(HttpResponseMessage response)
-            {
-                this.response = response;
-            }
-
-            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                this.response.RequestMessage = request;
-
-                return Task.FromResult(this.response);
-            }
         }
     }
 }
