@@ -11,16 +11,16 @@ namespace Scaffold.Repositories
     using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
 
-    public class BucketReadRepository : IBucketReadRepository
+    public class ScopedBucketReadRepository : IBucketReadRepository
     {
         private readonly BucketContext context;
 
-        public BucketReadRepository(BucketContext.ReadOnly context)
+        public ScopedBucketReadRepository(BucketContext.ReadOnly context)
         {
             this.context = context;
         }
 
-        protected BucketReadRepository(BucketContext context)
+        protected ScopedBucketReadRepository(BucketContext context)
         {
             this.context = context;
         }

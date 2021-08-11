@@ -9,7 +9,7 @@ namespace Scaffold.Repositories.UnitTests
     using Scaffold.Domain.Aggregates.Bucket;
     using Xunit;
 
-    public class BucketReadRepositoryUnitTests
+    public class ScopedBucketReadRepositoryUnitTests
     {
         private readonly DbContextOptions<BucketContext.ReadOnly> dbContextOptions;
 
@@ -29,14 +29,14 @@ namespace Scaffold.Repositories.UnitTests
             new Bucket { Name = "A", Description = "1", Size = 8 },
         };
 
-        public BucketReadRepositoryUnitTests()
+        public ScopedBucketReadRepositoryUnitTests()
         {
             this.dbContextOptions = new DbContextOptionsBuilder<BucketContext.ReadOnly>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
         }
 
-        public class GetWithId : BucketReadRepositoryUnitTests
+        public class GetWithId : ScopedBucketReadRepositoryUnitTests
         {
             [Fact]
             public void When_GettingExistingBucket_Expect_ExistingBucket()
@@ -55,7 +55,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = repository.Get(bucket.Id);
                 }
 
@@ -74,7 +74,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = repository.Get(new Random().Next());
                 }
 
@@ -83,7 +83,7 @@ namespace Scaffold.Repositories.UnitTests
             }
         }
 
-        public class GetWithPredicate : BucketReadRepositoryUnitTests
+        public class GetWithPredicate : ScopedBucketReadRepositoryUnitTests
         {
             [Fact]
             public void When_GettingBucketsWithPredicate_Expect_AllBuckets()
@@ -106,7 +106,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = repository.Get(bucket => true);
                 }
 
@@ -139,7 +139,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = repository.Get(bucket => false);
                 }
 
@@ -171,7 +171,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = repository.Get(bucket => bucket.Size == 2 || bucket.Size == 5);
                 }
 
@@ -203,7 +203,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = repository.Get(bucket => true, null);
                 }
 
@@ -236,7 +236,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = repository.Get(bucket => true, 2);
                 }
 
@@ -268,7 +268,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = repository.Get(bucket => true, null, null);
                 }
 
@@ -301,7 +301,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = repository.Get(bucket => true, null, 1);
                 }
 
@@ -333,7 +333,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = repository.Get(bucket => true, 1, 1);
                 }
 
@@ -344,7 +344,7 @@ namespace Scaffold.Repositories.UnitTests
             }
         }
 
-        public class GetWithIdAsync : BucketReadRepositoryUnitTests
+        public class GetWithIdAsync : ScopedBucketReadRepositoryUnitTests
         {
             [Fact]
             public async Task When_GettingExistingBucket_Expect_ExistingBucket()
@@ -363,7 +363,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = await repository.GetAsync(bucket.Id);
                 }
 
@@ -382,7 +382,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = await repository.GetAsync(new Random().Next());
                 }
 
@@ -399,7 +399,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     exception = await Record.ExceptionAsync(() => repository.GetAsync(new Random().Next(), new CancellationToken(true)));
                 }
 
@@ -408,7 +408,7 @@ namespace Scaffold.Repositories.UnitTests
             }
         }
 
-        public class GetWithPredicateAsync : BucketReadRepositoryUnitTests
+        public class GetWithPredicateAsync : ScopedBucketReadRepositoryUnitTests
         {
             [Fact]
             public async Task When_GettingBucketsWithPredicate_Expect_AllBuckets()
@@ -431,7 +431,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true);
                 }
 
@@ -464,7 +464,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = await repository.GetAsync(bucket => false);
                 }
 
@@ -496,7 +496,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = await repository.GetAsync(bucket => bucket.Size == 2 || bucket.Size == 5);
                 }
 
@@ -528,7 +528,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, null);
                 }
 
@@ -561,7 +561,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, 2);
                 }
 
@@ -593,7 +593,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null);
                 }
 
@@ -626,7 +626,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, null, 1);
                 }
 
@@ -658,7 +658,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, 1, 1);
                 }
 
@@ -677,7 +677,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     exception = await Record.ExceptionAsync(() => repository.GetAsync(
                         predicate: bucket => true,
                         cancellationToken: new CancellationToken(true)));
@@ -688,7 +688,7 @@ namespace Scaffold.Repositories.UnitTests
             }
         }
 
-        public class GetWithSortOrder : BucketReadRepositoryUnitTests
+        public class GetWithSortOrder : ScopedBucketReadRepositoryUnitTests
         {
             [Fact]
             public void When_GettingBucketsOrderedBySizeAscending_Expect_OrderedBySizeAscending()
@@ -708,7 +708,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = repository.Get(bucket => true, null, null, sortOrder);
                 }
 
@@ -747,7 +747,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = repository.Get(bucket => true, null, null, sortOrder);
                 }
 
@@ -786,7 +786,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = repository.Get(bucket => true, 6, null, sortOrder);
                 }
 
@@ -819,7 +819,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = repository.Get(bucket => true, null, 6, sortOrder);
                 }
 
@@ -852,7 +852,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = repository.Get(bucket => true, 6, 3, sortOrder);
                 }
 
@@ -886,7 +886,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = repository.Get(bucket => true, null, null, sortOrder);
                 }
 
@@ -974,7 +974,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = repository.Get(bucket => true, null, null, sortOrder);
                 }
 
@@ -1062,7 +1062,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = repository.Get(bucket => true, null, null, sortOrder);
                 }
 
@@ -1150,7 +1150,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = repository.Get(bucket => true, null, null, sortOrder);
                 }
 
@@ -1220,7 +1220,7 @@ namespace Scaffold.Repositories.UnitTests
             }
         }
 
-        public class GetWithSortOrderAsync : BucketReadRepositoryUnitTests
+        public class GetWithSortOrderAsync : ScopedBucketReadRepositoryUnitTests
         {
             [Fact]
             public async Task When_GettingBucketsOrderedBySizeAscending_Expect_OrderedBySizeAscending()
@@ -1240,7 +1240,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null, sortOrder);
                 }
 
@@ -1279,7 +1279,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null, sortOrder);
                 }
 
@@ -1318,7 +1318,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, 6, null, sortOrder);
                 }
 
@@ -1351,7 +1351,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, null, 6, sortOrder);
                 }
 
@@ -1384,7 +1384,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, 6, 3, sortOrder);
                 }
 
@@ -1418,7 +1418,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null, sortOrder);
                 }
 
@@ -1506,7 +1506,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null, sortOrder);
                 }
 
@@ -1594,7 +1594,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null, sortOrder);
                 }
 
@@ -1682,7 +1682,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext.ReadOnly context = new BucketContext.ReadOnly(this.dbContextOptions))
                 {
-                    BucketReadRepository repository = new BucketReadRepository(context);
+                    ScopedBucketReadRepository repository = new ScopedBucketReadRepository(context);
                     result = await repository.GetAsync(bucket => true, null, null, sortOrder);
                 }
 

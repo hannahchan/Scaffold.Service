@@ -41,7 +41,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options);
 
-            this.repository = new BucketRepository(context);
+            this.repository = new ScopedBucketRepository(context);
             this.publisher = new Mock.Publisher();
         }
 

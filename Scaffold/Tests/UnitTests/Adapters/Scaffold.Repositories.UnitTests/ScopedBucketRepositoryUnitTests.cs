@@ -7,18 +7,18 @@ namespace Scaffold.Repositories.UnitTests
     using Scaffold.Domain.Aggregates.Bucket;
     using Xunit;
 
-    public class BucketRepositoryUnitTests
+    public class ScopedBucketRepositoryUnitTests
     {
         private readonly DbContextOptions<BucketContext> dbContextOptions;
 
-        public BucketRepositoryUnitTests()
+        public ScopedBucketRepositoryUnitTests()
         {
             this.dbContextOptions = new DbContextOptionsBuilder<BucketContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
         }
 
-        public class AddBucket : BucketRepositoryUnitTests
+        public class AddBucket : ScopedBucketRepositoryUnitTests
         {
             [Fact]
             public void When_AddingBucket_Expect_Saved()
@@ -29,7 +29,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    ScopedBucketRepository repository = new ScopedBucketRepository(context);
                     repository.Add(bucket);
                 }
 
@@ -45,7 +45,7 @@ namespace Scaffold.Repositories.UnitTests
             }
         }
 
-        public class AddBuckets : BucketRepositoryUnitTests
+        public class AddBuckets : ScopedBucketRepositoryUnitTests
         {
             [Fact]
             public void When_AddingEnumerableOfBuckets_Expect_Saved()
@@ -61,7 +61,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    ScopedBucketRepository repository = new ScopedBucketRepository(context);
                     repository.Add(buckets);
                 }
 
@@ -85,7 +85,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    ScopedBucketRepository repository = new ScopedBucketRepository(context);
                     exception = Record.Exception(() => repository.Add(Array.Empty<Bucket>()));
                 }
 
@@ -99,7 +99,7 @@ namespace Scaffold.Repositories.UnitTests
             }
         }
 
-        public class AddBucketAsync : BucketRepositoryUnitTests
+        public class AddBucketAsync : ScopedBucketRepositoryUnitTests
         {
             [Fact]
             public async Task When_AddingBucket_Expect_Saved()
@@ -110,7 +110,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    ScopedBucketRepository repository = new ScopedBucketRepository(context);
                     await repository.AddAsync(bucket);
                 }
 
@@ -132,7 +132,7 @@ namespace Scaffold.Repositories.UnitTests
                 Bucket bucket = new Bucket();
 
                 BucketContext context = new BucketContext(this.dbContextOptions);
-                BucketRepository repository = new BucketRepository(context);
+                ScopedBucketRepository repository = new ScopedBucketRepository(context);
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() => repository.AddAsync(bucket, new CancellationToken(true)));
@@ -142,7 +142,7 @@ namespace Scaffold.Repositories.UnitTests
             }
         }
 
-        public class AddBucketsAsync : BucketRepositoryUnitTests
+        public class AddBucketsAsync : ScopedBucketRepositoryUnitTests
         {
             [Fact]
             public async Task When_AddingEnumerableOfBuckets_Expect_Saved()
@@ -158,7 +158,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    ScopedBucketRepository repository = new ScopedBucketRepository(context);
                     await repository.AddAsync(buckets);
                 }
 
@@ -182,7 +182,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    ScopedBucketRepository repository = new ScopedBucketRepository(context);
                     exception = await Record.ExceptionAsync(() => repository.AddAsync(Array.Empty<Bucket>()));
                 }
 
@@ -207,7 +207,7 @@ namespace Scaffold.Repositories.UnitTests
                 };
 
                 BucketContext context = new BucketContext(this.dbContextOptions);
-                BucketRepository repository = new BucketRepository(context);
+                ScopedBucketRepository repository = new ScopedBucketRepository(context);
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() => repository.AddAsync(buckets, new CancellationToken(true)));
@@ -217,7 +217,7 @@ namespace Scaffold.Repositories.UnitTests
             }
         }
 
-        public class RemoveBucket : BucketRepositoryUnitTests
+        public class RemoveBucket : ScopedBucketRepositoryUnitTests
         {
             [Fact]
             public void When_RemovingExistingBucket_Expect_Removed()
@@ -241,7 +241,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    ScopedBucketRepository repository = new ScopedBucketRepository(context);
                     repository.Remove(buckets[2]);
                 }
 
@@ -260,7 +260,7 @@ namespace Scaffold.Repositories.UnitTests
             }
         }
 
-        public class RemoveBuckets : BucketRepositoryUnitTests
+        public class RemoveBuckets : ScopedBucketRepositoryUnitTests
         {
             [Fact]
             public void When_RemovingEnumerableOfBuckets_Expect_Removed()
@@ -284,7 +284,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    ScopedBucketRepository repository = new ScopedBucketRepository(context);
                     repository.Remove(new Bucket[] { buckets[1], buckets[3] });
                 }
 
@@ -326,7 +326,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    ScopedBucketRepository repository = new ScopedBucketRepository(context);
                     exception = Record.Exception(() => repository.Remove(Array.Empty<Bucket>()));
                 }
 
@@ -346,7 +346,7 @@ namespace Scaffold.Repositories.UnitTests
             }
         }
 
-        public class RemoveBucketAsync : BucketRepositoryUnitTests
+        public class RemoveBucketAsync : ScopedBucketRepositoryUnitTests
         {
             [Fact]
             public async Task When_RemovingExistingBucket_Expect_Removed()
@@ -370,7 +370,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    ScopedBucketRepository repository = new ScopedBucketRepository(context);
                     await repository.RemoveAsync(buckets[2]);
                 }
 
@@ -395,7 +395,7 @@ namespace Scaffold.Repositories.UnitTests
                 Bucket bucket = new Bucket();
 
                 BucketContext context = new BucketContext(this.dbContextOptions);
-                BucketRepository repository = new BucketRepository(context);
+                ScopedBucketRepository repository = new ScopedBucketRepository(context);
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() => repository.RemoveAsync(bucket, new CancellationToken(true)));
@@ -405,7 +405,7 @@ namespace Scaffold.Repositories.UnitTests
             }
         }
 
-        public class RemoveBucketsAsync : BucketRepositoryUnitTests
+        public class RemoveBucketsAsync : ScopedBucketRepositoryUnitTests
         {
             [Fact]
             public async Task When_RemovingEnumerableOfBuckets_Expect_Removed()
@@ -429,7 +429,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    ScopedBucketRepository repository = new ScopedBucketRepository(context);
                     await repository.RemoveAsync(new Bucket[] { buckets[1], buckets[3] });
                 }
 
@@ -471,7 +471,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    ScopedBucketRepository repository = new ScopedBucketRepository(context);
                     exception = await Record.ExceptionAsync(() => repository.RemoveAsync(Array.Empty<Bucket>()));
                 }
 
@@ -502,7 +502,7 @@ namespace Scaffold.Repositories.UnitTests
                 };
 
                 BucketContext context = new BucketContext(this.dbContextOptions);
-                BucketRepository repository = new BucketRepository(context);
+                ScopedBucketRepository repository = new ScopedBucketRepository(context);
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() => repository.RemoveAsync(buckets, new CancellationToken(true)));
@@ -512,7 +512,7 @@ namespace Scaffold.Repositories.UnitTests
             }
         }
 
-        public class UpdateBucket : BucketRepositoryUnitTests
+        public class UpdateBucket : ScopedBucketRepositoryUnitTests
         {
             [Fact]
             public void When_UpdatingExistingBucket_Expect_Updated()
@@ -538,7 +538,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    ScopedBucketRepository repository = new ScopedBucketRepository(context);
                     buckets[1].Name = newValue;
                     repository.Update(buckets[1]);
                 }
@@ -557,7 +557,7 @@ namespace Scaffold.Repositories.UnitTests
             }
         }
 
-        public class UpdateBuckets : BucketRepositoryUnitTests
+        public class UpdateBuckets : ScopedBucketRepositoryUnitTests
         {
             [Fact]
             public void When_UpdatingMultipleExistingBuckets_Expect_Updated()
@@ -584,7 +584,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    ScopedBucketRepository repository = new ScopedBucketRepository(context);
                     buckets[1].Name = newValue1;
                     buckets[3].Name = newValue2;
                     repository.Update(new Bucket[] { buckets[1], buckets[3] });
@@ -627,7 +627,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    ScopedBucketRepository repository = new ScopedBucketRepository(context);
                     exception = Record.Exception(() => repository.Update(Array.Empty<Bucket>()));
                 }
 
@@ -647,7 +647,7 @@ namespace Scaffold.Repositories.UnitTests
             }
         }
 
-        public class UpdateBucketAsync : BucketRepositoryUnitTests
+        public class UpdateBucketAsync : ScopedBucketRepositoryUnitTests
         {
             [Fact]
             public async Task When_UpdatingExistingBucket_Expect_Updated()
@@ -673,7 +673,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    ScopedBucketRepository repository = new ScopedBucketRepository(context);
                     buckets[1].Name = newValue;
                     await repository.UpdateAsync(buckets[1]);
                 }
@@ -698,7 +698,7 @@ namespace Scaffold.Repositories.UnitTests
                 Bucket bucket = new Bucket();
 
                 BucketContext context = new BucketContext(this.dbContextOptions);
-                BucketRepository repository = new BucketRepository(context);
+                ScopedBucketRepository repository = new ScopedBucketRepository(context);
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() => repository.UpdateAsync(bucket, new CancellationToken(true)));
@@ -708,7 +708,7 @@ namespace Scaffold.Repositories.UnitTests
             }
         }
 
-        public class UpdateBucketsAsync : BucketRepositoryUnitTests
+        public class UpdateBucketsAsync : ScopedBucketRepositoryUnitTests
         {
             [Fact]
             public async Task When_UpdatingMultipleExistingBuckets_Expect_Updated()
@@ -735,7 +735,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    ScopedBucketRepository repository = new ScopedBucketRepository(context);
                     buckets[1].Name = newValue1;
                     buckets[3].Name = newValue2;
                     await repository.UpdateAsync(new Bucket[] { buckets[1], buckets[3] });
@@ -778,7 +778,7 @@ namespace Scaffold.Repositories.UnitTests
                 // Act
                 using (BucketContext context = new BucketContext(this.dbContextOptions))
                 {
-                    BucketRepository repository = new BucketRepository(context);
+                    ScopedBucketRepository repository = new ScopedBucketRepository(context);
                     exception = await Record.ExceptionAsync(() => repository.UpdateAsync(Array.Empty<Bucket>()));
                 }
 
@@ -809,7 +809,7 @@ namespace Scaffold.Repositories.UnitTests
                 };
 
                 BucketContext context = new BucketContext(this.dbContextOptions);
-                BucketRepository repository = new BucketRepository(context);
+                ScopedBucketRepository repository = new ScopedBucketRepository(context);
 
                 // Act
                 Exception exception = await Record.ExceptionAsync(() => repository.UpdateAsync(buckets, new CancellationToken(true)));

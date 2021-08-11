@@ -111,8 +111,8 @@ namespace Scaffold.WebApi.Extensions
                 builder.UseNpgsql(config.GetValue<string>("ConnectionStrings:ReadOnlyConnection")));
 
             services
-                .AddScoped<IBucketReadRepository, BucketReadRepository>()
-                .AddScoped<IBucketRepository, BucketRepository>();
+                .AddScoped<IBucketReadRepository, ScopedBucketReadRepository>()
+                .AddScoped<IBucketRepository, ScopedBucketRepository>();
 
             return services;
         }
