@@ -4,7 +4,7 @@
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
-    using Scaffold.Application.Interfaces;
+    using Scaffold.Application.Common.Interfaces;
 
     public class ExampleHttpClient : IExampleHttpClient
     {

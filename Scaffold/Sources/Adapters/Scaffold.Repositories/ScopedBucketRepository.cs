@@ -3,7 +3,7 @@ namespace Scaffold.Repositories
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
-    using Scaffold.Application.Interfaces;
+    using Scaffold.Application.Components.Bucket;
     using Scaffold.Domain.Aggregates.Bucket;
 
     public class ScopedBucketRepository : ScopedBucketReadRepository, IBucketRepository

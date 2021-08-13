@@ -5,8 +5,8 @@ namespace Scaffold.Application.Components.Bucket
     using System.Threading.Tasks;
     using MediatR;
     using Scaffold.Application.Common.Instrumentation;
+    using Scaffold.Application.Common.Interfaces;
     using Scaffold.Application.Common.Messaging;
-    using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
 
     public static class GetBucket

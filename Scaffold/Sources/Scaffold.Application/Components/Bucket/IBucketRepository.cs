@@ -1,8 +1,9 @@
-namespace Scaffold.Application.Interfaces
+namespace Scaffold.Application.Components.Bucket
 {
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
+    using Scaffold.Application.Common.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
 
     public interface IBucketRepository : IBucketReadRepository

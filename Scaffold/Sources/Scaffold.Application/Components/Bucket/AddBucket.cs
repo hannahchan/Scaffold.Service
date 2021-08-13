@@ -7,7 +7,6 @@ namespace Scaffold.Application.Components.Bucket
     using MediatR;
     using Scaffold.Application.Common.Instrumentation;
     using Scaffold.Application.Common.Messaging;
-    using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
     using Scaffold.Domain.Base;
 

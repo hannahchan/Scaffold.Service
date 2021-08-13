@@ -7,7 +7,6 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
     using Microsoft.EntityFrameworkCore;
     using Scaffold.Application.Common.Messaging;
     using Scaffold.Application.Components.Bucket;
-    using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
     using Scaffold.Domain.Base;
     using Scaffold.Repositories;

@@ -14,7 +14,7 @@ The Primary / Driving Adapters for Scaffold currently live in the [Sources](../S
 
 ## Secondary / Driven Adapters
 
-The Secondary / Driven Adapters for Scaffold are currently located in the [Adapters](../Sources/Adapters) directory. These adapters implement [interfaces defined in the Application Layer](../Sources/Scaffold.Application/Interfaces) and their concrete versions are intended to be provided via dependency injection.
+The Secondary / Driven Adapters for Scaffold are currently located in the [Adapters](../Sources/Adapters) directory. These adapters implement interfaces defined in the Application Layer and their concrete versions are intended to be provided via dependency injection.
 
 - [Scaffold.HttpClients](../Sources/Adapters/Scaffold.HttpClients)
 - [Scaffold.Repositories](../Sources/Adapters/Scaffold.Repositories)

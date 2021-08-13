@@ -7,8 +7,8 @@ namespace Scaffold.Repositories
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
+    using Scaffold.Application.Common.Interfaces;
     using Scaffold.Application.Common.Models;
-    using Scaffold.Application.Interfaces;
     using Scaffold.Domain.Aggregates.Bucket;
 
     public class ScopedBucketReadRepository : IBucketReadRepository
