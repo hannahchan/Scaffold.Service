@@ -45,13 +45,13 @@
       "pluginVersion": "8.0.0",
       "targets": [
         {
-          "expr": "sum(rate(httpclient_request_duration_seconds_sum{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(rate(httpclient_request_duration_seconds_count{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "expr": "sum(rate(httpclient_request_duration_seconds_sum{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(rate(httpclient_request_duration_seconds_count{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
           "instant": true,
           "legendFormat": "Average Request Duration",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(httpclient_request_duration_seconds_sum{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(irate(httpclient_request_duration_seconds_count{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "expr": "sum(irate(httpclient_request_duration_seconds_sum{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(irate(httpclient_request_duration_seconds_count{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
           "instant": true,
           "legendFormat": "Instant Request Duration",
           "refId": "B"
@@ -98,12 +98,12 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(httpclient_request_duration_seconds_sum{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(rate(httpclient_request_duration_seconds_count{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "expr": "sum(rate(httpclient_request_duration_seconds_sum{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(rate(httpclient_request_duration_seconds_count{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
           "legendFormat": "Average Request Duration",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(httpclient_request_duration_seconds_sum{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(irate(httpclient_request_duration_seconds_count{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "expr": "sum(irate(httpclient_request_duration_seconds_sum{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(irate(httpclient_request_duration_seconds_count{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
           "legendFormat": "Instant Request Duration",
           "refId": "B"
         }
@@ -168,26 +168,26 @@
       "pluginVersion": "8.0.0",
       "targets": [
         {
-          "expr": "histogram_quantile(0.99, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
+          "expr": "histogram_quantile(0.99, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
           "hide": false,
           "instant": true,
           "legendFormat": "99th Percentile",
           "refId": "A"
         },
         {
-          "expr": "histogram_quantile(0.95, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
+          "expr": "histogram_quantile(0.95, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
           "instant": true,
           "legendFormat": "95th Percentile",
           "refId": "B"
         },
         {
-          "expr": "histogram_quantile(0.85, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
+          "expr": "histogram_quantile(0.85, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
           "instant": true,
           "legendFormat": "85th Percentile",
           "refId": "C"
         },
         {
-          "expr": "histogram_quantile(0.50, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
+          "expr": "histogram_quantile(0.50, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
           "instant": true,
           "legendFormat": "50th Percentile",
           "refId": "D"
@@ -236,22 +236,22 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.99, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
+          "expr": "histogram_quantile(0.99, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
           "legendFormat": "99th Percentile",
           "refId": "A"
         },
         {
-          "expr": "histogram_quantile(0.95, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
+          "expr": "histogram_quantile(0.95, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
           "legendFormat": "95th Percentile",
           "refId": "B"
         },
         {
-          "expr": "histogram_quantile(0.85, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
+          "expr": "histogram_quantile(0.85, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
           "legendFormat": "85th Percentile",
           "refId": "C"
         },
         {
-          "expr": "histogram_quantile(0.50, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
+          "expr": "histogram_quantile(0.50, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
           "legendFormat": "50th Percentile",
           "refId": "D"
         }
@@ -328,13 +328,13 @@
       "pluginVersion": "8.0.0",
       "targets": [
         {
-          "expr": "sum(rate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "expr": "sum(rate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
           "instant": true,
           "legendFormat": "Average Request Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "expr": "sum(irate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
           "instant": true,
           "legendFormat": "Instant Request Rate",
           "refId": "B"
@@ -381,12 +381,12 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "expr": "sum(rate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
           "legendFormat": "Average Request Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "expr": "sum(irate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
           "legendFormat": "Instant Request Rate",
           "refId": "B"
         }
@@ -450,25 +450,25 @@
       "pluginVersion": "8.0.0",
       "targets": [
         {
-          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "expr": "sum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
           "instant": true,
           "legendFormat": "All Requests",
           "refId": "A"
         },
         {
-          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
+          "expr": "sum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
           "instant": true,
           "legendFormat": "Successes (2xx)",
           "refId": "B"
         },
         {
-          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
+          "expr": "sum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
           "instant": true,
           "legendFormat": "Client Errors (4xx)",
           "refId": "C"
         },
         {
-          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
+          "expr": "sum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
           "instant": true,
           "legendFormat": "Server Errors (5xx)",
           "refId": "D"
@@ -517,22 +517,22 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "expr": "sum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
           "legendFormat": "All Requests",
           "refId": "A"
         },
         {
-          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
+          "expr": "sum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
           "legendFormat": "Successes (2xx)",
           "refId": "B"
         },
         {
-          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
+          "expr": "sum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
           "legendFormat": "Client Errors (4xx)",
           "refId": "C"
         },
         {
-          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
+          "expr": "sum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
           "legendFormat": "Server Errors (5xx)",
           "refId": "D"
         }
@@ -610,7 +610,7 @@
       "pluginVersion": "8.0.0",
       "targets": [
         {
-          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range])) /\nsum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "expr": "sum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range])) /\nsum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
           "instant": true,
           "legendFormat": "% Successes (2xx)",
           "refId": "A"
@@ -657,12 +657,12 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
+          "expr": "sum(rate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
           "legendFormat": "Average Success (2xx) Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
+          "expr": "sum(irate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
           "legendFormat": "Instant Success (2xx) Rate",
           "refId": "B"
         }
@@ -728,7 +728,7 @@
       "pluginVersion": "8.0.0",
       "targets": [
         {
-          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range])) /\nsum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "expr": "sum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range])) /\nsum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
           "instant": true,
           "legendFormat": "% Client Errors (4xx)",
           "refId": "A"
@@ -775,12 +775,12 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
+          "expr": "sum(rate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
           "legendFormat": "Average Client Error (4xx) Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
+          "expr": "sum(irate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
           "legendFormat": "Instant Client Error (4xx) Rate",
           "refId": "B"
         }
@@ -846,7 +846,7 @@
       "pluginVersion": "8.0.0",
       "targets": [
         {
-          "expr": "sum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range])) /\nsum(increase(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
+          "expr": "sum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range])) /\nsum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
           "instant": true,
           "legendFormat": "% Server Errors (5xx)",
           "refId": "A"
@@ -893,12 +893,12 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
+          "expr": "sum(rate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
           "legendFormat": "Average Server Error (5xx) Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
+          "expr": "sum(irate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
           "legendFormat": "Instant Server Error (5xx) Rate",
           "refId": "B"
         }
@@ -963,13 +963,13 @@
       "pluginVersion": "8.0.0",
       "targets": [
         {
-          "expr": "sum(rate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
+          "expr": "sum(rate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
           "instant": true,
           "legendFormat": "Average Success (2xx) Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
+          "expr": "sum(irate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
           "instant": true,
           "legendFormat": "Instant Success (2xx) Rate",
           "refId": "B"
@@ -1009,13 +1009,13 @@
       "pluginVersion": "8.0.0",
       "targets": [
         {
-          "expr": "sum(rate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
+          "expr": "sum(rate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
           "instant": true,
           "legendFormat": "Average Client Error (4xx) Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
+          "expr": "sum(irate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
           "instant": true,
           "legendFormat": "Instant Client Error (4xx) Rate",
           "refId": "B"
@@ -1055,13 +1055,13 @@
       "pluginVersion": "8.0.0",
       "targets": [
         {
-          "expr": "sum(rate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
+          "expr": "sum(rate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
           "instant": true,
           "legendFormat": "Average Server Error (5xx) Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(httpclient_requests_received_total{job=~\"${job:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
+          "expr": "sum(irate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
           "instant": true,
           "legendFormat": "Instant Server Error (5xx) Rate",
           "refId": "B"
@@ -1081,14 +1081,14 @@
           "value": ["$__all"]
         },
         "datasource": "Prometheus",
-        "definition": "label_values(httpclient_requests_received_total, job)",
+        "definition": "label_values(httpclient_requests_sent_total, job)",
         "hide": 0,
         "includeAll": true,
         "index": -1,
         "label": "Job",
         "multi": true,
         "name": "job",
-        "query": "label_values(httpclient_requests_received_total, job)",
+        "query": "label_values(httpclient_requests_sent_total, job)",
         "refresh": 1,
         "skipUrlSync": false,
         "sort": 1,
@@ -1102,14 +1102,35 @@
           "value": ["$__all"]
         },
         "datasource": "Prometheus",
-        "definition": "label_values(httpclient_requests_received_total, host)",
+        "definition": "label_values(httpclient_requests_sent_total, client)",
+        "hide": 0,
+        "includeAll": true,
+        "index": -1,
+        "label": "Client",
+        "multi": true,
+        "name": "client",
+        "query": "label_values(httpclient_requests_sent_total, client)",
+        "refresh": 1,
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": ".+",
+        "current": {
+          "text": "All",
+          "value": ["$__all"]
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(httpclient_requests_sent_total, host)",
         "hide": 0,
         "includeAll": true,
         "index": -1,
         "label": "Host",
         "multi": true,
         "name": "host",
-        "query": "label_values(httpclient_requests_received_total, host)",
+        "query": "label_values(httpclient_requests_sent_total, host)",
         "refresh": 1,
         "skipUrlSync": false,
         "sort": 1,
@@ -1123,14 +1144,14 @@
           "value": ["$__all"]
         },
         "datasource": "Prometheus",
-        "definition": "label_values(httpclient_requests_received_total, method)",
+        "definition": "label_values(httpclient_requests_sent_total, method)",
         "hide": 0,
         "includeAll": true,
         "index": -1,
         "label": "Method",
         "multi": true,
         "name": "method",
-        "query": "label_values(httpclient_requests_received_total, method)",
+        "query": "label_values(httpclient_requests_sent_total, method)",
         "refresh": 1,
         "skipUrlSync": false,
         "sort": 1,

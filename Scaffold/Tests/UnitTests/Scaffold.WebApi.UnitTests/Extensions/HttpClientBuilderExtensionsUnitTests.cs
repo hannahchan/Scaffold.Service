@@ -9,66 +9,6 @@ namespace Scaffold.WebApi.UnitTests.Extensions
 
     public class HttpClientBuilderExtensionsUnitTests
     {
-        public class AddHttpClientMetrics
-        {
-            [Fact]
-            public void When_AddingHttpClientMetrics_Expect_ServicesAdded()
-            {
-                // Arrange
-                IServiceCollection services = new ServiceCollection();
-                IHttpClientBuilder builder = new MockHttpClientBuilder(services);
-
-                // Act
-                builder.AddHttpClientMetrics();
-
-                // Assert
-                Assert.Collection(
-                    services,
-                    serviceDescriptor =>
-                    {
-                        Assert.Equal(ServiceLifetime.Transient, serviceDescriptor.Lifetime);
-                        Assert.Equal(typeof(HttpClientMetricsMessageHandler), serviceDescriptor.ServiceType);
-                        Assert.Equal(typeof(HttpClientMetricsMessageHandler), serviceDescriptor.ImplementationType);
-                    },
-                    serviceDescriptor =>
-                    {
-                        Assert.Equal(ServiceLifetime.Singleton, serviceDescriptor.Lifetime);
-                        Assert.Equal(typeof(IOptions<>), serviceDescriptor.ServiceType);
-                        Assert.Equal(typeof(OptionsManager<>), serviceDescriptor.ImplementationType);
-                    },
-                    serviceDescriptor =>
-                    {
-                        Assert.Equal(ServiceLifetime.Scoped, serviceDescriptor.Lifetime);
-                        Assert.Equal(typeof(IOptionsSnapshot<>), serviceDescriptor.ServiceType);
-                        Assert.Equal(typeof(OptionsManager<>), serviceDescriptor.ImplementationType);
-                    },
-                    serviceDescriptor =>
-                    {
-                        Assert.Equal(ServiceLifetime.Singleton, serviceDescriptor.Lifetime);
-                        Assert.Equal(typeof(IOptionsMonitor<>), serviceDescriptor.ServiceType);
-                        Assert.Equal(typeof(OptionsMonitor<>), serviceDescriptor.ImplementationType);
-                    },
-                    serviceDescriptor =>
-                    {
-                        Assert.Equal(ServiceLifetime.Transient, serviceDescriptor.Lifetime);
-                        Assert.Equal(typeof(IOptionsFactory<>), serviceDescriptor.ServiceType);
-                        Assert.Equal(typeof(OptionsFactory<>), serviceDescriptor.ImplementationType);
-                    },
-                    serviceDescriptor =>
-                    {
-                        Assert.Equal(ServiceLifetime.Singleton, serviceDescriptor.Lifetime);
-                        Assert.Equal(typeof(IOptionsMonitorCache<>), serviceDescriptor.ServiceType);
-                        Assert.Equal(typeof(OptionsCache<>), serviceDescriptor.ImplementationType);
-                    },
-                    serviceDescriptor =>
-                    {
-                        Assert.Equal(ServiceLifetime.Singleton, serviceDescriptor.Lifetime);
-                        Assert.Equal(typeof(IConfigureOptions<HttpClientFactoryOptions>), serviceDescriptor.ServiceType);
-                        Assert.Null(serviceDescriptor.ImplementationType);
-                    });
-            }
-        }
-
         public class AddRequestLogging
         {
             [Fact]

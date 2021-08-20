@@ -5,12 +5,6 @@ namespace Scaffold.WebApi.Extensions
 
     internal static class HttpClientBuilderExtensions
     {
-        public static IHttpClientBuilder AddHttpClientMetrics(this IHttpClientBuilder builder)
-        {
-            builder.Services.AddTransient<HttpClientMetricsMessageHandler>();
-            return builder.AddHttpMessageHandler<HttpClientMetricsMessageHandler>();
-        }
-
         public static IHttpClientBuilder AddRequestLogging(this IHttpClientBuilder builder)
         {
             builder.Services.AddTransient<RequestLoggingHttpMessageHandler>();

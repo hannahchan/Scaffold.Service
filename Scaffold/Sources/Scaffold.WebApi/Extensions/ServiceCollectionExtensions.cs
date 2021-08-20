@@ -14,6 +14,7 @@ namespace Scaffold.WebApi.Extensions
     using OpenTelemetry.Resources;
     using OpenTelemetry.Trace;
     using Polly;
+    using Prometheus;
     using Scaffold.Application.Common.Constants;
     using Scaffold.Application.Common.Interfaces;
     using Scaffold.Application.Components.Bucket;
@@ -60,12 +61,12 @@ namespace Scaffold.WebApi.Extensions
             services.AddHttpClient<IExampleHttpClient, ExampleHttpClient>()
                 .AddTransientHttpErrorPolicy(builder => builder.RetryAsync(3))
                 .AddRequestLogging()
-                .AddHttpClientMetrics();
+                .UseHttpClientMetrics();
 
             services.AddHttpClient<TracingDemoController.IClient, TracingDemoController.Client>()
                 .AddTransientHttpErrorPolicy(builder => builder.RetryAsync(10))
                 .AddRequestLogging()
-                .AddHttpClientMetrics();
+                .UseHttpClientMetrics();
 
             return services;
         }
