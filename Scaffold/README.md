@@ -4,29 +4,30 @@ Scaffold is an opinionated template of a Web API built using ASP.NET Core. It is
 
 ## Getting Started
 
-Before you start developing Scaffold, please read our [Getting Started](Docs/GettingStarted.md) guide. It outlines what you need to install on your local machine as well as how to build, test and run the project.
+Before you start developing Scaffold, please read our [Getting Started](./Docs/GettingStarted.md) guide. It outlines what you need to install on your local machine as well as how to build, test and run the project.
 
 ## Features
 
 Scaffold aims to make developing the following features in your next Web API or microservice a little bit more easier.
 
-- [API Documentation](Docs/ApiDocumentation.md)
-- [Application Metrics](Docs/ApplicationMetrics.md)
-- [Distributed Tracing](Docs/DistributedTracing.md)
-- [Content Negotiation](Docs/ContentNegotiation.md)
-- [Health Checks](Docs/HealthChecks.md)
-- [Problem Details (RFC 7807) Error Handling](Docs/ProblemDetails.md)
+- [API Documentation](./Docs/ApiDocumentation.md)
+- [Application Metrics](./Docs/ApplicationMetrics.md)
+- [Distributed Tracing](./Docs/DistributedTracing.md)
+- [Content Negotiation](./Docs/ContentNegotiation.md)
+- [Health Checks](./Docs/HealthChecks.md)
+- [Problem Details (RFC 7807) Error Handling](./Docs/ProblemDetails.md)
 
 ### Other Features
 
 Other stuff you inherit when you bootstrap with Scaffold.
 
-- [Architecture](Docs/Architecture.md)
-- [Code Analysis](Docs/CodeAnalysis.md)
-- [Docker Support](Docs/Docker.md)
-- [Entity Framework Support](Docs/EntityFramework.md)
-- [Nullable Reference Types](Docs/NullableReferenceTypes.md)
-- [Test Structure](Docs/TestStructure.md)
+- [Architecture](./Docs/Architecture.md)
+- [Code Analysis](./Docs/CodeAnalysis.md)
+- [Deterministic Builds](./Docs/DeterministicBuilds.md)
+- [Docker Support](./Docs/Docker.md)
+- [Entity Framework Support](./Docs/EntityFramework.md)
+- [Nullable Reference Types](./Docs/NullableReferenceTypes.md)
+- [Test Structure](./Docs/TestStructure.md)
 
 ### Not Included
 

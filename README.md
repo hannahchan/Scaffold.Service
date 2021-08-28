@@ -26,23 +26,24 @@ Alternatively just browse the [template directory](Scaffold) and copy and paste 
 
 Scaffold.WebApi aims to make developing the following features in your next Web API or microservice a little bit more easier.
 
-- [API Documentation](Scaffold/Docs/ApiDocumentation.md)
-- [Application Metrics](Scaffold/Docs/ApplicationMetrics.md)
-- [Distributed Tracing](Scaffold/Docs/DistributedTracing.md)
-- [Content Negotiation](Scaffold/Docs/ContentNegotiation.md)
-- [Health Checks](Scaffold/Docs/HealthChecks.md)
-- [Problem Details (RFC 7807) Error Handling](Scaffold/Docs/ProblemDetails.md)
+- [API Documentation](./Scaffold/Docs/ApiDocumentation.md)
+- [Application Metrics](./Scaffold/Docs/ApplicationMetrics.md)
+- [Distributed Tracing](./Scaffold/Docs/DistributedTracing.md)
+- [Content Negotiation](./Scaffold/Docs/ContentNegotiation.md)
+- [Health Checks](./Scaffold/Docs/HealthChecks.md)
+- [Problem Details (RFC 7807) Error Handling](./Scaffold/Docs/ProblemDetails.md)
 
 ### Other Features
 
 Other stuff you inherit when you bootstrap with Scaffold.WebApi.
 
-- [Architecture](Scaffold/Docs/Architecture.md)
-- [Code Analysis](Scaffold/Docs/CodeAnalysis.md)
-- [Docker Support](Scaffold/Docs/Docker.md)
-- [Entity Framework Support](Scaffold/Docs/EntityFramework.md)
-- [Nullable Reference Types](Scaffold/Docs/NullableReferenceTypes.md)
-- [Test Structure](Scaffold/Docs/TestStructure.md)
+- [Architecture](./Scaffold/Docs/Architecture.md)
+- [Code Analysis](./Scaffold/Docs/CodeAnalysis.md)
+- [Deterministic Builds](./Scaffold/Docs/DeterministicBuilds.md)
+- [Docker Support](./Scaffold/Docs/Docker.md)
+- [Entity Framework Support](./Scaffold/Docs/EntityFramework.md)
+- [Nullable Reference Types](./Scaffold/Docs/NullableReferenceTypes.md)
+- [Test Structure](./Scaffold/Docs/TestStructure.md)
 
 ### Not Included
 

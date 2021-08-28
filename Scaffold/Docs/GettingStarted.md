@@ -25,7 +25,7 @@ Likewise to run the tests, run;
 
 ### Creating a Release
 
-To help different developers build and test the project consistently on different machines, a [Cake script](../build.cake) has been included at the root of this project. To run the script, run the command;
+To help different developers build and test the project [deterministically](./DeterministicBuilds.md) on different machines, a [Cake script](../build.cake) has been included at the root of this project. To run the script, run the command;
 
     dotnet cake
 
