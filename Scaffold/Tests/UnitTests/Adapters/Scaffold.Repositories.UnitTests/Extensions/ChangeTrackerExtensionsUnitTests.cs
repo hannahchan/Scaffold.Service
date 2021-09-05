@@ -20,7 +20,7 @@ namespace Scaffold.Repositories.UnitTests.Extensions
         public class UpdateChangeTimestamps : ChangeTrackerExtensionsUnitTests
         {
             [Fact]
-            public void When_UpdatingChangeTimestampsOnAddedEntities_Expect_UpdatedTimestamps()
+            public void When_UpdatingChangeTrackingTimestampsOnAddedEntities_Expect_UpdatedTimestamps()
             {
                 // Arrange
                 using TestContext context = new TestContext(this.dbContextOptions);
@@ -35,7 +35,7 @@ namespace Scaffold.Repositories.UnitTests.Extensions
                 DateTime timestamp = DateTime.UtcNow;
 
                 // Act
-                context.ChangeTracker.UpdateChangeTimestamps(timestamp);
+                context.ChangeTracker.UpdateChangeTrackingTimestamps(timestamp);
                 context.SaveChanges();
 
                 // Assert
@@ -91,7 +91,7 @@ namespace Scaffold.Repositories.UnitTests.Extensions
             }
 
             [Fact]
-            public void When_UpdatingChangeTimestampsOnModifiedEntities_Expect_UpdatedTimestamps()
+            public void When_UpdatingChangeTrackingTimestampsOnModifiedEntities_Expect_UpdatedTimestamps()
             {
                 // Arrange
                 using TestContext context = new TestContext(this.dbContextOptions);
@@ -106,7 +106,7 @@ namespace Scaffold.Repositories.UnitTests.Extensions
                 DateTime createdTimestamp = DateTime.UtcNow;
                 DateTime modifiedTimestamp = createdTimestamp.AddMinutes(1);
 
-                context.ChangeTracker.UpdateChangeTimestamps(createdTimestamp);
+                context.ChangeTracker.UpdateChangeTrackingTimestamps(createdTimestamp);
                 context.SaveChanges();
 
                 foreach (EntityEntry entity in context.ChangeTracker.Entries())
@@ -115,7 +115,7 @@ namespace Scaffold.Repositories.UnitTests.Extensions
                 }
 
                 // Act
-                context.ChangeTracker.UpdateChangeTimestamps(modifiedTimestamp);
+                context.ChangeTracker.UpdateChangeTrackingTimestamps(modifiedTimestamp);
                 context.SaveChanges();
 
                 // Assert

@@ -9,7 +9,7 @@ namespace Scaffold.Repositories.Extensions
 
     internal static class ChangeTrackerExtensions
     {
-        public static ChangeTracker UpdateChangeTimestamps(this ChangeTracker changeTracker, DateTime timestamp)
+        public static ChangeTracker UpdateChangeTrackingTimestamps(this ChangeTracker changeTracker, DateTime timestamp)
         {
             return changeTracker
                 .UpdateTimestampsOnAdded(timestamp)
