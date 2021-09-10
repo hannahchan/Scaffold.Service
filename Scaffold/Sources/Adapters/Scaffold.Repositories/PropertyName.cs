@@ -1,6 +1,6 @@
 namespace Scaffold.Repositories
 {
-    internal static class PropertyNames
+    internal static class PropertyName
     {
         public const string CreatedAt = nameof(CreatedAt);
 
