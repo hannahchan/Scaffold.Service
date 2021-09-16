@@ -53,7 +53,7 @@ namespace Scaffold.Repositories
             modelBuilder.ApplyConfiguration(new BucketConfiguration());
             modelBuilder.ApplyConfiguration(new ItemConfiguration());
 
-            modelBuilder.AddChangeTrackingTimestamps();
+            modelBuilder.AddChangeTrackingTimestamps(ChangeTrackingTimestamps.Default);
         }
 
         public class ReadOnly : BucketContext

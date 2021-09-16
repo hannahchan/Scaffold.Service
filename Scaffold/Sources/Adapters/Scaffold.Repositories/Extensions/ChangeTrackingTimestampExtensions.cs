@@ -3,24 +3,35 @@ namespace Scaffold.Repositories.Extensions
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.ChangeTracking;
     using Microsoft.EntityFrameworkCore.Metadata;
 
     internal static class ChangeTrackingTimestampExtensions
     {
-        public static ModelBuilder AddChangeTrackingTimestamps(this ModelBuilder modelBuilder)
+        public static ModelBuilder AddChangeTrackingTimestamps(this ModelBuilder modelBuilder, ChangeTrackingTimestamps properties = ChangeTrackingTimestamps.Default)
         {
             foreach (IMutableEntityType entity in modelBuilder.Model.GetEntityTypes())
             {
-                if (entity.FindProperty(PropertyName.CreatedAt) == null)
+                if (properties.HasFlag(ChangeTrackingTimestamps.CreatedAt) && entity.FindProperty(PropertyName.CreatedAt) == null)
                 {
                     entity.AddProperty(PropertyName.CreatedAt, typeof(DateTime));
                 }
 
-                if (entity.FindProperty(PropertyName.LastModifiedAt) == null)
+                if (properties.HasFlag(ChangeTrackingTimestamps.LastModifiedAt) && entity.FindProperty(PropertyName.LastModifiedAt) == null)
                 {
                     entity.AddProperty(PropertyName.LastModifiedAt, typeof(DateTime?));
+                }
+
+                if (properties.HasFlag(ChangeTrackingTimestamps.DeletedAt) && entity.FindProperty(PropertyName.DeletedAt) == null)
+                {
+                    entity.AddProperty(PropertyName.DeletedAt, typeof(DateTime?));
+                }
+
+                if (properties.HasFlag(ChangeTrackingTimestamps.DeletedAt))
+                {
+                    entity.AddSoftDeleteQueryFilter();
                 }
             }
 
@@ -31,35 +42,77 @@ namespace Scaffold.Repositories.Extensions
         {
             return changeTracker
                 .UpdateTimestampsOnAdded(timestamp)
-                .UpdateTimestampsOnModified(timestamp);
+                .UpdateTimestampsOnModified(timestamp)
+                .UpdateTimestampsOnDeleted(timestamp);
+        }
+
+        private static IMutableEntityType AddSoftDeleteQueryFilter(this IMutableEntityType entity)
+        {
+            IProperty deletedAt = entity.GetProperty(PropertyName.DeletedAt);
+
+            if (deletedAt.ClrType == typeof(DateTime))
+            {
+                ParameterExpression parameter = Expression.Parameter(entity.ClrType, "entity");
+
+                MethodCallExpression methodCall = Expression.Call(
+                    typeof(EF),
+                    nameof(EF.Property),
+                    new[] { typeof(DateTime) },
+                    parameter,
+                    Expression.Constant(PropertyName.DeletedAt));
+
+                LambdaExpression lambda = Expression.Lambda(Expression.Equal(methodCall, Expression.Default(typeof(DateTime))), parameter);
+
+                entity.SetQueryFilter(lambda);
+            }
+
+            if (deletedAt.ClrType == typeof(DateTime?))
+            {
+                ParameterExpression parameter = Expression.Parameter(entity.ClrType, "entity");
+
+                MethodCallExpression methodCall = Expression.Call(
+                    typeof(EF),
+                    nameof(EF.Property),
+                    new[] { typeof(DateTime?) },
+                    parameter,
+                    Expression.Constant(PropertyName.DeletedAt));
+
+                LambdaExpression lambda = Expression.Lambda(Expression.Equal(methodCall, Expression.Constant(null)), parameter);
+
+                entity.SetQueryFilter(lambda);
+            }
+
+            return entity;
         }
 
         private static ChangeTracker UpdateTimestampsOnAdded(this ChangeTracker changeTracker, DateTime timestamp)
         {
             IEnumerable<EntityEntry> entries = changeTracker.Entries()
                 .Where(entry => entry.State == EntityState.Added)
-                .Where(entry => entry.Metadata.FindProperty(PropertyName.CreatedAt) != null)
-                .Where(entry => entry.Metadata.FindProperty(PropertyName.CreatedAt).ClrType == typeof(DateTime));
+                .Where(entry => entry.Metadata.FindProperty(PropertyName.CreatedAt) != null || entry.Metadata.FindProperty(PropertyName.LastModifiedAt) != null);
 
             foreach (EntityEntry entry in entries)
             {
-                entry.Property(PropertyName.CreatedAt).CurrentValue = timestamp;
+                IProperty? createdAt = entry.Metadata.FindProperty(PropertyName.CreatedAt);
+
+                if (createdAt != null && createdAt.ClrType == typeof(DateTime))
+                {
+                    entry.Property(PropertyName.CreatedAt).CurrentValue = timestamp;
+                }
 
                 IProperty? lastModifiedAt = entry.Metadata.FindProperty(PropertyName.LastModifiedAt);
 
-                if (lastModifiedAt is null)
+                if (lastModifiedAt != null)
                 {
-                    continue;
-                }
+                    if (lastModifiedAt.ClrType == typeof(DateTime))
+                    {
+                        entry.Property(PropertyName.LastModifiedAt).CurrentValue = timestamp;
+                    }
 
-                if (lastModifiedAt.ClrType == typeof(DateTime))
-                {
-                    entry.Property(PropertyName.LastModifiedAt).CurrentValue = timestamp;
-                }
-
-                if (lastModifiedAt.ClrType == typeof(DateTime?))
-                {
-                    entry.Property(PropertyName.LastModifiedAt).CurrentValue = null;
+                    if (lastModifiedAt.ClrType == typeof(DateTime?))
+                    {
+                        entry.Property(PropertyName.LastModifiedAt).CurrentValue = null;
+                    }
                 }
             }
 
@@ -80,6 +133,41 @@ namespace Scaffold.Repositories.Extensions
             foreach (EntityEntry entry in entries)
             {
                 entry.Property(PropertyName.LastModifiedAt).CurrentValue = timestamp;
+            }
+
+            return changeTracker;
+        }
+
+        private static ChangeTracker UpdateTimestampsOnDeleted(this ChangeTracker changeTracker, DateTime timestamp)
+        {
+            IEnumerable<EntityEntry> entries = changeTracker.Entries()
+                .Where(entry => entry.State == EntityState.Deleted)
+                .Where(entry => entry.Metadata.FindProperty(PropertyName.DeletedAt) != null)
+                .Where(entry =>
+                {
+                    Type deletedAtType = entry.Metadata.FindProperty(PropertyName.DeletedAt).ClrType;
+                    return deletedAtType == typeof(DateTime) || deletedAtType == typeof(DateTime?);
+                });
+
+            foreach (EntityEntry entry in entries)
+            {
+                entry.Property(PropertyName.DeletedAt).CurrentValue = timestamp;
+                entry.State = EntityState.Modified;
+
+                IProperty? lastModifiedAt = entry.Metadata.FindProperty(PropertyName.LastModifiedAt);
+
+                if (lastModifiedAt != null)
+                {
+                    if (lastModifiedAt.ClrType == typeof(DateTime))
+                    {
+                        entry.Property(PropertyName.LastModifiedAt).CurrentValue = timestamp;
+                    }
+
+                    if (lastModifiedAt.ClrType == typeof(DateTime?))
+                    {
+                        entry.Property(PropertyName.LastModifiedAt).CurrentValue = null;
+                    }
+                }
             }
 
             return changeTracker;
