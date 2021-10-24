@@ -3,19 +3,19 @@
   "isRoot": true,
   "tools": {
     "cake.tool": {
-      "version": "1.2.0",
+      "version": "1.3.0",
       "commands": ["dotnet-cake"]
     },
     "cyclonedx": {
-      "version": "1.6.2",
+      "version": "2.1.2",
       "commands": ["dotnet-CycloneDX"]
     },
     "dotnet-ef": {
-      "version": "5.0.10",
+      "version": "5.0.11",
       "commands": ["dotnet-ef"]
     },
     "dotnet-format": {
-      "version": "5.1.225507",
+      "version": "5.1.250801",
       "commands": ["dotnet-format"]
     },
     "dotnet-outdated-tool": {
@@ -23,11 +23,11 @@
       "commands": ["dotnet-outdated"]
     },
     "dotnet-reportgenerator-globaltool": {
-      "version": "4.8.12",
+      "version": "4.8.13",
       "commands": ["reportgenerator"]
     },
     "dotnet-stryker": {
-      "version": "1.0.0-rc2",
+      "version": "1.0.0-rc3",
       "commands": ["dotnet-stryker"]
     },
     "microsoft.dotnet-httprepl": {

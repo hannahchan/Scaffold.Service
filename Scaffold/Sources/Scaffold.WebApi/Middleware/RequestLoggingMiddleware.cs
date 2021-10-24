@@ -1,6 +1,7 @@
 namespace Scaffold.WebApi.Middleware
 {
     using System;
+    using System.Linq;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
@@ -81,15 +82,7 @@ namespace Scaffold.WebApi.Middleware
 
         private static bool IgnorePath(PathString path, Options options)
         {
-            foreach (string ignorePattern in options.IgnorePatterns)
-            {
-                if (Regex.IsMatch(path, ignorePattern, RegexOptions.Compiled | RegexOptions.IgnoreCase))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return options.IgnorePatterns.Any(ignorePattern => Regex.IsMatch(path, ignorePattern, RegexOptions.Compiled | RegexOptions.IgnoreCase));
         }
 
         public class Options

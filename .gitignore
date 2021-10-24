@@ -207,7 +207,7 @@ PublishScripts/
 *.nuget.targets
 
 # Nuget personal access tokens and Credentials
-nuget.config
+# nuget.config
 
 # Microsoft Azure Build Output
 csx/
@@ -320,8 +320,8 @@ __pycache__/
 *.pyc
 
 # Cake - Uncomment if you are using it
-tools/**
-!tools/packages.config
+# tools/**
+# !tools/packages.config
 
 # Tabs Studio
 *.tss

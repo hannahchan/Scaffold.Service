@@ -3,6 +3,7 @@ namespace Scaffold.WebApi.Extensions
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
     using MediatR;
@@ -130,15 +131,7 @@ namespace Scaffold.WebApi.Extensions
 
         private static bool IgnorePath(this PathString path, IEnumerable<string> ignorePatterns)
         {
-            foreach (string ignorePattern in ignorePatterns)
-            {
-                if (Regex.IsMatch(path, ignorePattern, RegexOptions.Compiled | RegexOptions.IgnoreCase))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return ignorePatterns.Any(ignorePattern => Regex.IsMatch(path, ignorePattern, RegexOptions.Compiled | RegexOptions.IgnoreCase));
         }
     }
 }
