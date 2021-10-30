@@ -32,4 +32,4 @@ In this category of logging, you are logging _Domain Events_ to determine what h
 - Approval workflows
 - Transactions
 
-It is possible and many developer do (often naively) use the same logging backend/store to record _Domain Events_ as you would your _Application Events_. If your domain requires this kind of logging, it is recommended that you build this into your domain model and persist these _Domain Events_ into a separate data store such the one that contains your other domain objects.
+It is possible and many developer do (often naively) use the same logging backend/store to record _Domain Events_ as you would your _Application Events_. If your domain requires this kind of logging, it is recommended that you build this into your domain model and persist these _Domain Events_ into the same data store that contains your other domain objects.
