@@ -8,7 +8,7 @@ services:
         NODE_VERSION: lts/*
         USER_GID: 1000
         USER_UID: 1000
-        VARIANT: "5.0"
+        VARIANT: "6.0"
       context: .devcontainer
       dockerfile: Dockerfile
     command: "sleep infinity"
