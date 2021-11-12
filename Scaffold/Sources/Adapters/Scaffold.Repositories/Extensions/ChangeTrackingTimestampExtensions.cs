@@ -123,11 +123,10 @@ namespace Scaffold.Repositories.Extensions
         {
             IEnumerable<EntityEntry> entries = changeTracker.Entries()
                 .Where(entry => entry.State == EntityState.Modified)
-                .Where(entry => entry.Metadata.FindProperty(PropertyName.LastModifiedAt) != null)
                 .Where(entry =>
                 {
-                    Type? lastModifiedAtType = entry.Metadata.FindProperty(PropertyName.LastModifiedAt)?.ClrType;
-                    return lastModifiedAtType == typeof(DateTime) || lastModifiedAtType == typeof(DateTime?);
+                    IProperty? lastModifiedProperty = entry.Metadata.FindProperty(PropertyName.LastModifiedAt);
+                    return lastModifiedProperty != null && (lastModifiedProperty.ClrType == typeof(DateTime) || lastModifiedProperty.ClrType == typeof(DateTime?));
                 });
 
             foreach (EntityEntry entry in entries)
@@ -142,11 +141,10 @@ namespace Scaffold.Repositories.Extensions
         {
             IEnumerable<EntityEntry> entries = changeTracker.Entries()
                 .Where(entry => entry.State == EntityState.Deleted)
-                .Where(entry => entry.Metadata.FindProperty(PropertyName.DeletedAt) != null)
                 .Where(entry =>
                 {
-                    Type? deletedAtType = entry.Metadata.FindProperty(PropertyName.DeletedAt)?.ClrType;
-                    return deletedAtType == typeof(DateTime) || deletedAtType == typeof(DateTime?);
+                    IProperty? deletedAtProperty = entry.Metadata.FindProperty(PropertyName.DeletedAt);
+                    return deletedAtProperty != null && (deletedAtProperty.ClrType == typeof(DateTime) || deletedAtProperty.ClrType == typeof(DateTime?));
                 });
 
             foreach (EntityEntry entry in entries)
