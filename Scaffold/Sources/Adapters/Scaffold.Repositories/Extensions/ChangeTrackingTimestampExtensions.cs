@@ -48,7 +48,7 @@ namespace Scaffold.Repositories.Extensions
 
         private static IMutableEntityType AddSoftDeleteQueryFilter(this IMutableEntityType entity)
         {
-            IProperty deletedAt = entity.GetProperty(PropertyName.DeletedAt);
+            IMutableProperty deletedAt = entity.GetProperty(PropertyName.DeletedAt);
 
             if (deletedAt.ClrType == typeof(DateTime))
             {
@@ -126,7 +126,7 @@ namespace Scaffold.Repositories.Extensions
                 .Where(entry => entry.Metadata.FindProperty(PropertyName.LastModifiedAt) != null)
                 .Where(entry =>
                 {
-                    Type lastModifiedAtType = entry.Metadata.FindProperty(PropertyName.LastModifiedAt).ClrType;
+                    Type? lastModifiedAtType = entry.Metadata.FindProperty(PropertyName.LastModifiedAt)?.ClrType;
                     return lastModifiedAtType == typeof(DateTime) || lastModifiedAtType == typeof(DateTime?);
                 });
 
@@ -145,7 +145,7 @@ namespace Scaffold.Repositories.Extensions
                 .Where(entry => entry.Metadata.FindProperty(PropertyName.DeletedAt) != null)
                 .Where(entry =>
                 {
-                    Type deletedAtType = entry.Metadata.FindProperty(PropertyName.DeletedAt).ClrType;
+                    Type? deletedAtType = entry.Metadata.FindProperty(PropertyName.DeletedAt)?.ClrType;
                     return deletedAtType == typeof(DateTime) || deletedAtType == typeof(DateTime?);
                 });
 

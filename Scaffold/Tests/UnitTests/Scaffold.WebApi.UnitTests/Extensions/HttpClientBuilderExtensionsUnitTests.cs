@@ -34,7 +34,6 @@ namespace Scaffold.WebApi.UnitTests.Extensions
                     {
                         Assert.Equal(ServiceLifetime.Singleton, serviceDescriptor.Lifetime);
                         Assert.Equal(typeof(IOptions<>), serviceDescriptor.ServiceType);
-                        Assert.Equal(typeof(OptionsManager<>), serviceDescriptor.ImplementationType);
                     },
                     serviceDescriptor =>
                     {

@@ -13,7 +13,7 @@ namespace Scaffold.Repositories.Configurations
 
             builder.Metadata
                 .FindNavigation(nameof(Bucket.Items))
-                .SetPropertyAccessMode(PropertyAccessMode.Field);
+                ?.SetPropertyAccessMode(PropertyAccessMode.Field);
 
             builder.ToTable(nameof(Bucket));
         }

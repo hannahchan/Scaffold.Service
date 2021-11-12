@@ -43,7 +43,7 @@ namespace Scaffold.HttpClients.UnitTests
         }
 
         [Fact]
-        public async Task When_InvokingGetAndCancellationIsRequested_Expect_OperationCanceledException()
+        public async Task When_InvokingGetAndCancellationIsRequested_Expect_TaskCanceledException()
         {
             // Arrange
             Mock.HttpRequestHandler httpRequestHandler = new Mock.HttpRequestHandler(new HttpResponseMessage());
@@ -58,7 +58,7 @@ namespace Scaffold.HttpClients.UnitTests
             }
 
             // Assert
-            Assert.IsType<OperationCanceledException>(exception);
+            Assert.IsType<TaskCanceledException>(exception);
         }
     }
 }

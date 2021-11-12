@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 ENV ASPNETCORE_HEALTHCHECKPORT=8081
 ENV ASPNETCORE_METRICSPORT=8081
