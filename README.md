@@ -55,7 +55,7 @@ Stuff you might want to add to your Web API / microservice but not included with
 - [Console Log Formatting](https://docs.microsoft.com/dotnet/core/extensions/console-log-formatter)
 - [Cross-Origin Resource Sharing (CORS)](https://docs.microsoft.com/aspnet/core/security/cors)
 - [Forwarded Headers Handling](https://docs.microsoft.com/aspnet/core/host-and-deploy/proxy-load-balancer)
-- [Header Propagation](https://docs.microsoft.com/aspnet/core/fundamentals/http-requests#header-propagation-middleware-1)
+- [Header Propagation](https://docs.microsoft.com/aspnet/core/fundamentals/http-requests#header-propagation-middleware)
 - [Secrets Management](https://docs.microsoft.com/aspnet/core/security/app-secrets)
 
 ## Example App
