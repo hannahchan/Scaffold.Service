@@ -23,7 +23,7 @@ Scaffold aims to make developing the following features in your next Web API or 
 Other stuff you inherit when you bootstrap with Scaffold.
 
 - [Architecture](./Docs/Architecture.md)
-- [Code Analysis](./Docs/CodeAnalysis.md)
+- [Code Analysis and Formatting](./Docs/CodeAnalysisAndFormatting.md)
 - [Deterministic Builds](./Docs/DeterministicBuilds.md)
 - [Docker Support](./Docs/Docker.md)
 - [Entity Framework Support](./Docs/EntityFramework.md)

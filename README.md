@@ -39,7 +39,7 @@ Scaffold.WebApi aims to make developing the following features in your next Web 
 Other stuff you inherit when you bootstrap with Scaffold.WebApi.
 
 - [Architecture](./Scaffold/Docs/Architecture.md)
-- [Code Analysis](./Scaffold/Docs/CodeAnalysis.md)
+- [Code Analysis and Formatting](./Scaffold/Docs/CodeAnalysisAndFormatting.md)
 - [Deterministic Builds](./Scaffold/Docs/DeterministicBuilds.md)
 - [Docker Support](./Scaffold/Docs/Docker.md)
 - [Entity Framework Support](./Scaffold/Docs/EntityFramework.md)
