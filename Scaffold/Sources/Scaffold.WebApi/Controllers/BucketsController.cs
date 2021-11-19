@@ -103,12 +103,7 @@
             UpdateBucket.Response response = await this.sender.Send(command);
             Bucket bucket = this.mapper.Map<Bucket>(response.Bucket);
 
-            if (response.Created)
-            {
-                return this.CreatedAtRoute("GetBucket", new { bucketId }, bucket);
-            }
-
-            return bucket;
+            return response.Created ? this.CreatedAtRoute("GetBucket", new { bucketId }, bucket) : (ActionResult<Bucket>)bucket;
         }
 
         /// <summary>Deletes a bucket.</summary>
@@ -204,12 +199,7 @@
             UpdateItem.Response response = await this.sender.Send(command);
             Item item = this.mapper.Map<Item>(response.Item);
 
-            if (response.Created)
-            {
-                return this.CreatedAtRoute("GetItem", new { bucketId, itemId }, item);
-            }
-
-            return item;
+            return response.Created ? this.CreatedAtRoute("GetItem", new { bucketId, itemId }, item) : (ActionResult<Item>)item;
         }
 
         /// <summary>Deletes an item in a bucket.</summary>

@@ -63,12 +63,7 @@ namespace Scaffold.Application.UnitTests.Components.Bucket
                     typeof(ItemNotFoundException).FullName,
                 };
 
-                if (allowedTypes.Contains(typeName))
-                {
-                    return Assembly.Load(assemblyName).GetType(typeName);
-                }
-
-                throw new SerializationException();
+                return allowedTypes.Contains(typeName) ? Assembly.Load(assemblyName).GetType(typeName) : throw new SerializationException();
             }
         }
     }

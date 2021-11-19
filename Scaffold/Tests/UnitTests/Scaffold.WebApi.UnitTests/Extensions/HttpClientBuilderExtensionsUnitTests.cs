@@ -70,16 +70,14 @@ namespace Scaffold.WebApi.UnitTests.Extensions
 
         private class MockHttpClientBuilder : IHttpClientBuilder
         {
-            private readonly IServiceCollection services;
-
             public MockHttpClientBuilder(IServiceCollection services)
             {
-                this.services = services;
+                this.Services = services;
             }
 
             public string Name => "MockHttpClientBuilder";
 
-            public IServiceCollection Services => this.services;
+            public IServiceCollection Services { get; }
         }
     }
 }

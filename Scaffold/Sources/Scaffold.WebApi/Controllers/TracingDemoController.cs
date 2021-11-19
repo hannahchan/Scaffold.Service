@@ -53,16 +53,13 @@ namespace Scaffold.WebApi.Controllers
         {
             await Task.Delay(new Random().Next(500));
 
-            if (new Random().NextDouble() <= 0.8)
-            {
-                return this.Problem(
+            return new Random().NextDouble() <= 0.8
+                ? this.Problem(
                     type: "https://tools.ietf.org/html/rfc7231#section-6.6.4",
                     title: "Service Unavailable",
                     detail: "This is intended 80% of the time. Please try again.",
-                    statusCode: (int)HttpStatusCode.ServiceUnavailable);
-            }
-
-            return $"Hello, {name ?? "random"}!";
+                    statusCode: (int)HttpStatusCode.ServiceUnavailable)
+                : (ActionResult<string>)$"Hello, {name ?? "random"}!";
         }
 
         public class Client : IClient

@@ -121,12 +121,7 @@ namespace Scaffold.Application.UnitTests.Common.Exceptions
                     typeof(Exception).FullName,
                 };
 
-                if (allowedTypes.Contains(typeName))
-                {
-                    return Assembly.Load(assemblyName).GetType(typeName);
-                }
-
-                throw new SerializationException();
+                return allowedTypes.Contains(typeName) ? Assembly.Load(assemblyName).GetType(typeName) : throw new SerializationException();
             }
         }
     }
