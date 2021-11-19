@@ -22,6 +22,7 @@ string configuration = "Release";
 //////////////////////////////////////////////////////////////////////
 
 Task("Audit")
+    .Description("Produces a \"Software Bill of Materials\" in CycloneDX format.")
     .Does(() =>
     {
         DeleteDirectorySettings deleteSettings = new DeleteDirectorySettings
@@ -42,6 +43,7 @@ Task("Audit")
     });
 
 Task("Clean")
+    .Description("Executes 'dotnet clean'.")
     .Does(() =>
     {
         DotNetCoreClean(solution, new DotNetCoreCleanSettings
@@ -51,12 +53,14 @@ Task("Clean")
     });
 
 Task("Restore")
+    .Description("Executes 'dotnet restore'.")
     .Does(() =>
     {
         DotNetCoreRestore(solution);
     });
 
 Task("Build")
+    .Description("Executes 'dotnet build'.")
     .IsDependentOn("Clean")
     .IsDependentOn("Restore")
     .Does(() =>
@@ -69,6 +73,7 @@ Task("Build")
     });
 
 Task("Test")
+    .Description("Executes 'dotnet test' and produces code coverage reports.")
     .IsDependentOn("Build")
     .Does(() =>
     {
@@ -137,6 +142,7 @@ Task("Test")
     });
 
 Task("Publish")
+    .Description("Produces a release ready build.")
     .IsDependentOn("Test")
     .Does(() =>
     {
@@ -159,6 +165,7 @@ Task("Publish")
     });
 
 Task("Containerize")
+    .Description("Produces a release ready container image.")
     .IsDependentOn("Publish")
     .Does(() =>
     {
