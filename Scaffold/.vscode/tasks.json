@@ -12,17 +12,6 @@
       "problemMatcher": []
     },
     {
-      "label": "Build",
-      "command": "dotnet",
-      "type": "process",
-      "args": ["build"],
-      "problemMatcher": "$msCompile",
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
-    },
-    {
       "label": "Clean",
       "command": "dotnet",
       "type": "process",
@@ -35,6 +24,28 @@
       "type": "process",
       "args": ["restore"],
       "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Build",
+      "command": "dotnet",
+      "type": "process",
+      "args": ["build"],
+      "problemMatcher": "$msCompile",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Test",
+      "command": "dotnet",
+      "type": "process",
+      "args": ["test"],
+      "problemMatcher": "$msCompile",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
     },
     {
       "label": "Start Infrastructure",
