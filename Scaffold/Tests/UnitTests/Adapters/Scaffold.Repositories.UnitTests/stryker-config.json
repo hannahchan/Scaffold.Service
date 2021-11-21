@@ -1,6 +1,6 @@
 {
   "stryker-config": {
     "mutate": ["!Configurations/*", "!Migrations/*"],
-    "project-file": "Scaffold.Repositories.csproj"
+    "project": "Scaffold.Repositories.csproj"
   }
 }

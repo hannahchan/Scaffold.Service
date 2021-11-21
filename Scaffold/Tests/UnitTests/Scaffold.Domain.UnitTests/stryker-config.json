@@ -1,5 +1,5 @@
 {
   "stryker-config": {
-    "project-file": "Scaffold.Domain.csproj"
+    "project": "Scaffold.Domain.csproj"
   }
 }

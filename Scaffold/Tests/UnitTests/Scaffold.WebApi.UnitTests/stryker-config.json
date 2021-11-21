@@ -6,6 +6,6 @@
       "!Extensions/ServiceCollectionExtension.cs",
       "!Startup.cs"
     ],
-    "project-file": "Scaffold.WebApi.csproj"
+    "project": "Scaffold.WebApi.csproj"
   }
 }
