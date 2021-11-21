@@ -1,41 +1,40 @@
-namespace Scaffold.Application.Components.Bucket
+namespace Scaffold.Application.Components.Bucket;
+
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
+using MediatR;
+using Scaffold.Application.Common.Instrumentation;
+using Scaffold.Application.Common.Interfaces;
+using Scaffold.Application.Common.Messaging;
+using Scaffold.Domain.Aggregates.Bucket;
+
+public static class GetBucket
 {
-    using System.Diagnostics;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using MediatR;
-    using Scaffold.Application.Common.Instrumentation;
-    using Scaffold.Application.Common.Interfaces;
-    using Scaffold.Application.Common.Messaging;
-    using Scaffold.Domain.Aggregates.Bucket;
+    public record Query(int Id) : IRequest<Response>;
 
-    public static class GetBucket
+    public record Response(Bucket Bucket);
+
+    internal class Handler : IRequestHandler<Query, Response>
     {
-        public record Query(int Id) : IRequest<Response>;
+        private readonly IBucketReadRepository repository;
 
-        public record Response(Bucket Bucket);
+        private readonly IPublisher publisher;
 
-        internal class Handler : IRequestHandler<Query, Response>
+        public Handler(IBucketReadRepository repository, IPublisher publisher)
         {
-            private readonly IBucketReadRepository repository;
+            this.repository = repository;
+            this.publisher = publisher;
+        }
 
-            private readonly IPublisher publisher;
+        public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
+        {
+            using Activity? activity = ActivityProvider.StartActivity(nameof(GetBucket));
 
-            public Handler(IBucketReadRepository repository, IPublisher publisher)
-            {
-                this.repository = repository;
-                this.publisher = publisher;
-            }
+            Bucket bucket = await this.repository.GetAsync(request.Id, cancellationToken) ?? throw new BucketNotFoundException(request.Id);
+            await this.publisher.Publish(new BucketRetrievedEvent<Handler>(bucket.Id), CancellationToken.None);
 
-            public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
-            {
-                using Activity? activity = ActivityProvider.StartActivity(nameof(GetBucket));
-
-                Bucket bucket = await this.repository.GetAsync(request.Id, cancellationToken) ?? throw new BucketNotFoundException(request.Id);
-                await this.publisher.Publish(new BucketRetrievedEvent<Handler>(bucket.Id), CancellationToken.None);
-
-                return new Response(bucket);
-            }
+            return new Response(bucket);
         }
     }
 }

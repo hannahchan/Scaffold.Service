@@ -1,20 +1,19 @@
-namespace Scaffold.Domain.Aggregates.Bucket
+namespace Scaffold.Domain.Aggregates.Bucket;
+
+using System;
+using System.Runtime.Serialization;
+using Scaffold.Domain.Base;
+
+[Serializable]
+public class BucketFullException : DomainException
 {
-    using System;
-    using System.Runtime.Serialization;
-    using Scaffold.Domain.Base;
-
-    [Serializable]
-    public class BucketFullException : DomainException
+    public BucketFullException(string message)
+        : base(message)
     {
-        public BucketFullException(string message)
-            : base(message)
-        {
-        }
+    }
 
-        protected BucketFullException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
+    protected BucketFullException(SerializationInfo info, StreamingContext context)
+        : base(info, context)
+    {
     }
 }

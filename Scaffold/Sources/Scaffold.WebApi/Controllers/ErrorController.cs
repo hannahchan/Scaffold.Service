@@ -1,15 +1,14 @@
-namespace Scaffold.WebApi.Controllers
-{
-    using Microsoft.AspNetCore.Mvc;
+namespace Scaffold.WebApi.Controllers;
 
-    [ApiController]
-    [ApiExplorerSettings(IgnoreApi = true)]
-    [Route("[controller]")]
-    public class ErrorController : ControllerBase
+using Microsoft.AspNetCore.Mvc;
+
+[ApiController]
+[ApiExplorerSettings(IgnoreApi = true)]
+[Route("[controller]")]
+public class ErrorController : ControllerBase
+{
+    public ActionResult Error()
     {
-        public ActionResult Error()
-        {
-            return this.Problem();
-        }
+        return this.Problem();
     }
 }

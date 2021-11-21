@@ -1,16 +1,15 @@
-namespace Scaffold.Application.Common.Instrumentation
+namespace Scaffold.Application.Common.Instrumentation;
+
+using System.Diagnostics;
+using Scaffold.Application.Common.Constants;
+
+internal static class ActivityProvider
 {
-    using System.Diagnostics;
-    using Scaffold.Application.Common.Constants;
+    private static readonly ActivitySource ActivitySource =
+        new ActivitySource(Application.ActivitySource.Name, Application.ActivitySource.Version);
 
-    internal static class ActivityProvider
+    public static Activity? StartActivity(string name)
     {
-        private static readonly ActivitySource ActivitySource =
-            new ActivitySource(Application.ActivitySource.Name, Application.ActivitySource.Version);
-
-        public static Activity? StartActivity(string name)
-        {
-            return ActivitySource.StartActivity(name, ActivityKind.Internal);
-        }
+        return ActivitySource.StartActivity(name, ActivityKind.Internal);
     }
 }

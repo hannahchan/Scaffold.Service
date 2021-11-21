@@ -1,12 +1,11 @@
-namespace Scaffold.WebApi.Models.Item
-{
-    using AutoMapper;
+namespace Scaffold.WebApi.Models.Item;
 
-    public class ItemMappingProfile : Profile
+using AutoMapper;
+
+public class ItemMappingProfile : Profile
+{
+    public ItemMappingProfile()
     {
-        public ItemMappingProfile()
-        {
-            this.CreateMap<Domain.Aggregates.Bucket.Item, Item>();
-        }
+        this.CreateMap<Domain.Aggregates.Bucket.Item, Item>();
     }
 }

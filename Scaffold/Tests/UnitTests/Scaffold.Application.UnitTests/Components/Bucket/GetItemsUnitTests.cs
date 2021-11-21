@@ -1,116 +1,115 @@
-namespace Scaffold.Application.UnitTests.Components.Bucket
+namespace Scaffold.Application.UnitTests.Components.Bucket;
+
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Scaffold.Application.Common.Messaging;
+using Scaffold.Application.Components.Bucket;
+using Scaffold.Domain.Aggregates.Bucket;
+using Scaffold.Repositories;
+using Xunit;
+
+public class GetItemsUnitTests
 {
-    using System;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.EntityFrameworkCore;
-    using Scaffold.Application.Common.Messaging;
-    using Scaffold.Application.Components.Bucket;
-    using Scaffold.Domain.Aggregates.Bucket;
-    using Scaffold.Repositories;
-    using Xunit;
+    private readonly IBucketRepository repository;
 
-    public class GetItemsUnitTests
+    private readonly Mock.Publisher publisher;
+
+    public GetItemsUnitTests()
     {
-        private readonly IBucketRepository repository;
+        BucketContext context = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options);
 
-        private readonly Mock.Publisher publisher;
+        this.repository = new ScopedBucketRepository(context);
+        this.publisher = new Mock.Publisher();
+    }
 
-        public GetItemsUnitTests()
+    public class Handler : GetItemsUnitTests
+    {
+        [Fact]
+        public async Task When_GettingItemsFromBucket_Expect_ExistingItems()
         {
-            BucketContext context = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options);
+            // Arrange
+            Bucket bucket = new Bucket();
+            bucket.AddItem(new Item { Name = "Item 1" });
+            bucket.AddItem(new Item { Name = "Item 2" });
+            bucket.AddItem(new Item { Name = "Item 3" });
 
-            this.repository = new ScopedBucketRepository(context);
-            this.publisher = new Mock.Publisher();
+            await this.repository.AddAsync(bucket);
+
+            GetItems.Query query = new GetItems.Query(bucket.Id);
+            GetItems.Handler handler = new GetItems.Handler(this.repository, this.publisher);
+
+            // Act
+            GetItems.Response response = await handler.Handle(query, default);
+
+            // Assert
+            Assert.Collection(
+                response.Items,
+                item => Assert.Equal("Item 1", item.Name),
+                item => Assert.Equal("Item 2", item.Name),
+                item => Assert.Equal("Item 3", item.Name));
+
+            Assert.Collection(
+                this.publisher.PublishedEvents,
+                publishedEvent =>
+                {
+                    ItemsRetrievedEvent<GetItems.Handler> bucketEvent = Assert.IsType<ItemsRetrievedEvent<GetItems.Handler>>(publishedEvent.Notification);
+                    Assert.Equal("ItemsRetrieved", bucketEvent.Type);
+                    Assert.Equal($"Retrieved {response.Items.Count()} Item/s from Bucket {bucket.Id}", bucketEvent.Description);
+                    Assert.Equal(bucket.Id, bucketEvent.BucketId);
+                    Assert.Equal(response.Items.Select(item => item.Id).ToArray(), bucketEvent.ItemIds);
+                    Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
+                });
         }
 
-        public class Handler : GetItemsUnitTests
+        [Fact]
+        public async Task When_GettingNonExistingItemsFromBucket_Expect_Empty()
         {
-            [Fact]
-            public async Task When_GettingItemsFromBucket_Expect_ExistingItems()
-            {
-                // Arrange
-                Bucket bucket = new Bucket();
-                bucket.AddItem(new Item { Name = "Item 1" });
-                bucket.AddItem(new Item { Name = "Item 2" });
-                bucket.AddItem(new Item { Name = "Item 3" });
+            // Arrange
+            Bucket bucket = new Bucket();
+            await this.repository.AddAsync(bucket);
 
-                await this.repository.AddAsync(bucket);
+            GetItems.Query query = new GetItems.Query(bucket.Id);
+            GetItems.Handler handler = new GetItems.Handler(this.repository, this.publisher);
 
-                GetItems.Query query = new GetItems.Query(bucket.Id);
-                GetItems.Handler handler = new GetItems.Handler(this.repository, this.publisher);
+            // Act
+            GetItems.Response response = await handler.Handle(query, default);
 
-                // Act
-                GetItems.Response response = await handler.Handle(query, default);
+            // Assert
+            Assert.NotNull(response.Items);
+            Assert.Empty(response.Items);
 
-                // Assert
-                Assert.Collection(
-                    response.Items,
-                    item => Assert.Equal("Item 1", item.Name),
-                    item => Assert.Equal("Item 2", item.Name),
-                    item => Assert.Equal("Item 3", item.Name));
+            Assert.Collection(
+                this.publisher.PublishedEvents,
+                publishedEvent =>
+                {
+                    ItemsRetrievedEvent<GetItems.Handler> bucketEvent = Assert.IsType<ItemsRetrievedEvent<GetItems.Handler>>(publishedEvent.Notification);
+                    Assert.Equal("ItemsRetrieved", bucketEvent.Type);
+                    Assert.Equal($"Retrieved {response.Items.Count()} Item/s from Bucket {bucket.Id}", bucketEvent.Description);
+                    Assert.Equal(bucket.Id, bucketEvent.BucketId);
+                    Assert.Empty(bucketEvent.ItemIds);
+                    Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
+                });
+        }
 
-                Assert.Collection(
-                    this.publisher.PublishedEvents,
-                    publishedEvent =>
-                    {
-                        ItemsRetrievedEvent<GetItems.Handler> bucketEvent = Assert.IsType<ItemsRetrievedEvent<GetItems.Handler>>(publishedEvent.Notification);
-                        Assert.Equal("ItemsRetrieved", bucketEvent.Type);
-                        Assert.Equal($"Retrieved {response.Items.Count()} Item/s from Bucket {bucket.Id}", bucketEvent.Description);
-                        Assert.Equal(bucket.Id, bucketEvent.BucketId);
-                        Assert.Equal(response.Items.Select(item => item.Id).ToArray(), bucketEvent.ItemIds);
-                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
-                    });
-            }
+        [Fact]
+        public async Task When_GettingItemsFromNonExistingBucket_Expect_BucketNotFoundException()
+        {
+            // Arrange
+            GetItems.Query query = new GetItems.Query(new Random().Next());
+            GetItems.Handler handler = new GetItems.Handler(this.repository, this.publisher);
 
-            [Fact]
-            public async Task When_GettingNonExistingItemsFromBucket_Expect_Empty()
-            {
-                // Arrange
-                Bucket bucket = new Bucket();
-                await this.repository.AddAsync(bucket);
+            // Act
+            Exception exception = await Record.ExceptionAsync(() =>
+                handler.Handle(query, default));
 
-                GetItems.Query query = new GetItems.Query(bucket.Id);
-                GetItems.Handler handler = new GetItems.Handler(this.repository, this.publisher);
-
-                // Act
-                GetItems.Response response = await handler.Handle(query, default);
-
-                // Assert
-                Assert.NotNull(response.Items);
-                Assert.Empty(response.Items);
-
-                Assert.Collection(
-                    this.publisher.PublishedEvents,
-                    publishedEvent =>
-                    {
-                        ItemsRetrievedEvent<GetItems.Handler> bucketEvent = Assert.IsType<ItemsRetrievedEvent<GetItems.Handler>>(publishedEvent.Notification);
-                        Assert.Equal("ItemsRetrieved", bucketEvent.Type);
-                        Assert.Equal($"Retrieved {response.Items.Count()} Item/s from Bucket {bucket.Id}", bucketEvent.Description);
-                        Assert.Equal(bucket.Id, bucketEvent.BucketId);
-                        Assert.Empty(bucketEvent.ItemIds);
-                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
-                    });
-            }
-
-            [Fact]
-            public async Task When_GettingItemsFromNonExistingBucket_Expect_BucketNotFoundException()
-            {
-                // Arrange
-                GetItems.Query query = new GetItems.Query(new Random().Next());
-                GetItems.Handler handler = new GetItems.Handler(this.repository, this.publisher);
-
-                // Act
-                Exception exception = await Record.ExceptionAsync(() =>
-                    handler.Handle(query, default));
-
-                // Assert
-                Assert.IsType<BucketNotFoundException>(exception);
-                Assert.Empty(this.publisher.PublishedEvents);
-            }
+            // Assert
+            Assert.IsType<BucketNotFoundException>(exception);
+            Assert.Empty(this.publisher.PublishedEvents);
         }
     }
 }

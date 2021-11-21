@@ -1,77 +1,76 @@
-namespace Scaffold.Application.UnitTests.Components.Bucket
+namespace Scaffold.Application.UnitTests.Components.Bucket;
+
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Scaffold.Application.Common.Messaging;
+using Scaffold.Application.Components.Bucket;
+using Scaffold.Domain.Aggregates.Bucket;
+using Scaffold.Repositories;
+using Xunit;
+
+public class GetBucketUnitTests
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.EntityFrameworkCore;
-    using Scaffold.Application.Common.Messaging;
-    using Scaffold.Application.Components.Bucket;
-    using Scaffold.Domain.Aggregates.Bucket;
-    using Scaffold.Repositories;
-    using Xunit;
+    private readonly IBucketRepository repository;
 
-    public class GetBucketUnitTests
+    private readonly Mock.Publisher publisher;
+
+    public GetBucketUnitTests()
     {
-        private readonly IBucketRepository repository;
+        BucketContext context = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options);
 
-        private readonly Mock.Publisher publisher;
+        this.repository = new ScopedBucketRepository(context);
+        this.publisher = new Mock.Publisher();
+    }
 
-        public GetBucketUnitTests()
+    public class Handler : GetBucketUnitTests
+    {
+        [Fact]
+        public async Task When_GettingBucket_Expect_ExistingBucket()
         {
-            BucketContext context = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options);
+            // Arrange
+            Bucket bucket = new Bucket();
+            await this.repository.AddAsync(bucket);
 
-            this.repository = new ScopedBucketRepository(context);
-            this.publisher = new Mock.Publisher();
+            GetBucket.Query query = new GetBucket.Query(bucket.Id);
+            GetBucket.Handler handler = new GetBucket.Handler(this.repository, this.publisher);
+
+            // Act
+            GetBucket.Response response = await handler.Handle(query, default);
+
+            // Assert
+            Assert.Equal(bucket.Id, response.Bucket.Id);
+            Assert.Equal(bucket.Name, response.Bucket.Name);
+
+            Assert.Collection(
+                this.publisher.PublishedEvents,
+                publishedEvent =>
+                {
+                    BucketRetrievedEvent<GetBucket.Handler> bucketEvent = Assert.IsType<BucketRetrievedEvent<GetBucket.Handler>>(publishedEvent.Notification);
+                    Assert.Equal("BucketRetrieved", bucketEvent.Type);
+                    Assert.Equal($"Retrieved Bucket {response.Bucket.Id}", bucketEvent.Description);
+                    Assert.Equal(response.Bucket.Id, bucketEvent.BucketId);
+                    Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
+                });
         }
 
-        public class Handler : GetBucketUnitTests
+        [Fact]
+        public async Task When_GettingNonExistingBucket_Expect_BucketNotFoundException()
         {
-            [Fact]
-            public async Task When_GettingBucket_Expect_ExistingBucket()
-            {
-                // Arrange
-                Bucket bucket = new Bucket();
-                await this.repository.AddAsync(bucket);
+            // Arrange
+            GetBucket.Query query = new GetBucket.Query(new Random().Next());
+            GetBucket.Handler handler = new GetBucket.Handler(this.repository, this.publisher);
 
-                GetBucket.Query query = new GetBucket.Query(bucket.Id);
-                GetBucket.Handler handler = new GetBucket.Handler(this.repository, this.publisher);
+            // Act
+            Exception exception = await Record.ExceptionAsync(() =>
+                handler.Handle(query, default));
 
-                // Act
-                GetBucket.Response response = await handler.Handle(query, default);
-
-                // Assert
-                Assert.Equal(bucket.Id, response.Bucket.Id);
-                Assert.Equal(bucket.Name, response.Bucket.Name);
-
-                Assert.Collection(
-                    this.publisher.PublishedEvents,
-                    publishedEvent =>
-                    {
-                        BucketRetrievedEvent<GetBucket.Handler> bucketEvent = Assert.IsType<BucketRetrievedEvent<GetBucket.Handler>>(publishedEvent.Notification);
-                        Assert.Equal("BucketRetrieved", bucketEvent.Type);
-                        Assert.Equal($"Retrieved Bucket {response.Bucket.Id}", bucketEvent.Description);
-                        Assert.Equal(response.Bucket.Id, bucketEvent.BucketId);
-                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
-                    });
-            }
-
-            [Fact]
-            public async Task When_GettingNonExistingBucket_Expect_BucketNotFoundException()
-            {
-                // Arrange
-                GetBucket.Query query = new GetBucket.Query(new Random().Next());
-                GetBucket.Handler handler = new GetBucket.Handler(this.repository, this.publisher);
-
-                // Act
-                Exception exception = await Record.ExceptionAsync(() =>
-                    handler.Handle(query, default));
-
-                // Assert
-                Assert.IsType<BucketNotFoundException>(exception);
-                Assert.Empty(this.publisher.PublishedEvents);
-            }
+            // Assert
+            Assert.IsType<BucketNotFoundException>(exception);
+            Assert.Empty(this.publisher.PublishedEvents);
         }
     }
 }

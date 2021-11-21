@@ -1,11 +1,10 @@
-namespace Scaffold.Domain.Base
+namespace Scaffold.Domain.Base;
+
+using System;
+
+public interface IChangeTrackingTimestamps
 {
-    using System;
+    DateTime CreatedAt { get; }
 
-    public interface IChangeTrackingTimestamps
-    {
-        DateTime CreatedAt { get; }
-
-        DateTime? LastModifiedAt { get; }
-    }
+    DateTime? LastModifiedAt { get; }
 }

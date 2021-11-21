@@ -1,25 +1,24 @@
-namespace Scaffold.WebApi.Extensions
+namespace Scaffold.WebApi.Extensions;
+
+using Microsoft.Extensions.DependencyInjection;
+
+internal static class MvcBuilderExtensions
 {
-    using Microsoft.Extensions.DependencyInjection;
-
-    internal static class MvcBuilderExtensions
+    public static IMvcBuilder AddCustomJsonOptions(this IMvcBuilder builder)
     {
-        public static IMvcBuilder AddCustomJsonOptions(this IMvcBuilder builder)
+        builder.AddJsonOptions(options =>
         {
-            builder.AddJsonOptions(options =>
-            {
-            });
+        });
 
-            return builder;
-        }
+        return builder;
+    }
 
-        public static IMvcBuilder AddCustomXmlFormatters(this IMvcBuilder builder)
+    public static IMvcBuilder AddCustomXmlFormatters(this IMvcBuilder builder)
+    {
+        builder.AddXmlDataContractSerializerFormatters(options =>
         {
-            builder.AddXmlDataContractSerializerFormatters(options =>
-            {
-            });
+        });
 
-            return builder;
-        }
+        return builder;
     }
 }

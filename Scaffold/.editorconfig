@@ -371,6 +371,9 @@ dotnet_naming_style.s_camelcase.capitalization = camel_case
 end_of_line = lf
 insert_final_newline = true
 
+# 'namespace' preferences
+csharp_style_namespace_declarations = file_scoped:warning
+
 # 'using' preferences
 dotnet_diagnostic.IDE0005.severity = warning
 dotnet_separate_import_directive_groups = false

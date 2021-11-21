@@ -1,98 +1,97 @@
-﻿namespace Scaffold.WebApi
+﻿namespace Scaffold.WebApi;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Prometheus;
+using Scaffold.Repositories;
+using Scaffold.WebApi.Extensions;
+using Scaffold.WebApi.Filters;
+using Scaffold.WebApi.Middleware;
+
+public class Startup
 {
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-    using Prometheus;
-    using Scaffold.Repositories;
-    using Scaffold.WebApi.Extensions;
-    using Scaffold.WebApi.Filters;
-    using Scaffold.WebApi.Middleware;
-
-    public class Startup
+    public Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
+        this.Configuration = configuration;
+    }
+
+    public IConfiguration Configuration { get; }
+
+    // This method gets called by the runtime. Use this method to add services to the container.
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddCors(options => options.AddDefaultPolicy(builder =>
         {
-            this.Configuration = configuration;
+            // Not recommended for production. Please remove or revise for your environment.
+            builder
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin();
+        }));
+
+        services.AddHealthChecks()
+            .AddDbContextCheck<BucketContext>()
+            .AddDbContextCheck<BucketContext.ReadOnly>();
+
+        services
+            .AddHttpClients()
+            .AddOpenTelemetry(this.Configuration)
+            .AddOptions(this.Configuration)
+            .AddRepositories(this.Configuration)
+            .AddServices();
+
+        services.AddControllers(options => options.Filters.Add<ExceptionFilter>())
+            .AddCustomJsonOptions()
+            .AddCustomXmlFormatters();
+
+        services.AddApiDocumentation();
+    }
+
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+        }
+        else
+        {
+            app.UseExceptionHandler("/error");
         }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddCors(options => options.AddDefaultPolicy(builder =>
+        app
+            .UseMiddleware<RequestLoggingMiddleware>()
+            .UseSwagger()
+            .UseSwaggerUI(options =>
             {
-                // Not recommended for production. Please remove or revise for your environment.
-                builder
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowAnyOrigin();
-            }));
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Scaffold.WebApi v1");
+            });
 
-            services.AddHealthChecks()
-                .AddDbContextCheck<BucketContext>()
-                .AddDbContextCheck<BucketContext.ReadOnly>();
-
-            services
-                .AddHttpClients()
-                .AddOpenTelemetry(this.Configuration)
-                .AddOptions(this.Configuration)
-                .AddRepositories(this.Configuration)
-                .AddServices();
-
-            services.AddControllers(options => options.Filters.Add<ExceptionFilter>())
-                .AddCustomJsonOptions()
-                .AddCustomXmlFormatters();
-
-            services.AddApiDocumentation();
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
+        app
+            .UseCors()
+            .UseRouting()
+            .UseHttpMetrics()
+            .UseAuthorization()
+            .UseEndpoints(endpoints =>
             {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/error");
-            }
+                IEndpointConventionBuilder healthCheckEndpoint = endpoints.MapHealthChecks("/health");
 
-            app
-                .UseMiddleware<RequestLoggingMiddleware>()
-                .UseSwagger()
-                .UseSwaggerUI(options =>
+                if (this.Configuration["HealthCheckPort"] != null)
                 {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Scaffold.WebApi v1");
-                });
+                    healthCheckEndpoint.RequireHost($"*:{this.Configuration["HealthCheckPort"]}");
+                }
 
-            app
-                .UseCors()
-                .UseRouting()
-                .UseHttpMetrics()
-                .UseAuthorization()
-                .UseEndpoints(endpoints =>
+                IEndpointConventionBuilder metricsEndpoint = endpoints.MapMetrics();
+
+                if (this.Configuration["MetricsPort"] != null)
                 {
-                    IEndpointConventionBuilder healthCheckEndpoint = endpoints.MapHealthChecks("/health");
+                    metricsEndpoint.RequireHost($"*:{this.Configuration["MetricsPort"]}");
+                }
 
-                    if (this.Configuration["HealthCheckPort"] != null)
-                    {
-                        healthCheckEndpoint.RequireHost($"*:{this.Configuration["HealthCheckPort"]}");
-                    }
-
-                    IEndpointConventionBuilder metricsEndpoint = endpoints.MapMetrics();
-
-                    if (this.Configuration["MetricsPort"] != null)
-                    {
-                        metricsEndpoint.RequireHost($"*:{this.Configuration["MetricsPort"]}");
-                    }
-
-                    endpoints.MapControllers();
-                });
-        }
+                endpoints.MapControllers();
+            });
     }
 }

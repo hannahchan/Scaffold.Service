@@ -1,17 +1,16 @@
-namespace Scaffold.Application.Common.Messaging
+namespace Scaffold.Application.Common.Messaging;
+
+using System;
+
+internal interface IAuditableEvent
 {
-    using System;
+    DateTime Timestamp { get; }
 
-    internal interface IAuditableEvent
-    {
-        DateTime Timestamp { get; }
+    string? TraceId { get; }
 
-        string? TraceId { get; }
+    string? Source { get; }
 
-        string? Source { get; }
+    string Type { get; }
 
-        string Type { get; }
-
-        string Description { get; }
-    }
+    string Description { get; }
 }

@@ -1,12 +1,11 @@
-namespace Scaffold.WebApi.Models.Bucket
-{
-    using AutoMapper;
+namespace Scaffold.WebApi.Models.Bucket;
 
-    public class BucketMappingProfile : Profile
+using AutoMapper;
+
+public class BucketMappingProfile : Profile
+{
+    public BucketMappingProfile()
     {
-        public BucketMappingProfile()
-        {
-            this.CreateMap<Domain.Aggregates.Bucket.Bucket, Bucket>();
-        }
+        this.CreateMap<Domain.Aggregates.Bucket.Bucket, Bucket>();
     }
 }

@@ -1,38 +1,37 @@
-namespace Scaffold.WebApi.Filters
+namespace Scaffold.WebApi.Filters;
+
+using System.Net;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Scaffold.Application.Common.Exceptions;
+using Scaffold.Domain.Base;
+
+public class ExceptionFilter : IExceptionFilter
 {
-    using System.Net;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Filters;
-    using Microsoft.AspNetCore.Mvc.Infrastructure;
-    using Scaffold.Application.Common.Exceptions;
-    using Scaffold.Domain.Base;
+    private readonly ProblemDetailsFactory problemDetailsFactory;
 
-    public class ExceptionFilter : IExceptionFilter
+    public ExceptionFilter(ProblemDetailsFactory problemDetailsFactory)
     {
-        private readonly ProblemDetailsFactory problemDetailsFactory;
+        this.problemDetailsFactory = problemDetailsFactory;
+    }
 
-        public ExceptionFilter(ProblemDetailsFactory problemDetailsFactory)
+    public void OnException(ExceptionContext context)
+    {
+        if (context.Exception is DomainException domainException)
         {
-            this.problemDetailsFactory = problemDetailsFactory;
+            context.Result = new ConflictObjectResult(this.problemDetailsFactory.CreateProblemDetails(
+                httpContext: context.HttpContext,
+                statusCode: (int)HttpStatusCode.Conflict,
+                detail: domainException.Message));
         }
 
-        public void OnException(ExceptionContext context)
+        if (context.Exception is NotFoundException notFoundException)
         {
-            if (context.Exception is DomainException domainException)
-            {
-                context.Result = new ConflictObjectResult(this.problemDetailsFactory.CreateProblemDetails(
-                    httpContext: context.HttpContext,
-                    statusCode: (int)HttpStatusCode.Conflict,
-                    detail: domainException.Message));
-            }
-
-            if (context.Exception is NotFoundException notFoundException)
-            {
-                context.Result = new NotFoundObjectResult(this.problemDetailsFactory.CreateProblemDetails(
-                    httpContext: context.HttpContext,
-                    statusCode: (int)HttpStatusCode.NotFound,
-                    detail: notFoundException.Message));
-            }
+            context.Result = new NotFoundObjectResult(this.problemDetailsFactory.CreateProblemDetails(
+                httpContext: context.HttpContext,
+                statusCode: (int)HttpStatusCode.NotFound,
+                detail: notFoundException.Message));
         }
     }
 }

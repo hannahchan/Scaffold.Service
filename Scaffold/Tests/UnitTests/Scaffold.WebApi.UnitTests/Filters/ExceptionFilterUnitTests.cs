@@ -1,138 +1,137 @@
-namespace Scaffold.WebApi.UnitTests.Filters
+namespace Scaffold.WebApi.UnitTests.Filters;
+
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Routing;
+using Scaffold.Application.Common.Exceptions;
+using Scaffold.Domain.Base;
+using Scaffold.WebApi.Filters;
+using Xunit;
+
+public class ExceptionFilterUnitTests
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Net;
-    using System.Runtime.Serialization;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Abstractions;
-    using Microsoft.AspNetCore.Mvc.Filters;
-    using Microsoft.AspNetCore.Routing;
-    using Scaffold.Application.Common.Exceptions;
-    using Scaffold.Domain.Base;
-    using Scaffold.WebApi.Filters;
-    using Xunit;
+    private readonly ActionContext actionContext;
 
-    public class ExceptionFilterUnitTests
+    public ExceptionFilterUnitTests()
     {
-        private readonly ActionContext actionContext;
-
-        public ExceptionFilterUnitTests()
+        this.actionContext = new ActionContext
         {
-            this.actionContext = new ActionContext
+            ActionDescriptor = new ActionDescriptor(),
+            HttpContext = new DefaultHttpContext(),
+            RouteData = new RouteData(),
+        };
+    }
+
+    public class OnException : ExceptionFilterUnitTests
+    {
+        [Fact]
+        public void When_HandlingDomainException_Expect_ConflictObjectResult()
+        {
+            // Arrange
+            TestDomainException exception = new TestDomainException(Guid.NewGuid().ToString());
+
+            ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
             {
-                ActionDescriptor = new ActionDescriptor(),
-                HttpContext = new DefaultHttpContext(),
-                RouteData = new RouteData(),
+                Exception = exception,
             };
+
+            ExceptionFilter exceptionFilter = new ExceptionFilter(new Mock.ProblemDetailsFactory());
+
+            // Act
+            exceptionFilter.OnException(context);
+
+            // Assert
+            ConflictObjectResult objectResult = Assert.IsType<ConflictObjectResult>(context.Result);
+            ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
+
+            Assert.Equal((int)HttpStatusCode.Conflict, problemDetails.Status);
+            Assert.Equal(exception.Message, problemDetails.Detail);
         }
 
-        public class OnException : ExceptionFilterUnitTests
+        [Fact]
+        public void When_HandlingNotFoundException_Expect_NotFoundObjectResult()
         {
-            [Fact]
-            public void When_HandlingDomainException_Expect_ConflictObjectResult()
+            // Arrange
+            TestNotFoundException exception = new TestNotFoundException(Guid.NewGuid().ToString());
+
+            ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
             {
-                // Arrange
-                TestDomainException exception = new TestDomainException(Guid.NewGuid().ToString());
+                Exception = exception,
+            };
 
-                ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
-                {
-                    Exception = exception,
-                };
+            ExceptionFilter exceptionFilter = new ExceptionFilter(new Mock.ProblemDetailsFactory());
 
-                ExceptionFilter exceptionFilter = new ExceptionFilter(new Mock.ProblemDetailsFactory());
+            // Act
+            exceptionFilter.OnException(context);
 
-                // Act
-                exceptionFilter.OnException(context);
+            // Assert
+            NotFoundObjectResult objectResult = Assert.IsType<NotFoundObjectResult>(context.Result);
+            ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
 
-                // Assert
-                ConflictObjectResult objectResult = Assert.IsType<ConflictObjectResult>(context.Result);
-                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
-
-                Assert.Equal((int)HttpStatusCode.Conflict, problemDetails.Status);
-                Assert.Equal(exception.Message, problemDetails.Detail);
-            }
-
-            [Fact]
-            public void When_HandlingNotFoundException_Expect_NotFoundObjectResult()
-            {
-                // Arrange
-                TestNotFoundException exception = new TestNotFoundException(Guid.NewGuid().ToString());
-
-                ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
-                {
-                    Exception = exception,
-                };
-
-                ExceptionFilter exceptionFilter = new ExceptionFilter(new Mock.ProblemDetailsFactory());
-
-                // Act
-                exceptionFilter.OnException(context);
-
-                // Assert
-                NotFoundObjectResult objectResult = Assert.IsType<NotFoundObjectResult>(context.Result);
-                ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
-
-                Assert.Equal((int)HttpStatusCode.NotFound, problemDetails.Status);
-                Assert.Equal(exception.Message, problemDetails.Detail);
-            }
-
-            [Fact]
-            public void When_HandlingUnhandledException_Expect_NullContextResult()
-            {
-                // Arrange
-                ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
-                {
-                    Exception = new Exception(),
-                };
-
-                ExceptionFilter exceptionFilter = new ExceptionFilter(new Mock.ProblemDetailsFactory());
-
-                // Act
-                exceptionFilter.OnException(context);
-
-                // Assert
-                Assert.Null(context.Result);
-            }
+            Assert.Equal((int)HttpStatusCode.NotFound, problemDetails.Status);
+            Assert.Equal(exception.Message, problemDetails.Detail);
         }
 
-        [Serializable]
-        private class TestDomainException : DomainException
+        [Fact]
+        public void When_HandlingUnhandledException_Expect_NullContextResult()
         {
-            public TestDomainException(string message)
-                : base(message)
+            // Arrange
+            ExceptionContext context = new ExceptionContext(this.actionContext, new List<IFilterMetadata>())
             {
-            }
+                Exception = new Exception(),
+            };
 
-            public TestDomainException(string message, Exception innerException)
-                : base(message, innerException)
-            {
-            }
+            ExceptionFilter exceptionFilter = new ExceptionFilter(new Mock.ProblemDetailsFactory());
 
-            protected TestDomainException(SerializationInfo info, StreamingContext context)
-                : base(info, context)
-            {
-            }
+            // Act
+            exceptionFilter.OnException(context);
+
+            // Assert
+            Assert.Null(context.Result);
+        }
+    }
+
+    [Serializable]
+    private class TestDomainException : DomainException
+    {
+        public TestDomainException(string message)
+            : base(message)
+        {
         }
 
-        [Serializable]
-        private class TestNotFoundException : NotFoundException
+        public TestDomainException(string message, Exception innerException)
+            : base(message, innerException)
         {
-            public TestNotFoundException(string message)
-                : base(message)
-            {
-            }
+        }
 
-            public TestNotFoundException(string message, Exception innerException)
-                : base(message, innerException)
-            {
-            }
+        protected TestDomainException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+    }
 
-            protected TestNotFoundException(SerializationInfo info, StreamingContext context)
-                : base(info, context)
-            {
-            }
+    [Serializable]
+    private class TestNotFoundException : NotFoundException
+    {
+        public TestNotFoundException(string message)
+            : base(message)
+        {
+        }
+
+        public TestNotFoundException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+
+        protected TestNotFoundException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
         }
     }
 }

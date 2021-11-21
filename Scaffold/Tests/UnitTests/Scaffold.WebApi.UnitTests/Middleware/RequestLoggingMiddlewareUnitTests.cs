@@ -1,137 +1,136 @@
-namespace Scaffold.WebApi.UnitTests.Middleware
+namespace Scaffold.WebApi.UnitTests.Middleware;
+
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Scaffold.WebApi.Middleware;
+using Xunit;
+
+public class RequestLoggingMiddlewareUnitTests
 {
-    using System;
-    using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Options;
-    using Scaffold.WebApi.Middleware;
-    using Xunit;
-
-    public class RequestLoggingMiddlewareUnitTests
+    [Theory]
+    [InlineData(199, LogLevel.Warning)]
+    [InlineData(200, LogLevel.Information)]
+    [InlineData(299, LogLevel.Information)]
+    [InlineData(300, LogLevel.Warning)]
+    [InlineData(499, LogLevel.Warning)]
+    [InlineData(500, LogLevel.Error)]
+    [InlineData(501, LogLevel.Error)]
+    public async Task When_InvokingMiddlewareWithStatusCode_Expect_LogLevel(int statusCode, LogLevel expectedLogLevel)
     {
-        [Theory]
-        [InlineData(199, LogLevel.Warning)]
-        [InlineData(200, LogLevel.Information)]
-        [InlineData(299, LogLevel.Information)]
-        [InlineData(300, LogLevel.Warning)]
-        [InlineData(499, LogLevel.Warning)]
-        [InlineData(500, LogLevel.Error)]
-        [InlineData(501, LogLevel.Error)]
-        public async Task When_InvokingMiddlewareWithStatusCode_Expect_LogLevel(int statusCode, LogLevel expectedLogLevel)
-        {
-            // Arrange
-            Mock.Logger<RequestLoggingMiddleware> logger = new Mock.Logger<RequestLoggingMiddleware>();
+        // Arrange
+        Mock.Logger<RequestLoggingMiddleware> logger = new Mock.Logger<RequestLoggingMiddleware>();
 
-            RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
-                (httpContext) => Task.CompletedTask,
-                logger,
-                Options.Create(new RequestLoggingMiddleware.Options()));
+        RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
+            (httpContext) => Task.CompletedTask,
+            logger,
+            Options.Create(new RequestLoggingMiddleware.Options()));
 
-            HttpContext context = new DefaultHttpContext();
-            context.Response.StatusCode = statusCode;
+        HttpContext context = new DefaultHttpContext();
+        context.Response.StatusCode = statusCode;
 
-            // Act
-            await middleware.Invoke(context);
+        // Act
+        await middleware.Invoke(context);
 
-            // Assert
-            Assert.Collection(
-                logger.LogEntries,
-                logEntry =>
-                {
-                    Assert.Equal(LogLevel.Information, logEntry.LogLevel);
-                    Assert.Equal("Inbound HTTP   started", logEntry.Message);
-                },
-                logEntry =>
-                {
-                    Assert.Equal(expectedLogLevel, logEntry.LogLevel);
-                    Assert.Equal($"Inbound HTTP   finished - {statusCode}", logEntry.Message);
-                });
-        }
-
-        [Theory]
-        [InlineData("/health", "^/health$", false)]
-        [InlineData("/HEALTH", "^/health$", false)]
-        [InlineData("/HeAlTh", "^/health$", false)]
-        [InlineData("/health", "^/metrics$", true)]
-        public async Task When_InvokingMiddlewareWithPathAndIgnorePattern_Expect_Logged(string path, string ignorePattern, bool logged)
-        {
-            // Arrange
-            Mock.Logger<RequestLoggingMiddleware> logger = new Mock.Logger<RequestLoggingMiddleware>();
-
-            RequestLoggingMiddleware.Options options = new RequestLoggingMiddleware.Options
+        // Assert
+        Assert.Collection(
+            logger.LogEntries,
+            logEntry =>
             {
-                IgnorePatterns = new string[] { ignorePattern },
-            };
-
-            RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
-                (httpContext) => Task.CompletedTask,
-                logger,
-                Options.Create(options));
-
-            HttpContext context = new DefaultHttpContext();
-            context.Request.Path = path;
-
-            // Act
-            await middleware.Invoke(context);
-
-            // Assert
-            if (logged)
+                Assert.Equal(LogLevel.Information, logEntry.LogLevel);
+                Assert.Equal("Inbound HTTP   started", logEntry.Message);
+            },
+            logEntry =>
             {
-                Assert.Equal(2, logger.LogEntries.Count);
-            }
-            else
+                Assert.Equal(expectedLogLevel, logEntry.LogLevel);
+                Assert.Equal($"Inbound HTTP   finished - {statusCode}", logEntry.Message);
+            });
+    }
+
+    [Theory]
+    [InlineData("/health", "^/health$", false)]
+    [InlineData("/HEALTH", "^/health$", false)]
+    [InlineData("/HeAlTh", "^/health$", false)]
+    [InlineData("/health", "^/metrics$", true)]
+    public async Task When_InvokingMiddlewareWithPathAndIgnorePattern_Expect_Logged(string path, string ignorePattern, bool logged)
+    {
+        // Arrange
+        Mock.Logger<RequestLoggingMiddleware> logger = new Mock.Logger<RequestLoggingMiddleware>();
+
+        RequestLoggingMiddleware.Options options = new RequestLoggingMiddleware.Options
+        {
+            IgnorePatterns = new string[] { ignorePattern },
+        };
+
+        RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
+            (httpContext) => Task.CompletedTask,
+            logger,
+            Options.Create(options));
+
+        HttpContext context = new DefaultHttpContext();
+        context.Request.Path = path;
+
+        // Act
+        await middleware.Invoke(context);
+
+        // Assert
+        if (logged)
+        {
+            Assert.Equal(2, logger.LogEntries.Count);
+        }
+        else
+        {
+            Assert.Empty(logger.LogEntries);
+        }
+    }
+
+    [Fact]
+    public async Task When_InvokingMiddlewareWithException_Expect_LogLevelCritical()
+    {
+        // Arrange
+        Exception exception = new Exception("Unit Test");
+        Mock.Logger<RequestLoggingMiddleware> logger = new Mock.Logger<RequestLoggingMiddleware>();
+
+        RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
+            (httpContext) => throw exception,
+            logger,
+            Options.Create(new RequestLoggingMiddleware.Options()));
+
+        HttpContext context = new DefaultHttpContext();
+
+        // Act
+        Exception result = await Record.ExceptionAsync(() => middleware.Invoke(context));
+
+        // Assert
+        Assert.Collection(
+            logger.LogEntries,
+            logEntry =>
             {
-                Assert.Empty(logger.LogEntries);
-            }
-        }
+                Assert.Equal(LogLevel.Information, logEntry.LogLevel);
+                Assert.Equal("Inbound HTTP   started", logEntry.Message);
+            },
+            logEntry =>
+            {
+                Assert.Equal(LogLevel.Critical, logEntry.LogLevel);
+                Assert.Equal("Inbound HTTP   finished - Unhandled Exception", logEntry.Message);
+            });
 
-        [Fact]
-        public async Task When_InvokingMiddlewareWithException_Expect_LogLevelCritical()
-        {
-            // Arrange
-            Exception exception = new Exception("Unit Test");
-            Mock.Logger<RequestLoggingMiddleware> logger = new Mock.Logger<RequestLoggingMiddleware>();
+        Assert.NotNull(result);
+        Assert.Equal(exception, result);
+    }
 
-            RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
-                (httpContext) => throw exception,
-                logger,
-                Options.Create(new RequestLoggingMiddleware.Options()));
+    [Fact]
+    public void When_InstantiatingOptions_Expect_IgnorePatternsEmpty()
+    {
+        // Arrange
+        RequestLoggingMiddleware.Options options;
 
-            HttpContext context = new DefaultHttpContext();
+        // Act
+        options = new RequestLoggingMiddleware.Options();
 
-            // Act
-            Exception result = await Record.ExceptionAsync(() => middleware.Invoke(context));
-
-            // Assert
-            Assert.Collection(
-                logger.LogEntries,
-                logEntry =>
-                {
-                    Assert.Equal(LogLevel.Information, logEntry.LogLevel);
-                    Assert.Equal("Inbound HTTP   started", logEntry.Message);
-                },
-                logEntry =>
-                {
-                    Assert.Equal(LogLevel.Critical, logEntry.LogLevel);
-                    Assert.Equal("Inbound HTTP   finished - Unhandled Exception", logEntry.Message);
-                });
-
-            Assert.NotNull(result);
-            Assert.Equal(exception, result);
-        }
-
-        [Fact]
-        public void When_InstantiatingOptions_Expect_IgnorePatternsEmpty()
-        {
-            // Arrange
-            RequestLoggingMiddleware.Options options;
-
-            // Act
-            options = new RequestLoggingMiddleware.Options();
-
-            // Assert
-            Assert.Empty(options.IgnorePatterns);
-        }
+        // Assert
+        Assert.Empty(options.IgnorePatterns);
     }
 }

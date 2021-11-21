@@ -1,82 +1,81 @@
-namespace Scaffold.Domain.Aggregates.Bucket
+namespace Scaffold.Domain.Aggregates.Bucket;
+
+using System.Collections.Generic;
+
+public class Bucket
 {
-    using System.Collections.Generic;
+    private readonly List<Item> items;
 
-    public class Bucket
+    private int size = 5;
+
+    public Bucket()
+        : this(default)
     {
-        private readonly List<Item> items;
+    }
 
-        private int size = 5;
+    public Bucket(int id)
+    {
+        this.items = new List<Item>();
+        this.Id = id;
+    }
 
-        public Bucket()
-            : this(default)
+    public int Id { get; private set; }
+
+    public string? Name { get; set; }
+
+    public string? Description { get; set; }
+
+    public int Size
+    {
+        get => this.size;
+
+        set
         {
-        }
-
-        public Bucket(int id)
-        {
-            this.items = new List<Item>();
-            this.Id = id;
-        }
-
-        public int Id { get; private set; }
-
-        public string? Name { get; set; }
-
-        public string? Description { get; set; }
-
-        public int Size
-        {
-            get => this.size;
-
-            set
+            if (value < 0)
             {
-                if (value < 0)
-                {
-                    throw new InvalidSizeException(
-                        "Size cannot be set to a negative number.");
-                }
-
-                if (value < this.items.Count)
-                {
-                    throw new InvalidSizeException(
-                        "Size cannot be set less than the number of items already in the bucket.");
-                }
-
-                this.size = value;
-            }
-        }
-
-        public IReadOnlyCollection<Item> Items => this.items.AsReadOnly();
-
-        public void AddItem(Item item)
-        {
-            if (this.items.Contains(item))
-            {
-                return;
+                throw new InvalidSizeException(
+                    "Size cannot be set to a negative number.");
             }
 
-            if (this.IsFull())
+            if (value < this.items.Count)
             {
-                throw new BucketFullException($"Bucket '{this.Id}' is full. Cannot add Item to Bucket.");
+                throw new InvalidSizeException(
+                    "Size cannot be set less than the number of items already in the bucket.");
             }
 
-            this.items.Add(item);
+            this.size = value;
         }
+    }
 
-        public bool IsFull()
+    public IReadOnlyCollection<Item> Items => this.items.AsReadOnly();
+
+    public void AddItem(Item item)
+    {
+        if (this.items.Contains(item))
         {
-            return this.items.Count >= this.size;
+            return;
         }
 
-        public void RemoveItem(Item item)
+        if (this.IsFull())
         {
-            if (!this.items.Contains(item))
-            {
-                return;
-            }
-
-            this.items.Remove(item);
+            throw new BucketFullException($"Bucket '{this.Id}' is full. Cannot add Item to Bucket.");
         }
+
+        this.items.Add(item);
+    }
+
+    public bool IsFull()
+    {
+        return this.items.Count >= this.size;
+    }
+
+    public void RemoveItem(Item item)
+    {
+        if (!this.items.Contains(item))
+        {
+            return;
+        }
+
+        this.items.Remove(item);
     }
 }

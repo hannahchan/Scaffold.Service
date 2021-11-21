@@ -1,28 +1,27 @@
-﻿namespace Scaffold.HttpClients
+﻿namespace Scaffold.HttpClients;
+
+using System;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using Scaffold.Application.Common.Interfaces;
+
+public class ExampleHttpClient : IExampleHttpClient
 {
-    using System;
-    using System.Net.Http;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Scaffold.Application.Common.Interfaces;
+    private const string BaseAddress = "https://worldtimeapi.org";
 
-    public class ExampleHttpClient : IExampleHttpClient
+    private readonly HttpClient httpClient;
+
+    public ExampleHttpClient(HttpClient httpClient)
     {
-        private const string BaseAddress = "https://worldtimeapi.org";
+        httpClient.BaseAddress = new Uri(BaseAddress);
+        this.httpClient = httpClient;
+    }
 
-        private readonly HttpClient httpClient;
+    public Task<HttpResponseMessage> Get(string path, CancellationToken cancellationToken = default)
+    {
+        HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri(path ?? string.Empty, UriKind.Relative));
 
-        public ExampleHttpClient(HttpClient httpClient)
-        {
-            httpClient.BaseAddress = new Uri(BaseAddress);
-            this.httpClient = httpClient;
-        }
-
-        public Task<HttpResponseMessage> Get(string path, CancellationToken cancellationToken = default)
-        {
-            HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri(path ?? string.Empty, UriKind.Relative));
-
-            return this.httpClient.SendAsync(httpRequestMessage, cancellationToken);
-        }
+        return this.httpClient.SendAsync(httpRequestMessage, cancellationToken);
     }
 }

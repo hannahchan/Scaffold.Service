@@ -1,7 +1,6 @@
-namespace Scaffold.Application.UnitTests
+namespace Scaffold.Application.UnitTests;
+
+public static class TestCollection
 {
-    public static class TestCollection
-    {
-        public const string Activity = nameof(Activity);
-    }
+    public const string Activity = nameof(Activity);
 }

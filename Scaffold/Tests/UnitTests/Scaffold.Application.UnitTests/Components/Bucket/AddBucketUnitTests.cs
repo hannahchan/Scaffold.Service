@@ -1,98 +1,97 @@
-namespace Scaffold.Application.UnitTests.Components.Bucket
+namespace Scaffold.Application.UnitTests.Components.Bucket;
+
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Scaffold.Application.Common.Messaging;
+using Scaffold.Application.Components.Bucket;
+using Scaffold.Domain.Base;
+using Scaffold.Repositories;
+using Xunit;
+
+public class AddBucketUnitTests
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using AutoMapper;
-    using Microsoft.EntityFrameworkCore;
-    using Scaffold.Application.Common.Messaging;
-    using Scaffold.Application.Components.Bucket;
-    using Scaffold.Domain.Base;
-    using Scaffold.Repositories;
-    using Xunit;
+    private readonly IBucketRepository repository;
 
-    public class AddBucketUnitTests
+    private readonly Mock.Publisher publisher;
+
+    public AddBucketUnitTests()
     {
-        private readonly IBucketRepository repository;
+        BucketContext context = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options);
 
-        private readonly Mock.Publisher publisher;
+        this.repository = new ScopedBucketRepository(context);
+        this.publisher = new Mock.Publisher();
+    }
 
-        public AddBucketUnitTests()
+    public class Handler : AddBucketUnitTests
+    {
+        [Fact]
+        public async Task When_AddingBucket_Expect_AddedBucket()
         {
-            BucketContext context = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options);
+            // Arrange
+            AddBucket.Command command = new AddBucket.Command(
+                Name: Guid.NewGuid().ToString(),
+                Description: null,
+                Size: null);
 
-            this.repository = new ScopedBucketRepository(context);
-            this.publisher = new Mock.Publisher();
+            AddBucket.Handler handler = new AddBucket.Handler(this.repository, this.publisher);
+
+            // Act
+            AddBucket.Response response = await handler.Handle(command, default);
+
+            // Assert
+            Assert.NotEqual(default, response.Bucket.Id);
+            Assert.Equal(command.Name, response.Bucket.Name);
+            Assert.NotNull(response.Bucket.Items);
+
+            Assert.Collection(
+                this.publisher.PublishedEvents,
+                publishedEvent =>
+                {
+                    BucketAddedEvent<AddBucket.Handler> bucketEvent = Assert.IsType<BucketAddedEvent<AddBucket.Handler>>(publishedEvent.Notification);
+                    Assert.Equal("BucketAdded", bucketEvent.Type);
+                    Assert.Equal($"Added Bucket {response.Bucket.Id}", bucketEvent.Description);
+                    Assert.Equal(response.Bucket.Id, bucketEvent.BucketId);
+                    Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
+                });
         }
 
-        public class Handler : AddBucketUnitTests
+        [Fact]
+        public async Task When_AddingBucketResultingInDomainConflict_Expect_DomainException()
         {
-            [Fact]
-            public async Task When_AddingBucket_Expect_AddedBucket()
-            {
-                // Arrange
-                AddBucket.Command command = new AddBucket.Command(
-                    Name: Guid.NewGuid().ToString(),
-                    Description: null,
-                    Size: null);
+            // Arrange
+            AddBucket.Command command = new AddBucket.Command(
+                Name: Guid.NewGuid().ToString(),
+                Description: Guid.NewGuid().ToString(),
+                Size: -1);
 
-                AddBucket.Handler handler = new AddBucket.Handler(this.repository, this.publisher);
+            AddBucket.Handler handler = new AddBucket.Handler(this.repository, this.publisher);
 
-                // Act
-                AddBucket.Response response = await handler.Handle(command, default);
+            // Act
+            Exception exception = await Record.ExceptionAsync(() =>
+                handler.Handle(command, default));
 
-                // Assert
-                Assert.NotEqual(default, response.Bucket.Id);
-                Assert.Equal(command.Name, response.Bucket.Name);
-                Assert.NotNull(response.Bucket.Items);
-
-                Assert.Collection(
-                    this.publisher.PublishedEvents,
-                    publishedEvent =>
-                    {
-                        BucketAddedEvent<AddBucket.Handler> bucketEvent = Assert.IsType<BucketAddedEvent<AddBucket.Handler>>(publishedEvent.Notification);
-                        Assert.Equal("BucketAdded", bucketEvent.Type);
-                        Assert.Equal($"Added Bucket {response.Bucket.Id}", bucketEvent.Description);
-                        Assert.Equal(response.Bucket.Id, bucketEvent.BucketId);
-                        Assert.Equal(CancellationToken.None, publishedEvent.CancellationToken);
-                    });
-            }
-
-            [Fact]
-            public async Task When_AddingBucketResultingInDomainConflict_Expect_DomainException()
-            {
-                // Arrange
-                AddBucket.Command command = new AddBucket.Command(
-                    Name: Guid.NewGuid().ToString(),
-                    Description: Guid.NewGuid().ToString(),
-                    Size: -1);
-
-                AddBucket.Handler handler = new AddBucket.Handler(this.repository, this.publisher);
-
-                // Act
-                Exception exception = await Record.ExceptionAsync(() =>
-                    handler.Handle(command, default));
-
-                // Assert
-                Assert.IsAssignableFrom<DomainException>(exception);
-                Assert.Empty(this.publisher.PublishedEvents);
-            }
+            // Assert
+            Assert.IsAssignableFrom<DomainException>(exception);
+            Assert.Empty(this.publisher.PublishedEvents);
         }
+    }
 
-        public class MappingProfile
+    public class MappingProfile
+    {
+        [Fact]
+        public void IsValid()
         {
-            [Fact]
-            public void IsValid()
-            {
-                // Arrange
-                AddBucket.MappingProfile profile = new AddBucket.MappingProfile();
-                MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(profile));
+            // Arrange
+            AddBucket.MappingProfile profile = new AddBucket.MappingProfile();
+            MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(profile));
 
-                // Act and Assert
-                configuration.AssertConfigurationIsValid();
-            }
+            // Act and Assert
+            configuration.AssertConfigurationIsValid();
         }
     }
 }
