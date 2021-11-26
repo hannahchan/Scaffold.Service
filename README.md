@@ -1,10 +1,10 @@
 # Scaffold.WebApi
 
-Scaffold is an opinionated template of a Web API built using ASP.NET Core. It is intended to be used as an example for, or as a bootstrap to, the development of other Web APIs or services and aims to address some common concerns when building microservices with ASP.NET Core. Scaffold is an example of a [Tailored Service Template](https://www.thoughtworks.com/radar/techniques/tailored-service-templates).
+Scaffold is an opinionated template of a service built using ASP.NET Core. It is intended to be used as an example for, or as a bootstrap to, the development of other services and aims to address some common concerns when building microservices with ASP.NET Core. Scaffold is an example of a [Service Template](https://www.thoughtworks.com/radar/techniques/tailored-service-templates).
 
 ## How to Use
 
-To bootstrap your next WebApi project with Scaffold.WebApi.
+To bootstrap your next service with Scaffold.WebApi.
 
 1. Clone this repository and install the template on your computer by running;
 
@@ -20,7 +20,9 @@ To bootstrap your next WebApi project with Scaffold.WebApi.
 
 3. Update `README.md` in your project so that it makes sense.
 
-Alternatively just browse the [template directory](Scaffold) and copy and paste the parts of the project that you actually need.
+Alternatively just browse the [template directory](Scaffold) to copy and paste the parts of the project that you actually need.
+
+You are also invited to fork this repository to create your own template. Organizations may want to do this to pre-configure the template to work in their environments and incorporate their own sensible defaults.
 
 ## Features
 
