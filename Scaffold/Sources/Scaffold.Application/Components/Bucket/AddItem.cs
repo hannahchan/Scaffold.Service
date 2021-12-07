@@ -40,7 +40,7 @@ public static class AddItem
             bucket.AddItem(item);
 
             await this.repository.UpdateAsync(bucket, cancellationToken);
-            await this.publisher.Publish(new ItemAddedEvent<Handler>(bucket.Id, item.Id), CancellationToken.None);
+            await this.publisher.Publish(new ItemAddedEvent(typeof(Handler), bucket.Id, item.Id), CancellationToken.None);
 
             return new Response(item);
         }

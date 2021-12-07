@@ -74,7 +74,8 @@ public class GetBucketsUnitTests
                 this.publisher.PublishedEvents,
                 publishedEvent =>
                 {
-                    BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                    BucketsRetrievedEvent bucketEvent = Assert.IsType<BucketsRetrievedEvent>(publishedEvent.Notification);
+                    Assert.Equal(typeof(GetBuckets.Handler), bucketEvent.Source);
                     Assert.Equal("BucketsRetrieved", bucketEvent.Type);
                     Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
                     Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
@@ -99,7 +100,8 @@ public class GetBucketsUnitTests
                 this.publisher.PublishedEvents,
                 publishedEvent =>
                 {
-                    BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                    BucketsRetrievedEvent bucketEvent = Assert.IsType<BucketsRetrievedEvent>(publishedEvent.Notification);
+                    Assert.Equal(typeof(GetBuckets.Handler), bucketEvent.Source);
                     Assert.Equal("BucketsRetrieved", bucketEvent.Type);
                     Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
                     Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
@@ -136,7 +138,8 @@ public class GetBucketsUnitTests
                 this.publisher.PublishedEvents,
                 publishedEvent =>
                 {
-                    BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                    BucketsRetrievedEvent bucketEvent = Assert.IsType<BucketsRetrievedEvent>(publishedEvent.Notification);
+                    Assert.Equal(typeof(GetBuckets.Handler), bucketEvent.Source);
                     Assert.Equal("BucketsRetrieved", bucketEvent.Type);
                     Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
                     Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
@@ -177,7 +180,8 @@ public class GetBucketsUnitTests
                 this.publisher.PublishedEvents,
                 publishedEvent =>
                 {
-                    BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                    BucketsRetrievedEvent bucketEvent = Assert.IsType<BucketsRetrievedEvent>(publishedEvent.Notification);
+                    Assert.Equal(typeof(GetBuckets.Handler), bucketEvent.Source);
                     Assert.Equal("BucketsRetrieved", bucketEvent.Type);
                     Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
                     Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
@@ -217,7 +221,8 @@ public class GetBucketsUnitTests
                 this.publisher.PublishedEvents,
                 publishedEvent =>
                 {
-                    BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                    BucketsRetrievedEvent bucketEvent = Assert.IsType<BucketsRetrievedEvent>(publishedEvent.Notification);
+                    Assert.Equal(typeof(GetBuckets.Handler), bucketEvent.Source);
                     Assert.Equal("BucketsRetrieved", bucketEvent.Type);
                     Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
                     Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
@@ -257,7 +262,8 @@ public class GetBucketsUnitTests
                 this.publisher.PublishedEvents,
                 publishedEvent =>
                 {
-                    BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                    BucketsRetrievedEvent bucketEvent = Assert.IsType<BucketsRetrievedEvent>(publishedEvent.Notification);
+                    Assert.Equal(typeof(GetBuckets.Handler), bucketEvent.Source);
                     Assert.Equal("BucketsRetrieved", bucketEvent.Type);
                     Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
                     Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
@@ -294,7 +300,8 @@ public class GetBucketsUnitTests
                 this.publisher.PublishedEvents,
                 publishedEvent =>
                 {
-                    BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                    BucketsRetrievedEvent bucketEvent = Assert.IsType<BucketsRetrievedEvent>(publishedEvent.Notification);
+                    Assert.Equal(typeof(GetBuckets.Handler), bucketEvent.Source);
                     Assert.Equal("BucketsRetrieved", bucketEvent.Type);
                     Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
                     Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
@@ -342,7 +349,8 @@ public class GetBucketsUnitTests
                 this.publisher.PublishedEvents,
                 publishedEvent =>
                 {
-                    BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                    BucketsRetrievedEvent bucketEvent = Assert.IsType<BucketsRetrievedEvent>(publishedEvent.Notification);
+                    Assert.Equal(typeof(GetBuckets.Handler), bucketEvent.Source);
                     Assert.Equal("BucketsRetrieved", bucketEvent.Type);
                     Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
                     Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
@@ -390,7 +398,8 @@ public class GetBucketsUnitTests
                 this.publisher.PublishedEvents,
                 publishedEvent =>
                 {
-                    BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                    BucketsRetrievedEvent bucketEvent = Assert.IsType<BucketsRetrievedEvent>(publishedEvent.Notification);
+                    Assert.Equal(typeof(GetBuckets.Handler), bucketEvent.Source);
                     Assert.Equal("BucketsRetrieved", bucketEvent.Type);
                     Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
                     Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
@@ -432,7 +441,8 @@ public class GetBucketsUnitTests
                 this.publisher.PublishedEvents,
                 publishedEvent =>
                 {
-                    BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                    BucketsRetrievedEvent bucketEvent = Assert.IsType<BucketsRetrievedEvent>(publishedEvent.Notification);
+                    Assert.Equal(typeof(GetBuckets.Handler), bucketEvent.Source);
                     Assert.Equal("BucketsRetrieved", bucketEvent.Type);
                     Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
                     Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
@@ -474,7 +484,8 @@ public class GetBucketsUnitTests
                 this.publisher.PublishedEvents,
                 publishedEvent =>
                 {
-                    BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                    BucketsRetrievedEvent bucketEvent = Assert.IsType<BucketsRetrievedEvent>(publishedEvent.Notification);
+                    Assert.Equal(typeof(GetBuckets.Handler), bucketEvent.Source);
                     Assert.Equal("BucketsRetrieved", bucketEvent.Type);
                     Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
                     Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
@@ -516,7 +527,8 @@ public class GetBucketsUnitTests
                 this.publisher.PublishedEvents,
                 publishedEvent =>
                 {
-                    BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                    BucketsRetrievedEvent bucketEvent = Assert.IsType<BucketsRetrievedEvent>(publishedEvent.Notification);
+                    Assert.Equal(typeof(GetBuckets.Handler), bucketEvent.Source);
                     Assert.Equal("BucketsRetrieved", bucketEvent.Type);
                     Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
                     Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
@@ -613,7 +625,8 @@ public class GetBucketsUnitTests
                 this.publisher.PublishedEvents,
                 publishedEvent =>
                 {
-                    BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                    BucketsRetrievedEvent bucketEvent = Assert.IsType<BucketsRetrievedEvent>(publishedEvent.Notification);
+                    Assert.Equal(typeof(GetBuckets.Handler), bucketEvent.Source);
                     Assert.Equal("BucketsRetrieved", bucketEvent.Type);
                     Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
                     Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
@@ -710,7 +723,8 @@ public class GetBucketsUnitTests
                 this.publisher.PublishedEvents,
                 publishedEvent =>
                 {
-                    BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                    BucketsRetrievedEvent bucketEvent = Assert.IsType<BucketsRetrievedEvent>(publishedEvent.Notification);
+                    Assert.Equal(typeof(GetBuckets.Handler), bucketEvent.Source);
                     Assert.Equal("BucketsRetrieved", bucketEvent.Type);
                     Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
                     Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
@@ -807,7 +821,8 @@ public class GetBucketsUnitTests
                 this.publisher.PublishedEvents,
                 publishedEvent =>
                 {
-                    BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                    BucketsRetrievedEvent bucketEvent = Assert.IsType<BucketsRetrievedEvent>(publishedEvent.Notification);
+                    Assert.Equal(typeof(GetBuckets.Handler), bucketEvent.Source);
                     Assert.Equal("BucketsRetrieved", bucketEvent.Type);
                     Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
                     Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);
@@ -904,7 +919,8 @@ public class GetBucketsUnitTests
                 this.publisher.PublishedEvents,
                 publishedEvent =>
                 {
-                    BucketsRetrievedEvent<GetBuckets.Handler> bucketEvent = Assert.IsType<BucketsRetrievedEvent<GetBuckets.Handler>>(publishedEvent.Notification);
+                    BucketsRetrievedEvent bucketEvent = Assert.IsType<BucketsRetrievedEvent>(publishedEvent.Notification);
+                    Assert.Equal(typeof(GetBuckets.Handler), bucketEvent.Source);
                     Assert.Equal("BucketsRetrieved", bucketEvent.Type);
                     Assert.Equal($"Retrieved {response.Buckets.Count()} Bucket/s", bucketEvent.Description);
                     Assert.Equal(response.Buckets.Select(bucket => bucket.Id).ToArray(), bucketEvent.BucketIds);

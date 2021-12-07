@@ -57,7 +57,7 @@ public class AuditLoggerUnitTests
         }
     }
 
-    private record AuditableEvent(DateTime Timestamp, string TraceId, string Source, string Type, string Description) : IAuditableEvent, INotification;
+    private record AuditableEvent(DateTime Timestamp, string TraceId, Type Source, string Type, string Description) : IAuditableEvent, INotification;
 
     private record GenericEvent() : INotification;
 }

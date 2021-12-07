@@ -54,7 +54,8 @@ public class GetItemUnitTests
                 this.publisher.PublishedEvents,
                 publishedEvent =>
                 {
-                    ItemRetrievedEvent<GetItem.Handler> bucketEvent = Assert.IsType<ItemRetrievedEvent<GetItem.Handler>>(publishedEvent.Notification);
+                    ItemRetrievedEvent bucketEvent = Assert.IsType<ItemRetrievedEvent>(publishedEvent.Notification);
+                    Assert.Equal(typeof(GetItem.Handler), bucketEvent.Source);
                     Assert.Equal("ItemRetrieved", bucketEvent.Type);
                     Assert.Equal($"Retrieved Item {item.Id} from Bucket {bucket.Id}", bucketEvent.Description);
                     Assert.Equal(bucket.Id, bucketEvent.BucketId);

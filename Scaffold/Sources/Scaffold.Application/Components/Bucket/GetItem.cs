@@ -38,7 +38,7 @@ public static class GetItem
             Item item = bucket.Items.SingleOrDefault(x => x.Id == request.ItemId) ??
                 throw new ItemNotFoundException(request.ItemId);
 
-            await this.publisher.Publish(new ItemRetrievedEvent<Handler>(bucket.Id, item.Id), CancellationToken.None);
+            await this.publisher.Publish(new ItemRetrievedEvent(typeof(Handler), bucket.Id, item.Id), CancellationToken.None);
 
             return new Response(item);
         }

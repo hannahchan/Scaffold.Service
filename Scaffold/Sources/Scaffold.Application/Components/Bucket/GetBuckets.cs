@@ -37,7 +37,7 @@ public static class GetBuckets
             using Activity? activity = ActivityProvider.StartActivity(nameof(GetBuckets));
 
             List<Bucket> buckets = await this.repository.GetAsync(request.Predicate, request.Limit, request.Offset, request.SortOrder, cancellationToken);
-            await this.publisher.Publish(new BucketsRetrievedEvent<Handler>(buckets.Select(bucket => bucket.Id).ToArray()), CancellationToken.None);
+            await this.publisher.Publish(new BucketsRetrievedEvent(typeof(Handler), buckets.Select(bucket => bucket.Id).ToArray()), CancellationToken.None);
 
             return new Response(buckets);
         }

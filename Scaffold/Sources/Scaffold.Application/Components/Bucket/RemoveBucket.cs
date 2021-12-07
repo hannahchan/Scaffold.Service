@@ -31,7 +31,7 @@ public static class RemoveBucket
             Bucket bucket = await this.repository.GetAsync(request.Id, cancellationToken) ?? throw new BucketNotFoundException(request.Id);
 
             await this.repository.RemoveAsync(bucket, cancellationToken);
-            await this.publisher.Publish(new BucketRemovedEvent<Handler>(bucket.Id), CancellationToken.None);
+            await this.publisher.Publish(new BucketRemovedEvent(typeof(Handler), bucket.Id), CancellationToken.None);
 
             return default;
         }

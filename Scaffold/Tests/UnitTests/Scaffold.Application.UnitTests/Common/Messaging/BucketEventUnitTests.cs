@@ -1,5 +1,6 @@
 namespace Scaffold.Application.UnitTests.Common.Messaging;
 
+using System;
 using System.Diagnostics;
 using Scaffold.Application.Common.Messaging;
 using Xunit;
@@ -32,6 +33,6 @@ public class BucketEventUnitTests
         Assert.Null(result.TraceId);
     }
 
-    private record TestBucketEvent(string Source, string Type, string Description)
+    private record TestBucketEvent(Type Source, string Type, string Description)
         : BucketEvent(Source, Type, Description);
 }

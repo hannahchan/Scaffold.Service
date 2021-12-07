@@ -53,7 +53,8 @@ public class RemoveItemUnitTests
                 this.publisher.PublishedEvents,
                 publishedEvent =>
                 {
-                    ItemRemovedEvent<RemoveItem.Handler> bucketEvent = Assert.IsType<ItemRemovedEvent<RemoveItem.Handler>>(publishedEvent.Notification);
+                    ItemRemovedEvent bucketEvent = Assert.IsType<ItemRemovedEvent>(publishedEvent.Notification);
+                    Assert.Equal(typeof(RemoveItem.Handler), bucketEvent.Source);
                     Assert.Equal("ItemRemoved", bucketEvent.Type);
                     Assert.Equal($"Removed Item {item.Id} from Bucket {bucket.Id}", bucketEvent.Description);
                     Assert.Equal(bucket.Id, bucketEvent.BucketId);

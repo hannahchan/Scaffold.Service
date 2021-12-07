@@ -8,7 +8,7 @@ internal interface IAuditableEvent
 
     string? TraceId { get; }
 
-    string? Source { get; }
+    Type Source { get; }
 
     string Type { get; }
 
