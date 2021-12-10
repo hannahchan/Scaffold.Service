@@ -1,21 +1,20 @@
 {
-  "dockerComposeFile": [
-    "../docker-compose.yml",
-    "../docker-compose.override.yml",
-    "docker-compose.override.yml"
-  ],
+  "dockerFile": "Dockerfile",
   "extensions": ["ms-azuretools.vscode-docker", "ms-dotnettools.csharp"],
+  "mounts": [
+    "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind"
+  ],
   "name": "Scaffold",
+  "overrideCommand": false,
   "remoteEnv": {
-    "COMPOSE_IGNORE_ORPHANS": "true",
-    "COMPOSE_PROJECT_NAME": "${localWorkspaceFolderBasename}",
+    "ConnectionStrings__DefaultConnection": "Host=host.docker.internal;Port=5432;Database=postgres;Username=postgres;",
+    "ConnectionStrings__ReadOnlyConnection": "Host=host.docker.internal;Port=5432;Database=postgres;Username=postgres;",
+    "Jaeger__AgentHost": "host.docker.internal",
     "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
   },
   "remoteUser": "vscode",
-  "runServices": ["devcontainer"],
-  "service": "devcontainer",
+  "runArgs": ["--init"],
   "settings": {
     "terminal.integrated.defaultProfile.linux": "bash"
-  },
-  "workspaceFolder": "/workspace"
+  }
 }

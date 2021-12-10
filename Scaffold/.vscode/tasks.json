@@ -89,15 +89,7 @@
         "command": "docker-compose.exe"
       },
       "type": "process",
-      "args": [
-        "rm",
-        "--force",
-        "--stop",
-        "postgres",
-        "grafana",
-        "jaeger",
-        "prometheus"
-      ],
+      "args": ["down"],
       "presentation": {
         "echo": true,
         "reveal": "silent",
