@@ -1,8 +1,8 @@
 # Problem Details (RFC 7807) Error Handling
 
-Scaffold implements [RFC 7807 - Problem Details for HTTP APIs](https://tools.ietf.org/html/rfc7807) for communicating most errors to consumers of the Web API in a machine readable format. Error responses are returned in the media type formats `application/problem+json` or `application/problem+xml`.
+Scaffold implements [RFC 7807 - Problem Details for HTTP APIs](https://tools.ietf.org/html/rfc7807) for communicating most errors to consumers of the service in a machine readable format. Error responses are returned in the media type formats `application/problem+json` or `application/problem+xml`.
 
-The following is an example error response from the Web API in JSON;
+The following is an example error response from the service in JSON;
 
 ```json
 {

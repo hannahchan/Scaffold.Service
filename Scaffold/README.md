@@ -4,11 +4,11 @@ Scaffold is an opinionated template of a service built using ASP.NET Core. It is
 
 ## Getting Started
 
-Before you start developing Scaffold, please read our [Getting Started](./Docs/GettingStarted.md) guide. It outlines what you need to install on your local machine as well as how to build, test and run the project.
+Before you start developing Scaffold, please read our [Getting Started](./Docs/GettingStarted.md) guide. It outlines what you need to install on your local machine as well as how to build, test and run the service.
 
 ## Features
 
-Scaffold aims to make developing the following features in your next Web API or microservice a little bit more easier.
+Scaffold comes pre-configured with or aims to make developing the following features in your next service a little bit more easier.
 
 - [API Documentation](./Docs/ApiDocumentation.md)
 - [Application Metrics](./Docs/ApplicationMetrics.md)
@@ -18,7 +18,7 @@ Scaffold aims to make developing the following features in your next Web API or 
 - [Health Checks](./Docs/HealthChecks.md)
 - [Problem Details (RFC 7807) Error Handling](./Docs/ProblemDetails.md)
 
-### Other Features
+### Developer Experience
 
 Other stuff you inherit when you bootstrap with Scaffold.
 
@@ -32,7 +32,7 @@ Other stuff you inherit when you bootstrap with Scaffold.
 
 ### Not Included
 
-Stuff you might want to add to your Web API / microservice but not included with Scaffold.
+Stuff you might want to add to your service but not included with Scaffold.
 
 - [API Versioning](https://github.com/Microsoft/aspnet-api-versioning)
 - [Authentication](https://docs.microsoft.com/aspnet/core/security/authentication) and [Authorization](https://docs.microsoft.com/aspnet/core/security/authorization)
@@ -46,6 +46,6 @@ Stuff you might want to add to your Web API / microservice but not included with
 
 Scaffold includes an example application which is intended to be replaced with your actual application when using this template. This example application has been included to help demonstrate features in this template.
 
-The example application is a simple CRUD application where you can create **Buckets** and put **Items** in them. The Buckets have a _size_ which represents the number of Items you can put in them. To _Create_, _Read_, _Update_ and _Delete_ Buckets or Items in the application, simply send HTTP _POST_, _GET_, _PUT_ or _DELETE_ requests to the Web API.
+The example application is a simple CRUD application where you can create **Buckets** and put **Items** in them. The Buckets have a _size_ which represents the number of Items you can put in them. To _Create_, _Read_, _Update_ and _Delete_ Buckets or Items in the application, simply send HTTP _POST_, _GET_, _PUT_ or _DELETE_ requests to the service.
 
-Explore the Web API by going to `/swagger` in a web browser.
+Explore the service by going to `/swagger` in a web browser.

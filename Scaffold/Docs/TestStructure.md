@@ -1,6 +1,6 @@
 # Test Structure
 
-Testing is an important activity in software development and when done correctly, it allows software development teams to deliver features quickly and with confidence. Well written tests also help document the behavior of an application allowing developers new to the code to quickly learn and experiment with the application. The tests for Scaffold are located in the [Tests](../Tests) directory of this project.
+Testing is an important activity in software development and when done correctly, it allows software development teams to deliver features quickly and with confidence. Well written tests also help document the behavior of an application allowing developers new to the code to quickly learn and experiment with the application. The tests for Scaffold are located in the [Tests](../Tests) directory of this solution.
 
 To run the tests, use the following command;
 
@@ -32,7 +32,7 @@ Testing against real external dependencies should be reserved for a higher order
 
 ## Code Coverage
 
-Included in this project is a Cake script with a target that you can use to generate test coverage reports.
+Included in this solution is a Cake script with a target that you can use to generate test coverage reports.
 
     dotnet cake --Target=Test
 

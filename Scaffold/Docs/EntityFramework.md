@@ -12,7 +12,7 @@ The command line tools are required to perform design-time tasks such as managin
 
 ## Managing Migrations
 
-Because the Entity Framework Migrations are located in a different project from the Web API, you may need to specify the paths to the _target project_ and the _startup project_ when running `dotnet ef` commands using the `--project` and `--startup-project` options respectively. The target and startup projects are:
+Because the Entity Framework Migrations are located in a different project from the service, you may need to specify the paths to the _target project_ and the _startup project_ when running `dotnet ef` commands using the `--project` and `--startup-project` options respectively. The target and startup projects are:
 
 - Target Project - [Scaffold.Repositories](../Sources/Adapters/Scaffold.Repositories)
 - Startup Project- [Scaffold.WebApi](../Sources/Scaffold.WebApi)

@@ -1,12 +1,14 @@
 {
+  "$schema": "http://json.schemastore.org/template",
   "author": "Hannah Chan",
   "classifications": ["Web", "WebAPI"],
-  "name": "Scaffold.WebApi",
-  "identity": "Scaffold.WebApi",
-  "shortName": "scaffold.webapi",
-  "tags": {
-    "language": "C#"
-  },
+  "identity": "Scaffold.Service",
+  "name": "Scaffold.Service",
+  "preferNameDirectory": true,
+  "shortName": "scaffold.service",
   "sourceName": "Scaffold",
-  "preferNameDirectory": "true"
+  "tags": {
+    "language": "C#",
+    "type": "solution"
+  }
 }
