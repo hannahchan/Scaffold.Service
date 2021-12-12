@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageType>Template</PackageType>
+    <PackageId>Scaffold.Service</PackageId>
+    <PackageVersion>1.0.0</PackageVersion>
+    <Title>Scaffold.Service Template</Title>
+    <Authors>Hannah Chan</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/hannahchan/Scaffold.Service</PackageProjectUrl>
+    <Description>A service template built using ASP.NET Core.</Description>
+    <PackageTags>dotnet-new;templates;</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IncludeContentInPack>true</IncludeContentInPack>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <ContentTargetFolders>content</ContentTargetFolders>
+    <NoDefaultExcludes>true</NoDefaultExcludes>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Scaffold\**\*" Exclude="Scaffold\**\bin\**;Scaffold\**\obj\**" />
+    <Compile Remove="**\*" />
+  </ItemGroup>
+
+</Project>

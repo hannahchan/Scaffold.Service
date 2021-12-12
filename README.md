@@ -22,8 +22,6 @@ To bootstrap your next service with Scaffold.Service.
 
 Alternatively just browse the [template directory](Scaffold) to copy and paste the parts of the service that you actually need.
 
-You are also invited to fork this repository to create your own template. Organizations may want to do this to pre-configure the template to work in their environments and incorporate their own sensible defaults.
-
 ## Features
 
 Scaffold.Service comes pre-configured with or aims to make developing the following features in your next service a little bit more easier.
@@ -67,3 +65,9 @@ Scaffold.Service includes an example application which is intended to be replace
 The example application is a simple CRUD application where you can create **Buckets** and put **Items** in them. The Buckets have a _size_ which represents the number of Items you can put in them. To _Create_, _Read_, _Update_ and _Delete_ Buckets or Items in the application, simply send HTTP _POST_, _GET_, _PUT_ or _DELETE_ requests to the service.
 
 Explore the service by going to `/swagger` in a web browser.
+
+## Create Your Own
+
+You are also invited to fork this repository to create your own template. Organizations may want to do this to pre-configure the template to work in their environments and incorporate their own sensible defaults.
+
+For more information about custom templates, please checkout [_Custom templates for dotnet new_](https://docs.microsoft.com/dotnet/core/tools/custom-templates).
