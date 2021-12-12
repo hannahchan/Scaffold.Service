@@ -6,10 +6,10 @@ Scaffold.Service is an opinionated template of a service built using ASP.NET Cor
 
 To bootstrap your next service with Scaffold.Service.
 
-1. Clone this repository and install the template on your computer by running;
+1. Install the template package on your computer by running;
 
    ```
-   dotnet new --install Scaffold
+   dotnet new --install Scaffold.Service
    ```
 
 2. Create your new service by running;
@@ -18,7 +18,7 @@ To bootstrap your next service with Scaffold.Service.
    dotnet new scaffold.service --output <SOLUTION_NAME>
    ```
 
-3. Update `README.md` in your service so that it makes sense.
+3. Update `README.md` and all other documentation in your service so that it makes sense.
 
 Alternatively just browse the [template directory](Scaffold) to copy and paste the parts of the service that you actually need.
 
