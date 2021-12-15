@@ -39,6 +39,7 @@ Scaffold.Service comes pre-configured with or aims to make developing the follow
 Other stuff you inherit when you bootstrap with Scaffold.Service.
 
 - [Architecture](./Scaffold/Docs/Architecture.md)
+- [Bill of Materials](./Scaffold/Docs/BillOfMaterials.md)
 - [Code Analysis and Formatting](./Scaffold/Docs/CodeAnalysisAndFormatting.md)
 - [Deterministic Builds](./Scaffold/Docs/DeterministicBuilds.md)
 - [Docker Support](./Scaffold/Docs/Docker.md)

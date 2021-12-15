@@ -23,6 +23,7 @@ Scaffold comes pre-configured with or aims to make developing the following feat
 Other stuff you inherit when you bootstrap with Scaffold.
 
 - [Architecture](./Docs/Architecture.md)
+- [Bill of Materials](./Docs/BillOfMaterials.md)
 - [Code Analysis and Formatting](./Docs/CodeAnalysisAndFormatting.md)
 - [Deterministic Builds](./Docs/DeterministicBuilds.md)
 - [Docker Support](./Docs/Docker.md)
