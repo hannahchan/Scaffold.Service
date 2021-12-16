@@ -1,11 +1,13 @@
 # Bill of Materials
 
-Modern software is made up of many third-party components or libraries, and these can be expressed in a _Software Bill of Materials_. A Software Bill of Materials is often used in supply chain analysis to;
+Modern software is made up of many third-party components, and these can be expressed in a _Software Bill of Materials_. A Software Bill of Materials is often used in supply chain analysis to;
 
 - Check that the software complies to any licensing requirements.
 - Identify software dependencies with known vulnerabilities in them.
 
-For more information about Software Bill of Materials, please take a look at; <https://www.ntia.gov/sbom>.
+For more information about Software Bill of Materials, please take a look at;
+
+<https://www.ntia.gov/sbom>
 
 ## CycloneDX
 

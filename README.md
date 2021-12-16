@@ -42,6 +42,7 @@ Other stuff you inherit when you bootstrap with Scaffold.Service.
 - [Bill of Materials](./Scaffold/Docs/BillOfMaterials.md)
 - [Code Analysis and Formatting](./Scaffold/Docs/CodeAnalysisAndFormatting.md)
 - [Deterministic Builds](./Scaffold/Docs/DeterministicBuilds.md)
+- [Development Container](./Scaffold/Docs/DevelopmentContainer.md)
 - [Docker Support](./Scaffold/Docs/Docker.md)
 - [Entity Framework Support](./Scaffold/Docs/EntityFramework.md)
 - [Nullable Reference Types](./Scaffold/Docs/NullableReferenceTypes.md)

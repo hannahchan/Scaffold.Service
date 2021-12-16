@@ -57,7 +57,7 @@ Once running you can attach a debugger from your preferred Integrated Developmen
 
 Although you can work on Scaffold using any Integrated Development Environment (IDE), the development experience has been optimized for Visual Studio Code (vscode). Included in Scaffold is a launch configuration for vscode which uses the docker-compose.yml script to spin up the required services when you start a debug session by pressing `F5`. The services spin down when the debug session ends.
 
-## Developing inside a Container
+## Developing Inside a Container
 
 Scaffold includes configuration which you can use with the [Visual Studio Code Remote - Containers](https://code.visualstudio.com/docs/remote/containers) extension to spin up a development container. This is ideal for those who want to;
 
@@ -71,3 +71,5 @@ Only the following need to be installed on your local machine for this developme
 - [Visual Studio Code](https://code.visualstudio.com)
 
 All other tooling should already be installed inside the development container. You are also welcomed to install your own.
+
+For more information, please take a look at the [Development Container](./DevelopmentContainer.md) documentation.

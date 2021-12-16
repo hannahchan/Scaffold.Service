@@ -26,6 +26,7 @@ Other stuff you inherit when you bootstrap with Scaffold.
 - [Bill of Materials](./Docs/BillOfMaterials.md)
 - [Code Analysis and Formatting](./Docs/CodeAnalysisAndFormatting.md)
 - [Deterministic Builds](./Docs/DeterministicBuilds.md)
+- [Development Container](./Docs/DevelopmentContainer.md)
 - [Docker Support](./Docs/Docker.md)
 - [Entity Framework Support](./Docs/EntityFramework.md)
 - [Nullable Reference Types](./Docs/NullableReferenceTypes.md)
