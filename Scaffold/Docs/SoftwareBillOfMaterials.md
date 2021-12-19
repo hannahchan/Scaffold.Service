@@ -1,4 +1,4 @@
-# Bill of Materials
+# Software Bill of Materials
 
 Modern software is made up of many third-party components, and these can be expressed in a _Software Bill of Materials_. A Software Bill of Materials is often used in supply chain analysis to;
 

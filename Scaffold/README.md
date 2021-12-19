@@ -23,13 +23,13 @@ Scaffold comes pre-configured with or aims to make developing the following feat
 Other stuff you inherit when you bootstrap with Scaffold.
 
 - [Architecture](./Docs/Architecture.md)
-- [Bill of Materials](./Docs/BillOfMaterials.md)
 - [Code Analysis and Formatting](./Docs/CodeAnalysisAndFormatting.md)
 - [Deterministic Builds](./Docs/DeterministicBuilds.md)
 - [Development Container](./Docs/DevelopmentContainer.md)
 - [Docker Support](./Docs/Docker.md)
 - [Entity Framework Support](./Docs/EntityFramework.md)
 - [Nullable Reference Types](./Docs/NullableReferenceTypes.md)
+- [Software Bill of Materials](./Docs/SoftwareBillOfMaterials.md)
 - [Test Structure](./Docs/TestStructure.md)
 
 ### Not Included
