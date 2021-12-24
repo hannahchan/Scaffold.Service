@@ -30,9 +30,9 @@ Scaffold.Service comes pre-configured with or aims to make developing the follow
 - [Application Metrics](./Scaffold/Docs/ApplicationMetrics.md)
 - [Content Negotiation](./Scaffold/Docs/ContentNegotiation.md)
 - [Distributed Tracing](./Scaffold/Docs/DistributedTracing.md)
+- [Error Handling](./Scaffold/Docs/ErrorHandling.md)
 - [Logging](./Scaffold/Docs/Logging.md)
 - [Health Checks](./Scaffold/Docs/HealthChecks.md)
-- [Problem Details (RFC 7807) Error Handling](./Scaffold/Docs/ProblemDetails.md)
 
 ### Developer Experience
 

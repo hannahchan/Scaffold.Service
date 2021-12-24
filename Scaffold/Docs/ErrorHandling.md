@@ -1,4 +1,8 @@
-# Problem Details (RFC 7807) Error Handling
+# Error Handling
+
+Software errors can happen anywhere in your application. When they do, it may be important to communicate and cascade up meaningful error responses to the consumers of the service.
+
+## Problem Details (RFC 7807)
 
 Scaffold implements [RFC 7807 - Problem Details for HTTP APIs](https://tools.ietf.org/html/rfc7807) for communicating most errors to consumers of the service in a machine readable format. Error responses are returned in the media type formats `application/problem+json` or `application/problem+xml`.
 
@@ -28,6 +32,6 @@ And the same response in XML;
 
 Error responses by default include a `traceId` property. This `traceId` property is a [W3C Trace Context](https://www.w3.org/TR/trace-context).
 
-## How it works
+## Exception Mapping
 
 Scaffold uses an [exception filter](../Sources/Scaffold.WebApi/Filters/ExceptionFilter.cs) in the ASP.NET Core MVC filter pipeline to catch exceptions and convert them into a _Problem Details_ response. Exceptions that are not caught by the exception filter are not converted in to a _Problem Details_ response and is instead handled in the middleware pipeline.

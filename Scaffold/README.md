@@ -14,9 +14,9 @@ Scaffold comes pre-configured with or aims to make developing the following feat
 - [Application Metrics](./Docs/ApplicationMetrics.md)
 - [Content Negotiation](./Docs/ContentNegotiation.md)
 - [Distributed Tracing](./Docs/DistributedTracing.md)
+- [Error Handling](./Docs/ErrorHandling.md)
 - [Logging](./Docs/Logging.md)
 - [Health Checks](./Docs/HealthChecks.md)
-- [Problem Details (RFC 7807) Error Handling](./Docs/ProblemDetails.md)
 
 ### Developer Experience
 
