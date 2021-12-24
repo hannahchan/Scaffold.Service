@@ -3,7 +3,7 @@
   "author": "Hannah Chan",
   "classifications": ["Web", "WebAPI"],
   "identity": "Scaffold.Service",
-  "name": "Scaffold.Service",
+  "name": "Scaffold Service Template",
   "preferNameDirectory": true,
   "shortName": "scaffold.service",
   "sourceName": "Scaffold",

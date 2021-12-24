@@ -7,7 +7,7 @@
     <PackageType>Template</PackageType>
     <PackageId>Scaffold.Service</PackageId>
     <PackageVersion>1.0.0</PackageVersion>
-    <Title>Scaffold.Service Template</Title>
+    <Title>Scaffold Service Template</Title>
     <Authors>Hannah Chan</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/hannahchan/Scaffold.Service</PackageProjectUrl>
