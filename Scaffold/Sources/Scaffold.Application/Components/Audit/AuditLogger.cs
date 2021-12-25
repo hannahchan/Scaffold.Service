@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using Scaffold.Application.Common.Messaging;
 
-internal class AuditLogger<TNotification> : INotificationHandler<TNotification>
+internal class AuditLogger<TNotification> : AuditLoggerBase, INotificationHandler<TNotification>
     where TNotification : INotification
 {
     private readonly ILogger logger;
@@ -22,11 +22,11 @@ internal class AuditLogger<TNotification> : INotificationHandler<TNotification>
     {
         if (notification is IAuditableEvent auditableEvent)
         {
-            this.logger.LogInformation("{Type} - {Description}", auditableEvent.Type, auditableEvent.Description);
+            LogAuditableEvent(this.logger, auditableEvent.Type, auditableEvent.Description, null);
             return Task.CompletedTask;
         }
 
-        this.logger.LogInformation("Received Event {Type}", notification.GetType().FullName);
+        LogNonAuditableEvent(this.logger, notification.GetType().FullName, null);
         return Task.CompletedTask;
     }
 }
