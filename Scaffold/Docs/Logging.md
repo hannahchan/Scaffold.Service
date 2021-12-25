@@ -1,6 +1,19 @@
 # Logging
 
-There is nothing special about logging in Scaffold. Scaffold uses the [built-in logging framework](https://docs.microsoft.com/aspnet/core/fundamentals/logging) that comes with ASP.NET Core. Inbound and outbound request logging is handled by [middleware](../Sources/Scaffold.WebApi/Middleware/RequestLoggingMiddleware.cs) and a [HTTP message handler](../Sources/Scaffold.WebApi/HttpMessageHandlers/RequestLoggingHttpMessageHandler.cs). There is also an [audit event logger](../Sources/Scaffold.Application/Components/Audit/AuditLogger.cs) located in the application layer.
+There is mostly nothing special about logging in Scaffold. Scaffold uses the [built-in logging framework](https://docs.microsoft.com/aspnet/core/fundamentals/logging) that comes with ASP.NET Core.
+
+## HTTP Logging
+
+Scaffold comes with custom high-performance request logging [middleware](../Sources/Scaffold.WebApi/Middleware/RequestLoggingMiddleware.cs) and a [message handler](../Sources/Scaffold.WebApi/HttpMessageHandlers/RequestLoggingHttpMessageHandler.cs) to log inbound and outbound HTTP requests using the [_LoggerMessage_](https://docs.microsoft.com/aspnet/core/fundamentals/logging/loggermessage) pattern. In order to avoid logging sensitive information and performance penalties, these loggers are limited and do not log request / response headers and bodies.
+
+For more feature rich logging, please consider using one of the official ASP.NET loggers instead.
+
+- [HTTP Logging](https://docs.microsoft.com/aspnet/core/fundamentals/http-logging)
+- [W3C Logger](https://docs.microsoft.com/aspnet/core/fundamentals/w3c-logger)
+
+## Application Logging
+
+Included in the application layer of Scaffold is an [_AuditLogger_](../Sources/Scaffold.Application/Components/Audit/AuditLogger.cs) that logs all messages that pass through the [in-process event bus](./Architecture.md). When publishing messages to the in-process event bus, developers should be conscious that sensitive information in the message might be logged.
 
 ## Separation of Concerns
 
