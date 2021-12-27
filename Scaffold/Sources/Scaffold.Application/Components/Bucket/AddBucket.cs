@@ -45,7 +45,7 @@ public static class AddBucket
             }
 
             await this.repository.AddAsync(bucket, cancellationToken);
-            await this.publisher.Publish(new BucketAddedEvent(typeof(Handler), bucket.Id), CancellationToken.None);
+            await this.publisher.Publish(new BucketAddedEvent(bucket.Id), CancellationToken.None);
 
             return new Response(bucket);
         }

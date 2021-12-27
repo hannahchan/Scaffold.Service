@@ -32,7 +32,7 @@ public static class GetBucket
             using Activity? activity = ActivityProvider.StartActivity(nameof(GetBucket));
 
             Bucket bucket = await this.repository.GetAsync(request.Id, cancellationToken) ?? throw new BucketNotFoundException(request.Id);
-            await this.publisher.Publish(new BucketRetrievedEvent(typeof(Handler), bucket.Id), CancellationToken.None);
+            await this.publisher.Publish(new BucketRetrievedEvent(bucket.Id), CancellationToken.None);
 
             return new Response(bucket);
         }

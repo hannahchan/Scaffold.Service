@@ -61,7 +61,6 @@ public class UpdateItemUnitTests
                 publishedEvent =>
                 {
                     ItemUpdatedEvent bucketEvent = Assert.IsType<ItemUpdatedEvent>(publishedEvent.Notification);
-                    Assert.Equal(typeof(UpdateItem.Handler), bucketEvent.Source);
                     Assert.Equal("ItemUpdated", bucketEvent.Type);
                     Assert.Equal($"Updated Item {item.Id} in Bucket {bucket.Id}", bucketEvent.Description);
                     Assert.Equal(bucket.Id, bucketEvent.BucketId);
@@ -100,7 +99,6 @@ public class UpdateItemUnitTests
                 publishedEvent =>
                 {
                     ItemAddedEvent bucketEvent = Assert.IsType<ItemAddedEvent>(publishedEvent.Notification);
-                    Assert.Equal(typeof(UpdateItem.Handler), bucketEvent.Source);
                     Assert.Equal("ItemAdded", bucketEvent.Type);
                     Assert.Equal($"Added Item {response.Item.Id} to Bucket {bucket.Id}", bucketEvent.Description);
                     Assert.Equal(bucket.Id, bucketEvent.BucketId);

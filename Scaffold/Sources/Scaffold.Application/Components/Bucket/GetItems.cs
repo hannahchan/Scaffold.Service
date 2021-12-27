@@ -37,7 +37,7 @@ public static class GetItems
                 throw new BucketNotFoundException(request.BucketId);
 
             await this.publisher.Publish(
-                new ItemsRetrievedEvent(typeof(Handler), bucket.Id, bucket.Items.Select(item => item.Id).ToArray()),
+                new ItemsRetrievedEvent(bucket.Id, bucket.Items.Select(item => item.Id).ToArray()),
                 CancellationToken.None);
 
             return new Response(bucket.Items.ToArray());

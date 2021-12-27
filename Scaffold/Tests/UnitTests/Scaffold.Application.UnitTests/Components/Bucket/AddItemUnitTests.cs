@@ -55,7 +55,6 @@ public class AddItemUnitTests
                 publishedEvent =>
                 {
                     ItemAddedEvent bucketEvent = Assert.IsType<ItemAddedEvent>(publishedEvent.Notification);
-                    Assert.Equal(typeof(AddItem.Handler), bucketEvent.Source);
                     Assert.Equal("ItemAdded", bucketEvent.Type);
                     Assert.Equal($"Added Item {response.Item.Id} to Bucket {bucket.Id}", bucketEvent.Description);
                     Assert.Equal(bucket.Id, bucketEvent.BucketId);

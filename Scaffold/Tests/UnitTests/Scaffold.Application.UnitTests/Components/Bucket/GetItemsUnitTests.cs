@@ -58,7 +58,6 @@ public class GetItemsUnitTests
                 publishedEvent =>
                 {
                     ItemsRetrievedEvent bucketEvent = Assert.IsType<ItemsRetrievedEvent>(publishedEvent.Notification);
-                    Assert.Equal(typeof(GetItems.Handler), bucketEvent.Source);
                     Assert.Equal("ItemsRetrieved", bucketEvent.Type);
                     Assert.Equal($"Retrieved {response.Items.Count()} Item/s from Bucket {bucket.Id}", bucketEvent.Description);
                     Assert.Equal(bucket.Id, bucketEvent.BucketId);
@@ -89,7 +88,6 @@ public class GetItemsUnitTests
                 publishedEvent =>
                 {
                     ItemsRetrievedEvent bucketEvent = Assert.IsType<ItemsRetrievedEvent>(publishedEvent.Notification);
-                    Assert.Equal(typeof(GetItems.Handler), bucketEvent.Source);
                     Assert.Equal("ItemsRetrieved", bucketEvent.Type);
                     Assert.Equal($"Retrieved {response.Items.Count()} Item/s from Bucket {bucket.Id}", bucketEvent.Description);
                     Assert.Equal(bucket.Id, bucketEvent.BucketId);

@@ -53,7 +53,6 @@ public class AddBucketUnitTests
                 publishedEvent =>
                 {
                     BucketAddedEvent bucketEvent = Assert.IsType<BucketAddedEvent>(publishedEvent.Notification);
-                    Assert.Equal(typeof(AddBucket.Handler), bucketEvent.Source);
                     Assert.Equal("BucketAdded", bucketEvent.Type);
                     Assert.Equal($"Added Bucket {response.Bucket.Id}", bucketEvent.Description);
                     Assert.Equal(response.Bucket.Id, bucketEvent.BucketId);

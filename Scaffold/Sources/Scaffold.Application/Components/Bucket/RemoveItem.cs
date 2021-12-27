@@ -35,7 +35,7 @@ public static class RemoveItem
             bucket.RemoveItem(item);
 
             await this.repository.UpdateAsync(bucket, cancellationToken);
-            await this.publisher.Publish(new ItemRemovedEvent(typeof(Handler), bucket.Id, item.Id), CancellationToken.None);
+            await this.publisher.Publish(new ItemRemovedEvent(bucket.Id, item.Id), CancellationToken.None);
 
             return default;
         }

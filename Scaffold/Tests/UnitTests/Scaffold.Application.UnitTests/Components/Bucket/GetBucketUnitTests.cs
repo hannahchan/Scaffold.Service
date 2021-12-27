@@ -50,7 +50,6 @@ public class GetBucketUnitTests
                 publishedEvent =>
                 {
                     BucketRetrievedEvent bucketEvent = Assert.IsType<BucketRetrievedEvent>(publishedEvent.Notification);
-                    Assert.Equal(typeof(GetBucket.Handler), bucketEvent.Source);
                     Assert.Equal("BucketRetrieved", bucketEvent.Type);
                     Assert.Equal($"Retrieved Bucket {response.Bucket.Id}", bucketEvent.Description);
                     Assert.Equal(response.Bucket.Id, bucketEvent.BucketId);

@@ -45,7 +45,7 @@ public static class UpdateItem
                 bucket.AddItem(item);
 
                 await this.repository.UpdateAsync(bucket, cancellationToken);
-                await this.publisher.Publish(new ItemAddedEvent(typeof(Handler), bucket.Id, item.Id), CancellationToken.None);
+                await this.publisher.Publish(new ItemAddedEvent(bucket.Id, item.Id), CancellationToken.None);
 
                 return new Response(item, true);
             }
@@ -53,7 +53,7 @@ public static class UpdateItem
             item = configuration.CreateMapper().Map(request, item);
 
             await this.repository.UpdateAsync(bucket, cancellationToken);
-            await this.publisher.Publish(new ItemUpdatedEvent(typeof(Handler), bucket.Id, item.Id), CancellationToken.None);
+            await this.publisher.Publish(new ItemUpdatedEvent(bucket.Id, item.Id), CancellationToken.None);
 
             return new Response(item, false);
         }

@@ -8,8 +8,6 @@ internal interface IAuditableEvent
 
     string? TraceId { get; }
 
-    Type Source { get; }
-
     string Type { get; }
 
     string Description { get; }
