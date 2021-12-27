@@ -1,4 +1,4 @@
-namespace Scaffold.Application.UnitTests.Components.Bucket;
+namespace Scaffold.Application.UnitTests.Components.Audit;
 
 using System;
 using System.Threading.Tasks;
@@ -8,7 +8,7 @@ using Scaffold.Application.Common.Messaging;
 using Scaffold.Application.Components.Audit;
 using Xunit;
 
-public class AuditLoggerUnitTests
+public class EventLoggerUnitTests
 {
     public class Handle
     {
@@ -16,13 +16,13 @@ public class AuditLoggerUnitTests
         public async Task When_HandlingAuditableEvent_Expect_Logged()
         {
             // Arrange
-            Mock.Logger<AuditLogger<AuditableEvent>> logger = new Mock.Logger<AuditLogger<AuditableEvent>>();
-            AuditLogger<AuditableEvent> auditLogger = new AuditLogger<AuditableEvent>(logger);
+            Mock.Logger<EventLogger<AuditableEvent>> logger = new Mock.Logger<EventLogger<AuditableEvent>>();
+            EventLogger<AuditableEvent> eventLogger = new EventLogger<AuditableEvent>(logger);
 
             AuditableEvent auditableEvent = new AuditableEvent(default, default, default, "MyType", "MyDescription");
 
             // Act
-            await auditLogger.Handle(auditableEvent, default);
+            await eventLogger.Handle(auditableEvent, default);
 
             // Assert
             Assert.Collection(
@@ -38,13 +38,13 @@ public class AuditLoggerUnitTests
         public async Task When_HandlingGenericEvent_Expect_Logged()
         {
             // Arrange
-            Mock.Logger<AuditLogger<GenericEvent>> logger = new Mock.Logger<AuditLogger<GenericEvent>>();
-            AuditLogger<GenericEvent> auditLogger = new AuditLogger<GenericEvent>(logger);
+            Mock.Logger<EventLogger<GenericEvent>> logger = new Mock.Logger<EventLogger<GenericEvent>>();
+            EventLogger<GenericEvent> eventLogger = new EventLogger<GenericEvent>(logger);
 
             GenericEvent genericEvent = new GenericEvent();
 
             // Act
-            await auditLogger.Handle(genericEvent, default);
+            await eventLogger.Handle(genericEvent, default);
 
             // Assert
             Assert.Collection(

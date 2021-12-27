@@ -10,6 +10,10 @@ When you build a container image of Scaffold and run it, the metrics endpoint is
 
 When Scaffold is run locally, the metrics endpoint is still exposed on port `8081` while the rest of the application is on port `5000`. You can change this by modifying [launchSettings.json](../Sources/Scaffold.WebApi/Properties/launchSettings.json).
 
+## Event Counter
+
+Included in the application layer of Scaffold is an [_EventCounter_](../Sources/Scaffold.Application/Components/Audit/EventCounter.cs) that counts all the messages that pass through the [in-process event bus](./Architecture.md). Rather than littering the codebase with increment statements, developers can simply publish an event and it will be counted with the other events of the same type.
+
 ## Example Queries
 
 If you're new to Prometheus and its query language PromQL, it can be difficult to figure out how to get the metrics you want out of Prometheus. We recommend reading the documentation on how to write PromQL here;

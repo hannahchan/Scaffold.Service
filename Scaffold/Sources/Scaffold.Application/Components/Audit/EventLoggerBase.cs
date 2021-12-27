@@ -3,11 +3,11 @@ namespace Scaffold.Application.Components.Audit;
 using System;
 using Microsoft.Extensions.Logging;
 
-internal abstract class AuditLoggerBase
+internal abstract class EventLoggerBase
 {
-    protected static readonly Action<ILogger, string, string, Exception?> LogAuditableEvent =
+    private protected static readonly Action<ILogger, string, string, Exception?> LogAuditableEvent =
         LoggerMessage.Define<string, string>(LogLevel.Information, default, "{Type} - {Description}");
 
-    protected static readonly Action<ILogger, string?, Exception?> LogNonAuditableEvent =
+    private protected static readonly Action<ILogger, string?, Exception?> LogNonAuditableEvent =
         LoggerMessage.Define<string?>(LogLevel.Information, default, "Received Event {Type}");
 }
