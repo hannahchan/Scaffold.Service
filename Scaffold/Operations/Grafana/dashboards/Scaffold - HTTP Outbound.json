@@ -1,5 +1,29 @@
 {
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "",
   "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "liveNow": false,
   "panels": [
     {
       "collapsed": false,
@@ -14,6 +38,17 @@
       "type": "row"
     },
     {
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 7,
         "w": 3,
@@ -25,24 +60,15 @@
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "horizontal"
-      },
-      "fieldConfig": {
-        "calcs": ["lastNotNull"],
-        "defaults": {
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text"
-              }
-            ]
-          },
-          "unit": "s"
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
         },
-        "values": false
+        "textMode": "auto"
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "expr": "sum(rate(httpclient_request_duration_seconds_sum{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(rate(httpclient_request_duration_seconds_count{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
@@ -60,42 +86,98 @@
       "type": "stat"
     },
     {
-      "aliasColors": {
-        "Average Request Duration": "green",
-        "Instant Request Duration": "super-light-green"
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          },
+          "unit": "s"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Average Request Duration"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Instant Request Duration"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "fill": 1,
-      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 9,
         "x": 3,
         "y": 1
       },
-      "hiddenSeries": false,
       "id": 3,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
       },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "expr": "sum(rate(httpclient_request_duration_seconds_sum{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) /\nsum(rate(httpclient_request_duration_seconds_count{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
@@ -108,35 +190,20 @@
           "refId": "B"
         }
       ],
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:149",
-          "format": "s",
-          "logBase": 2,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:150",
-          "format": "short",
-          "logBase": 2,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 7,
         "w": 3,
@@ -148,24 +215,15 @@
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "horizontal"
-      },
-      "fieldConfig": {
-        "calcs": ["lastNotNull"],
-        "defaults": {
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text"
-              }
-            ]
-          },
-          "unit": "s"
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
         },
-        "values": false
+        "textMode": "auto"
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "expr": "histogram_quantile(0.99, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
@@ -196,44 +254,128 @@
       "type": "stat"
     },
     {
-      "aliasColors": {
-        "50th Percentile": "green",
-        "85th Percentile": "yellow",
-        "95th Percentile": "orange",
-        "99th Percentile": "red"
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "log"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          },
+          "unit": "s"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "50th Percentile"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "85th Percentile"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "95th Percentile"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "99th Percentile"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "fill": 1,
-      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 9,
         "x": 15,
         "y": 1
       },
-      "hiddenSeries": false,
       "id": 5,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
       },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "expr": "histogram_quantile(0.99, sum(rate(httpclient_request_duration_seconds_bucket{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range])) by (le))",
@@ -256,33 +398,7 @@
           "refId": "D"
         }
       ],
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:596",
-          "format": "s",
-          "logBase": 10,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:597",
-          "format": "short",
-          "logBase": 10,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
       "collapsed": false,
@@ -297,6 +413,17 @@
       "type": "row"
     },
     {
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          },
+          "unit": "reqps"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 7,
         "w": 3,
@@ -308,24 +435,15 @@
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "horizontal"
-      },
-      "fieldConfig": {
-        "calcs": ["lastNotNull"],
-        "defaults": {
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text"
-              }
-            ]
-          },
-          "unit": "reqps"
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
         },
-        "values": false
+        "textMode": "auto"
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "expr": "sum(rate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
@@ -343,42 +461,98 @@
       "type": "stat"
     },
     {
-      "aliasColors": {
-        "Average Request Rate": "blue",
-        "Instant Request Rate": "super-light-blue"
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          },
+          "unit": "reqps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Average Request Rate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Instant Request Rate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "fill": 1,
-      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 9,
         "x": 3,
         "y": 9
       },
-      "hiddenSeries": false,
       "id": 8,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
       },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "expr": "sum(rate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
@@ -391,35 +565,19 @@
           "refId": "B"
         }
       ],
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:316",
-          "format": "reqps",
-          "logBase": 2,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:317",
-          "format": "short",
-          "logBase": 2,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          }
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 7,
         "w": 3,
@@ -431,23 +589,15 @@
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "horizontal"
-      },
-      "fieldConfig": {
-        "calcs": ["lastNotNull"],
-        "defaults": {
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text"
-              }
-            ]
-          }
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
         },
-        "values": false
+        "textMode": "auto"
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "expr": "sum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
@@ -477,44 +627,128 @@
       "type": "stat"
     },
     {
-      "aliasColors": {
-        "All Requests": "blue",
-        "Client Errors (4xx)": "yellow",
-        "Server Errors (5xx)": "red",
-        "Successes (2xx)": "green"
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "log"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "All Requests"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Client Errors (4xx)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Server Errors (5xx)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Successes (2xx)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "fill": 1,
-      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 9,
         "x": 15,
         "y": 9
       },
-      "hiddenSeries": false,
       "id": 10,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
       },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "expr": "sum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
@@ -537,33 +771,7 @@
           "refId": "D"
         }
       ],
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:221",
-          "format": "short",
-          "logBase": 10,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:222",
-          "format": "short",
-          "logBase": 10,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
       "collapsed": false,
@@ -578,6 +786,17 @@
       "type": "row"
     },
     {
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 3,
         "w": 2,
@@ -589,25 +808,15 @@
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "horizontal"
-      },
-      "fieldConfig": {
-        "calcs": ["lastNotNull"],
-        "defaults": {
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text"
-              }
-            ]
-          },
-          "title": "${__series.name}",
-          "unit": "percentunit"
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
         },
-        "values": false
+        "textMode": "auto"
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "expr": "sum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range])) /\nsum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
@@ -619,42 +828,98 @@
       "type": "stat"
     },
     {
-      "aliasColors": {
-        "Average Success (2xx) Rate": "green",
-        "Instant Success (2xx) Rate": "super-light-green"
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          },
+          "unit": "reqps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Average Success (2xx) Rate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Instant Success (2xx) Rate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "fill": 1,
-      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 6,
         "x": 2,
         "y": 17
       },
-      "hiddenSeries": false,
       "id": 13,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
       },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "expr": "sum(rate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
@@ -667,35 +932,20 @@
           "refId": "B"
         }
       ],
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:649",
-          "format": "reqps",
-          "logBase": 2,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:650",
-          "format": "short",
-          "logBase": 2,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 3,
         "w": 2,
@@ -707,25 +957,15 @@
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "horizontal"
-      },
-      "fieldConfig": {
-        "calcs": ["lastNotNull"],
-        "defaults": {
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text"
-              }
-            ]
-          },
-          "title": "${__series.name}",
-          "unit": "percentunit"
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
         },
-        "values": false
+        "textMode": "auto"
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "expr": "sum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range])) /\nsum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
@@ -737,42 +977,98 @@
       "type": "stat"
     },
     {
-      "aliasColors": {
-        "Average Client Error (4xx) Rate": "yellow",
-        "Instant Client Error (4xx) Rate": "super-light-yellow"
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          },
+          "unit": "reqps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Average Client Error (4xx) Rate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Instant Client Error (4xx) Rate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "fill": 1,
-      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 6,
         "x": 10,
         "y": 17
       },
-      "hiddenSeries": false,
       "id": 15,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
       },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "expr": "sum(rate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
@@ -785,35 +1081,20 @@
           "refId": "B"
         }
       ],
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:649",
-          "format": "reqps",
-          "logBase": 2,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:650",
-          "format": "short",
-          "logBase": 2,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 3,
         "w": 2,
@@ -825,25 +1106,15 @@
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "horizontal"
-      },
-      "fieldConfig": {
-        "calcs": ["lastNotNull"],
-        "defaults": {
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text"
-              }
-            ]
-          },
-          "title": "${__series.name}",
-          "unit": "percentunit"
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
         },
-        "values": false
+        "textMode": "auto"
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "expr": "sum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range])) /\nsum(increase(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\".+\"}[$__range]))",
@@ -855,42 +1126,98 @@
       "type": "stat"
     },
     {
-      "aliasColors": {
-        "Average Server Error (5xx) Rate": "red",
-        "Instant Server Error (5xx) Rate": "super-light-red"
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          },
+          "unit": "reqps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Average Server Error (5xx) Rate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Instant Server Error (5xx) Rate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "fill": 1,
-      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 6,
         "x": 18,
         "y": 17
       },
-      "hiddenSeries": false,
       "id": 17,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
       },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "expr": "sum(rate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
@@ -903,35 +1230,20 @@
           "refId": "B"
         }
       ],
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:649",
-          "format": "reqps",
-          "logBase": 2,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:650",
-          "format": "short",
-          "logBase": 2,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
+      "type": "timeseries"
     },
     {
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          },
+          "unit": "reqps"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 4,
         "w": 2,
@@ -943,24 +1255,15 @@
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "horizontal"
-      },
-      "fieldConfig": {
-        "calcs": ["lastNotNull"],
-        "defaults": {
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text"
-              }
-            ]
-          },
-          "unit": "reqps"
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
         },
-        "values": false
+        "textMode": "auto"
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "expr": "sum(rate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"2.*\"}[$__range]))",
@@ -978,6 +1281,17 @@
       "type": "stat"
     },
     {
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          },
+          "unit": "reqps"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 4,
         "w": 2,
@@ -989,24 +1303,15 @@
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "horizontal"
-      },
-      "fieldConfig": {
-        "calcs": ["lastNotNull"],
-        "defaults": {
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text"
-              }
-            ]
-          },
-          "unit": "reqps"
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
         },
-        "values": false
+        "textMode": "auto"
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "expr": "sum(rate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"4.*\"}[$__range]))",
@@ -1024,6 +1329,17 @@
       "type": "stat"
     },
     {
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          },
+          "unit": "reqps"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 4,
         "w": 2,
@@ -1035,24 +1351,15 @@
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "horizontal"
-      },
-      "fieldConfig": {
-        "calcs": ["lastNotNull"],
-        "defaults": {
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text"
-              }
-            ]
-          },
-          "unit": "reqps"
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
         },
-        "values": false
+        "textMode": "auto"
       },
-      "pluginVersion": "8.2.2",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "expr": "sum(rate(httpclient_requests_sent_total{job=~\"${job:regex}\", client=~\"${client:regex}\", host=~\"${host:regex}\", method=~\"${method:regex}\", code=~\"5.*\"}[$__range]))",
@@ -1071,25 +1378,34 @@
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 22,
+  "schemaVersion": 34,
+  "style": "dark",
+  "tags": [],
   "templating": {
     "list": [
       {
         "allValue": ".+",
         "current": {
-          "text": "All",
+          "selected": true,
+          "text": ["All"],
           "value": ["$__all"]
         },
-        "datasource": "Prometheus",
+        "datasource": {
+          "type": "prometheus"
+        },
         "definition": "label_values(httpclient_requests_sent_total, job)",
         "hide": 0,
         "includeAll": true,
-        "index": -1,
         "label": "Job",
         "multi": true,
         "name": "job",
-        "query": "label_values(httpclient_requests_sent_total, job)",
+        "options": [],
+        "query": {
+          "query": "label_values(httpclient_requests_sent_total, job)",
+          "refId": "Prometheus-job-Variable-Query"
+        },
         "refresh": 1,
+        "regex": "",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query",
@@ -1098,19 +1414,26 @@
       {
         "allValue": ".+",
         "current": {
-          "text": "All",
+          "selected": true,
+          "text": ["All"],
           "value": ["$__all"]
         },
-        "datasource": "Prometheus",
+        "datasource": {
+          "type": "prometheus"
+        },
         "definition": "label_values(httpclient_requests_sent_total, client)",
         "hide": 0,
         "includeAll": true,
-        "index": -1,
         "label": "Client",
         "multi": true,
         "name": "client",
-        "query": "label_values(httpclient_requests_sent_total, client)",
+        "options": [],
+        "query": {
+          "query": "label_values(httpclient_requests_sent_total, client)",
+          "refId": "Prometheus-client-Variable-Query"
+        },
         "refresh": 1,
+        "regex": "",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query",
@@ -1119,19 +1442,26 @@
       {
         "allValue": ".+",
         "current": {
-          "text": "All",
+          "selected": true,
+          "text": ["All"],
           "value": ["$__all"]
         },
-        "datasource": "Prometheus",
+        "datasource": {
+          "type": "prometheus"
+        },
         "definition": "label_values(httpclient_requests_sent_total, host)",
         "hide": 0,
         "includeAll": true,
-        "index": -1,
         "label": "Host",
         "multi": true,
         "name": "host",
-        "query": "label_values(httpclient_requests_sent_total, host)",
+        "options": [],
+        "query": {
+          "query": "label_values(httpclient_requests_sent_total, host)",
+          "refId": "Prometheus-host-Variable-Query"
+        },
         "refresh": 1,
+        "regex": "",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query",
@@ -1140,19 +1470,26 @@
       {
         "allValue": ".+",
         "current": {
-          "text": "All",
+          "selected": true,
+          "text": ["All"],
           "value": ["$__all"]
         },
-        "datasource": "Prometheus",
+        "datasource": {
+          "type": "prometheus"
+        },
         "definition": "label_values(httpclient_requests_sent_total, method)",
         "hide": 0,
         "includeAll": true,
-        "index": -1,
         "label": "Method",
         "multi": true,
         "name": "method",
-        "query": "label_values(httpclient_requests_sent_total, method)",
+        "options": [],
+        "query": {
+          "query": "label_values(httpclient_requests_sent_total, method)",
+          "refId": "Prometheus-method-Variable-Query"
+        },
         "refresh": 1,
+        "regex": "",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query",
@@ -1180,5 +1517,6 @@
   },
   "timezone": "browser",
   "title": "Scaffold - HTTP Outbound",
-  "version": 0
+  "version": 1,
+  "weekStart": ""
 }
