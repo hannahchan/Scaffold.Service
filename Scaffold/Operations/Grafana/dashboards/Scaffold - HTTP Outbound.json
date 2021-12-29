@@ -57,7 +57,7 @@
       },
       "id": 2,
       "options": {
-        "colorMode": "value",
+        "colorMode": "none",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
@@ -212,7 +212,7 @@
       },
       "id": 4,
       "options": {
-        "colorMode": "value",
+        "colorMode": "none",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
@@ -432,7 +432,7 @@
       },
       "id": 7,
       "options": {
-        "colorMode": "value",
+        "colorMode": "none",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
@@ -586,7 +586,7 @@
       },
       "id": 9,
       "options": {
-        "colorMode": "value",
+        "colorMode": "none",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
@@ -805,7 +805,7 @@
       },
       "id": 12,
       "options": {
-        "colorMode": "value",
+        "colorMode": "none",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
@@ -954,7 +954,7 @@
       },
       "id": 14,
       "options": {
-        "colorMode": "value",
+        "colorMode": "none",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
@@ -1103,7 +1103,7 @@
       },
       "id": 16,
       "options": {
-        "colorMode": "value",
+        "colorMode": "none",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
@@ -1252,7 +1252,7 @@
       },
       "id": 18,
       "options": {
-        "colorMode": "value",
+        "colorMode": "none",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
@@ -1300,7 +1300,7 @@
       },
       "id": 19,
       "options": {
-        "colorMode": "value",
+        "colorMode": "none",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
@@ -1348,7 +1348,7 @@
       },
       "id": 20,
       "options": {
-        "colorMode": "value",
+        "colorMode": "none",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
