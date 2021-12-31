@@ -18,7 +18,6 @@
       }
     ]
   },
-  "description": "",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
@@ -1390,9 +1389,6 @@
           "text": ["All"],
           "value": ["$__all"]
         },
-        "datasource": {
-          "type": "prometheus"
-        },
         "definition": "label_values(http_requests_received_total, job)",
         "hide": 0,
         "includeAll": true,
@@ -1417,9 +1413,6 @@
           "selected": true,
           "text": ["All"],
           "value": ["$__all"]
-        },
-        "datasource": {
-          "type": "prometheus"
         },
         "definition": "label_values(http_requests_received_total, controller)",
         "hide": 0,
@@ -1446,9 +1439,6 @@
           "text": ["All"],
           "value": ["$__all"]
         },
-        "datasource": {
-          "type": "prometheus"
-        },
         "definition": "label_values(http_requests_received_total, action)",
         "hide": 0,
         "includeAll": true,
@@ -1473,9 +1463,6 @@
           "selected": true,
           "text": ["All"],
           "value": ["$__all"]
-        },
-        "datasource": {
-          "type": "prometheus"
         },
         "definition": "label_values(http_requests_received_total, method)",
         "hide": 0,
