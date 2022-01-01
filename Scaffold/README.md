@@ -51,3 +51,7 @@ Scaffold includes an example application which is intended to be replaced with y
 The example application is a simple CRUD application where you can create **Buckets** and put **Items** in them. The Buckets have a _size_ which represents the number of Items you can put in them. To _Create_, _Read_, _Update_ and _Delete_ Buckets or Items in the application, simply send HTTP _POST_, _GET_, _PUT_ or _DELETE_ requests to the service.
 
 Explore the service by going to `/swagger` in a web browser.
+
+## Acknowledgements
+
+Scaffold has been inspired by and built from the prior experience and work of many others. In particular, Scaffold heavily relies on the open-source community and those who support that community. Please consider contributing back to their open-source projects in whatever way you can.

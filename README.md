@@ -73,3 +73,7 @@ Explore the service by going to `/swagger` in a web browser.
 You are also invited to fork this repository to create your own template. Organizations may want to do this to pre-configure the template to work in their environments and incorporate their own sensible defaults.
 
 For more information about custom templates, please checkout [_Custom templates for dotnet new_](https://docs.microsoft.com/dotnet/core/tools/custom-templates).
+
+## Acknowledgements
+
+Scaffold.Service has been inspired by and built from the prior experience and work of many others. In particular, Scaffold.Service heavily relies on the open-source community and those who support that community. Please consider contributing back to their open-source projects in whatever way you can.
