@@ -84,3 +84,4 @@
 - Has the migration script been tested?
 - Is there any database provider specific code?
 - Is there any manual SQL in the migration script?
+- Are there backup and restore scripts
