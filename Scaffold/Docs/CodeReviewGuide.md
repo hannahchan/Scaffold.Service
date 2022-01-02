@@ -46,6 +46,8 @@
 - Driven Adapters implement an interface defined in the application layer
 - HttpClients are registered correctly in DI
 - No excessive network calls
+- Are driving adapters part of the application or an external service?
+- Are they deployable with the application?
 
 ## Observability
 
