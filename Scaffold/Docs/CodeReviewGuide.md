@@ -34,6 +34,8 @@
 
 ## Architecture and Patterns
 
+- Is the Architecture of the application clear and documented
+- How are cross cutting concerns addressed by the application architecture
 - Domain Driven Design
 - Repository Pattern
 - No leaky abstractions
