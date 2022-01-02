@@ -1,5 +1,12 @@
 # Code Review Guide
 
+- Code Reviews should happen on a regular cadence independent from feature delivery
+- They can also happen during feature delivery, for example in Pull Requests
+- The Code Review Guide is intended to bring transparency and consistency to how code in a project is reviewed.
+- The Code Review Guide is a living document and is intended to be updated by the development team overtime to optimise their workflow
+- It is also a good place to share knowledge and possible solutions
+- Forms part of the developers engineering playbook.
+
 ## The Basics
 
 - Does it build?
