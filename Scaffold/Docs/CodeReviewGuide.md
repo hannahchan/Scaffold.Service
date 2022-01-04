@@ -5,6 +5,8 @@ Code reviews are essential for maintaining an enjoyable and productive experienc
 The purpose of this guide is to bring transparency and consistency to how code is reviewed.
 
 - Knowledge sharing
+- Not a checklist
+- Different Developers have different experiences and levels
 
 - Code Reviews should happen on a regular cadence independent from feature delivery
 - They can also happen during feature delivery, for example in Pull Requests
@@ -58,7 +60,6 @@ The purpose of this guide is to bring transparency and consistency to how code i
 - Services are DDD Services
 - Interfaces for Adapters are in the correct layer
 - Direction of Dependencies
-- Correct use of access modifiers
 - No excessive use of DI
 - Watch out for God Classes
 - SOLID
@@ -111,3 +112,9 @@ The purpose of this guide is to bring transparency and consistency to how code i
 - Are there backup and restore scripts
 
 ## Developer Experience
+
+## .NET Stuff
+
+- Correct use of IDisposable
+- High Performance Logging
+- Correct use of access modifiers
