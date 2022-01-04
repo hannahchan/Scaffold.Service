@@ -27,6 +27,7 @@
 ## Requirements
 
 - Actually does what it says on the box
+- Is there any technical debt?
 
 ## Error Handling
 
