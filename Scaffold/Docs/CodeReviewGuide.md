@@ -23,6 +23,12 @@
 - IaC
 - Secrets
 - Configuration
+- How easy is it to deploy from nothing?
+- What prereqs. infrastructure are required to deploy?
+- Is deployment easily repeatable?
+- How many ambient Environment variables are there?
+- How easy is it to tear down?
+- How many environments are there? Are they ephemeral?
 
 ## Requirements
 
