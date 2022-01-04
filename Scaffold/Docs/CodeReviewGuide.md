@@ -28,6 +28,8 @@
 
 - Actually does what it says on the box
 - Is there any technical debt?
+- Are there any feature switches and how do you turn them on?
+- Is the change/feature easy to remove? Is it decoupled?
 
 ## Error Handling
 
