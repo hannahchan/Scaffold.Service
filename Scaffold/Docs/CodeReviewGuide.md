@@ -1,5 +1,11 @@
 # Code Review Guide
 
+Code reviews are essential for maintaining an enjoyable and productive experience when working in a code base or across code bases. When more developers start working on a code base, it may become necessary to scale the code review process. This Code Review Guide is one tool that could help you with this process.
+
+The purpose of this guide is to bring transparency and consistency to how code is reviewed.
+
+- Knowledge sharing
+
 - Code Reviews should happen on a regular cadence independent from feature delivery
 - They can also happen during feature delivery, for example in Pull Requests
 - The Code Review Guide is intended to bring transparency and consistency to how code in a project is reviewed.
@@ -103,3 +109,5 @@
 - Is there any database provider specific code?
 - Is there any manual SQL in the migration script?
 - Are there backup and restore scripts
+
+## Developer Experience
