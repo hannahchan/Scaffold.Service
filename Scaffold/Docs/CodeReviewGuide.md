@@ -1,17 +1,29 @@
 # Code Review Guide
 
-Code reviews are essential for catching expensive architectural and design issues in a code base. They should be conducted on a regular cadence independent from and during feature delivery. When combined with the commitment to address issues early, code reviews can produce an enjoyable and productive experience for those working in a code base.
+Code reviews are essential for catching expensive architectural and design issues in a code base. They should be conducted on a regular cadence independent from and during feature delivery. When combined with the commitment to address issues early, code reviews can produce an enjoyable and productive experience for those working with a code base.
 
-The code review process should be conducted by the technical stakeholders of a code base. When more people start working on a code base or when there are multiple code bases to review, it may become necessary to scale the code review process. The code review guide is intended to help you with scaling this process.
+The code review process is often conducted by the developers of a code base. It is also often valuable to include a skilled technical outsider in the code review process. When more people are required to review a code base or when there are multiple code bases to review, it becomes necessary to scale the code review process. This guide is intended to help you scale this process.
 
 ## How to Use
 
-The purpose of the code review guide is to help bring transparency and consistency to how code is reviewed. Reviewers are expected to use this guide in combination with their experience and context to surface issues. The guide is not intended to be used like a check list!
+The purpose of the code review guide is to help bring transparency and consistency to how code is reviewed. Reviewers are expected to use this guide in combination with their experience and context to surface issues. This guide is not intended to be used like a check list!
+
+### Living Document
 
 - The Code Review Guide is a living document and is intended to be updated by the development team overtime to optimise their workflow
 - Language and framework agnostic
+
+### Level Setting
+
 - Different Developers have different experiences and levels (Level Setting)
-- Product vs. Productivity
+
+### Product vs. Productivity
+
+- The lenses that you can view a code base.
+
+### Structure
+
+How this guide is organised.
 
 ## The Basics
 
