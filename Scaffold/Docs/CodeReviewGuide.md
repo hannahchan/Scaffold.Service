@@ -1,6 +1,6 @@
 # Code Review Guide
 
-Code reviews are essential for maintaining an enjoyable and productive experience when working in a code base. They should be conducted on a regular cadence (independent from and during feature delivery) in a software development project to catch architectural and design issues early as these can be expensive to fix later down the track.
+Code reviews are essential for maintaining an enjoyable and productive experience when working in a code base. They should be conducted on a regular cadence to catch architectural and design issues early as these can be expensive to fix later down the track.
 
 When more developers start working on a code base, it may become necessary to scale the code review process. This Code Review Guide is one tool that could help you with this process.
 
