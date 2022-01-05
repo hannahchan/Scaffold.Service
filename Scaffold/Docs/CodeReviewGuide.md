@@ -6,13 +6,16 @@ The code review process should be conducted by the technical stakeholders of a c
 
 ## How to Use
 
-The purpose of the code review guide is to help bring transparency and consistency to how code is reviewed. It is not intended to be used as a checklist! Reviewers are expected to use this guide in their context for which some thing may not be applicable. To surface architectural, design and productivity issues.
+The purpose of the code review guide is to help bring transparency and consistency to how code is reviewed.
 
-- Apply context
-- Not a checklist
+It is not intended to be used as a checklist!
+
+Reviewers are expected to use this guide in combination with their experience and context.
+
 - Different Developers have different experiences and levels (Level Setting)
 - Language and framework agnostic
 - The Code Review Guide is a living document and is intended to be updated by the development team overtime to optimise their workflow
+- Product vs. Productivity
 
 ## The Basics
 
