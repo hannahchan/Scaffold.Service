@@ -1,6 +1,6 @@
 # Code Review Guide
 
-Code reviews are essential for catching potentially expensive architectural and design issues in a code base. They should be conducted on a regular cadence independent from and during feature delivery. When combined with the commitment to address any issue, code reviews will produce an enjoyable and productive experience when working in a code base.
+Code reviews are essential for catching expensive architectural and design issues in a code base. They should be conducted on a regular cadence independent from and during feature delivery. When combined with the commitment to address issues early, code reviews can produce an enjoyable and productive experience for those working in a code base.
 
 When more developers start working on a code base, it may become necessary to scale the code review process. This Code Review Guide is one tool that could help you with this process.
 
@@ -12,8 +12,6 @@ The purpose of the Code Review Guide is to help bring transparency and consisten
 - Not a checklist
 - Different Developers have different experiences and levels
 
-- Code Reviews should happen on a regular cadence independent from feature delivery
-- They can also happen during feature delivery, for example in Pull Requests
 - The Code Review Guide is intended to bring transparency and consistency to how code in a project is reviewed.
 - The Code Review Guide is a living document and is intended to be updated by the development team overtime to optimise their workflow
 - It is also a good place to share knowledge and possible solutions
