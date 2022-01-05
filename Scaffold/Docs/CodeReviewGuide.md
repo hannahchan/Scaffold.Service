@@ -119,6 +119,8 @@ The purpose of the code review guide is to help bring transparency and consisten
 
 ## Possible Structures
 
+### Short vs. Long Review
+
 ### Waterfall Model
 
 - Analyse
