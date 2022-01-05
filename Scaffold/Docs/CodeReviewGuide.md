@@ -11,11 +11,8 @@ The purpose of the code review guide is to help bring transparency and consisten
 - Apply context
 - Not a checklist
 - Different Developers have different experiences and levels (Level Setting)
-
-- The Code Review Guide is intended to bring transparency and consistency to how code in a project is reviewed.
+- Language and framework agnostic
 - The Code Review Guide is a living document and is intended to be updated by the development team overtime to optimise their workflow
-- It is also a good place to share knowledge and possible solutions
-- Forms part of the developers engineering playbook.
 
 ## The Basics
 
@@ -120,3 +117,24 @@ The purpose of the code review guide is to help bring transparency and consisten
 - Correct use of IDisposable
 - High Performance Logging
 - Correct use of access modifiers
+
+## Possible Structures
+
+### Waterfall Model
+
+- Analyse
+- Design
+- Build
+- Test
+- Operate
+
+### DevOps Model
+
+- Continuous Integration
+- Continuous Deployment
+- Continuous Analysis
+
+### Users vs. Developers
+
+- Product
+- Productivity (Developer Experience)
