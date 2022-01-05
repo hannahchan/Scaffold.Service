@@ -1,9 +1,11 @@
 # Code Review Guide
 
-Code reviews are essential for maintaining an enjoyable and productive experience when working in a code base or across code bases. When more developers start working on a code base, it may become necessary to scale the code review process. This Code Review Guide is one tool that could help you with this process.
+Code reviews are essential for maintaining an enjoyable and productive experience when working in a code base.
+
+When more developers start working on a code base, it may become necessary to scale the code review process. This Code Review Guide is one tool that could help you with this process.
 
 ## How to Use
-The purpose of the Code Review Guide is to help bring transparency and consistency to how code is reviewed. It can also be used as a tool to help facilitate knowledge sharing.
+The purpose of the Code Review Guide is to help bring transparency and consistency to how code is reviewed. It can also be used as a tool to help facilitate knowledge sharing around best practices.
 
 - Apply context
 - Not a checklist
