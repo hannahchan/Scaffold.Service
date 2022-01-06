@@ -25,6 +25,9 @@ The purpose of the code review guide is to help bring transparency and consisten
 
 How this guide is organised.
 
+- Reliability Engineer / Error Budgets
+- SRE Post Mortems
+
 ## The Basics
 
 - Does it build?
