@@ -2,7 +2,7 @@
 
 Code reviews are essential for catching expensive architectural and design issues in a code base. They should be conducted on a regular cadence independent from and during feature delivery. When combined with the commitment to address issues early, code reviews can produce an enjoyable and productive experience for those working with a code base.
 
-The code review process is often conducted by the developers of a code base. It is also often valuable to include a skilled technical outsider in the code review process. When more people are required to review a code base or when there are multiple code bases to review, it becomes necessary to scale the code review process. This guide is intended to help you scale this process.
+The code review process is often conducted by the developers of a code base. It is also often valuable to include an experienced outsider in the code review process. When more people are required to review a code base or when there are multiple code bases to review, it becomes necessary to scale the code review process. This guide is intended to help you scale this process.
 
 ## How to Use
 
