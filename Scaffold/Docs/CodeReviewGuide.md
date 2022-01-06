@@ -21,6 +21,10 @@ The purpose of the code review guide is to help bring transparency and consisten
 
 - The lenses that you can view a code base.
 
+### Outputs
+
+Output of the code review process.
+
 ### Structure
 
 How this guide is organised.
