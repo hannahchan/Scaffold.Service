@@ -10,6 +10,10 @@ The purpose of the code review guide is to help bring transparency and consisten
 
 ### Living Document
 
+The code review guide 
+
+As reviewers use this guide, they may find situation or scenario for which the guide does not cover. The code review guide is not intended to be a static document.
+
 - The Code Review Guide is a living document and is intended to be updated by the development team overtime to optimise their workflow
 - Language and framework agnostic
 
