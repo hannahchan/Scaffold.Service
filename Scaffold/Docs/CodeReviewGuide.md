@@ -14,10 +14,12 @@ The code review guide is meant to be a living document and is programming langua
 
 ### Level Setting
 
-Before commencing a code review, reviewers may want to familiarize themselves with the language used in the code review guide. In particular reviewers should be familiar with concepts in domain-driven design, various architectural patterns and their associated terms. Recommended read for these are:
+Before commencing a code review, reviewers may want to familiarize themselves with the language used in the code review guide. In particular reviewers should be familiar with concepts in domain-driven design, various architectural patterns and their associated terms.
+
+Recommended reads for these include:
 
 - _Domain-Driven Design: Tackling Complexity in the Heart of Software_ by Eric Evans
-- [_DDD, Hexagonal, Onion, Clean, CQRS, … How I put it all together_](https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/) by Herberto Graça.
+- [_DDD, Hexagonal, Onion, Clean, CQRS, … How I put it all together_](https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/) by Herberto Graça
 
 ### Product vs. Productivity
 
