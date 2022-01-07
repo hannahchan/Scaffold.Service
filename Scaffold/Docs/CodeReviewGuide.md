@@ -14,7 +14,7 @@ The code review guide is meant to be a living document and is programming langua
 
 ### Level Setting
 
-- Different Developers have different experiences and levels (Level Setting)
+Before commencing a code review, reviewers may want to familiarize themselves with the language used in the code review guide. In particular reviewers should be familiar with various architectual patterns and their associated terms. A recommended read for this is [_DDD, Hexagonal, Onion, Clean, CQRS, … How I put it all together_](https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/) by Herberto Graça.
 
 ### Product vs. Productivity
 
