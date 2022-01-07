@@ -21,6 +21,8 @@ Recommended reads for these include:
 - _Domain-Driven Design: Tackling Complexity in the Heart of Software_ by Eric Evans
 - [_DDD, Hexagonal, Onion, Clean, CQRS, … How I put it all together_](https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/) by Herberto Graça
 
+For an operational perspective, reviewers may want to ground themselves in the practice of [Site Reliability Engineering](https://sre.google/books/).
+
 ### Product vs. Productivity
 
 - The lenses that you can view a code base.
