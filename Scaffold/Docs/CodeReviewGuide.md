@@ -21,7 +21,7 @@ Recommended reads for these include:
 - _Domain-Driven Design: Tackling Complexity in the Heart of Software_ by Eric Evans
 - [_DDD, Hexagonal, Onion, Clean, CQRS, … How I put it all together_](https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/) by Herberto Graça
 
-For an operational perspective, reviewers may also want to ground themselves in the practice of [Site Reliability Engineering](https://sre.google/books/).
+For an operational perspective, reviewers may also want to ground themselves in the practices in [Site Reliability Engineering](https://sre.google/books/).
 
 ### Product vs. Productivity
 
@@ -38,41 +38,24 @@ How this guide is organised.
 - Reliability Engineer / Error Budgets
 - SRE Post Mortems
 
-## The Basics
+## The Review
 
-- Does it build?
-- Does it run?
-- Do the tests pass?
-- Is the code formatted?
-- Is the code readable?
-- Are there warnings and errors?
-- Consistent use of language in bounded-context
-- Packages are updated
+### Analysis
 
-## Deterministic Builds
-
-- IaC
-- Secrets
-- Configuration
-- How easy is it to deploy from nothing?
-- What prereqs. infrastructure are required to deploy?
-- Is deployment easily repeatable?
-- How many ambient Environment variables are there?
-- How easy is it to tear down?
-- How many environments are there? Are they ephemeral?
-
-## Requirements
+#### Requirements
 
 - Actually does what it says on the box
 - Is there any technical debt?
 - Are there any feature switches and how do you turn them on?
 - Is the change/feature easy to remove? Is it decoupled?
 
-## Error Handling
+### Design
+
+#### Error Handling
 
 - Custom exceptions inherit the correct base class
 
-## Architecture and Patterns
+#### Architecture and Patterns
 
 - Is the Architecture of the application clear and documented
 - How are cross cutting concerns addressed by the application architecture
@@ -88,7 +71,7 @@ How this guide is organised.
 - SOLID
 - Composition over inheritance where appropriate
 
-## Adapters
+#### Adapters
 
 - No business logic in Driving Adapters
 - Driven Adapters implement an interface defined in the application layer
@@ -97,20 +80,29 @@ How this guide is organised.
 - Are driving adapters part of the application or an external service?
 - Are they deployable with the application?
 
-## Observability
+### Build
 
-- Command/Query Handlers are emitting events
-- New trace activity is created in Command/Query Handlers
-- Not over logging
-- Use High Performance Logging
+#### Deterministic Builds
 
-## Security and Privacy
+- IaC
+- Secrets
+- Configuration
+- How easy is it to deploy from nothing?
+- What prereqs. infrastructure are required to deploy?
+- Is deployment easily repeatable?
+- How many ambient Environment variables are there?
+- How easy is it to tear down?
+- How many environments are there? Are they ephemeral?
 
-- No PII is logged
-- Careful use of deserialization
-- Common OWASP issues
+#### Database Migrations
 
-## Testing
+- Is a column being renamed? This might drop data?
+- Has the migration script been tested?
+- Is there any database provider specific code?
+- Is there any manual SQL in the migration script?
+- Are there backup and restore scripts
+
+### Test
 
 - Test Structure
 - Test Data Management
@@ -120,19 +112,39 @@ How this guide is organised.
 - Mutation Coverage
 - Clear Arrange, Act and Assert
 
-## Documentation
+### Operation
+
+#### Security and Privacy
+
+- No PII is logged
+- Careful use of deserialization
+- Common OWASP issues
+
+#### Documentation
 
 - Is documentation required?
 - Is documentation updated?
 - Comments in code required?
 
-## Database Migrations
+#### Observability
 
-- Is a column being renamed? This might drop data?
-- Has the migration script been tested?
-- Is there any database provider specific code?
-- Is there any manual SQL in the migration script?
-- Are there backup and restore scripts
+- Command/Query Handlers are emitting events
+- New trace activity is created in Command/Query Handlers
+- Not over logging
+- Use High Performance Logging
+
+-------------
+
+## The Basics
+
+- Does it build?
+- Does it run?
+- Do the tests pass?
+- Is the code formatted?
+- Is the code readable?
+- Are there warnings and errors?
+- Consistent use of language in bounded-context
+- Packages are updated
 
 ## Developer Experience
 
