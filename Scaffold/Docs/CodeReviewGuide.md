@@ -27,9 +27,9 @@ For an operational perspective, reviewers may also want to ground themselves in 
 
 There are generally two perspectives that reviewers come from when reviewing a code base. These have been called out here to ensure that they are given attention.
 
-The User Experience - The code related to the actual product or features that will be shipped to the end user.
+The User Experience - The code related to the actual product or features that will be shipped to the end user. Directly impact and are most visible to the end user.
 
-The Developer Experience - The code related to how the product or features are built and shipped to the end user or customer.
+The Developer Experience - The code related to how the product or features are built and shipped to the end user or customer. Indirectly impacts the user and are invisible.
 
 Code as the Product
 
