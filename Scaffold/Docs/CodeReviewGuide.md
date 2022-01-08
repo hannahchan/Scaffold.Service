@@ -6,7 +6,7 @@ The code review process is often conducted by the developers of a code base. It 
 
 ## How to Use
 
-The purpose of the code review guide is to help bring transparency and consistency to how code is reviewed. Reviewers are expected to use this guide in combination with their experience and context to surface issues. The code review guide is not a check list.
+The purpose of the code review guide is to help bring transparency and consistency to how code is reviewed. Reviewers are expected to use this guide in combination with their experience and context to surface issues. The code review guide is not intended to be used like a check list.
 
 ### Living Document
 
@@ -143,7 +143,7 @@ How this guide is organised.
 - Not over logging
 - Use High Performance Logging
 
--------------
+---
 
 ## The Basics
 
