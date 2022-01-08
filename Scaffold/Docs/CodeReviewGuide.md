@@ -29,15 +29,13 @@ There are generally two perspectives that reviewers come from when reviewing a c
 
 - **The User Experience**
 
-  The code related to the actual product or features that will be shipped to the end user. These directly impact and are the most visible to the end user.
+  The code related to the actual product or features being built and delivered. These directly impact and are the most visible to the end user.
 
 - **The Developer Experience**
 
-  The code related to how the product or features are built and shipped to the end user. Indirectly impacts the user and are invisible.
+  The code related to how the product or features are built and delivered. These directly impact the productivity of the developers working in the code base.
 
-Code as the Product
-
-Deploy, Operate and Scale development
+Focusing on the developer experience is particularly important if you want to scale the number of developers working in or across code bases. Can you ship the code base as the product?
 
 ### Outputs
 
