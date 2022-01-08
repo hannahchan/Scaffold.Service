@@ -23,9 +23,17 @@ Recommended reads for these include:
 
 For an operational perspective, reviewers may also want to ground themselves in the practices in [Site Reliability Engineering](https://sre.google/books/).
 
-### Product vs. Productivity
+### Perspectives
 
-- The lenses that you can view a code base.
+There are generally two perspectives that reviewers come from when reviewing a code base. These have been called out here to ensure that they are given attention.
+
+The User Experience - The code related to the actual product or features that will be shipped to the end user.
+
+The Developer Experience - The code related to how the product or features are built and shipped to the end user or customer.
+
+Code as the Product
+
+Deploy, Operate and Scale development
 
 ### Outputs
 
