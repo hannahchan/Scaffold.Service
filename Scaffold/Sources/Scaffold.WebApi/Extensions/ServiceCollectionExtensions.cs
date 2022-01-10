@@ -108,10 +108,10 @@ internal static class ServiceCollectionExtensions
     public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration config)
     {
         services.AddDbContext<BucketContext>(builder =>
-            builder.UseNpgsql(config.GetValue<string>("ConnectionStrings:DefaultConnection")));
+            builder.UseNpgsql(config.GetConnectionString("DefaultConnection")));
 
         services.AddDbContext<BucketContext.ReadOnly>(builder =>
-            builder.UseNpgsql(config.GetValue<string>("ConnectionStrings:ReadOnlyConnection")));
+            builder.UseNpgsql(config.GetConnectionString("ReadOnlyConnection")));
 
         services
             .AddScoped<IBucketReadRepository, ScopedBucketReadRepository>()
