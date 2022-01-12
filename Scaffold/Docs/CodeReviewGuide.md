@@ -163,6 +163,8 @@ How this guide is organised.
 - Correct use of IDisposable
 - High Performance Logging
 - Correct use of access modifiers
+- Catching Exceptions in Tasks
+- Dependency Injection - Correct Lifetimes used e.g. DbContext vs. DbContextFactory
 
 ## Possible Structures
 
