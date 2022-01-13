@@ -165,6 +165,7 @@ How this guide is organised.
 - Correct use of access modifiers
 - Catching Exceptions in Tasks
 - Dependency Injection - Correct Lifetimes used e.g. DbContext vs. DbContextFactory
+- Check Controller method names make sense in Swagger Documentation
 
 ## Possible Structures
 
