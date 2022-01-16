@@ -7,49 +7,44 @@ using System.Linq.Expressions;
 
 public abstract class Specification<T> : ISpecification<T>
 {
-    private readonly Expression<Func<T, bool>> expression;
-
     private readonly Func<T, bool> function;
 
     protected Specification(Expression<Func<T, bool>> expression)
     {
-        this.expression = expression;
+        this.Expression = expression;
         this.function = expression.Compile();
     }
 
     protected Specification(IEnumerable<Specification<T>> specifications, string? parameterName = null)
     {
-        ParameterExpression parameter = Expression.Parameter(typeof(T), parameterName);
+        ParameterExpression parameter = System.Linq.Expressions.Expression.Parameter(typeof(T), parameterName);
 
         if (specifications.Any())
         {
             ReplaceParameterVisitor visitor = new ReplaceParameterVisitor(parameter);
 
             Queue<Expression> expressionBodies = new Queue<Expression>(specifications
-                .Select(specification => visitor.Visit(specification.GetExpression().Body))
+                .Select(specification => visitor.Visit(specification.Expression.Body))
                 .ToList());
 
             Expression expressionBody = expressionBodies.Dequeue();
 
             while (expressionBodies.Count > 0)
             {
-                expressionBody = Expression.AndAlso(expressionBody, expressionBodies.Dequeue());
+                expressionBody = System.Linq.Expressions.Expression.AndAlso(expressionBody, expressionBodies.Dequeue());
             }
 
-            this.expression = Expression.Lambda<Func<T, bool>>(expressionBody, parameter);
+            this.Expression = System.Linq.Expressions.Expression.Lambda<Func<T, bool>>(expressionBody, parameter);
         }
         else
         {
-            this.expression = Expression.Lambda<Func<T, bool>>(Expression.Constant(false), parameter);
+            this.Expression = System.Linq.Expressions.Expression.Lambda<Func<T, bool>>(System.Linq.Expressions.Expression.Constant(false), parameter);
         }
 
-        this.function = this.expression.Compile();
+        this.function = this.Expression.Compile();
     }
 
-    public Expression<Func<T, bool>> GetExpression()
-    {
-        return this.expression;
-    }
+    public Expression<Func<T, bool>> Expression { get; }
 
     public bool IsSatisfiedBy(T obj)
     {

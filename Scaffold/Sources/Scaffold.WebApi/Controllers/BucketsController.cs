@@ -58,7 +58,7 @@ public class BucketsController : ControllerBase
     public async Task<IEnumerable<Bucket>> GetBuckets([FromQuery] GetBucketsRequestQuery requestQuery)
     {
         GetBuckets.Query query = new GetBuckets.Query(
-            Predicate: new BucketSpecification.All().GetExpression(),
+            Predicate: new BucketSpecification.All().Expression,
             Limit: requestQuery.Limit,
             Offset: requestQuery.Offset,
             SortOrder: null);

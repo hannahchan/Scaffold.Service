@@ -80,7 +80,7 @@ public class SpecificationUnitTests
     public void When_UsingSpecification_Expect_WorkingSpecification(Specification<Person> specification, Person person, string expectedExpression, bool expectSatisfiedByPerson)
     {
         // Act and Assert
-        Assert.Equal(expectedExpression, specification.GetExpression().ToString());
+        Assert.Equal(expectedExpression, specification.Expression.ToString());
 
         if (expectSatisfiedByPerson)
         {
