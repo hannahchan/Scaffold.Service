@@ -6,6 +6,14 @@ using Scaffold.Domain.Base;
 
 public static class BucketSpecification
 {
+    public class All : Specification<Bucket>
+    {
+        public All()
+            : base(bucket => true)
+        {
+        }
+    }
+
     public class Full : Specification<Bucket>
     {
         public Full()

@@ -10,6 +10,9 @@ public class BucketSpecificationUnitTests
     public static readonly TheoryData<Specification<Bucket>, Bucket, bool> TestSpecifications =
         new TheoryData<Specification<Bucket>, Bucket, bool>
         {
+            // All Specification
+            { new BucketSpecification.All(), CreateTestBucket(), true },
+
             // Full Specification
             { new BucketSpecification.Full(), CreateTestBucket(maxCapacity: 5, numberOfItems: 5), true },
             { new BucketSpecification.Full(), CreateTestBucket(maxCapacity: 5, numberOfItems: 3), false },
@@ -66,7 +69,7 @@ public class BucketSpecificationUnitTests
         }
     }
 
-    private static Bucket CreateTestBucket(int maxCapacity, int numberOfItems = 0)
+    private static Bucket CreateTestBucket(int maxCapacity = 0, int numberOfItems = 0)
     {
         Bucket bucket = new Bucket { Size = maxCapacity };
 

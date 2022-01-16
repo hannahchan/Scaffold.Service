@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Scaffold.Application.Components.Bucket;
+using Scaffold.Domain.Specifications;
 using Scaffold.WebApi.Models.Bucket;
 using Scaffold.WebApi.Models.Item;
 
@@ -57,7 +58,7 @@ public class BucketsController : ControllerBase
     public async Task<IEnumerable<Bucket>> GetBuckets([FromQuery] GetBucketsRequestQuery requestQuery)
     {
         GetBuckets.Query query = new GetBuckets.Query(
-            Predicate: bucket => true,
+            Predicate: new BucketSpecification.All().GetExpression(),
             Limit: requestQuery.Limit,
             Offset: requestQuery.Offset,
             SortOrder: null);
