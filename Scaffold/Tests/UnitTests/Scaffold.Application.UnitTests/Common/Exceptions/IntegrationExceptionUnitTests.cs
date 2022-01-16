@@ -70,6 +70,7 @@ public class IntegrationExceptionUnitTests
         // Assert
         Assert.NotEqual(exception, result);
         Assert.Equal(exception.Message, result.Message);
+        Assert.Equal(exception.Status, result.Status);
 
         Assert.NotEqual(exception.InnerException, result.InnerException);
         Assert.Equal(exception.InnerException.Message, result.InnerException.Message);

@@ -71,11 +71,6 @@ public class Bucket
 
     public void RemoveItem(Item item)
     {
-        if (!this.items.Contains(item))
-        {
-            return;
-        }
-
         this.items.Remove(item);
     }
 }

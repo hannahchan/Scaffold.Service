@@ -53,10 +53,10 @@ public class BucketSpecificationUnitTests
 
     [Theory]
     [MemberData(nameof(TestSpecifications))]
-    public void When_UsingSpecification_Expect_WorkingSpecification(Specification<Bucket> specification, Bucket bucket, bool isSatisfiedByBucket)
+    public void When_UsingSpecification_Expect_WorkingSpecification(Specification<Bucket> specification, Bucket bucket, bool expectSatisfiedByBucket)
     {
         // Act and Assert
-        if (isSatisfiedByBucket)
+        if (expectSatisfiedByBucket)
         {
             Assert.True(specification.IsSatisfiedBy(bucket));
         }

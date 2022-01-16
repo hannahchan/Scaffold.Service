@@ -241,7 +241,7 @@ public static class BucketUnitTests
 
             // Assert
             Assert.IsType<InvalidSizeException>(exception);
-            Assert.NotEmpty(exception.Message);
+            Assert.Equal("Size cannot be set to a negative number.", exception.Message);
         }
 
         [Fact]
@@ -256,7 +256,7 @@ public static class BucketUnitTests
 
             // Assert
             Assert.IsType<InvalidSizeException>(exception);
-            Assert.NotEmpty(exception.Message);
+            Assert.Equal("Size cannot be set less than the number of items already in the bucket.", exception.Message);
         }
     }
 }

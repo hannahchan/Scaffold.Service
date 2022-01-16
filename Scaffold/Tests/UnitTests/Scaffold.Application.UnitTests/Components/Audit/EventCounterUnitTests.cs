@@ -3,6 +3,7 @@ namespace Scaffold.Application.UnitTests.Components.Audit;
 using System;
 using System.Threading.Tasks;
 using MediatR;
+using Prometheus;
 using Scaffold.Application.Common.Messaging;
 using Scaffold.Application.Components.Audit;
 using Xunit;
@@ -23,6 +24,11 @@ public class EventCounterUnitTests
 
             // Assert
             Assert.Null(exception);
+
+            Counter counter = EventCounterAccessor.GetCounter();
+            Assert.Equal("application_events_total", counter.Name);
+            Assert.Equal("Total number of events that have been published to the in-process event bus", counter.Help);
+            Assert.Equal(1, counter.Labels("MyType").Value);
         }
 
         [Fact]
@@ -37,10 +43,20 @@ public class EventCounterUnitTests
 
             // Assert
             Assert.Null(exception);
+
+            Counter counter = EventCounterAccessor.GetCounter();
+            Assert.Equal("application_events_total", counter.Name);
+            Assert.Equal("Total number of events that have been published to the in-process event bus", counter.Help);
+            Assert.Equal(1, counter.Labels(nameof(GenericEvent)).Value);
         }
     }
 
     private record AuditableEvent(DateTime Timestamp, string TraceId, Type Source, string Type, string Description) : IAuditableEvent, INotification;
 
     private record GenericEvent() : INotification;
+
+    private class EventCounterAccessor : EventCounterBase
+    {
+        public static Counter GetCounter() => EventCounter;
+    }
 }

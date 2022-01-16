@@ -33,7 +33,7 @@ Task("Audit")
 
         DeleteDirectories(GetDirectories(auditArtifacts), deleteSettings);
 
-        DotNetCoreTool("CycloneDX", new DotNetCoreToolSettings
+        DotNetTool("CycloneDX", new DotNetToolSettings
         {
             ArgumentCustomization = args => args
                 .Append(solution)
@@ -46,7 +46,7 @@ Task("Clean")
     .Description("Executes 'dotnet clean'.")
     .Does(() =>
     {
-        DotNetCoreClean(solution, new DotNetCoreCleanSettings
+        DotNetClean(solution, new DotNetCleanSettings
         {
             Configuration = configuration
         });
@@ -56,7 +56,7 @@ Task("Restore")
     .Description("Executes 'dotnet restore'.")
     .Does(() =>
     {
-        DotNetCoreRestore(solution);
+        DotNetRestore(solution);
     });
 
 Task("Build")
@@ -65,7 +65,7 @@ Task("Build")
     .IsDependentOn("Restore")
     .Does(() =>
     {
-        DotNetCoreBuild(solution, new DotNetCoreBuildSettings
+        DotNetBuild(solution, new DotNetBuildSettings
         {
             Configuration = configuration,
             NoRestore = true
@@ -85,7 +85,7 @@ Task("Test")
 
         DeleteDirectories(GetDirectories("./Tests/**/TestResults"), deleteSettings);
 
-        DotNetCoreTestSettings testSettings = new DotNetCoreTestSettings
+        DotNetTestSettings testSettings = new DotNetTestSettings
         {
             ArgumentCustomization = args => args
                 .Append("--collect:\"XPlat Code Coverage\"")
@@ -96,7 +96,7 @@ Task("Test")
             NoBuild = true
         };
 
-        DotNetCoreTest(solution, testSettings);
+        DotNetTest(solution, testSettings);
 
         string coverageHistory = $"{testArtifacts}/CoverageHistory";
         string coverageReports = $"{testArtifacts}/CoverageReports";
@@ -105,7 +105,7 @@ Task("Test")
         DeleteDirectories(GetDirectories(coverageReports), deleteSettings);
 
         // Coverage Report - Combined (Integration + Unit) Tests
-        DotNetCoreTool("reportgenerator", new DotNetCoreToolSettings
+        DotNetTool("reportgenerator", new DotNetToolSettings
         {
             ArgumentCustomization = args => args
                 .Append($"-reports:\"./Tests/**/TestResults/*/coverage.cobertura.xml\"")
@@ -117,7 +117,7 @@ Task("Test")
         });
 
         // Coverage Report - Integration Tests
-        DotNetCoreTool("reportgenerator", new DotNetCoreToolSettings
+        DotNetTool("reportgenerator", new DotNetToolSettings
         {
             ArgumentCustomization = args => args
                 .Append($"-reports:\"./Tests/IntegrationTests/**/TestResults/*/coverage.cobertura.xml\"")
@@ -129,7 +129,7 @@ Task("Test")
         });
 
         // Coverage Report - Unit Tests
-        DotNetCoreTool("reportgenerator", new DotNetCoreToolSettings
+        DotNetTool("reportgenerator", new DotNetToolSettings
         {
             ArgumentCustomization = args => args
                 .Append($"-reports:\"./Tests/UnitTests/**/TestResults/*/coverage.cobertura.xml\"")
@@ -154,14 +154,14 @@ Task("Publish")
 
         DeleteDirectories(GetDirectories($"{buildArtifacts}"), deleteSettings);
 
-        DotNetCorePublishSettings settings = new DotNetCorePublishSettings
+        DotNetPublishSettings settings = new DotNetPublishSettings
         {
             Configuration = configuration,
             NoBuild = true,
             OutputDirectory = $"{buildArtifacts}/Scaffold.WebApi"
         };
 
-        DotNetCorePublish("./Sources/Scaffold.WebApi", settings);
+        DotNetPublish("./Sources/Scaffold.WebApi", settings);
     });
 
 Task("Containerize")
