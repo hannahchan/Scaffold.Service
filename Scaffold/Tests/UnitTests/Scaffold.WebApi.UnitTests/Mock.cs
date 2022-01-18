@@ -139,6 +139,8 @@ public static class Mock
     {
         private object response;
 
+        public List<ReceivedRequest> ReceivedRequests { get; } = new List<ReceivedRequest>();
+
         public void SetResponse(object response)
         {
             this.response = response;
@@ -146,12 +148,16 @@ public static class Mock
 
         public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
         {
+            this.ReceivedRequests.Add(new ReceivedRequest(request, cancellationToken));
             return Task.FromResult((TResponse)this.response);
         }
 
         public Task<object> Send(object request, CancellationToken cancellationToken = default)
         {
+            this.ReceivedRequests.Add(new ReceivedRequest(request, cancellationToken));
             return Task.FromResult(this.response);
         }
+
+        public record ReceivedRequest(object Request, CancellationToken CancellationToken);
     }
 }

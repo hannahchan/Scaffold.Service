@@ -329,7 +329,7 @@ public class ChangeTrackingTimestampExtensionsUnitTests
             // Arrange
             using TestContext context = new TestContext(this.dbContextOptions);
 
-            context.ModelsWithAllTimestamps.Add(new Mock.ModelWithAllTimestamps());
+            context.ModelsWithAllTimestamps.Add(new Mock.ModelWithAllTimestamps() { LastModifiedAt = new DateTime(2022, 1, 18) });
             context.ModelsWithNoTimestamps.Add(new Mock.ModelWithNoTimestamps());
             context.ModelsWithNonNullableTimestamps.Add(new Mock.ModelWithNonNullableTimestamps());
 
@@ -590,7 +590,7 @@ public class ChangeTrackingTimestampExtensionsUnitTests
                 {
                     Assert.NotEqual(default, model.Id);
                     Assert.Equal(createdTimestamp, model.CreatedAt);
-                    Assert.Equal(deletedTimestamp, model.LastModifiedAt);
+                    Assert.Equal(createdTimestamp, model.LastModifiedAt);
                     Assert.Equal(deletedTimestamp, model.DeletedAt);
                 });
 

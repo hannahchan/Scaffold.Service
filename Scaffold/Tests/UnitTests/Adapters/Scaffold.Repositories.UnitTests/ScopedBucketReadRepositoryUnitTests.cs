@@ -36,6 +36,39 @@ public class ScopedBucketReadRepositoryUnitTests
             .Options;
     }
 
+    public class Constructor : ScopedBucketReadRepositoryUnitTests
+    {
+        [Fact]
+        public void When_InitializingProtectedConstructor_Expect_BucketContextNotNull()
+        {
+            // Arrange
+            DbContextOptions<BucketContext> dbContextOptions = new DbContextOptionsBuilder<BucketContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+
+            BucketContext context = new BucketContext(dbContextOptions);
+
+            Bucket bucket = new Bucket();
+
+            context.Buckets.Add(bucket);
+            context.SaveChanges();
+
+            // Act
+            TestRepository repository = new TestRepository(context);
+
+            // Assert
+            Assert.NotNull(repository.Get(bucket.Id));
+        }
+
+        private class TestRepository : ScopedBucketReadRepository
+        {
+            public TestRepository(BucketContext context)
+                : base(context)
+            {
+            }
+        }
+    }
+
     public class GetWithId : ScopedBucketReadRepositoryUnitTests
     {
         [Fact]

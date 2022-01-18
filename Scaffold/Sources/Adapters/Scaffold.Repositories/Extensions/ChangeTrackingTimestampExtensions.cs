@@ -151,21 +151,6 @@ internal static class ChangeTrackingTimestampExtensions
         {
             entry.Property(PropertyName.DeletedAt).CurrentValue = timestamp;
             entry.State = EntityState.Modified;
-
-            IProperty? lastModifiedAt = entry.Metadata.FindProperty(PropertyName.LastModifiedAt);
-
-            if (lastModifiedAt != null)
-            {
-                if (lastModifiedAt.ClrType == typeof(DateTime))
-                {
-                    entry.Property(PropertyName.LastModifiedAt).CurrentValue = timestamp;
-                }
-
-                if (lastModifiedAt.ClrType == typeof(DateTime?))
-                {
-                    entry.Property(PropertyName.LastModifiedAt).CurrentValue = null;
-                }
-            }
         }
 
         return changeTracker;

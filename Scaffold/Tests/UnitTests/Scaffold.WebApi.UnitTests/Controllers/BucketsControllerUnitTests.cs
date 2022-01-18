@@ -134,6 +134,10 @@ public class BucketsControllerUnitTests
 
             // Assert
             Assert.IsType<NoContentResult>(result);
+
+            Assert.Collection(
+                this.sender.ReceivedRequests,
+                receivedRequest => Assert.IsType<RemoveBucket.Command>(receivedRequest.Request));
         }
     }
 
@@ -241,6 +245,10 @@ public class BucketsControllerUnitTests
 
             // Assert
             Assert.IsType<NoContentResult>(result);
+
+            Assert.Collection(
+                this.sender.ReceivedRequests,
+                receivedRequest => Assert.IsType<RemoveItem.Command>(receivedRequest.Request));
         }
     }
 }

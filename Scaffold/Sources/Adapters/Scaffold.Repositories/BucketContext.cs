@@ -22,22 +22,10 @@ public class BucketContext : DbContext
 
     public DbSet<Bucket> Buckets => this.Set<Bucket>();
 
-    public override int SaveChanges(bool acceptAllChangesOnSuccess)
-    {
-        this.ChangeTracker.UpdateChangeTrackingTimestamps(DateTime.UtcNow);
-        return base.SaveChanges(acceptAllChangesOnSuccess);
-    }
-
     public override int SaveChanges()
     {
         this.ChangeTracker.UpdateChangeTrackingTimestamps(DateTime.UtcNow);
         return base.SaveChanges();
-    }
-
-    public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-    {
-        this.ChangeTracker.UpdateChangeTrackingTimestamps(DateTime.UtcNow);
-        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

@@ -21,10 +21,15 @@ public class RequestLoggingMiddlewareUnitTests
     public async Task When_InvokingMiddlewareWithStatusCode_Expect_LogLevel(int statusCode, LogLevel expectedLogLevel)
     {
         // Arrange
+        bool requestDelegateInvoked = false;
         Mock.Logger<RequestLoggingMiddleware> logger = new Mock.Logger<RequestLoggingMiddleware>();
 
         RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
-            (httpContext) => Task.CompletedTask,
+            (httpContext) =>
+            {
+                requestDelegateInvoked = true;
+                return Task.CompletedTask;
+            },
             logger,
             Options.Create(new RequestLoggingMiddleware.Options()));
 
@@ -47,6 +52,8 @@ public class RequestLoggingMiddlewareUnitTests
                 Assert.Equal(expectedLogLevel, logEntry.LogLevel);
                 Assert.Equal($"Inbound HTTP   finished - {statusCode}", logEntry.Message);
             });
+
+        Assert.True(requestDelegateInvoked);
     }
 
     [Theory]
@@ -57,6 +64,7 @@ public class RequestLoggingMiddlewareUnitTests
     public async Task When_InvokingMiddlewareWithPathAndIgnorePattern_Expect_Logged(string path, string ignorePattern, bool logged)
     {
         // Arrange
+        bool requestDelegateInvoked = false;
         Mock.Logger<RequestLoggingMiddleware> logger = new Mock.Logger<RequestLoggingMiddleware>();
 
         RequestLoggingMiddleware.Options options = new RequestLoggingMiddleware.Options
@@ -65,7 +73,11 @@ public class RequestLoggingMiddlewareUnitTests
         };
 
         RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
-            (httpContext) => Task.CompletedTask,
+            (httpContext) =>
+            {
+                requestDelegateInvoked = true;
+                return Task.CompletedTask;
+            },
             logger,
             Options.Create(options));
 
@@ -84,6 +96,8 @@ public class RequestLoggingMiddlewareUnitTests
         {
             Assert.Empty(logger.LogEntries);
         }
+
+        Assert.True(requestDelegateInvoked);
     }
 
     [Fact]
@@ -91,10 +105,15 @@ public class RequestLoggingMiddlewareUnitTests
     {
         // Arrange
         Exception exception = new Exception("Unit Test");
+        bool requestDelegateInvoked = false;
         Mock.Logger<RequestLoggingMiddleware> logger = new Mock.Logger<RequestLoggingMiddleware>();
 
         RequestLoggingMiddleware middleware = new RequestLoggingMiddleware(
-            (httpContext) => throw exception,
+            (httpContext) =>
+            {
+                requestDelegateInvoked = true;
+                throw exception;
+            },
             logger,
             Options.Create(new RequestLoggingMiddleware.Options()));
 
@@ -119,6 +138,7 @@ public class RequestLoggingMiddlewareUnitTests
 
         Assert.NotNull(result);
         Assert.Equal(exception, result);
+        Assert.True(requestDelegateInvoked);
     }
 
     [Fact]

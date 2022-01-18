@@ -2,6 +2,7 @@ namespace Scaffold.WebApi.UnitTests.Controllers;
 
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -135,7 +136,13 @@ public class TracingDemoControllerUnitTests
 
             // Assert
             ObjectResult objectResult = Assert.IsType<ObjectResult>(result.Result);
-            Assert.IsType<ProblemDetails>(objectResult.Value);
+
+            ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
+
+            Assert.Equal("https://tools.ietf.org/html/rfc7231#section-6.6.4", problemDetails.Type);
+            Assert.Equal("Service Unavailable", problemDetails.Title);
+            Assert.Equal("This is intended 80% of the time. Please try again.", problemDetails.Detail);
+            Assert.Equal((int)HttpStatusCode.ServiceUnavailable, problemDetails.Status);
 
             Assert.Null(result.Value);
         }
