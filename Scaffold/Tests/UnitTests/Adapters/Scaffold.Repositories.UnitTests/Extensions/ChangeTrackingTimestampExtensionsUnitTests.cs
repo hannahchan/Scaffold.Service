@@ -329,7 +329,7 @@ public class ChangeTrackingTimestampExtensionsUnitTests
             // Arrange
             using TestContext context = new TestContext(this.dbContextOptions);
 
-            context.ModelsWithAllTimestamps.Add(new Mock.ModelWithAllTimestamps() { LastModifiedAt = new DateTime(2022, 1, 18) });
+            context.ModelsWithAllTimestamps.Add(new Mock.ModelWithAllTimestamps() { LastModifiedAt = DateTime.Now });
             context.ModelsWithNoTimestamps.Add(new Mock.ModelWithNoTimestamps());
             context.ModelsWithNonNullableTimestamps.Add(new Mock.ModelWithNonNullableTimestamps());
 
