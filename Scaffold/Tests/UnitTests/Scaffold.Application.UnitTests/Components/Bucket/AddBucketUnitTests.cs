@@ -4,33 +4,20 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Scaffold.Application.Common.Messaging;
 using Scaffold.Application.Components.Bucket;
 using Scaffold.Domain.Base;
-using Scaffold.Repositories;
 using Xunit;
 
 public class AddBucketUnitTests
 {
-    private readonly IBucketRepository repository;
-
-    private readonly Mock.Publisher publisher;
-
-    public AddBucketUnitTests()
-    {
-        BucketContext context = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString())
-            .Options);
-
-        this.repository = new ScopedBucketRepository(context);
-        this.publisher = new Mock.Publisher();
-    }
+    private readonly Mock.Publisher publisher = new Mock.Publisher();
 
     public class Handler : AddBucketUnitTests
     {
-        [Fact]
-        public async Task When_AddingBucket_Expect_AddedBucket()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_AddingBucket_Expect_AddedBucket(IBucketRepository repository)
         {
             // Arrange
             AddBucket.Command command = new AddBucket.Command(
@@ -38,7 +25,7 @@ public class AddBucketUnitTests
                 Description: null,
                 Size: null);
 
-            AddBucket.Handler handler = new AddBucket.Handler(this.repository, this.publisher);
+            AddBucket.Handler handler = new AddBucket.Handler(repository, this.publisher);
 
             // Act
             AddBucket.Response response = await handler.Handle(command, default);
@@ -60,8 +47,9 @@ public class AddBucketUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_AddingBucketResultingInDomainConflict_Expect_DomainException()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_AddingBucketResultingInDomainConflict_Expect_DomainException(IBucketRepository repository)
         {
             // Arrange
             AddBucket.Command command = new AddBucket.Command(
@@ -69,7 +57,7 @@ public class AddBucketUnitTests
                 Description: Guid.NewGuid().ToString(),
                 Size: -1);
 
-            AddBucket.Handler handler = new AddBucket.Handler(this.repository, this.publisher);
+            AddBucket.Handler handler = new AddBucket.Handler(repository, this.publisher);
 
             // Act
             Exception exception = await Record.ExceptionAsync(() =>

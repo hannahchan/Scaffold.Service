@@ -4,34 +4,21 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Scaffold.Application.Common.Messaging;
 using Scaffold.Application.Components.Bucket;
 using Scaffold.Domain.Aggregates.Bucket;
 using Scaffold.Domain.Base;
-using Scaffold.Repositories;
 using Xunit;
 
 public class UpdateBucketUnitTests
 {
-    private readonly IBucketRepository repository;
-
-    private readonly Mock.Publisher publisher;
-
-    public UpdateBucketUnitTests()
-    {
-        BucketContext context = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString())
-            .Options);
-
-        this.repository = new ScopedBucketRepository(context);
-        this.publisher = new Mock.Publisher();
-    }
+    private readonly Mock.Publisher publisher = new Mock.Publisher();
 
     public class Handler : UpdateBucketUnitTests
     {
-        [Fact]
-        public async Task When_UpdatingBucket_Expect_UpdatedBucked()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_UpdatingBucket_Expect_UpdatedBucked(IBucketRepository repository)
         {
             // Arrange
             Bucket bucket = new Bucket
@@ -41,7 +28,7 @@ public class UpdateBucketUnitTests
                 Size = new Random().Next(),
             };
 
-            await this.repository.AddAsync(bucket);
+            repository.Add(bucket);
 
             UpdateBucket.Command command = new UpdateBucket.Command(
                 Id: bucket.Id,
@@ -49,7 +36,7 @@ public class UpdateBucketUnitTests
                 Description: Guid.NewGuid().ToString(),
                 Size: new Random().Next());
 
-            UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository, this.publisher);
+            UpdateBucket.Handler handler = new UpdateBucket.Handler(repository, this.publisher);
 
             // Act
             UpdateBucket.Response response = await handler.Handle(command, default);
@@ -73,8 +60,9 @@ public class UpdateBucketUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_UpdatingNonExistingBucket_Expect_NewBucket()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_UpdatingNonExistingBucket_Expect_NewBucket(IBucketRepository repository)
         {
             // Arrange
             UpdateBucket.Command command = new UpdateBucket.Command(
@@ -83,7 +71,7 @@ public class UpdateBucketUnitTests
                 Description: Guid.NewGuid().ToString(),
                 Size: new Random().Next());
 
-            UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository, this.publisher);
+            UpdateBucket.Handler handler = new UpdateBucket.Handler(repository, this.publisher);
 
             // Act
             UpdateBucket.Response response = await handler.Handle(command, default);
@@ -107,13 +95,14 @@ public class UpdateBucketUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_UpdatingBucketResultingInDomainConflict_Expect_DomainException()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_UpdatingBucketResultingInDomainConflict_Expect_DomainException(IBucketRepository repository)
         {
             // Arrange
             Bucket bucket = new Bucket();
             bucket.AddItem(new Item());
-            await this.repository.AddAsync(bucket);
+            repository.Add(bucket);
 
             UpdateBucket.Command command = new UpdateBucket.Command(
                 Id: bucket.Id,
@@ -121,7 +110,7 @@ public class UpdateBucketUnitTests
                 Description: null,
                 Size: 0);
 
-            UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository, this.publisher);
+            UpdateBucket.Handler handler = new UpdateBucket.Handler(repository, this.publisher);
 
             // Act
             Exception exception = await Record.ExceptionAsync(() =>
@@ -132,8 +121,9 @@ public class UpdateBucketUnitTests
             Assert.Empty(this.publisher.PublishedEvents);
         }
 
-        [Fact]
-        public async Task When_UpdatingNonExistingBucketResultingInDomainConflict_Expect_DomainException()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_UpdatingNonExistingBucketResultingInDomainConflict_Expect_DomainException(IBucketRepository repository)
         {
             // Arrange
             UpdateBucket.Command command = new UpdateBucket.Command(
@@ -142,7 +132,7 @@ public class UpdateBucketUnitTests
                 Description: null,
                 Size: -1);
 
-            UpdateBucket.Handler handler = new UpdateBucket.Handler(this.repository, this.publisher);
+            UpdateBucket.Handler handler = new UpdateBucket.Handler(repository, this.publisher);
 
             // Act
             Exception exception = await Record.ExceptionAsync(() =>

@@ -4,33 +4,20 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Scaffold.Application.Common.Messaging;
 using Scaffold.Application.Components.Bucket;
 using Scaffold.Domain.Aggregates.Bucket;
-using Scaffold.Repositories;
 using Xunit;
 
 public class GetItemsUnitTests
 {
-    private readonly IBucketRepository repository;
-
-    private readonly Mock.Publisher publisher;
-
-    public GetItemsUnitTests()
-    {
-        BucketContext context = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString())
-            .Options);
-
-        this.repository = new ScopedBucketRepository(context);
-        this.publisher = new Mock.Publisher();
-    }
+    private readonly Mock.Publisher publisher = new Mock.Publisher();
 
     public class Handler : GetItemsUnitTests
     {
-        [Fact]
-        public async Task When_GettingItemsFromBucket_Expect_ExistingItems()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_GettingItemsFromBucket_Expect_ExistingItems(IBucketRepository repository)
         {
             // Arrange
             Bucket bucket = new Bucket();
@@ -38,10 +25,10 @@ public class GetItemsUnitTests
             bucket.AddItem(new Item { Name = "Item 2" });
             bucket.AddItem(new Item { Name = "Item 3" });
 
-            await this.repository.AddAsync(bucket);
+            repository.Add(bucket);
 
             GetItems.Query query = new GetItems.Query(bucket.Id);
-            GetItems.Handler handler = new GetItems.Handler(this.repository, this.publisher);
+            GetItems.Handler handler = new GetItems.Handler(repository, this.publisher);
 
             // Act
             GetItems.Response response = await handler.Handle(query, default);
@@ -66,15 +53,16 @@ public class GetItemsUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_GettingNonExistingItemsFromBucket_Expect_Empty()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_GettingNonExistingItemsFromBucket_Expect_Empty(IBucketRepository repository)
         {
             // Arrange
             Bucket bucket = new Bucket();
-            await this.repository.AddAsync(bucket);
+            repository.Add(bucket);
 
             GetItems.Query query = new GetItems.Query(bucket.Id);
-            GetItems.Handler handler = new GetItems.Handler(this.repository, this.publisher);
+            GetItems.Handler handler = new GetItems.Handler(repository, this.publisher);
 
             // Act
             GetItems.Response response = await handler.Handle(query, default);
@@ -96,12 +84,13 @@ public class GetItemsUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_GettingItemsFromNonExistingBucket_Expect_BucketNotFoundException()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_GettingItemsFromNonExistingBucket_Expect_BucketNotFoundException(IBucketRepository repository)
         {
             // Arrange
             GetItems.Query query = new GetItems.Query(new Random().Next());
-            GetItems.Handler handler = new GetItems.Handler(this.repository, this.publisher);
+            GetItems.Handler handler = new GetItems.Handler(repository, this.publisher);
 
             // Act
             Exception exception = await Record.ExceptionAsync(() =>

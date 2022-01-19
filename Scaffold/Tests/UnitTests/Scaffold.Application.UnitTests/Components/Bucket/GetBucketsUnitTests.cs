@@ -1,22 +1,16 @@
 namespace Scaffold.Application.UnitTests.Components.Bucket;
-
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Scaffold.Application.Common.Messaging;
 using Scaffold.Application.Common.Models;
 using Scaffold.Application.Components.Bucket;
 using Scaffold.Domain.Aggregates.Bucket;
-using Scaffold.Repositories;
 using Xunit;
 
 public class GetBucketsUnitTests
 {
-    private readonly IBucketRepository repository;
-
-    private readonly Mock.Publisher publisher;
+    private readonly Mock.Publisher publisher = new Mock.Publisher();
 
     private readonly Bucket[] testBuckets =
     {
@@ -34,23 +28,14 @@ public class GetBucketsUnitTests
         new Bucket { Name = "A", Description = "1", Size = 8 },
     };
 
-    public GetBucketsUnitTests()
-    {
-        BucketContext context = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString())
-            .Options);
-
-        this.repository = new ScopedBucketRepository(context);
-        this.publisher = new Mock.Publisher();
-    }
-
     public class Handler : GetBucketsUnitTests
     {
-        [Fact]
-        public async Task When_GettingBuckets_Expect_AllBuckets()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_GettingBuckets_Expect_AllBuckets(IBucketRepository repository)
         {
             // Arrange
-            await this.repository.AddAsync(new Bucket[]
+            repository.Add(new Bucket[]
             {
                 new Bucket { Name = "Bucket 1" },
                 new Bucket { Name = "Bucket 2" },
@@ -58,7 +43,7 @@ public class GetBucketsUnitTests
             });
 
             GetBuckets.Query query = new GetBuckets.Query(bucket => true);
-            GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
+            GetBuckets.Handler handler = new GetBuckets.Handler(repository, this.publisher);
 
             // Act
             GetBuckets.Response response = await handler.Handle(query, default);
@@ -82,12 +67,13 @@ public class GetBucketsUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_GettingNonExistingBuckets_Expect_Empty()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_GettingNonExistingBuckets_Expect_Empty(IBucketRepository repository)
         {
             // Arrange
             GetBuckets.Query query = new GetBuckets.Query(bucket => true);
-            GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
+            GetBuckets.Handler handler = new GetBuckets.Handler(repository, this.publisher);
 
             // Act
             GetBuckets.Response response = await handler.Handle(query, default);
@@ -107,11 +93,12 @@ public class GetBucketsUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_GettingBucketsWithPredicate_Expect_SomeBuckets()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_GettingBucketsWithPredicate_Expect_SomeBuckets(IBucketRepository repository)
         {
             // Arrange
-            await this.repository.AddAsync(new Bucket[]
+            repository.Add(new Bucket[]
             {
                 new Bucket { Size = 1 },
                 new Bucket { Size = 2 },
@@ -121,7 +108,7 @@ public class GetBucketsUnitTests
             });
 
             GetBuckets.Query query = new GetBuckets.Query(bucket => bucket.Size == 2 || bucket.Size == 5);
-            GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
+            GetBuckets.Handler handler = new GetBuckets.Handler(repository, this.publisher);
 
             // Act
             GetBuckets.Response response = await handler.Handle(query, default);
@@ -144,11 +131,12 @@ public class GetBucketsUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_GettingBucketsWithNoLimitAndNoOffset_Expect_AllBuckets()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_GettingBucketsWithNoLimitAndNoOffset_Expect_AllBuckets(IBucketRepository repository)
         {
             // Arrange
-            await this.repository.AddAsync(new Bucket[]
+            repository.Add(new Bucket[]
             {
                 new Bucket { Name = "Bucket 1" },
                 new Bucket { Name = "Bucket 2" },
@@ -161,7 +149,7 @@ public class GetBucketsUnitTests
                 Offset: null,
                 SortOrder: null);
 
-            GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
+            GetBuckets.Handler handler = new GetBuckets.Handler(repository, this.publisher);
 
             // Act
             GetBuckets.Response response = await handler.Handle(query, default);
@@ -185,11 +173,12 @@ public class GetBucketsUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_GettingBucketsWithLimit_Expect_LimitedBuckets()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_GettingBucketsWithLimit_Expect_LimitedBuckets(IBucketRepository repository)
         {
             // Arrange
-            await this.repository.AddAsync(new Bucket[]
+            repository.Add(new Bucket[]
             {
                 new Bucket { Name = "Bucket 1" },
                 new Bucket { Name = "Bucket 2" },
@@ -202,7 +191,7 @@ public class GetBucketsUnitTests
                 Offset: null,
                 SortOrder: null);
 
-            GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
+            GetBuckets.Handler handler = new GetBuckets.Handler(repository, this.publisher);
 
             // Act
             GetBuckets.Response response = await handler.Handle(query, default);
@@ -225,11 +214,12 @@ public class GetBucketsUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_GettingBucketsWithOffset_Expect_OffsetBuckets()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_GettingBucketsWithOffset_Expect_OffsetBuckets(IBucketRepository repository)
         {
             // Arrange
-            await this.repository.AddAsync(new Bucket[]
+            repository.Add(new Bucket[]
             {
                 new Bucket { Name = "Bucket 1" },
                 new Bucket { Name = "Bucket 2" },
@@ -242,7 +232,7 @@ public class GetBucketsUnitTests
                 Offset: 1,
                 SortOrder: null);
 
-            GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
+            GetBuckets.Handler handler = new GetBuckets.Handler(repository, this.publisher);
 
             // Act
             GetBuckets.Response response = await handler.Handle(query, default);
@@ -265,11 +255,12 @@ public class GetBucketsUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_GettingBucketsWithLimitAndOffset_Expect_LimitedAndOffsetBuckets()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_GettingBucketsWithLimitAndOffset_Expect_LimitedAndOffsetBuckets(IBucketRepository repository)
         {
             // Arrange
-            await this.repository.AddAsync(new Bucket[]
+            repository.Add(new Bucket[]
             {
                 new Bucket { Name = "Bucket 1" },
                 new Bucket { Name = "Bucket 2" },
@@ -282,7 +273,7 @@ public class GetBucketsUnitTests
                 Offset: 1,
                 SortOrder: null);
 
-            GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
+            GetBuckets.Handler handler = new GetBuckets.Handler(repository, this.publisher);
 
             // Act
             GetBuckets.Response response = await handler.Handle(query, default);
@@ -302,11 +293,12 @@ public class GetBucketsUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_GettingBucketsOrderedBySizeAscending_Expect_OrderedBySizeAscending()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_GettingBucketsOrderedBySizeAscending_Expect_OrderedBySizeAscending(IBucketRepository repository)
         {
             // Arrange
-            await this.repository.AddAsync(this.testBuckets);
+            repository.Add(this.testBuckets);
 
             SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                 .OrderBy(bucket => bucket.Size);
@@ -317,7 +309,7 @@ public class GetBucketsUnitTests
                 Offset: null,
                 SortOrder: sortOrder);
 
-            GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
+            GetBuckets.Handler handler = new GetBuckets.Handler(repository, this.publisher);
 
             // Act
             GetBuckets.Response response = await handler.Handle(query, default);
@@ -350,11 +342,12 @@ public class GetBucketsUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_GettingBucketsOrderedBySizeDescending_Expect_OrderedBySizeDescending()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_GettingBucketsOrderedBySizeDescending_Expect_OrderedBySizeDescending(IBucketRepository repository)
         {
             // Arrange
-            await this.repository.AddAsync(this.testBuckets);
+            repository.Add(this.testBuckets);
 
             SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                 .OrderByDescending(bucket => bucket.Size);
@@ -365,7 +358,7 @@ public class GetBucketsUnitTests
                 Offset: null,
                 SortOrder: sortOrder);
 
-            GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
+            GetBuckets.Handler handler = new GetBuckets.Handler(repository, this.publisher);
 
             // Act
             GetBuckets.Response response = await handler.Handle(query, default);
@@ -398,11 +391,12 @@ public class GetBucketsUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_GettingBucketsOrderedBySizeWithLimit_Expect_OrderedLimitedBuckets()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_GettingBucketsOrderedBySizeWithLimit_Expect_OrderedLimitedBuckets(IBucketRepository repository)
         {
             // Arrange
-            await this.repository.AddAsync(this.testBuckets);
+            repository.Add(this.testBuckets);
 
             SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                 .OrderBy(bucket => bucket.Size);
@@ -413,7 +407,7 @@ public class GetBucketsUnitTests
                 Offset: null,
                 SortOrder: sortOrder);
 
-            GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
+            GetBuckets.Handler handler = new GetBuckets.Handler(repository, this.publisher);
 
             // Act
             GetBuckets.Response response = await handler.Handle(query, default);
@@ -440,11 +434,12 @@ public class GetBucketsUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_GettingBucketsOrderedBySizeWithOffset_Expect_OrderedOffsetBuckets()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_GettingBucketsOrderedBySizeWithOffset_Expect_OrderedOffsetBuckets(IBucketRepository repository)
         {
             // Arrange
-            await this.repository.AddAsync(this.testBuckets);
+            repository.Add(this.testBuckets);
 
             SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                 .OrderBy(bucket => bucket.Size);
@@ -455,7 +450,7 @@ public class GetBucketsUnitTests
                 Offset: 6,
                 SortOrder: sortOrder);
 
-            GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
+            GetBuckets.Handler handler = new GetBuckets.Handler(repository, this.publisher);
 
             // Act
             GetBuckets.Response response = await handler.Handle(query, default);
@@ -482,11 +477,12 @@ public class GetBucketsUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_GettingBucketsOrderedBySizeWithLimtAndOffset_Expect_OrderedLimitedAndOffsetBuckets()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_GettingBucketsOrderedBySizeWithLimtAndOffset_Expect_OrderedLimitedAndOffsetBuckets(IBucketRepository repository)
         {
             // Arrange
-            await this.repository.AddAsync(this.testBuckets);
+            repository.Add(this.testBuckets);
 
             SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                 .OrderBy(bucket => bucket.Size);
@@ -497,7 +493,7 @@ public class GetBucketsUnitTests
                 Offset: 3,
                 SortOrder: sortOrder);
 
-            GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
+            GetBuckets.Handler handler = new GetBuckets.Handler(repository, this.publisher);
 
             // Act
             GetBuckets.Response response = await handler.Handle(query, default);
@@ -524,11 +520,12 @@ public class GetBucketsUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_GettingBucketsOrderedByNameAscendingThenByDescriptionAscending_Expect_OrderedByNameAscendingThenByDescriptionAscending()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_GettingBucketsOrderedByNameAscendingThenByDescriptionAscending_Expect_OrderedByNameAscendingThenByDescriptionAscending(IBucketRepository repository)
         {
             // Arrange
-            await this.repository.AddAsync(this.testBuckets);
+            repository.Add(this.testBuckets);
 
             SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                 .OrderBy(bucket => bucket.Name)
@@ -540,7 +537,7 @@ public class GetBucketsUnitTests
                 Offset: null,
                 SortOrder: sortOrder);
 
-            GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
+            GetBuckets.Handler handler = new GetBuckets.Handler(repository, this.publisher);
 
             // Act
             GetBuckets.Response response = await handler.Handle(query, default);
@@ -621,11 +618,12 @@ public class GetBucketsUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_GettingBucketsOrderedByNameDescendingThenByDescriptionDescending_Expect_OrderedByNameDescendingThenByDescriptionDescending()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_GettingBucketsOrderedByNameDescendingThenByDescriptionDescending_Expect_OrderedByNameDescendingThenByDescriptionDescending(IBucketRepository repository)
         {
             // Arrange
-            await this.repository.AddAsync(this.testBuckets);
+            repository.Add(this.testBuckets);
 
             SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                 .OrderByDescending(bucket => bucket.Name)
@@ -637,7 +635,7 @@ public class GetBucketsUnitTests
                 Offset: null,
                 SortOrder: sortOrder);
 
-            GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
+            GetBuckets.Handler handler = new GetBuckets.Handler(repository, this.publisher);
 
             // Act
             GetBuckets.Response response = await handler.Handle(query, default);
@@ -718,11 +716,12 @@ public class GetBucketsUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_GettingBucketsOrderedByNameAscendingThenByDescriptionDescending_Expect_OrderedByNameAscendingThenByDescriptionDescending()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_GettingBucketsOrderedByNameAscendingThenByDescriptionDescending_Expect_OrderedByNameAscendingThenByDescriptionDescending(IBucketRepository repository)
         {
             // Arrange
-            await this.repository.AddAsync(this.testBuckets);
+            repository.Add(this.testBuckets);
 
             SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                 .OrderBy(bucket => bucket.Name)
@@ -734,7 +733,7 @@ public class GetBucketsUnitTests
                 Offset: null,
                 SortOrder: sortOrder);
 
-            GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
+            GetBuckets.Handler handler = new GetBuckets.Handler(repository, this.publisher);
 
             // Act
             GetBuckets.Response response = await handler.Handle(query, default);
@@ -815,11 +814,12 @@ public class GetBucketsUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_GettingBucketsOrderedByNameDescendingThenByDescriptionAscending_Expect_OrderedByNameDescendingThenByDescriptionAscending()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_GettingBucketsOrderedByNameDescendingThenByDescriptionAscending_Expect_OrderedByNameDescendingThenByDescriptionAscending(IBucketRepository repository)
         {
             // Arrange
-            await this.repository.AddAsync(this.testBuckets);
+            repository.Add(this.testBuckets);
 
             SortOrder<Bucket> sortOrder = SortOrder<Bucket>
                 .OrderByDescending(bucket => bucket.Name)
@@ -831,7 +831,7 @@ public class GetBucketsUnitTests
                 Offset: null,
                 SortOrder: sortOrder);
 
-            GetBuckets.Handler handler = new GetBuckets.Handler(this.repository, this.publisher);
+            GetBuckets.Handler handler = new GetBuckets.Handler(repository, this.publisher);
 
             // Act
             GetBuckets.Response response = await handler.Handle(query, default);

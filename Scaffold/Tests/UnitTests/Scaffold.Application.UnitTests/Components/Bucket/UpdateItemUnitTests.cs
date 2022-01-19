@@ -4,40 +4,27 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Scaffold.Application.Common.Messaging;
 using Scaffold.Application.Components.Bucket;
 using Scaffold.Domain.Aggregates.Bucket;
-using Scaffold.Repositories;
 using Xunit;
 
 public class UpdateItemUnitTests
 {
-    private readonly IBucketRepository repository;
-
-    private readonly Mock.Publisher publisher;
-
-    public UpdateItemUnitTests()
-    {
-        BucketContext context = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString())
-            .Options);
-
-        this.repository = new ScopedBucketRepository(context);
-        this.publisher = new Mock.Publisher();
-    }
+    private readonly Mock.Publisher publisher = new Mock.Publisher();
 
     public class Handler : UpdateItemUnitTests
     {
-        [Fact]
-        public async Task When_UpdatingItemFromBucket_Expect_ItemUpdated()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_UpdatingItemFromBucket_Expect_ItemUpdated(IBucketRepository repository)
         {
             // Arrange
             Bucket bucket = new Bucket();
             Item item = new Item { Name = Guid.NewGuid().ToString(), Description = Guid.NewGuid().ToString() };
             bucket.AddItem(item);
 
-            await this.repository.AddAsync(bucket);
+            repository.Add(bucket);
 
             UpdateItem.Command command = new UpdateItem.Command(
                 BucketId: bucket.Id,
@@ -45,7 +32,7 @@ public class UpdateItemUnitTests
                 Name: Guid.NewGuid().ToString(),
                 Description: Guid.NewGuid().ToString());
 
-            UpdateItem.Handler handler = new UpdateItem.Handler(this.repository, this.publisher);
+            UpdateItem.Handler handler = new UpdateItem.Handler(repository, this.publisher);
 
             // Act
             UpdateItem.Response response = await handler.Handle(command, default);
@@ -69,13 +56,14 @@ public class UpdateItemUnitTests
                 });
         }
 
-        [Fact]
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
 
-        public async Task When_UpdatingNonExistingItemFromBucket_Expect_NewItem()
+        public async Task When_UpdatingNonExistingItemFromBucket_Expect_NewItem(IBucketRepository repository)
         {
             // Arrange
             Bucket bucket = new Bucket();
-            await this.repository.AddAsync(bucket);
+            repository.Add(bucket);
 
             UpdateItem.Command command = new UpdateItem.Command(
                 BucketId: bucket.Id,
@@ -83,7 +71,7 @@ public class UpdateItemUnitTests
                 Name: Guid.NewGuid().ToString(),
                 Description: Guid.NewGuid().ToString());
 
-            UpdateItem.Handler handler = new UpdateItem.Handler(this.repository, this.publisher);
+            UpdateItem.Handler handler = new UpdateItem.Handler(repository, this.publisher);
 
             // Act
             UpdateItem.Response response = await handler.Handle(command, default);
@@ -107,8 +95,9 @@ public class UpdateItemUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_UpdatingItemFromNonExistingBucket_Expect_BucketNotFoundException()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_UpdatingItemFromNonExistingBucket_Expect_BucketNotFoundException(IBucketRepository repository)
         {
             // Arrange
             UpdateItem.Command command = new UpdateItem.Command(
@@ -117,7 +106,7 @@ public class UpdateItemUnitTests
                 Name: Guid.NewGuid().ToString(),
                 Description: null);
 
-            UpdateItem.Handler handler = new UpdateItem.Handler(this.repository, this.publisher);
+            UpdateItem.Handler handler = new UpdateItem.Handler(repository, this.publisher);
 
             // Act
             Exception exception = await Record.ExceptionAsync(() =>

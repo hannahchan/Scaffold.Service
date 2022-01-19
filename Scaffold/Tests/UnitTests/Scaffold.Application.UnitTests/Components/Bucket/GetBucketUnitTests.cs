@@ -3,40 +3,27 @@ namespace Scaffold.Application.UnitTests.Components.Bucket;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Scaffold.Application.Common.Messaging;
 using Scaffold.Application.Components.Bucket;
 using Scaffold.Domain.Aggregates.Bucket;
-using Scaffold.Repositories;
 using Xunit;
 
 public class GetBucketUnitTests
 {
-    private readonly IBucketRepository repository;
-
-    private readonly Mock.Publisher publisher;
-
-    public GetBucketUnitTests()
-    {
-        BucketContext context = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString())
-            .Options);
-
-        this.repository = new ScopedBucketRepository(context);
-        this.publisher = new Mock.Publisher();
-    }
+    private readonly Mock.Publisher publisher = new Mock.Publisher();
 
     public class Handler : GetBucketUnitTests
     {
-        [Fact]
-        public async Task When_GettingBucket_Expect_ExistingBucket()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_GettingBucket_Expect_ExistingBucket(IBucketRepository repository)
         {
             // Arrange
             Bucket bucket = new Bucket();
-            await this.repository.AddAsync(bucket);
+            repository.Add(bucket);
 
             GetBucket.Query query = new GetBucket.Query(bucket.Id);
-            GetBucket.Handler handler = new GetBucket.Handler(this.repository, this.publisher);
+            GetBucket.Handler handler = new GetBucket.Handler(repository, this.publisher);
 
             // Act
             GetBucket.Response response = await handler.Handle(query, default);
@@ -57,12 +44,13 @@ public class GetBucketUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_GettingNonExistingBucket_Expect_BucketNotFoundException()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_GettingNonExistingBucket_Expect_BucketNotFoundException(IBucketRepository repository)
         {
             // Arrange
             GetBucket.Query query = new GetBucket.Query(new Random().Next());
-            GetBucket.Handler handler = new GetBucket.Handler(this.repository, this.publisher);
+            GetBucket.Handler handler = new GetBucket.Handler(repository, this.publisher);
 
             // Act
             Exception exception = await Record.ExceptionAsync(() =>

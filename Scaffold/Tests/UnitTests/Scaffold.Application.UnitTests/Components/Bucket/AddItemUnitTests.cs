@@ -4,44 +4,31 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Scaffold.Application.Common.Messaging;
 using Scaffold.Application.Components.Bucket;
 using Scaffold.Domain.Aggregates.Bucket;
-using Scaffold.Repositories;
 using Xunit;
 
 public class AddItemUnitTests
 {
-    private readonly IBucketRepository repository;
-
-    private readonly Mock.Publisher publisher;
-
-    public AddItemUnitTests()
-    {
-        BucketContext context = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString())
-            .Options);
-
-        this.repository = new ScopedBucketRepository(context);
-        this.publisher = new Mock.Publisher();
-    }
+    private readonly Mock.Publisher publisher = new Mock.Publisher();
 
     public class Handler : AddItemUnitTests
     {
-        [Fact]
-        public async Task When_AddingItemToBucket_Expect_AddedItem()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_AddingItemToBucket_Expect_AddedItem(IBucketRepository repository)
         {
             // Arrange
             Bucket bucket = new Bucket();
-            await this.repository.AddAsync(bucket);
+            repository.Add(bucket);
 
             AddItem.Command command = new AddItem.Command(
                 BucketId: bucket.Id,
                 Name: Guid.NewGuid().ToString(),
                 Description: null);
 
-            AddItem.Handler handler = new AddItem.Handler(this.repository, this.publisher);
+            AddItem.Handler handler = new AddItem.Handler(repository, this.publisher);
 
             // Act
             AddItem.Response response = await handler.Handle(command, default);
@@ -63,8 +50,9 @@ public class AddItemUnitTests
                 });
         }
 
-        [Fact]
-        public async Task When_AddingItemToNonExistingBucket_Expect_BucketNotFoundException()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_AddingItemToNonExistingBucket_Expect_BucketNotFoundException(IBucketRepository repository)
         {
             // Arrange
             AddItem.Command command = new AddItem.Command(
@@ -72,7 +60,7 @@ public class AddItemUnitTests
                 Name: Guid.NewGuid().ToString(),
                 Description: null);
 
-            AddItem.Handler handler = new AddItem.Handler(this.repository, this.publisher);
+            AddItem.Handler handler = new AddItem.Handler(repository, this.publisher);
 
             // Act
             Exception exception = await Record.ExceptionAsync(() =>
@@ -83,19 +71,20 @@ public class AddItemUnitTests
             Assert.Empty(this.publisher.PublishedEvents);
         }
 
-        [Fact]
-        public async Task When_AddingItemToFullBucket_Expect_BucketFullException()
+        [Theory]
+        [ClassData(typeof(TestRepositories))]
+        public async Task When_AddingItemToFullBucket_Expect_BucketFullException(IBucketRepository repository)
         {
             // Arrange
             Bucket bucket = new Bucket { Size = 0 };
-            await this.repository.AddAsync(bucket);
+            repository.Add(bucket);
 
             AddItem.Command command = new AddItem.Command(
                 BucketId: bucket.Id,
                 Name: Guid.NewGuid().ToString(),
                 Description: null);
 
-            AddItem.Handler handler = new AddItem.Handler(this.repository, this.publisher);
+            AddItem.Handler handler = new AddItem.Handler(repository, this.publisher);
 
             // Act
             Exception exception = await Record.ExceptionAsync(() =>
