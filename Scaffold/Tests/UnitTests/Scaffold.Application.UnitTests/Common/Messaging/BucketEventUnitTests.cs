@@ -1,6 +1,7 @@
 namespace Scaffold.Application.UnitTests.Common.Messaging;
 
 using System.Diagnostics;
+using Scaffold.Application.Common.Instrumentation;
 using Scaffold.Application.Common.Messaging;
 using Xunit;
 
@@ -19,7 +20,7 @@ public class BucketEventUnitTests
         TestBucketEvent result = new TestBucketEvent(string.Empty, string.Empty);
 
         // Assert
-        Assert.Equal(activity.TraceId.ToHexString(), result.TraceId);
+        Assert.Equal(activity.GetTraceId(), result.TraceId);
     }
 
     [Fact]
