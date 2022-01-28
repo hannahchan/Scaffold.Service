@@ -18,6 +18,8 @@ public static class UpdateBucket
 
     internal class Handler : IRequestHandler<Command, Response>
     {
+        private static readonly IMapper Mapper = new MapperConfiguration(config => config.AddProfile(new MappingProfile())).CreateMapper();
+
         private readonly IBucketRepository repository;
 
         private readonly IPublisher publisher;
@@ -36,11 +38,9 @@ public static class UpdateBucket
 
             try
             {
-                MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(new MappingProfile()));
-
                 if (bucket is null)
                 {
-                    bucket = configuration.CreateMapper().Map<Bucket>(request);
+                    bucket = Mapper.Map<Bucket>(request);
 
                     await this.repository.AddAsync(bucket, cancellationToken);
                     await this.publisher.Publish(new BucketAddedEvent(bucket.Id), CancellationToken.None);
@@ -48,7 +48,7 @@ public static class UpdateBucket
                     return new Response(bucket, true);
                 }
 
-                bucket = configuration.CreateMapper().Map(request, bucket);
+                bucket = Mapper.Map(request, bucket);
 
                 await this.repository.UpdateAsync(bucket, cancellationToken);
                 await this.publisher.Publish(new BucketUpdatedEvent(bucket.Id), CancellationToken.None);

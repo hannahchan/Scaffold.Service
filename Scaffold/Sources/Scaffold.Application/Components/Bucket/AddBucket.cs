@@ -18,6 +18,8 @@ public static class AddBucket
 
     internal class Handler : IRequestHandler<Command, Response>
     {
+        private static readonly IMapper Mapper = new MapperConfiguration(config => config.AddProfile(new MappingProfile())).CreateMapper();
+
         private readonly IBucketRepository repository;
 
         private readonly IPublisher publisher;
@@ -36,8 +38,7 @@ public static class AddBucket
 
             try
             {
-                MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(new MappingProfile()));
-                bucket = configuration.CreateMapper().Map<Bucket>(request);
+                bucket = Mapper.Map<Bucket>(request);
             }
             catch (AutoMapperMappingException exception) when (exception.InnerException is DomainException)
             {

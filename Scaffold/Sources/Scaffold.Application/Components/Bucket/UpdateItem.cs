@@ -18,6 +18,8 @@ public static class UpdateItem
 
     internal class Handler : IRequestHandler<Command, Response>
     {
+        private static readonly IMapper Mapper = new MapperConfiguration(config => config.AddProfile(new MappingProfile())).CreateMapper();
+
         private readonly IBucketRepository repository;
 
         private readonly IPublisher publisher;
@@ -37,11 +39,9 @@ public static class UpdateItem
 
             Item? item = bucket.Items.SingleOrDefault(x => x.Id == request.ItemId);
 
-            MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(new MappingProfile()));
-
             if (item is null)
             {
-                item = configuration.CreateMapper().Map<Item>(request);
+                item = Mapper.Map<Item>(request);
                 bucket.AddItem(item);
 
                 await this.repository.UpdateAsync(bucket, cancellationToken);
@@ -50,7 +50,7 @@ public static class UpdateItem
                 return new Response(item, true);
             }
 
-            item = configuration.CreateMapper().Map(request, item);
+            item = Mapper.Map(request, item);
 
             await this.repository.UpdateAsync(bucket, cancellationToken);
             await this.publisher.Publish(new ItemUpdatedEvent(bucket.Id, item.Id), CancellationToken.None);

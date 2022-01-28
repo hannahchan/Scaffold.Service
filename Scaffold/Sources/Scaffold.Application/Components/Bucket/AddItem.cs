@@ -17,6 +17,8 @@ public static class AddItem
 
     internal class Handler : IRequestHandler<Command, Response>
     {
+        private static readonly IMapper Mapper = new MapperConfiguration(config => config.AddProfile(new MappingProfile())).CreateMapper();
+
         private readonly IBucketRepository repository;
 
         private readonly IPublisher publisher;
@@ -34,8 +36,7 @@ public static class AddItem
             Bucket bucket = await this.repository.GetAsync(request.BucketId, cancellationToken) ??
                 throw new BucketNotFoundException(request.BucketId);
 
-            MapperConfiguration configuration = new MapperConfiguration(config => config.AddProfile(new MappingProfile()));
-            Item item = configuration.CreateMapper().Map<Item>(request);
+            Item item = Mapper.Map<Item>(request);
 
             bucket.AddItem(item);
 
