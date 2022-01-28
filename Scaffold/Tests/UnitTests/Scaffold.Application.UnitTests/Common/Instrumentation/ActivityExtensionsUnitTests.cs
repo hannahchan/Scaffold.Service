@@ -48,7 +48,7 @@ public static class ActivityExtensionsUnitTests
         public void When_GettingSpanIdWithNotStartedActivity_Expect_Null()
         {
             // Arrange
-            Activity activity = new Activity(nameof(activity));
+            using Activity activity = new Activity(nameof(activity));
 
             // Act
             string result = activity.GetSpanId();
@@ -99,7 +99,7 @@ public static class ActivityExtensionsUnitTests
         public void When_GettingTraceIdWithNotStartedActivity_Expect_Null()
         {
             // Arrange
-            Activity activity = new Activity(nameof(activity));
+            using Activity activity = new Activity(nameof(activity));
 
             // Act
             string result = activity.GetTraceId();
@@ -156,7 +156,7 @@ public static class ActivityExtensionsUnitTests
         public void When_GettingParentIdWithNotStartedActivity_Expect_Null()
         {
             // Arrange
-            Activity activity = new Activity(nameof(activity));
+            using Activity activity = new Activity(nameof(activity));
 
             // Act
             string result = activity.GetParentId();
@@ -188,7 +188,7 @@ public static class ActivityExtensionsUnitTests
         public void When_ActivityIsAllDataRequestIsFalse_Expect_NoException()
         {
             // Arrange
-            Activity activity = new Activity(Guid.NewGuid().ToString())
+            using Activity activity = new Activity(Guid.NewGuid().ToString())
             {
                 IsAllDataRequested = false,
             };
@@ -206,7 +206,7 @@ public static class ActivityExtensionsUnitTests
         public void When_ActivityIsNotNullAndIsAllDataRequestedIsTrue_Expect_TagSet()
         {
             // Arrange
-            Activity activity = new Activity(Guid.NewGuid().ToString())
+            using Activity activity = new Activity(Guid.NewGuid().ToString())
             {
                 IsAllDataRequested = true,
             };

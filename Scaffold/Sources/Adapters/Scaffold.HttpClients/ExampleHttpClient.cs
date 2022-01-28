@@ -20,8 +20,7 @@ public class ExampleHttpClient : IExampleHttpClient
 
     public Task<HttpResponseMessage> Get(string path, CancellationToken cancellationToken = default)
     {
-        HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri(path ?? string.Empty, UriKind.Relative));
-
+        using HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri(path ?? string.Empty, UriKind.Relative));
         return this.httpClient.SendAsync(httpRequestMessage, cancellationToken);
     }
 }

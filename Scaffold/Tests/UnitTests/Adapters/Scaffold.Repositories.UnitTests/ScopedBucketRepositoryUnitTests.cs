@@ -131,7 +131,7 @@ public class ScopedBucketRepositoryUnitTests
             // Arrange
             Bucket bucket = new Bucket();
 
-            BucketContext context = new BucketContext(this.dbContextOptions);
+            using BucketContext context = new BucketContext(this.dbContextOptions);
             ScopedBucketRepository repository = new ScopedBucketRepository(context);
 
             // Act
@@ -206,7 +206,7 @@ public class ScopedBucketRepositoryUnitTests
                 new Bucket { Name = "Bucket 3" },
             };
 
-            BucketContext context = new BucketContext(this.dbContextOptions);
+            using BucketContext context = new BucketContext(this.dbContextOptions);
             ScopedBucketRepository repository = new ScopedBucketRepository(context);
 
             // Act
@@ -394,7 +394,7 @@ public class ScopedBucketRepositoryUnitTests
             // Arrange
             Bucket bucket = new Bucket();
 
-            BucketContext context = new BucketContext(this.dbContextOptions);
+            using BucketContext context = new BucketContext(this.dbContextOptions);
             ScopedBucketRepository repository = new ScopedBucketRepository(context);
 
             // Act
@@ -501,7 +501,7 @@ public class ScopedBucketRepositoryUnitTests
                 new Bucket { Name = "Bucket 3" },
             };
 
-            BucketContext context = new BucketContext(this.dbContextOptions);
+            using BucketContext context = new BucketContext(this.dbContextOptions);
             ScopedBucketRepository repository = new ScopedBucketRepository(context);
 
             // Act
@@ -697,7 +697,7 @@ public class ScopedBucketRepositoryUnitTests
             // Arrange
             Bucket bucket = new Bucket();
 
-            BucketContext context = new BucketContext(this.dbContextOptions);
+            using BucketContext context = new BucketContext(this.dbContextOptions);
             ScopedBucketRepository repository = new ScopedBucketRepository(context);
 
             // Act
@@ -808,7 +808,7 @@ public class ScopedBucketRepositoryUnitTests
                 new Bucket { Name = "Bucket 3" },
             };
 
-            BucketContext context = new BucketContext(this.dbContextOptions);
+            using BucketContext context = new BucketContext(this.dbContextOptions);
             ScopedBucketRepository repository = new ScopedBucketRepository(context);
 
             // Act

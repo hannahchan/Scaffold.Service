@@ -36,8 +36,7 @@ public class TracingDemoController : ControllerBase
         HttpRequest request = this.HttpContext.Request;
         Uri uri = new Uri($"{request.Scheme}://{request.Host}/TracingDemo/Hello?name={name ?? "random"}", UriKind.Absolute);
 
-        HttpResponseMessage response = await this.tracingDemoClient.Get(uri);
-
+        using HttpResponseMessage response = await this.tracingDemoClient.Get(uri);
         return await response.Content.ReadAsStringAsync();
     }
 
@@ -73,7 +72,8 @@ public class TracingDemoController : ControllerBase
 
         public Task<HttpResponseMessage> Get(Uri uri)
         {
-            return this.httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, uri));
+            using HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
+            return this.httpClient.SendAsync(httpRequestMessage);
         }
     }
 }

@@ -15,6 +15,7 @@ Starting in .NET 5, the .NET SDK includes analyzers for code styling and quality
 
 Scaffold uses the following third-party Roslyn Analyzers in some or all of its projects. For an analyzer to work for a given project, it must be installed in that project. To install an analyzer globally for all projects, add the analyzer to [_Directory.Build.props_](../Directory.Build.props). Scaffold uses a [rule set file](../CodeAnalysis.ruleset) to configure these analyzers.
 
+- [IDisposableAnalyzers](https://github.com/DotNetAnalyzers/IDisposableAnalyzers) - Corrects the use of IDisposables.
 - [SonarAnalyzer.CSharp](https://github.com/SonarSource/sonar-dotnet) - Helps spot bugs and code smells.
 - [StyleCop.Analyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers) - Enforce style and consistency when writing C# code.
 - [xUnit.Analyzers](https://github.com/xunit/xunit.analyzers) - Helps to write better tests.

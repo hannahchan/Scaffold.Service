@@ -1,3 +1,5 @@
+#pragma warning disable IDISP014 // Use a single instance of HttpClient
+
 namespace Scaffold.WebApi.UnitTests.HttpMessageHandlers;
 
 using System;
@@ -30,11 +32,10 @@ public class RequestLoggingHttpMessageHandlerUnitTests
             InnerHandler = new Mock.HttpRequestHandler(new HttpResponseMessage { StatusCode = (HttpStatusCode)statusCode }),
         };
 
+        using HttpClient client = new HttpClient(handler);
+
         // Act
-        using (HttpClient client = new HttpClient(handler))
-        {
-            await client.GetAsync(new Uri("http://localhost"));
-        }
+        await client.GetAsync(new Uri("http://localhost"));
 
         // Assert
         Assert.Collection(
@@ -63,13 +64,11 @@ public class RequestLoggingHttpMessageHandlerUnitTests
             InnerHandler = new Mock.HttpRequestHandler(exception),
         };
 
-        Exception result;
+        using HttpClient client = new HttpClient(handler);
 
         // Act
-        using (HttpClient client = new HttpClient(handler))
-        {
-            result = await Record.ExceptionAsync(() => client.GetAsync(new Uri("http://localhost")));
-        }
+        Task<HttpResponseMessage> TestFunction() => client.GetAsync(new Uri("http://localhost"));
+        Exception result = await Record.ExceptionAsync(TestFunction);
 
         // Assert
         Assert.Collection(
@@ -93,14 +92,15 @@ public class RequestLoggingHttpMessageHandlerUnitTests
     public async Task When_SendingAsyncWithNullRequestUri_Expect_InvalidOperationException()
     {
         // Arrange
-        WrappedRequestLoggingHttpMessageHandler handler = new WrappedRequestLoggingHttpMessageHandler();
-        HttpRequestMessage request = new HttpRequestMessage()
+        using WrappedRequestLoggingHttpMessageHandler handler = new WrappedRequestLoggingHttpMessageHandler();
+        using HttpRequestMessage request = new HttpRequestMessage()
         {
             RequestUri = null,
         };
 
         // Act
-        Exception result = await Record.ExceptionAsync(() => handler.SendAsync(request, default));
+        Task<HttpResponseMessage> TestFunction() => handler.SendAsync(request, default);
+        Exception result = await Record.ExceptionAsync(TestFunction);
 
         // Assert
         Assert.NotNull(result);

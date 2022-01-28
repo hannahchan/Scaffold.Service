@@ -1,3 +1,5 @@
+#pragma warning disable IDISP014 // Use a single instance of HttpClient
+
 namespace Scaffold.HttpClients.UnitTests;
 
 using System;
@@ -19,7 +21,7 @@ public class ExampleHttpClientUnitTests
         // Arrange
         string content = Guid.NewGuid().ToString();
 
-        HttpResponseMessage response = new HttpResponseMessage
+        using HttpResponseMessage response = new HttpResponseMessage
         {
             Content = new StringContent(content),
             StatusCode = HttpStatusCode.OK,
@@ -27,14 +29,11 @@ public class ExampleHttpClientUnitTests
 
         Mock.HttpRequestHandler httpRequestHandler = new Mock.HttpRequestHandler(response);
 
-        HttpResponseMessage result;
+        using HttpClient httpClient = new HttpClient(httpRequestHandler);
+        ExampleHttpClient exampleHttpClient = new ExampleHttpClient(httpClient);
 
         // Act
-        using (HttpClient httpClient = new HttpClient(httpRequestHandler))
-        {
-            ExampleHttpClient exampleHttpClient = new ExampleHttpClient(httpClient);
-            result = await exampleHttpClient.Get(path);
-        }
+        using HttpResponseMessage result = await exampleHttpClient.Get(path);
 
         // Assert
         Assert.Equal(HttpMethod.Get, result.RequestMessage.Method);
@@ -48,14 +47,12 @@ public class ExampleHttpClientUnitTests
         // Arrange
         Mock.HttpRequestHandler httpRequestHandler = new Mock.HttpRequestHandler(new HttpResponseMessage());
 
-        Exception exception;
+        using HttpClient httpClient = new HttpClient(httpRequestHandler);
+        ExampleHttpClient exampleHttpClient = new ExampleHttpClient(httpClient);
 
         // Act
-        using (HttpClient httpClient = new HttpClient(httpRequestHandler))
-        {
-            ExampleHttpClient exampleHttpClient = new ExampleHttpClient(httpClient);
-            exception = await Record.ExceptionAsync(() => exampleHttpClient.Get(string.Empty, new CancellationToken(true)));
-        }
+        Task<HttpResponseMessage> TestFunction() => exampleHttpClient.Get(string.Empty, new CancellationToken(true));
+        Exception exception = await Record.ExceptionAsync(TestFunction);
 
         // Assert
         Assert.IsType<TaskCanceledException>(exception);

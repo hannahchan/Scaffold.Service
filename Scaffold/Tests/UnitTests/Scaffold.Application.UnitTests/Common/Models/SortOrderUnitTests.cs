@@ -38,7 +38,7 @@ public static class SortOrderUnitTests
                 .OrderBy(testObject => testObject.Property1);
 
             // Act
-            IEnumerator<(LambdaExpression KeySelector, bool Descending)> result = sortOrder.GetEnumerator();
+            using IEnumerator<(LambdaExpression KeySelector, bool Descending)> result = sortOrder.GetEnumerator();
 
             // Assert
             Assert.NotNull(result);

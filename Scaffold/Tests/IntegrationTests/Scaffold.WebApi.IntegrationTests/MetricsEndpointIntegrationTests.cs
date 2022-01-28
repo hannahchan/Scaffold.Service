@@ -23,15 +23,15 @@ public class MetricsEndpointIntegrationTests : IClassFixture<WebApplicationFacto
         // Arrange
         int metricsPort = new Random().Next(1024, 65535);
 
-        HttpClient client = this.factory.WithWebHostBuilder(builder =>
+        using HttpClient client = this.factory.WithWebHostBuilder(builder =>
         {
             builder.UseSetting("METRICSPORT", metricsPort.ToString());
             builder.UseSetting("URLS", $"http://+:80;http://+:{metricsPort}");
         }).CreateClient();
 
         // Act
-        HttpResponseMessage expectedNotFoundResponse = await client.GetAsync("http://localhost/metrics");
-        HttpResponseMessage expectedOkResponse = await client.GetAsync($"http://localhost:{metricsPort}/metrics");
+        using HttpResponseMessage expectedNotFoundResponse = await client.GetAsync("http://localhost/metrics");
+        using HttpResponseMessage expectedOkResponse = await client.GetAsync($"http://localhost:{metricsPort}/metrics");
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, expectedNotFoundResponse.StatusCode);

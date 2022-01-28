@@ -20,10 +20,10 @@ public class SwaggerEndpointIntegrationTests : IClassFixture<WebApplicationFacto
     public async Task When_FetchingSwaggerDocument_Expect_Ok()
     {
         // Arrange
-        HttpClient client = this.factory.CreateClient();
+        using HttpClient client = this.factory.CreateClient();
 
         // Act
-        HttpResponseMessage response = await client.GetAsync("http://localhost/swagger/v1/swagger.json");
+        using HttpResponseMessage response = await client.GetAsync("http://localhost/swagger/v1/swagger.json");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -34,10 +34,10 @@ public class SwaggerEndpointIntegrationTests : IClassFixture<WebApplicationFacto
     public async Task When_FetchingSwaggerUI_Expect_Ok()
     {
         // Arrange
-        HttpClient client = this.factory.CreateClient();
+        using HttpClient client = this.factory.CreateClient();
 
         // Act
-        HttpResponseMessage response = await client.GetAsync("http://localhost/swagger");
+        using HttpResponseMessage response = await client.GetAsync("http://localhost/swagger");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);

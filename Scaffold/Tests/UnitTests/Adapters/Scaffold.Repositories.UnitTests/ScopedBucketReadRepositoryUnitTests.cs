@@ -46,7 +46,7 @@ public class ScopedBucketReadRepositoryUnitTests
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
-            BucketContext context = new BucketContext(dbContextOptions);
+            using BucketContext context = new BucketContext(dbContextOptions);
 
             Bucket bucket = new Bucket();
 

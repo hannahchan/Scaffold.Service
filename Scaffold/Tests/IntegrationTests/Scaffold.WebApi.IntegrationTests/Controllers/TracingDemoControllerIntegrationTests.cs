@@ -35,11 +35,11 @@ public class TracingDemoControllerIntegrationTests : IClassFixture<WebApplicatio
         public async Task When_SayingHelloToName_Expect_HelloMessage()
         {
             // Arrange
-            HttpClient client = this.factory.CreateClient();
+            using HttpClient client = this.factory.CreateClient();
             string name = Guid.NewGuid().ToString();
 
             // Act
-            HttpResponseMessage response = await client.GetAsync($"/TracingDemo?name={name}");
+            using HttpResponseMessage response = await client.GetAsync($"/TracingDemo?name={name}");
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -51,10 +51,10 @@ public class TracingDemoControllerIntegrationTests : IClassFixture<WebApplicatio
         public async Task When_SayingHelloToNullName_Expect_HelloMessage()
         {
             // Arrange
-            HttpClient client = this.factory.CreateClient();
+            using HttpClient client = this.factory.CreateClient();
 
             // Act
-            HttpResponseMessage response = await client.GetAsync($"/TracingDemo");
+            using HttpResponseMessage response = await client.GetAsync($"/TracingDemo");
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -89,14 +89,15 @@ public class TracingDemoControllerIntegrationTests : IClassFixture<WebApplicatio
         public async Task When_SayingHelloToName_Expect_HelloMessage()
         {
             // Arrange
-            HttpClient client = this.factory.CreateClient();
+            using HttpClient client = this.factory.CreateClient();
             string name = Guid.NewGuid().ToString();
 
-            HttpResponseMessage response;
+            HttpResponseMessage response = null;
 
             // Act
             do
             {
+                response?.Dispose();
                 response = await client.GetAsync($"/TracingDemo/Hello?name={name}");
             }
             while (!response.IsSuccessStatusCode);
@@ -105,19 +106,22 @@ public class TracingDemoControllerIntegrationTests : IClassFixture<WebApplicatio
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Equal(MediaTypeNames.Text.Plain, response.Content.Headers.ContentType.MediaType);
             Assert.Equal($"Hello, {name}!", await response.Content.ReadAsStringAsync());
+
+            response.Dispose();
         }
 
         [Fact]
         public async Task When_SayingHelloToNullName_Expect_HelloMessage()
         {
             // Arrange
-            HttpClient client = this.factory.CreateClient();
+            using HttpClient client = this.factory.CreateClient();
 
-            HttpResponseMessage response;
+            HttpResponseMessage response = null;
 
             // Act
             do
             {
+                response?.Dispose();
                 response = await client.GetAsync($"/TracingDemo/Hello");
             }
             while (!response.IsSuccessStatusCode);
@@ -126,19 +130,22 @@ public class TracingDemoControllerIntegrationTests : IClassFixture<WebApplicatio
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Equal(MediaTypeNames.Text.Plain, response.Content.Headers.ContentType.MediaType);
             Assert.Equal($"Hello, random!", await response.Content.ReadAsStringAsync());
+
+            response.Dispose();
         }
 
         [Fact]
         public async Task When_SayingHello_Expect_ServiceUnavailable()
         {
             // Arrange
-            HttpClient client = this.factory.CreateClient();
+            using HttpClient client = this.factory.CreateClient();
 
-            HttpResponseMessage response;
+            HttpResponseMessage response = null;
 
             // Act
             do
             {
+                response?.Dispose();
                 response = await client.GetAsync($"/TracingDemo/Hello");
             }
             while (response.IsSuccessStatusCode);
@@ -154,6 +161,8 @@ public class TracingDemoControllerIntegrationTests : IClassFixture<WebApplicatio
             Assert.Equal("Service Unavailable", rootElement.GetProperty("title").GetString());
             Assert.Equal("This is intended 80% of the time. Please try again.", rootElement.GetProperty("detail").GetString());
             Assert.Equal(503, rootElement.GetProperty("status").GetInt32());
+
+            response.Dispose();
         }
     }
 }

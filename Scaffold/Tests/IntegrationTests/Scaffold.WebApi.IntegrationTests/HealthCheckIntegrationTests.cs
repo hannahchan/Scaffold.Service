@@ -40,7 +40,7 @@ public class HealthCheckIntegrationTests : IClassFixture<WebApplicationFactory<S
     public async Task When_AllDatabaseConnectionsAreAvailable_Expect_Ok()
     {
         // Arrange
-        HttpClient client = this.factory.WithWebHostBuilder(builder =>
+        using HttpClient client = this.factory.WithWebHostBuilder(builder =>
         {
             builder.ConfigureServices(services =>
             {
@@ -61,7 +61,7 @@ public class HealthCheckIntegrationTests : IClassFixture<WebApplicationFactory<S
         }).CreateClient();
 
         // Act
-        HttpResponseMessage response = await client.GetAsync("/health");
+        using HttpResponseMessage response = await client.GetAsync("/health");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -73,12 +73,12 @@ public class HealthCheckIntegrationTests : IClassFixture<WebApplicationFactory<S
     public async Task When_AllDatabaseConnectionsAreUnavailable_Expect_ServiceUnavailable()
     {
         // Arrange
-        HttpClient client = this.factory
+        using HttpClient client = this.factory
             .WithWebHostBuilder(builder => builder.UseSetting("HEALTHCHECKPORT", "80"))
             .CreateClient();
 
         // Act
-        HttpResponseMessage response = await client.GetAsync("/health");
+        using HttpResponseMessage response = await client.GetAsync("/health");
 
         // Assert
         Assert.Equal(HttpStatusCode.ServiceUnavailable, response.StatusCode);
@@ -90,7 +90,7 @@ public class HealthCheckIntegrationTests : IClassFixture<WebApplicationFactory<S
     public async Task When_ReadWriteDatabaseConnectionIsUnavailable_Expect_ServiceUnavailable()
     {
         // Arrange
-        HttpClient client = this.factory.WithWebHostBuilder(builder =>
+        using HttpClient client = this.factory.WithWebHostBuilder(builder =>
         {
             builder.ConfigureServices(services =>
             {
@@ -105,7 +105,7 @@ public class HealthCheckIntegrationTests : IClassFixture<WebApplicationFactory<S
         }).CreateClient();
 
         // Act
-        HttpResponseMessage response = await client.GetAsync("/health");
+        using HttpResponseMessage response = await client.GetAsync("/health");
 
         // Assert
         Assert.Equal(HttpStatusCode.ServiceUnavailable, response.StatusCode);
@@ -117,7 +117,7 @@ public class HealthCheckIntegrationTests : IClassFixture<WebApplicationFactory<S
     public async Task When_ReadOnlyDatabaseConnectionIsUnavailable_Expect_ServiceUnavailable()
     {
         // Arrange
-        HttpClient client = this.factory.WithWebHostBuilder(builder =>
+        using HttpClient client = this.factory.WithWebHostBuilder(builder =>
         {
             builder.ConfigureServices(services =>
             {
@@ -132,7 +132,7 @@ public class HealthCheckIntegrationTests : IClassFixture<WebApplicationFactory<S
         }).CreateClient();
 
         // Act
-        HttpResponseMessage response = await client.GetAsync("/health");
+        using HttpResponseMessage response = await client.GetAsync("/health");
 
         // Assert
         Assert.Equal(HttpStatusCode.ServiceUnavailable, response.StatusCode);
@@ -146,7 +146,7 @@ public class HealthCheckIntegrationTests : IClassFixture<WebApplicationFactory<S
         // Arrange
         int healthCheckPort = new Random().Next(1024, 65535);
 
-        HttpClient client = this.factory.WithWebHostBuilder(builder =>
+        using HttpClient client = this.factory.WithWebHostBuilder(builder =>
         {
             builder.ConfigureServices(services =>
             {
@@ -168,8 +168,8 @@ public class HealthCheckIntegrationTests : IClassFixture<WebApplicationFactory<S
         }).CreateClient();
 
         // Act
-        HttpResponseMessage expectedNotFoundResponse = await client.GetAsync("http://localhost/health");
-        HttpResponseMessage expectedOkResponse = await client.GetAsync($"http://localhost:{healthCheckPort}/health");
+        using HttpResponseMessage expectedNotFoundResponse = await client.GetAsync("http://localhost/health");
+        using HttpResponseMessage expectedOkResponse = await client.GetAsync($"http://localhost:{healthCheckPort}/health");
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, expectedNotFoundResponse.StatusCode);

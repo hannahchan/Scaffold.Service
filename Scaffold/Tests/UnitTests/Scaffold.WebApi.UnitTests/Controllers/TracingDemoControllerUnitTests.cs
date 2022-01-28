@@ -1,3 +1,5 @@
+#pragma warning disable IDISP014 // Use a single instance of HttpClient
+
 namespace Scaffold.WebApi.UnitTests.Controllers;
 
 using System;
@@ -39,7 +41,7 @@ public class TracingDemoControllerUnitTests
         public async Task When_SayingHelloToName_Expect_HelloMessage()
         {
             // Arrange
-            HttpClient httpClient = new HttpClient(new InnerHandler());
+            using HttpClient httpClient = new HttpClient(new InnerHandler());
             TracingDemoController.Client tracingDemoClient = new TracingDemoController.Client(httpClient);
 
             TracingDemoController controller = new TracingDemoController(tracingDemoClient)
@@ -60,7 +62,7 @@ public class TracingDemoControllerUnitTests
         public async Task When_SayingHelloToNullName_Expect_HelloMessage()
         {
             // Arrange
-            HttpClient httpClient = new HttpClient(new InnerHandler());
+            using HttpClient httpClient = new HttpClient(new InnerHandler());
             TracingDemoController.Client tracingDemoClient = new TracingDemoController.Client(httpClient);
 
             TracingDemoController controller = new TracingDemoController(tracingDemoClient)

@@ -64,7 +64,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_AddingBucket_Expect_Created()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var bucket = new
             {
@@ -73,19 +73,19 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Size = new Random().Next(),
             };
 
-            StringContent content = new StringContent(
+            using StringContent content = new StringContent(
                 JsonSerializer.Serialize(bucket),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
             // Act
-            HttpResponseMessage response = await client.PostAsync("/Buckets", content);
+            using HttpResponseMessage response = await client.PostAsync("/Buckets", content);
 
+            // Assert
             Bucket result = JsonSerializer.Deserialize<Bucket>(
                 await response.Content.ReadAsStringAsync(),
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            // Assert
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
             Assert.Equal(MediaTypeNames.Application.Json, response.Content.Headers.ContentType.MediaType);
             Assert.Equal(new Uri($"http://localhost/Buckets/{result.Id}"), response.Headers.Location);
@@ -99,17 +99,17 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_AddingBucket_Expect_BadRequest()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var bucket = new { Size = "abc" };
 
-            StringContent content = new StringContent(
+            using StringContent content = new StringContent(
                 JsonSerializer.Serialize(bucket),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
             // Act
-            HttpResponseMessage response = await client.PostAsync("/Buckets", content);
+            using HttpResponseMessage response = await client.PostAsync("/Buckets", content);
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -120,17 +120,17 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_AddingBucket_Expect_Conflict()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var bucket = new { Size = -new Random().Next() };
 
-            StringContent content = new StringContent(
+            using StringContent content = new StringContent(
                 JsonSerializer.Serialize(bucket),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
             // Act
-            HttpResponseMessage response = await client.PostAsync("/Buckets", content);
+            using HttpResponseMessage response = await client.PostAsync("/Buckets", content);
 
             // Assert
             Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
@@ -149,7 +149,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingBuckets_Expect_Ok()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             int size = 10;
 
@@ -161,7 +161,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                     Size = i,
                 };
 
-                StringContent content = new StringContent(
+                using StringContent content = new StringContent(
                     JsonSerializer.Serialize(bucket),
                     Encoding.UTF8,
                     MediaTypeNames.Application.Json);
@@ -170,13 +170,13 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
             }
 
             // Act
-            HttpResponseMessage response = await client.GetAsync("/Buckets");
+            using HttpResponseMessage response = await client.GetAsync("/Buckets");
 
+            // Assert
             Bucket[] result = JsonSerializer.Deserialize<Bucket[]>(
                 await response.Content.ReadAsStringAsync(),
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Equal(MediaTypeNames.Application.Json, response.Content.Headers.ContentType.MediaType);
 
@@ -198,10 +198,10 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingBuckets_Expect_BadRequest()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             // Act
-            HttpResponseMessage response = await client.GetAsync("/Buckets?limit=abc&offset=xyz");
+            using HttpResponseMessage response = await client.GetAsync("/Buckets?limit=abc&offset=xyz");
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -220,7 +220,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingBucket_Expect_Ok()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var bucket = new
             {
@@ -229,23 +229,23 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Size = new Random().Next(),
             };
 
-            StringContent content = new StringContent(
+            using StringContent content = new StringContent(
                 JsonSerializer.Serialize(bucket),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            HttpResponseMessage response = await client.PutAsync($"/Buckets/{new Random().Next()}", content);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{new Random().Next()}", content);
 
             // Act
-            response = await client.GetAsync(response.Headers.Location);
-
-            Bucket result = JsonSerializer.Deserialize<Bucket>(
-                await response.Content.ReadAsStringAsync(),
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            using HttpResponseMessage getBucketResponse = await client.GetAsync(createBucketResponse.Headers.Location);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal(MediaTypeNames.Application.Json, response.Content.Headers.ContentType.MediaType);
+            Bucket result = JsonSerializer.Deserialize<Bucket>(
+                await getBucketResponse.Content.ReadAsStringAsync(),
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            Assert.Equal(HttpStatusCode.OK, getBucketResponse.StatusCode);
+            Assert.Equal(MediaTypeNames.Application.Json, getBucketResponse.Content.Headers.ContentType.MediaType);
 
             Assert.Equal(bucket.Name, result.Name);
             Assert.Equal(bucket.Description, result.Description);
@@ -256,10 +256,10 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingBucket_Expect_BadRequest()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             // Act
-            HttpResponseMessage response = await client.GetAsync("/Buckets/abc");
+            using HttpResponseMessage response = await client.GetAsync("/Buckets/abc");
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -270,10 +270,10 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingBucket_Expect_NotFound()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             // Act
-            HttpResponseMessage response = await client.GetAsync("/Buckets/123");
+            using HttpResponseMessage response = await client.GetAsync("/Buckets/123");
 
             // Assert
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -292,16 +292,16 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_UpdatingBucket_Expect_Ok()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var bucket = new { };
 
-            StringContent content = new StringContent(
+            using StringContent content = new StringContent(
                 JsonSerializer.Serialize(bucket),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            HttpResponseMessage response = await client.PutAsync($"/Buckets/{new Random().Next()}", content);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{new Random().Next()}", content);
 
             // Act
             Bucket updatedBucket = new Bucket
@@ -311,20 +311,20 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Size = new Random().Next(),
             };
 
-            content = new StringContent(
+            using StringContent updatedContent = new StringContent(
                 JsonSerializer.Serialize(updatedBucket),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            response = await client.PutAsync(response.Headers.Location, content);
-
-            Bucket result = JsonSerializer.Deserialize<Bucket>(
-                await response.Content.ReadAsStringAsync(),
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            using HttpResponseMessage updateBucketResponse = await client.PutAsync(createBucketResponse.Headers.Location, updatedContent);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal(MediaTypeNames.Application.Json, response.Content.Headers.ContentType.MediaType);
+            Bucket result = JsonSerializer.Deserialize<Bucket>(
+                await updateBucketResponse.Content.ReadAsStringAsync(),
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            Assert.Equal(HttpStatusCode.OK, updateBucketResponse.StatusCode);
+            Assert.Equal(MediaTypeNames.Application.Json, updateBucketResponse.Content.Headers.ContentType.MediaType);
 
             Assert.Equal(updatedBucket.Name, result.Name);
             Assert.Equal(updatedBucket.Description, result.Description);
@@ -335,7 +335,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_UpdatingBucket_Expect_Created()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var bucket = new
             {
@@ -344,19 +344,19 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Size = new Random().Next(),
             };
 
-            StringContent content = new StringContent(
+            using StringContent content = new StringContent(
                 JsonSerializer.Serialize(bucket),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
             // Act
-            HttpResponseMessage response = await client.PutAsync($"/Buckets/{new Random().Next()}", content);
+            using HttpResponseMessage response = await client.PutAsync($"/Buckets/{new Random().Next()}", content);
 
+            // Assert
             Bucket result = JsonSerializer.Deserialize<Bucket>(
                 await response.Content.ReadAsStringAsync(),
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            // Assert
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
             Assert.Equal(MediaTypeNames.Application.Json, response.Content.Headers.ContentType.MediaType);
             Assert.Equal(new Uri($"http://localhost/Buckets/{result.Id}"), response.Headers.Location);
@@ -370,17 +370,17 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_UpdatingBucket_Expect_BadRequest()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var bucket = new { Size = "abc" };
 
-            StringContent content = new StringContent(
+            using StringContent content = new StringContent(
                 JsonSerializer.Serialize(bucket),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
             // Act
-            HttpResponseMessage response = await client.PutAsync("/Buckets/abc", content);
+            using HttpResponseMessage response = await client.PutAsync("/Buckets/abc", content);
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -391,16 +391,16 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_UpdatingBucket_Expect_Conflict()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var bucket = new { };
 
-            StringContent content = new StringContent(
+            using StringContent content = new StringContent(
                 JsonSerializer.Serialize(bucket),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            HttpResponseMessage response = await client.PostAsync("/Buckets", content);
+            using HttpResponseMessage createBucketResponse = await client.PostAsync("/Buckets", content);
 
             // Act
             Bucket updatedBucket = new Bucket
@@ -410,16 +410,16 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Size = -new Random().Next(),
             };
 
-            content = new StringContent(
+            using StringContent updatedContent = new StringContent(
                 JsonSerializer.Serialize(updatedBucket),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            response = await client.PutAsync(response.Headers.Location, content);
+            using HttpResponseMessage updateBucketResponse = await client.PutAsync(createBucketResponse.Headers.Location, updatedContent);
 
             // Assert
-            Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
-            Assert.Equal(CustomMediaTypeNames.Application.ProblemJson, response.Content.Headers.ContentType.MediaType);
+            Assert.Equal(HttpStatusCode.Conflict, updateBucketResponse.StatusCode);
+            Assert.Equal(CustomMediaTypeNames.Application.ProblemJson, updateBucketResponse.Content.Headers.ContentType.MediaType);
         }
     }
 
@@ -434,32 +434,32 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_RemovingBucket_Expect_NoContent()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var bucket = new { };
 
-            StringContent content = new StringContent(
+            using StringContent content = new StringContent(
                 JsonSerializer.Serialize(bucket),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            HttpResponseMessage response = await client.PutAsync($"/Buckets/{new Random().Next()}", content);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{new Random().Next()}", content);
 
             // Act
-            response = await client.DeleteAsync(response.Headers.Location);
+            using HttpResponseMessage removeBucketResponse = await client.DeleteAsync(createBucketResponse.Headers.Location);
 
             // Assert
-            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.Equal(HttpStatusCode.NoContent, removeBucketResponse.StatusCode);
         }
 
         [Fact]
         public async Task When_RemovingBucket_Expect_BadRequest()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             // Act
-            HttpResponseMessage response = await client.DeleteAsync("/Buckets/abc");
+            using HttpResponseMessage response = await client.DeleteAsync("/Buckets/abc");
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -470,10 +470,10 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_RemovingBucket_Expect_NotFound()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             // Act
-            HttpResponseMessage response = await client.DeleteAsync("/Buckets/123");
+            using HttpResponseMessage response = await client.DeleteAsync("/Buckets/123");
 
             // Assert
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -492,7 +492,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_AddingItem_Expect_Created()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var bucket = new
             {
@@ -500,12 +500,12 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Size = 1,
             };
 
-            StringContent content = new StringContent(
+            using StringContent bucketContent = new StringContent(
                 JsonSerializer.Serialize(bucket),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            HttpResponseMessage response = await client.PutAsync($"/Buckets/{bucket.Id}", content);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{bucket.Id}", bucketContent);
 
             // Act
             var item = new
@@ -514,21 +514,21 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Description = Guid.NewGuid().ToString(),
             };
 
-            content = new StringContent(
+            using StringContent itemContent = new StringContent(
                 JsonSerializer.Serialize(item),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            response = await client.PostAsync($"{response.Headers.Location}/Items", content);
-
-            Item result = JsonSerializer.Deserialize<Item>(
-                await response.Content.ReadAsStringAsync(),
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            using HttpResponseMessage createItemResponse = await client.PostAsync($"{createBucketResponse.Headers.Location}/Items", itemContent);
 
             // Assert
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-            Assert.Equal(MediaTypeNames.Application.Json, response.Content.Headers.ContentType.MediaType);
-            Assert.Equal(new Uri($"http://localhost/Buckets/{bucket.Id}/Items/{result.Id}"), response.Headers.Location);
+            Item result = JsonSerializer.Deserialize<Item>(
+                await createItemResponse.Content.ReadAsStringAsync(),
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            Assert.Equal(HttpStatusCode.Created, createItemResponse.StatusCode);
+            Assert.Equal(MediaTypeNames.Application.Json, createItemResponse.Content.Headers.ContentType.MediaType);
+            Assert.Equal(new Uri($"http://localhost/Buckets/{bucket.Id}/Items/{result.Id}"), createItemResponse.Headers.Location);
 
             Assert.Equal(item.Name, result.Name);
             Assert.Equal(item.Description, result.Description);
@@ -538,17 +538,17 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_AddingItem_Expect_BadRequest()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var item = new { Name = 123 };
 
-            StringContent content = new StringContent(
+            using StringContent content = new StringContent(
                 JsonSerializer.Serialize(item),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
             // Act
-            HttpResponseMessage response = await client.PostAsync("/Buckets/abc/Items", content);
+            using HttpResponseMessage response = await client.PostAsync("/Buckets/abc/Items", content);
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -559,7 +559,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_AddingItem_Expect_Conflict()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var bucket = new
             {
@@ -567,43 +567,43 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Size = 0,
             };
 
-            StringContent content = new StringContent(
+            using StringContent bucketContent = new StringContent(
                 JsonSerializer.Serialize(bucket),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            HttpResponseMessage response = await client.PutAsync($"/Buckets/{bucket.Id}", content);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{bucket.Id}", bucketContent);
 
             // Act
             var item = new { };
 
-            content = new StringContent(
+            using StringContent itemContent = new StringContent(
                 JsonSerializer.Serialize(item),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            response = await client.PostAsync($"{response.Headers.Location}/Items", content);
+            using HttpResponseMessage createItemResponse = await client.PostAsync($"{createBucketResponse.Headers.Location}/Items", itemContent);
 
             // Assert
-            Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
-            Assert.Equal(CustomMediaTypeNames.Application.ProblemJson, response.Content.Headers.ContentType.MediaType);
+            Assert.Equal(HttpStatusCode.Conflict, createItemResponse.StatusCode);
+            Assert.Equal(CustomMediaTypeNames.Application.ProblemJson, createItemResponse.Content.Headers.ContentType.MediaType);
         }
 
         [Fact]
         public async Task When_AddingItem_Expect_NotFound()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var item = new { };
 
-            StringContent content = new StringContent(
+            using StringContent content = new StringContent(
                 JsonSerializer.Serialize(item),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
             // Act
-            HttpResponseMessage response = await client.PostAsync("/Buckets/123/Items", content);
+            using HttpResponseMessage response = await client.PostAsync("/Buckets/123/Items", content);
 
             // Assert
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -622,7 +622,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingItems_Expect_Ok()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var bucket = new
             {
@@ -630,35 +630,35 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Size = 10,
             };
 
-            StringContent content = new StringContent(
+            using StringContent bucketContent = new StringContent(
                 JsonSerializer.Serialize(bucket),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            HttpResponseMessage response = await client.PutAsync($"/Buckets/{bucket.Id}", content);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{bucket.Id}", bucketContent);
 
             for (int i = 1; i <= bucket.Size; i++)
             {
                 var item = new { Name = $"Item {i}" };
 
-                content = new StringContent(
+                using StringContent itemContent = new StringContent(
                     JsonSerializer.Serialize(item),
                     Encoding.UTF8,
                     MediaTypeNames.Application.Json);
 
-                await client.PostAsync($"{response.Headers.Location}/Items", content);
+                await client.PostAsync($"{createBucketResponse.Headers.Location}/Items", itemContent);
             }
 
             // Act
-            response = await client.GetAsync($"{response.Headers.Location}/Items");
-
-            Item[] result = JsonSerializer.Deserialize<Item[]>(
-                await response.Content.ReadAsStringAsync(),
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            using HttpResponseMessage getItemsResponse = await client.GetAsync($"{createBucketResponse.Headers.Location}/Items");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal(MediaTypeNames.Application.Json, response.Content.Headers.ContentType.MediaType);
+            Item[] result = JsonSerializer.Deserialize<Item[]>(
+                await getItemsResponse.Content.ReadAsStringAsync(),
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            Assert.Equal(HttpStatusCode.OK, getItemsResponse.StatusCode);
+            Assert.Equal(MediaTypeNames.Application.Json, getItemsResponse.Content.Headers.ContentType.MediaType);
 
             Assert.Collection(
                 result,
@@ -678,10 +678,10 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingItems_Expect_BadRequest()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             // Act
-            HttpResponseMessage response = await client.GetAsync("/Buckets/abc/Items");
+            using HttpResponseMessage response = await client.GetAsync("/Buckets/abc/Items");
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -692,10 +692,10 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingItems_Expect_NotFound()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             // Act
-            HttpResponseMessage response = await client.GetAsync("/Buckets/123/Items");
+            using HttpResponseMessage response = await client.GetAsync("/Buckets/123/Items");
 
             // Assert
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -714,7 +714,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingItem_Expect_Ok()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var bucket = new
             {
@@ -722,12 +722,12 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Size = 1,
             };
 
-            StringContent content = new StringContent(
+            using StringContent bucketContent = new StringContent(
                 JsonSerializer.Serialize(bucket),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            HttpResponseMessage response = await client.PutAsync($"/Buckets/{bucket.Id}", content);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{bucket.Id}", bucketContent);
 
             var item = new
             {
@@ -736,23 +736,23 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Description = Guid.NewGuid().ToString(),
             };
 
-            content = new StringContent(
+            using StringContent itemContent = new StringContent(
                 JsonSerializer.Serialize(item),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            response = await client.PutAsync($"{response.Headers.Location}/Items/{item.Id}", content);
+            using HttpResponseMessage createItemResponse = await client.PutAsync($"{createBucketResponse.Headers.Location}/Items/{item.Id}", itemContent);
 
             // Act
-            response = await client.GetAsync(response.Headers.Location);
-
-            Item result = JsonSerializer.Deserialize<Item>(
-                await response.Content.ReadAsStringAsync(),
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            using HttpResponseMessage getItemResponse = await client.GetAsync(createItemResponse.Headers.Location);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal(MediaTypeNames.Application.Json, response.Content.Headers.ContentType.MediaType);
+            Item result = JsonSerializer.Deserialize<Item>(
+                await getItemResponse.Content.ReadAsStringAsync(),
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            Assert.Equal(HttpStatusCode.OK, getItemResponse.StatusCode);
+            Assert.Equal(MediaTypeNames.Application.Json, getItemResponse.Content.Headers.ContentType.MediaType);
 
             Assert.Equal(item.Name, result.Name);
             Assert.Equal(item.Description, result.Description);
@@ -762,10 +762,10 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingItem_Expect_BadRequest()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             // Act
-            HttpResponseMessage response = await client.GetAsync("/Buckets/abc/Items/abc");
+            using HttpResponseMessage response = await client.GetAsync("/Buckets/abc/Items/abc");
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -778,28 +778,28 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingItem_Expect_NotFound(string path)
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var bucket = new { };
 
-            StringContent content = new StringContent(
+            using StringContent bucketContent = new StringContent(
                 JsonSerializer.Serialize(bucket),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            await client.PutAsync("/Buckets/123", content);
+            await client.PutAsync("/Buckets/123", bucketContent);
 
             var item = new { };
 
-            content = new StringContent(
+            using StringContent itemContent = new StringContent(
                 JsonSerializer.Serialize(item),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            await client.PutAsync("/Buckets/123/Items/123", content);
+            await client.PutAsync("/Buckets/123/Items/123", itemContent);
 
             // Act
-            HttpResponseMessage response = await client.GetAsync(path);
+            using HttpResponseMessage response = await client.GetAsync(path);
 
             // Assert
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -818,7 +818,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_UpdatingItem_Expect_Ok()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var bucket = new
             {
@@ -826,21 +826,21 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Size = 1,
             };
 
-            StringContent content = new StringContent(
+            using StringContent bucketContent = new StringContent(
                 JsonSerializer.Serialize(bucket),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            HttpResponseMessage response = await client.PutAsync($"/Buckets/{bucket.Id}", content);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{bucket.Id}", bucketContent);
 
             var item = new { Id = new Random().Next() };
 
-            content = new StringContent(
+            using StringContent itemContent = new StringContent(
                 JsonSerializer.Serialize(item),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            response = await client.PutAsync($"{response.Headers.Location}/Items/{item.Id}", content);
+            using HttpResponseMessage createItemResponse = await client.PutAsync($"{createBucketResponse.Headers.Location}/Items/{item.Id}", itemContent);
 
             // Act
             Item updatedItem = new Item
@@ -849,20 +849,20 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Description = Guid.NewGuid().ToString(),
             };
 
-            content = new StringContent(
+            using StringContent updatedItemContent = new StringContent(
                 JsonSerializer.Serialize(updatedItem),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            response = await client.PutAsync($"{response.Headers.Location}", content);
-
-            Item result = JsonSerializer.Deserialize<Item>(
-                await response.Content.ReadAsStringAsync(),
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            using HttpResponseMessage updateItemResponse = await client.PutAsync($"{createItemResponse.Headers.Location}", updatedItemContent);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal(MediaTypeNames.Application.Json, response.Content.Headers.ContentType.MediaType);
+            Item result = JsonSerializer.Deserialize<Item>(
+                await updateItemResponse.Content.ReadAsStringAsync(),
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            Assert.Equal(HttpStatusCode.OK, updateItemResponse.StatusCode);
+            Assert.Equal(MediaTypeNames.Application.Json, updateItemResponse.Content.Headers.ContentType.MediaType);
 
             Assert.Equal(updatedItem.Name, result.Name);
             Assert.Equal(updatedItem.Description, result.Description);
@@ -872,7 +872,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_UpdatingItem_Expect_Created()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var bucket = new
             {
@@ -880,12 +880,12 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Size = 1,
             };
 
-            StringContent content = new StringContent(
+            using StringContent bucketContent = new StringContent(
                 JsonSerializer.Serialize(bucket),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            HttpResponseMessage response = await client.PutAsync($"/Buckets/{bucket.Id}", content);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{bucket.Id}", bucketContent);
 
             // Act
             var item = new
@@ -895,21 +895,21 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Description = Guid.NewGuid().ToString(),
             };
 
-            content = new StringContent(
+            using StringContent itemContent = new StringContent(
                 JsonSerializer.Serialize(item),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            response = await client.PutAsync($"{response.Headers.Location}/Items/{item.Id}", content);
-
-            Item result = JsonSerializer.Deserialize<Item>(
-                await response.Content.ReadAsStringAsync(),
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            using HttpResponseMessage updateItemResponse = await client.PutAsync($"{createBucketResponse.Headers.Location}/Items/{item.Id}", itemContent);
 
             // Assert
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-            Assert.Equal(MediaTypeNames.Application.Json, response.Content.Headers.ContentType.MediaType);
-            Assert.Equal(new Uri($"http://localhost/Buckets/{bucket.Id}/Items/{result.Id}"), response.Headers.Location);
+            Item result = JsonSerializer.Deserialize<Item>(
+                await updateItemResponse.Content.ReadAsStringAsync(),
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            Assert.Equal(HttpStatusCode.Created, updateItemResponse.StatusCode);
+            Assert.Equal(MediaTypeNames.Application.Json, updateItemResponse.Content.Headers.ContentType.MediaType);
+            Assert.Equal(new Uri($"http://localhost/Buckets/{bucket.Id}/Items/{result.Id}"), updateItemResponse.Headers.Location);
 
             Assert.Equal(item.Name, result.Name);
             Assert.Equal(item.Description, result.Description);
@@ -919,7 +919,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_UpdatingItem_Expect_Conflict()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var bucket = new
             {
@@ -927,43 +927,43 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Size = 0,
             };
 
-            StringContent content = new StringContent(
+            using StringContent bucketContent = new StringContent(
                 JsonSerializer.Serialize(bucket),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            HttpResponseMessage response = await client.PutAsync($"/Buckets/{bucket.Id}", content);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{bucket.Id}", bucketContent);
 
             // Act
             var item = new { Id = new Random().Next() };
 
-            content = new StringContent(
+            using StringContent itemContent = new StringContent(
                 JsonSerializer.Serialize(item),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            response = await client.PutAsync($"{response.Headers.Location}/Items/{item.Id}", content);
+            using HttpResponseMessage updateItemResponse = await client.PutAsync($"{createBucketResponse.Headers.Location}/Items/{item.Id}", itemContent);
 
             // Assert
-            Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
-            Assert.Equal(CustomMediaTypeNames.Application.ProblemJson, response.Content.Headers.ContentType.MediaType);
+            Assert.Equal(HttpStatusCode.Conflict, updateItemResponse.StatusCode);
+            Assert.Equal(CustomMediaTypeNames.Application.ProblemJson, updateItemResponse.Content.Headers.ContentType.MediaType);
         }
 
         [Fact]
         public async Task When_UpdatingItem_Expect_BadRequest()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var item = new { Name = 123 };
 
-            StringContent content = new StringContent(
+            using StringContent content = new StringContent(
                 JsonSerializer.Serialize(item),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
             // Act
-            HttpResponseMessage response = await client.PutAsync("/Buckets/abc/Items/abc", content);
+            using HttpResponseMessage response = await client.PutAsync("/Buckets/abc/Items/abc", content);
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -974,17 +974,17 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_UpdatingItem_Expect_NotFound()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var item = new { };
 
-            StringContent content = new StringContent(
+            using StringContent content = new StringContent(
                 JsonSerializer.Serialize(item),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
             // Act
-            HttpResponseMessage response = await client.PutAsync("/Buckets/123/Items/123", content);
+            using HttpResponseMessage response = await client.PutAsync("/Buckets/123/Items/123", content);
 
             // Assert
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -1003,7 +1003,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_RemovingItem_Expect_NoContent()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var bucket = new
             {
@@ -1011,37 +1011,37 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Size = 1,
             };
 
-            StringContent content = new StringContent(
+            using StringContent bucketContent = new StringContent(
                 JsonSerializer.Serialize(bucket),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            HttpResponseMessage response = await client.PutAsync($"/Buckets/{bucket.Id}", content);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{bucket.Id}", bucketContent);
 
             var item = new { Id = new Random().Next() };
 
-            content = new StringContent(
+            using StringContent itemContent = new StringContent(
                 JsonSerializer.Serialize(item),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            response = await client.PutAsync($"{response.Headers.Location}/Items/{item.Id}", content);
+            using HttpResponseMessage createItemResponse = await client.PutAsync($"{createBucketResponse.Headers.Location}/Items/{item.Id}", itemContent);
 
             // Act
-            response = await client.DeleteAsync(response.Headers.Location);
+            using HttpResponseMessage removeItemResponse = await client.DeleteAsync(createItemResponse.Headers.Location);
 
             // Assert
-            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.Equal(HttpStatusCode.NoContent, removeItemResponse.StatusCode);
         }
 
         [Fact]
         public async Task When_RemovingItem_Expect_BadRequest()
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             // Act
-            HttpResponseMessage response = await client.DeleteAsync("/Buckets/abc/Items/abc");
+            using HttpResponseMessage response = await client.DeleteAsync("/Buckets/abc/Items/abc");
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -1054,28 +1054,28 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_RemovingItem_Expect_NotFound(string path)
         {
             // Arrange
-            HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.CreateNewTestClient();
 
             var bucket = new { };
 
-            StringContent content = new StringContent(
+            using StringContent bucketContent = new StringContent(
                 JsonSerializer.Serialize(bucket),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            await client.PutAsync("/Buckets/123", content);
+            await client.PutAsync("/Buckets/123", bucketContent);
 
             var item = new { };
 
-            content = new StringContent(
+            using StringContent itemContent = new StringContent(
                 JsonSerializer.Serialize(item),
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            await client.PutAsync("/Buckets/123/Items/123", content);
+            await client.PutAsync("/Buckets/123/Items/123", itemContent);
 
             // Act
-            HttpResponseMessage response = await client.DeleteAsync(path);
+            using HttpResponseMessage response = await client.DeleteAsync(path);
 
             // Assert
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);

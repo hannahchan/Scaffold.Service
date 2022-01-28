@@ -1,3 +1,5 @@
+#pragma warning disable IDISP004 // Don't ignore created IDisposable
+
 namespace Scaffold.Application.UnitTests;
 
 using System;

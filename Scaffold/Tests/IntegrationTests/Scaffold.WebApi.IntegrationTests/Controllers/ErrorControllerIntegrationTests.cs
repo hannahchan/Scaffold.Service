@@ -23,11 +23,11 @@ public class ErrorControllerIntegrationTests : IClassFixture<WebApplicationFacto
     public async Task When_InvokingError_Expect_ProblemDetailsJsonResponse()
     {
         // Arrange
-        HttpClient client = this.factory.CreateClient();
+        using HttpClient client = this.factory.CreateClient();
         client.DefaultRequestHeaders.Add(HeaderNames.Accept, MediaTypeNames.Application.Json);
 
         // Act
-        HttpResponseMessage response = await client.GetAsync("/Error");
+        using HttpResponseMessage response = await client.GetAsync("/Error");
 
         // Assert
         Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
@@ -44,11 +44,11 @@ public class ErrorControllerIntegrationTests : IClassFixture<WebApplicationFacto
     public async Task When_InvokingError_Expect_ProblemDetailsXmlResponse()
     {
         // Arrange
-        HttpClient client = this.factory.CreateClient();
+        using HttpClient client = this.factory.CreateClient();
         client.DefaultRequestHeaders.Add(HeaderNames.Accept, MediaTypeNames.Application.Xml);
 
         // Act
-        HttpResponseMessage response = await client.GetAsync("/Error");
+        using HttpResponseMessage response = await client.GetAsync("/Error");
 
         // Assert
         Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
