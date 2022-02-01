@@ -8,4 +8,10 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <!-- Copies xUnit configuration file to all test projects. -->
+    <!-- https://xunit.net/docs/configuration-files -->
+    <Content Include="$(MSBuildThisFileDirectory)/xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>
