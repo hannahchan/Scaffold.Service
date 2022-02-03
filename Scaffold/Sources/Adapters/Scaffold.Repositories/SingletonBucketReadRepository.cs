@@ -15,7 +15,12 @@ public class SingletonBucketReadRepository : IBucketReadRepository
 {
     private readonly IDbContextFactory<BucketContext> factory;
 
-    public SingletonBucketReadRepository(IDbContextFactory<BucketContext> factory)
+    public SingletonBucketReadRepository(IDbContextFactory<BucketContext.ReadOnly> factory)
+    {
+        this.factory = factory as IDbContextFactory<BucketContext>;
+    }
+
+    protected SingletonBucketReadRepository(IDbContextFactory<BucketContext> factory)
     {
         this.factory = factory;
     }
@@ -24,7 +29,7 @@ public class SingletonBucketReadRepository : IBucketReadRepository
     {
         using BucketContext context = this.factory.CreateDbContext();
 
-        return this.BuildQuery(context, bucket => bucket.Id == id)
+        return BuildQuery(context, bucket => bucket.Id == id)
             .Include(bucket => bucket.Items)
             .SingleOrDefault();
     }
@@ -33,7 +38,7 @@ public class SingletonBucketReadRepository : IBucketReadRepository
     {
         using BucketContext context = this.factory.CreateDbContext();
 
-        return this.BuildQuery(context, predicate, limit, offset, sortOrder)
+        return BuildQuery(context, predicate, limit, offset, sortOrder)
             .Include(bucket => bucket.Items)
             .ToList();
     }
@@ -42,7 +47,7 @@ public class SingletonBucketReadRepository : IBucketReadRepository
     {
         using BucketContext context = this.factory.CreateDbContext();
 
-        return this.BuildQuery(context, bucket => bucket.Id == id)
+        return BuildQuery(context, bucket => bucket.Id == id)
             .Include(bucket => bucket.Items)
             .SingleOrDefaultAsync(cancellationToken);
     }
@@ -51,12 +56,12 @@ public class SingletonBucketReadRepository : IBucketReadRepository
     {
         using BucketContext context = this.factory.CreateDbContext();
 
-        return this.BuildQuery(context, predicate, limit, offset, sortOrder)
+        return BuildQuery(context, predicate, limit, offset, sortOrder)
             .Include(bucket => bucket.Items)
             .ToListAsync(cancellationToken);
     }
 
-    private IQueryable<Bucket> BuildQuery(BucketContext context, Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, SortOrder<Bucket>? sortOrder = null)
+    private static IQueryable<Bucket> BuildQuery(BucketContext context, Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, SortOrder<Bucket>? sortOrder = null)
     {
         IQueryable<Bucket> query = context.Buckets.Where(predicate);
 
