@@ -18,6 +18,7 @@ public sealed class TestRepositories : TheoryData<IBucketRepository>, IDisposabl
     public TestRepositories()
     {
         this.Add(new ScopedBucketRepository(this.CreateNewBucketContext()));
+        this.Add(new SingletonBucketRepository(this.serviceProvider.GetRequiredService<IDbContextFactory<BucketContext>>()));
     }
 
     public void Dispose()
