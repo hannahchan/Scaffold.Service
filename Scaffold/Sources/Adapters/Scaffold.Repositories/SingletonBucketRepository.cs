@@ -12,7 +12,7 @@ public class SingletonBucketRepository : SingletonBucketReadRepository, IBucketR
     private readonly IDbContextFactory<BucketContext> factory;
 
     public SingletonBucketRepository(IDbContextFactory<BucketContext> factory)
-        : base(factory.CreateDbContext())
+        : base(factory)
     {
         this.factory = factory;
     }
