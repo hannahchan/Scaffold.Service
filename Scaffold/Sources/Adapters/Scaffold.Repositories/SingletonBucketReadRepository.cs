@@ -15,7 +15,12 @@ public class SingletonBucketReadRepository : IBucketReadRepository
 {
     private readonly IDbContextFactory<BucketContext> factory;
 
-    public SingletonBucketReadRepository(IDbContextFactory<BucketContext> factory)
+    public SingletonBucketReadRepository(IDbContextFactory<BucketContext.ReadOnly> factory)
+    {
+        this.factory = factory as IDbContextFactory<BucketContext>;
+    }
+
+    protected SingletonBucketReadRepository(IDbContextFactory<BucketContext> factory)
     {
         this.factory = factory;
     }
