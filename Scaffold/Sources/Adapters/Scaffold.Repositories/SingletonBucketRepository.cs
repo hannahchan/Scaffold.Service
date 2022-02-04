@@ -33,20 +33,20 @@ public class SingletonBucketRepository : SingletonBucketReadRepository, IBucketR
         context.SaveChanges();
     }
 
-    public Task AddAsync(Bucket bucket, CancellationToken cancellationToken = default)
+    public async Task AddAsync(Bucket bucket, CancellationToken cancellationToken = default)
     {
-        using BucketContext context = this.factory.CreateDbContext();
+        using BucketContext context = await this.factory.CreateDbContextAsync(cancellationToken);
 
         context.Buckets.Add(bucket);
-        return context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 
-    public Task AddAsync(IEnumerable<Bucket> buckets, CancellationToken cancellationToken = default)
+    public async Task AddAsync(IEnumerable<Bucket> buckets, CancellationToken cancellationToken = default)
     {
-        using BucketContext context = this.factory.CreateDbContext();
+        using BucketContext context = await this.factory.CreateDbContextAsync(cancellationToken);
 
         context.Buckets.AddRange(buckets);
-        return context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 
     public void Remove(Bucket bucket)
@@ -65,20 +65,20 @@ public class SingletonBucketRepository : SingletonBucketReadRepository, IBucketR
         context.SaveChanges();
     }
 
-    public Task RemoveAsync(Bucket bucket, CancellationToken cancellationToken = default)
+    public async Task RemoveAsync(Bucket bucket, CancellationToken cancellationToken = default)
     {
-        using BucketContext context = this.factory.CreateDbContext();
+        using BucketContext context = await this.factory.CreateDbContextAsync(cancellationToken);
 
         context.Buckets.Remove(bucket);
-        return context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 
-    public Task RemoveAsync(IEnumerable<Bucket> buckets, CancellationToken cancellationToken = default)
+    public async Task RemoveAsync(IEnumerable<Bucket> buckets, CancellationToken cancellationToken = default)
     {
-        using BucketContext context = this.factory.CreateDbContext();
+        using BucketContext context = await this.factory.CreateDbContextAsync(cancellationToken);
 
         context.Buckets.RemoveRange(buckets);
-        return context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 
     public void Update(Bucket bucket)
@@ -97,19 +97,19 @@ public class SingletonBucketRepository : SingletonBucketReadRepository, IBucketR
         context.SaveChanges();
     }
 
-    public Task UpdateAsync(Bucket bucket, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(Bucket bucket, CancellationToken cancellationToken = default)
     {
-        using BucketContext context = this.factory.CreateDbContext();
+        using BucketContext context = await this.factory.CreateDbContextAsync(cancellationToken);
 
         context.Buckets.Update(bucket);
-        return context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 
-    public Task UpdateAsync(IEnumerable<Bucket> buckets, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(IEnumerable<Bucket> buckets, CancellationToken cancellationToken = default)
     {
-        using BucketContext context = this.factory.CreateDbContext();
+        using BucketContext context = await this.factory.CreateDbContextAsync(cancellationToken);
 
         context.Buckets.UpdateRange(buckets);
-        return context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 }

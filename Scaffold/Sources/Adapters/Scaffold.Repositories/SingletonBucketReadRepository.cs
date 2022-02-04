@@ -38,20 +38,20 @@ public class SingletonBucketReadRepository : IBucketReadRepository
             .ToList();
     }
 
-    public Task<Bucket?> GetAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<Bucket?> GetAsync(int id, CancellationToken cancellationToken = default)
     {
-        using BucketContext context = this.factory.CreateDbContext();
+        using BucketContext context = await this.factory.CreateDbContextAsync(cancellationToken);
 
-        return BuildQuery(context, bucket => bucket.Id == id)
+        return await BuildQuery(context, bucket => bucket.Id == id)
             .Include(bucket => bucket.Items)
             .SingleOrDefaultAsync(cancellationToken);
     }
 
-    public Task<List<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, SortOrder<Bucket>? sortOrder = null, CancellationToken cancellationToken = default)
+    public async Task<List<Bucket>> GetAsync(Expression<Func<Bucket, bool>> predicate, int? limit = null, int? offset = null, SortOrder<Bucket>? sortOrder = null, CancellationToken cancellationToken = default)
     {
-        using BucketContext context = this.factory.CreateDbContext();
+        using BucketContext context = await this.factory.CreateDbContextAsync(cancellationToken);
 
-        return BuildQuery(context, predicate, limit, offset, sortOrder)
+        return await BuildQuery(context, predicate, limit, offset, sortOrder)
             .Include(bucket => bucket.Items)
             .ToListAsync(cancellationToken);
     }
