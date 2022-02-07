@@ -1,3 +1,5 @@
+using System.IO.Compression;
+
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
@@ -162,6 +164,14 @@ Task("Publish")
         };
 
         DotNetPublish("./Sources/Scaffold.WebApi", settings);
+
+        ZipFile.CreateFromDirectory(
+            sourceDirectoryName: $"{settings.OutputDirectory}",
+            destinationArchiveFileName: $"{settings.OutputDirectory}.zip",
+            compressionLevel: CompressionLevel.SmallestSize,
+            includeBaseDirectory: false);
+
+        DeleteDirectories(GetDirectories(settings.OutputDirectory.ToString()), deleteSettings);
     });
 
 Task("Containerize")
@@ -169,6 +179,11 @@ Task("Containerize")
     .IsDependentOn("Publish")
     .Does(() =>
     {
+        ZipFile.ExtractToDirectory(
+            sourceArchiveFileName: $"{buildArtifacts}/Scaffold.WebApi.zip",
+            destinationDirectoryName: $"{buildArtifacts}/Scaffold.WebApi",
+            overwriteFiles: true);
+
         StartProcess("docker", new ProcessSettings
         {
             Arguments = new ProcessArgumentBuilder()
