@@ -47,7 +47,7 @@ public class Bucket
         }
     }
 
-    public IEnumerable<Item> Items => this.items;
+    public IReadOnlyList<Item> Items => this.items;
 
     public void AddItem(Item item)
     {

@@ -1,6 +1,5 @@
 namespace Scaffold.Domain.Specifications;
 
-using System.Linq;
 using Scaffold.Domain.Aggregates.Bucket;
 using Scaffold.Domain.Base;
 
@@ -17,7 +16,7 @@ public static class BucketSpecification
     public class Full : Specification<Bucket>
     {
         public Full()
-            : base(bucket => bucket.Size == bucket.Items.Count())
+            : base(bucket => bucket.Size == bucket.Items.Count)
         {
         }
     }
@@ -25,7 +24,7 @@ public static class BucketSpecification
     public class Empty : Specification<Bucket>
     {
         public Empty()
-            : base(bucket => !bucket.Items.Any())
+            : base(bucket => bucket.Items.Count == 0)
         {
         }
     }
@@ -49,7 +48,7 @@ public static class BucketSpecification
     public class MaxAvailableCapacity : Specification<Bucket>
     {
         public MaxAvailableCapacity(int maxAvailableCapacity)
-            : base(bucket => bucket.Size - bucket.Items.Count() <= maxAvailableCapacity)
+            : base(bucket => bucket.Size - bucket.Items.Count <= maxAvailableCapacity)
         {
         }
     }
@@ -57,7 +56,7 @@ public static class BucketSpecification
     public class MinAvailableCapacity : Specification<Bucket>
     {
         public MinAvailableCapacity(int minAvailableCapacity)
-            : base(bucket => bucket.Size - bucket.Items.Count() >= minAvailableCapacity)
+            : base(bucket => bucket.Size - bucket.Items.Count >= minAvailableCapacity)
         {
         }
     }
@@ -65,7 +64,7 @@ public static class BucketSpecification
     public class MaxUsedCapacity : Specification<Bucket>
     {
         public MaxUsedCapacity(int maxUsedCapacity)
-            : base(bucket => bucket.Items.Count() <= maxUsedCapacity)
+            : base(bucket => bucket.Items.Count <= maxUsedCapacity)
         {
         }
     }
@@ -73,7 +72,7 @@ public static class BucketSpecification
     public class MinUsedCapacity : Specification<Bucket>
     {
         public MinUsedCapacity(int minUsedCapacity)
-            : base(bucket => bucket.Items.Count() >= minUsedCapacity)
+            : base(bucket => bucket.Items.Count >= minUsedCapacity)
         {
         }
     }
