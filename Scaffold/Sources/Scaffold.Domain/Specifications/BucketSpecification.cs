@@ -16,7 +16,7 @@ public static class BucketSpecification
     public class Full : Specification<Bucket>
     {
         public Full()
-            : base(bucket => bucket.Size == bucket.Items.Count)
+            : base(bucket => bucket.Items.Count == bucket.Size)
         {
         }
     }
