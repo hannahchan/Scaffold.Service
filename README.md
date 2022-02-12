@@ -54,6 +54,7 @@ Stuff you might want to add to your service but not included with Scaffold.Servi
 
 - [API Versioning](https://github.com/Microsoft/aspnet-api-versioning)
 - [Authentication](https://docs.microsoft.com/aspnet/core/security/authentication) and [Authorization](https://docs.microsoft.com/aspnet/core/security/authorization)
+- [Caching](https://docs.microsoft.com/dotnet/core/extensions/caching)
 - [Console Log Formatting](https://docs.microsoft.com/dotnet/core/extensions/console-log-formatter)
 - [Cross-Origin Resource Sharing (CORS)](https://docs.microsoft.com/aspnet/core/security/cors)
 - [Forwarded Headers Handling](https://docs.microsoft.com/aspnet/core/host-and-deploy/proxy-load-balancer)
