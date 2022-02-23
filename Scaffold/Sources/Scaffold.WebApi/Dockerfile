@@ -18,3 +18,9 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "Scaffold.WebApi.dll"]
+
+RUN groupadd --system app && \
+    useradd --system --gid app app && \
+    chown --recursive app:app /app
+
+USER app

@@ -7,3 +7,9 @@ EXPOSE 80 8081
 
 COPY . .
 ENTRYPOINT ["dotnet", "Scaffold.WebApi.dll"]
+
+RUN groupadd --system app && \
+    useradd --system --gid app app && \
+    chown --recursive app:app /app
+
+USER app
