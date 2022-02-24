@@ -10,5 +10,6 @@ Only the following need to be installed on your local machine for this developme
 - [Docker](https://docs.docker.com/engine/install)
 - [Docker Compose](https://docs.docker.com/compose/install)
 - [Visual Studio Code](https://code.visualstudio.com)
+- [Visual Studio Code Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
 All other tooling should already be installed inside the development container. You are also welcomed to install your own.

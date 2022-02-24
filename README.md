@@ -34,7 +34,7 @@ Scaffold.Service comes pre-configured with or aims to make developing the follow
 - [Logging](./Scaffold/Docs/Logging.md)
 - [Health Checks](./Scaffold/Docs/HealthChecks.md)
 
-### Developer Experience
+### Developer / Team Experience
 
 Other stuff you inherit when you bootstrap with Scaffold.Service.
 
@@ -54,11 +54,12 @@ Stuff you might want to add to your service but not included with Scaffold.Servi
 
 - [API Versioning](https://github.com/Microsoft/aspnet-api-versioning)
 - [Authentication](https://docs.microsoft.com/aspnet/core/security/authentication) and [Authorization](https://docs.microsoft.com/aspnet/core/security/authorization)
-- [Caching](https://docs.microsoft.com/dotnet/core/extensions/caching)
+- [Caching](https://docs.microsoft.com/dotnet/core/extensions/caching) (See also [Overview of caching in ASP.NET Core](https://docs.microsoft.com/aspnet/core/performance/caching/overview))
 - [Console Log Formatting](https://docs.microsoft.com/dotnet/core/extensions/console-log-formatter)
 - [Cross-Origin Resource Sharing (CORS)](https://docs.microsoft.com/aspnet/core/security/cors)
 - [Forwarded Headers Handling](https://docs.microsoft.com/aspnet/core/host-and-deploy/proxy-load-balancer)
 - [Header Propagation](https://docs.microsoft.com/aspnet/core/fundamentals/http-requests#header-propagation-middleware)
+- [Response Compressions](https://docs.microsoft.com/aspnet/core/performance/response-compression)
 - [Secrets Management](https://docs.microsoft.com/aspnet/core/security/app-secrets)
 
 ## Example App
