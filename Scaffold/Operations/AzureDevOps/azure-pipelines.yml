@@ -1,4 +1,4 @@
-# Example / Starter Pipline for Azure DevOps
+# Example / Starter Pipeline for Azure DevOps
 
 trigger:
   - main
@@ -37,8 +37,23 @@ steps:
       summaryFileLocation: Artifacts/CoverageReports/Combined/Cobertura.xml
       failIfCoverageEmpty: true
 
+  - task: PublishPipelineArtifact@1
+    displayName: Publish Release (Compressed File)
+    inputs:
+      targetPath: Artifacts/Release
+      artifact: Release
+      publishLocation: pipeline
+
+  - task: ExtractFiles@1
+    displayName: Prepare Release (Container Image)
+    inputs:
+      archiveFilePatterns: Artifacts/Release/Scaffold.WebApi.zip
+      destinationFolder: Artifacts/Release/Scaffold.WebApi
+      cleanDestinationFolder: true
+      overwriteExistingFiles: false
+
   - task: Docker@2
-    displayName: Publish Container Image
+    displayName: Publish Release (Container Image)
     inputs:
       command: buildAndPush
       buildContext: Artifacts/Release/Scaffold.WebApi
