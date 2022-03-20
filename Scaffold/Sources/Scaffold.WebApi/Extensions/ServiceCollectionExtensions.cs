@@ -64,8 +64,8 @@ internal static class ServiceCollectionExtensions
             .AddRequestLogging()
             .UseHttpClientMetrics();
 
-        services.AddHttpClient<TracingDemoController.IClient, TracingDemoController.Client>()
-            .AddTransientHttpErrorPolicy(builder => builder.RetryAsync(10))
+        services.AddHttpClient<DemoController.IClient, DemoController.Client>()
+            .AddTransientHttpErrorPolicy(builder => builder.RetryAsync(3))
             .AddRequestLogging()
             .UseHttpClientMetrics();
 
@@ -100,7 +100,8 @@ internal static class ServiceCollectionExtensions
     public static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration config)
     {
         services
-            .Configure<RequestLoggingMiddleware.Options>(options => options.IgnorePatterns = IgnorePatterns);
+            .Configure<RequestLoggingMiddleware.Options>(options => options.IgnorePatterns = IgnorePatterns)
+            .Configure<DemoController.Options>(config.GetSection("DemoOptions"));
 
         return services;
     }
