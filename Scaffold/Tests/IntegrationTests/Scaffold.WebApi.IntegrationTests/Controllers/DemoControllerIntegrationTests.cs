@@ -32,7 +32,7 @@ public class DemoControllerIntegrationTests : IClassFixture<WebApplicationFactor
             using HttpClient client = this.factory.CreateClient();
 
             // Act
-            using HttpResponseMessage response = await client.GetAsync("/Demo/Trace");
+            using HttpResponseMessage response = await client.GetAsync("/demo/trace");
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -46,7 +46,7 @@ public class DemoControllerIntegrationTests : IClassFixture<WebApplicationFactor
             using HttpClient client = this.factory.CreateClient();
 
             // Act
-            using HttpResponseMessage response = await client.GetAsync($"/Demo/Trace/{new Random().Next()}");
+            using HttpResponseMessage response = await client.GetAsync($"/demo/trace/{new Random().Next()}");
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -60,7 +60,7 @@ public class DemoControllerIntegrationTests : IClassFixture<WebApplicationFactor
             using HttpClient client = this.factory.CreateClient();
 
             // Act
-            using HttpResponseMessage response = await client.GetAsync($"/Demo/Trace/abc");
+            using HttpResponseMessage response = await client.GetAsync($"/demo/trace/abc");
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);

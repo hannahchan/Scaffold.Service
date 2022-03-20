@@ -79,7 +79,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 MediaTypeNames.Application.Json);
 
             // Act
-            using HttpResponseMessage response = await client.PostAsync("/Buckets", content);
+            using HttpResponseMessage response = await client.PostAsync("/buckets", content);
 
             // Assert
             Bucket result = JsonSerializer.Deserialize<Bucket>(
@@ -88,7 +88,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
 
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
             Assert.Equal(MediaTypeNames.Application.Json, response.Content.Headers.ContentType.MediaType);
-            Assert.Equal(new Uri($"http://localhost/Buckets/{result.Id}"), response.Headers.Location);
+            Assert.Equal(new Uri($"http://localhost/buckets/{result.Id}"), response.Headers.Location);
 
             Assert.Equal(bucket.Name, result.Name);
             Assert.Equal(bucket.Description, result.Description);
@@ -109,7 +109,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 MediaTypeNames.Application.Json);
 
             // Act
-            using HttpResponseMessage response = await client.PostAsync("/Buckets", content);
+            using HttpResponseMessage response = await client.PostAsync("/buckets", content);
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -130,7 +130,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 MediaTypeNames.Application.Json);
 
             // Act
-            using HttpResponseMessage response = await client.PostAsync("/Buckets", content);
+            using HttpResponseMessage response = await client.PostAsync("/buckets", content);
 
             // Assert
             Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
@@ -166,11 +166,11 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                     Encoding.UTF8,
                     MediaTypeNames.Application.Json);
 
-                await client.PostAsync("/Buckets", content);
+                await client.PostAsync("/buckets", content);
             }
 
             // Act
-            using HttpResponseMessage response = await client.GetAsync("/Buckets");
+            using HttpResponseMessage response = await client.GetAsync("/buckets");
 
             // Assert
             Bucket[] result = JsonSerializer.Deserialize<Bucket[]>(
@@ -201,7 +201,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
             using HttpClient client = this.CreateNewTestClient();
 
             // Act
-            using HttpResponseMessage response = await client.GetAsync("/Buckets?limit=abc&offset=xyz");
+            using HttpResponseMessage response = await client.GetAsync("/buckets?limit=abc&offset=xyz");
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -234,7 +234,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{new Random().Next()}", content);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/buckets/{new Random().Next()}", content);
 
             // Act
             using HttpResponseMessage getBucketResponse = await client.GetAsync(createBucketResponse.Headers.Location);
@@ -259,7 +259,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
             using HttpClient client = this.CreateNewTestClient();
 
             // Act
-            using HttpResponseMessage response = await client.GetAsync("/Buckets/abc");
+            using HttpResponseMessage response = await client.GetAsync("/buckets/abc");
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -273,7 +273,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
             using HttpClient client = this.CreateNewTestClient();
 
             // Act
-            using HttpResponseMessage response = await client.GetAsync("/Buckets/123");
+            using HttpResponseMessage response = await client.GetAsync("/buckets/123");
 
             // Assert
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -301,7 +301,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{new Random().Next()}", content);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/buckets/{new Random().Next()}", content);
 
             // Act
             Bucket updatedBucket = new Bucket
@@ -350,7 +350,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 MediaTypeNames.Application.Json);
 
             // Act
-            using HttpResponseMessage response = await client.PutAsync($"/Buckets/{new Random().Next()}", content);
+            using HttpResponseMessage response = await client.PutAsync($"/buckets/{new Random().Next()}", content);
 
             // Assert
             Bucket result = JsonSerializer.Deserialize<Bucket>(
@@ -359,7 +359,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
 
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
             Assert.Equal(MediaTypeNames.Application.Json, response.Content.Headers.ContentType.MediaType);
-            Assert.Equal(new Uri($"http://localhost/Buckets/{result.Id}"), response.Headers.Location);
+            Assert.Equal(new Uri($"http://localhost/buckets/{result.Id}"), response.Headers.Location);
 
             Assert.Equal(bucket.Name, result.Name);
             Assert.Equal(bucket.Description, result.Description);
@@ -380,7 +380,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 MediaTypeNames.Application.Json);
 
             // Act
-            using HttpResponseMessage response = await client.PutAsync("/Buckets/abc", content);
+            using HttpResponseMessage response = await client.PutAsync("/buckets/abc", content);
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -400,7 +400,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            using HttpResponseMessage createBucketResponse = await client.PostAsync("/Buckets", content);
+            using HttpResponseMessage createBucketResponse = await client.PostAsync("/buckets", content);
 
             // Act
             Bucket updatedBucket = new Bucket
@@ -443,7 +443,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{new Random().Next()}", content);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/buckets/{new Random().Next()}", content);
 
             // Act
             using HttpResponseMessage removeBucketResponse = await client.DeleteAsync(createBucketResponse.Headers.Location);
@@ -459,7 +459,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
             using HttpClient client = this.CreateNewTestClient();
 
             // Act
-            using HttpResponseMessage response = await client.DeleteAsync("/Buckets/abc");
+            using HttpResponseMessage response = await client.DeleteAsync("/buckets/abc");
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -473,7 +473,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
             using HttpClient client = this.CreateNewTestClient();
 
             // Act
-            using HttpResponseMessage response = await client.DeleteAsync("/Buckets/123");
+            using HttpResponseMessage response = await client.DeleteAsync("/buckets/123");
 
             // Assert
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -505,7 +505,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{bucket.Id}", bucketContent);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/buckets/{bucket.Id}", bucketContent);
 
             // Act
             var item = new
@@ -519,7 +519,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            using HttpResponseMessage createItemResponse = await client.PostAsync($"{createBucketResponse.Headers.Location}/Items", itemContent);
+            using HttpResponseMessage createItemResponse = await client.PostAsync($"{createBucketResponse.Headers.Location}/items", itemContent);
 
             // Assert
             Item result = JsonSerializer.Deserialize<Item>(
@@ -528,7 +528,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
 
             Assert.Equal(HttpStatusCode.Created, createItemResponse.StatusCode);
             Assert.Equal(MediaTypeNames.Application.Json, createItemResponse.Content.Headers.ContentType.MediaType);
-            Assert.Equal(new Uri($"http://localhost/Buckets/{bucket.Id}/Items/{result.Id}"), createItemResponse.Headers.Location);
+            Assert.Equal(new Uri($"http://localhost/buckets/{bucket.Id}/items/{result.Id}"), createItemResponse.Headers.Location);
 
             Assert.Equal(item.Name, result.Name);
             Assert.Equal(item.Description, result.Description);
@@ -548,7 +548,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 MediaTypeNames.Application.Json);
 
             // Act
-            using HttpResponseMessage response = await client.PostAsync("/Buckets/abc/Items", content);
+            using HttpResponseMessage response = await client.PostAsync("/buckets/abc/items", content);
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -572,7 +572,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{bucket.Id}", bucketContent);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/buckets/{bucket.Id}", bucketContent);
 
             // Act
             var item = new { };
@@ -582,7 +582,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            using HttpResponseMessage createItemResponse = await client.PostAsync($"{createBucketResponse.Headers.Location}/Items", itemContent);
+            using HttpResponseMessage createItemResponse = await client.PostAsync($"{createBucketResponse.Headers.Location}/items", itemContent);
 
             // Assert
             Assert.Equal(HttpStatusCode.Conflict, createItemResponse.StatusCode);
@@ -603,7 +603,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 MediaTypeNames.Application.Json);
 
             // Act
-            using HttpResponseMessage response = await client.PostAsync("/Buckets/123/Items", content);
+            using HttpResponseMessage response = await client.PostAsync("/buckets/123/items", content);
 
             // Assert
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -635,7 +635,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{bucket.Id}", bucketContent);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/buckets/{bucket.Id}", bucketContent);
 
             for (int i = 1; i <= bucket.Size; i++)
             {
@@ -646,11 +646,11 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                     Encoding.UTF8,
                     MediaTypeNames.Application.Json);
 
-                await client.PostAsync($"{createBucketResponse.Headers.Location}/Items", itemContent);
+                await client.PostAsync($"{createBucketResponse.Headers.Location}/items", itemContent);
             }
 
             // Act
-            using HttpResponseMessage getItemsResponse = await client.GetAsync($"{createBucketResponse.Headers.Location}/Items");
+            using HttpResponseMessage getItemsResponse = await client.GetAsync($"{createBucketResponse.Headers.Location}/items");
 
             // Assert
             Item[] result = JsonSerializer.Deserialize<Item[]>(
@@ -681,7 +681,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
             using HttpClient client = this.CreateNewTestClient();
 
             // Act
-            using HttpResponseMessage response = await client.GetAsync("/Buckets/abc/Items");
+            using HttpResponseMessage response = await client.GetAsync("/buckets/abc/items");
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -695,7 +695,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
             using HttpClient client = this.CreateNewTestClient();
 
             // Act
-            using HttpResponseMessage response = await client.GetAsync("/Buckets/123/Items");
+            using HttpResponseMessage response = await client.GetAsync("/buckets/123/items");
 
             // Assert
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -727,7 +727,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{bucket.Id}", bucketContent);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/buckets/{bucket.Id}", bucketContent);
 
             var item = new
             {
@@ -741,7 +741,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            using HttpResponseMessage createItemResponse = await client.PutAsync($"{createBucketResponse.Headers.Location}/Items/{item.Id}", itemContent);
+            using HttpResponseMessage createItemResponse = await client.PutAsync($"{createBucketResponse.Headers.Location}/items/{item.Id}", itemContent);
 
             // Act
             using HttpResponseMessage getItemResponse = await client.GetAsync(createItemResponse.Headers.Location);
@@ -765,7 +765,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
             using HttpClient client = this.CreateNewTestClient();
 
             // Act
-            using HttpResponseMessage response = await client.GetAsync("/Buckets/abc/Items/abc");
+            using HttpResponseMessage response = await client.GetAsync("/buckets/abc/items/abc");
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -773,8 +773,8 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         }
 
         [Theory]
-        [InlineData("/Buckets/123/Items/321")]
-        [InlineData("/Buckets/321/Items/123")]
+        [InlineData("/buckets/123/items/321")]
+        [InlineData("/buckets/321/items/123")]
         public async Task When_GettingItem_Expect_NotFound(string path)
         {
             // Arrange
@@ -787,7 +787,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            await client.PutAsync("/Buckets/123", bucketContent);
+            await client.PutAsync("/buckets/123", bucketContent);
 
             var item = new { };
 
@@ -796,7 +796,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            await client.PutAsync("/Buckets/123/Items/123", itemContent);
+            await client.PutAsync("/buckets/123/items/123", itemContent);
 
             // Act
             using HttpResponseMessage response = await client.GetAsync(path);
@@ -831,7 +831,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{bucket.Id}", bucketContent);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/buckets/{bucket.Id}", bucketContent);
 
             var item = new { Id = new Random().Next() };
 
@@ -840,7 +840,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            using HttpResponseMessage createItemResponse = await client.PutAsync($"{createBucketResponse.Headers.Location}/Items/{item.Id}", itemContent);
+            using HttpResponseMessage createItemResponse = await client.PutAsync($"{createBucketResponse.Headers.Location}/items/{item.Id}", itemContent);
 
             // Act
             Item updatedItem = new Item
@@ -885,7 +885,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{bucket.Id}", bucketContent);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/buckets/{bucket.Id}", bucketContent);
 
             // Act
             var item = new
@@ -900,7 +900,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            using HttpResponseMessage updateItemResponse = await client.PutAsync($"{createBucketResponse.Headers.Location}/Items/{item.Id}", itemContent);
+            using HttpResponseMessage updateItemResponse = await client.PutAsync($"{createBucketResponse.Headers.Location}/items/{item.Id}", itemContent);
 
             // Assert
             Item result = JsonSerializer.Deserialize<Item>(
@@ -909,7 +909,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
 
             Assert.Equal(HttpStatusCode.Created, updateItemResponse.StatusCode);
             Assert.Equal(MediaTypeNames.Application.Json, updateItemResponse.Content.Headers.ContentType.MediaType);
-            Assert.Equal(new Uri($"http://localhost/Buckets/{bucket.Id}/Items/{result.Id}"), updateItemResponse.Headers.Location);
+            Assert.Equal(new Uri($"http://localhost/buckets/{bucket.Id}/items/{result.Id}"), updateItemResponse.Headers.Location);
 
             Assert.Equal(item.Name, result.Name);
             Assert.Equal(item.Description, result.Description);
@@ -932,7 +932,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{bucket.Id}", bucketContent);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/buckets/{bucket.Id}", bucketContent);
 
             // Act
             var item = new { Id = new Random().Next() };
@@ -942,7 +942,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            using HttpResponseMessage updateItemResponse = await client.PutAsync($"{createBucketResponse.Headers.Location}/Items/{item.Id}", itemContent);
+            using HttpResponseMessage updateItemResponse = await client.PutAsync($"{createBucketResponse.Headers.Location}/items/{item.Id}", itemContent);
 
             // Assert
             Assert.Equal(HttpStatusCode.Conflict, updateItemResponse.StatusCode);
@@ -963,7 +963,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 MediaTypeNames.Application.Json);
 
             // Act
-            using HttpResponseMessage response = await client.PutAsync("/Buckets/abc/Items/abc", content);
+            using HttpResponseMessage response = await client.PutAsync("/buckets/abc/items/abc", content);
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -984,7 +984,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 MediaTypeNames.Application.Json);
 
             // Act
-            using HttpResponseMessage response = await client.PutAsync("/Buckets/123/Items/123", content);
+            using HttpResponseMessage response = await client.PutAsync("/buckets/123/items/123", content);
 
             // Assert
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -1016,7 +1016,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/Buckets/{bucket.Id}", bucketContent);
+            using HttpResponseMessage createBucketResponse = await client.PutAsync($"/buckets/{bucket.Id}", bucketContent);
 
             var item = new { Id = new Random().Next() };
 
@@ -1025,7 +1025,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            using HttpResponseMessage createItemResponse = await client.PutAsync($"{createBucketResponse.Headers.Location}/Items/{item.Id}", itemContent);
+            using HttpResponseMessage createItemResponse = await client.PutAsync($"{createBucketResponse.Headers.Location}/items/{item.Id}", itemContent);
 
             // Act
             using HttpResponseMessage removeItemResponse = await client.DeleteAsync(createItemResponse.Headers.Location);
@@ -1041,7 +1041,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
             using HttpClient client = this.CreateNewTestClient();
 
             // Act
-            using HttpResponseMessage response = await client.DeleteAsync("/Buckets/abc/Items/abc");
+            using HttpResponseMessage response = await client.DeleteAsync("/buckets/abc/items/abc");
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -1049,8 +1049,8 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         }
 
         [Theory]
-        [InlineData("/Buckets/123/Items/321")]
-        [InlineData("/Buckets/321/Items/123")]
+        [InlineData("/buckets/123/items/321")]
+        [InlineData("/buckets/321/items/123")]
         public async Task When_RemovingItem_Expect_NotFound(string path)
         {
             // Arrange
@@ -1063,7 +1063,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            await client.PutAsync("/Buckets/123", bucketContent);
+            await client.PutAsync("/buckets/123", bucketContent);
 
             var item = new { };
 
@@ -1072,7 +1072,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
-            await client.PutAsync("/Buckets/123/Items/123", itemContent);
+            await client.PutAsync("/buckets/123/items/123", itemContent);
 
             // Act
             using HttpResponseMessage response = await client.DeleteAsync(path);

@@ -12,7 +12,7 @@ using Scaffold.WebApi.Models.Bucket;
 using Scaffold.WebApi.Models.Item;
 
 [ApiController]
-[Route("[controller]")]
+[Route("buckets")]
 public class BucketsController : ControllerBase
 {
     private readonly IMapper mapper;
@@ -127,7 +127,7 @@ public class BucketsController : ControllerBase
     /// <returns>The created Item object.</returns>
     /// <response code="201">Item created successfully.</response>
     /// <response code="default">Problem Details (RFC 7807) Response.</response>
-    [HttpPost("{bucketId}/Items")]
+    [HttpPost("{bucketId}/items")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Item))]
     [ProducesDefaultResponseType]
     public async Task<ActionResult> AddItem(int bucketId, [FromBody] AddItemRequestBody requestBody)
@@ -148,7 +148,7 @@ public class BucketsController : ControllerBase
     /// <returns>A list of Item objects.</returns>
     /// <response code="200">Items retrieved successfully.</response>
     /// <response code="default">Problem Details (RFC 7807) Response.</response>
-    [HttpGet("{bucketId}/Items")]
+    [HttpGet("{bucketId}/items")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesDefaultResponseType]
     public async Task<IEnumerable<Item>> GetItems(int bucketId)
@@ -163,7 +163,7 @@ public class BucketsController : ControllerBase
     /// <returns>The specified Item object.</returns>
     /// <response code="200">Item retrieved successfully.</response>
     /// <response code="default">Problem Details (RFC 7807) Response.</response>
-    [HttpGet("{bucketId}/Items/{itemId}", Name = "GetItem")]
+    [HttpGet("{bucketId}/items/{itemId}", Name = "GetItem")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesDefaultResponseType]
     public async Task<Item> GetItem(int bucketId, int itemId)
@@ -185,7 +185,7 @@ public class BucketsController : ControllerBase
     /// <response code="200">Item updated successfully.</response>
     /// <response code="201">Item created successfully.</response>
     /// <response code="default">Problem Details (RFC 7807) Response.</response>
-    [HttpPut("{bucketId}/Items/{itemId}")]
+    [HttpPut("{bucketId}/items/{itemId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Item))]
     [ProducesDefaultResponseType]
@@ -209,7 +209,7 @@ public class BucketsController : ControllerBase
     /// <returns>A "No Content (204)" HTTP status response.</returns>
     /// <response code="204">Item deleted successfully.</response>
     /// <response code="default">Problem Details (RFC 7807) Response.</response>
-    [HttpDelete("{bucketId}/Items/{itemId}")]
+    [HttpDelete("{bucketId}/items/{itemId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesDefaultResponseType]
     public async Task<ActionResult> RemoveItem(int bucketId, int itemId)

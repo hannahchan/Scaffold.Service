@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
 [ApiController]
-[Route("[controller]")]
+[Route("demo")]
 public class DemoController : ControllerBase
 {
     private readonly IClient demoClient;
@@ -31,7 +31,7 @@ public class DemoController : ControllerBase
     /// <returns>A string containing the trace identifier (TraceID) for the chain.</returns>
     /// <response code="200">The chain of requests was created successfully.</response>
     /// <response code="default">Problem Details (RFC 7807) Response.</response>
-    [HttpGet("Trace")]
+    [HttpGet("trace")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesDefaultResponseType]
     public async Task<string?> Trace()
@@ -44,7 +44,7 @@ public class DemoController : ControllerBase
     /// <returns>A string containing the trace identifier (TraceID) for the chain.</returns>
     /// <response code="200">The chain of requests was created successfully.</response>
     /// <response code="default">Problem Details (RFC 7807) Response.</response>
-    [HttpGet("Trace/{depth}")]
+    [HttpGet("trace/{depth}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesDefaultResponseType]
     public async Task<string?> Trace(int depth)

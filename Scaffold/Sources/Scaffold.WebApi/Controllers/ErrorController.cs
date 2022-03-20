@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [ApiExplorerSettings(IgnoreApi = true)]
-[Route("[controller]")]
+[Route("error")]
 public class ErrorController : ControllerBase
 {
     public ActionResult Error()

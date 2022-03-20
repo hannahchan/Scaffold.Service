@@ -27,7 +27,7 @@ public class ErrorControllerIntegrationTests : IClassFixture<WebApplicationFacto
         client.DefaultRequestHeaders.Add(HeaderNames.Accept, MediaTypeNames.Application.Json);
 
         // Act
-        using HttpResponseMessage response = await client.GetAsync("/Error");
+        using HttpResponseMessage response = await client.GetAsync("/error");
 
         // Assert
         Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
@@ -48,7 +48,7 @@ public class ErrorControllerIntegrationTests : IClassFixture<WebApplicationFacto
         client.DefaultRequestHeaders.Add(HeaderNames.Accept, MediaTypeNames.Application.Xml);
 
         // Act
-        using HttpResponseMessage response = await client.GetAsync("/Error");
+        using HttpResponseMessage response = await client.GetAsync("/error");
 
         // Assert
         Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
