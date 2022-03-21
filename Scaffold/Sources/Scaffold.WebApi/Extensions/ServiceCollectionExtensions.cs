@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Npgsql;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Polly;
@@ -87,6 +88,7 @@ internal static class ServiceCollectionExtensions
                 options.Filter = httpContext => !httpContext.Request.Path.IgnorePath(IgnorePatterns);
             })
             .AddHttpClientInstrumentation()
+            .AddNpgsql()
             .AddSource(Application.ActivitySource.Name)
             .AddJaegerExporter(options =>
             {
