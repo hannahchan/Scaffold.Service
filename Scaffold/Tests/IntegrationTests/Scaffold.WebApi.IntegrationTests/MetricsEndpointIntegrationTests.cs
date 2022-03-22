@@ -39,4 +39,29 @@ public class MetricsEndpointIntegrationTests : IClassFixture<WebApplicationFacto
         Assert.Equal(HttpStatusCode.OK, expectedOkResponse.StatusCode);
         Assert.Equal(MediaTypeNames.Text.Plain, expectedOkResponse.Content.Headers.ContentType.MediaType);
     }
+
+    [Fact]
+    public async Task When_MetricsPortIsNull_Expect_OkOnAllPort()
+    {
+        // Arrange
+        int randomPort1 = new Random().Next(1024, 65535);
+        int randomPort2 = new Random().Next(1024, 65535);
+
+        using HttpClient client = this.factory.WithWebHostBuilder(builder =>
+        {
+            builder.UseSetting("METRICSPORT", null);
+            builder.UseSetting("URLS", $"http://+:{randomPort1};http://+:{randomPort2}");
+        }).CreateClient();
+
+        // Act
+        using HttpResponseMessage expectedOkResponse1 = await client.GetAsync($"http://localhost:{randomPort1}/metrics");
+        using HttpResponseMessage expectedOkResponse2 = await client.GetAsync($"http://localhost:{randomPort2}/metrics");
+
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, expectedOkResponse1.StatusCode);
+        Assert.Equal(MediaTypeNames.Text.Plain, expectedOkResponse1.Content.Headers.ContentType.MediaType);
+
+        Assert.Equal(HttpStatusCode.OK, expectedOkResponse2.StatusCode);
+        Assert.Equal(MediaTypeNames.Text.Plain, expectedOkResponse2.Content.Headers.ContentType.MediaType);
+    }
 }

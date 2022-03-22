@@ -178,4 +178,46 @@ public class HealthCheckIntegrationTests : IClassFixture<WebApplicationFactory<S
         Assert.Equal(MediaTypeNames.Text.Plain, expectedOkResponse.Content.Headers.ContentType.MediaType);
         Assert.Equal("Healthy", await expectedOkResponse.Content.ReadAsStringAsync());
     }
+
+    [Fact]
+    public async Task When_HealthCheckPortIsNull_Expect_OkOnAllPort()
+    {
+        // Arrange
+        int randomPort1 = new Random().Next(1024, 65535);
+        int randomPort2 = new Random().Next(1024, 65535);
+
+        using HttpClient client = this.factory.WithWebHostBuilder(builder =>
+        {
+            builder.ConfigureServices(services =>
+            {
+                services.Remove(services.SingleOrDefault(service =>
+                    service.ServiceType == typeof(DbContextOptions<BucketContext>)));
+
+                services.AddDbContext<BucketContext>(options =>
+                    options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
+
+                services.Remove(services.SingleOrDefault(service =>
+                    service.ServiceType == typeof(DbContextOptions<BucketContext.ReadOnly>)));
+
+                services.AddDbContext<BucketContext.ReadOnly>(options =>
+                    options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
+            });
+
+            builder.UseSetting("HEALTHCHECKPORT", null);
+            builder.UseSetting("URLS", $"http://+:{randomPort1};http://+:{randomPort2}");
+        }).CreateClient();
+
+        // Act
+        using HttpResponseMessage expectedOkResponse1 = await client.GetAsync($"http://localhost:{randomPort1}/health");
+        using HttpResponseMessage expectedOkResponse2 = await client.GetAsync($"http://localhost:{randomPort2}/health");
+
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, expectedOkResponse1.StatusCode);
+        Assert.Equal(MediaTypeNames.Text.Plain, expectedOkResponse1.Content.Headers.ContentType.MediaType);
+        Assert.Equal("Healthy", await expectedOkResponse1.Content.ReadAsStringAsync());
+
+        Assert.Equal(HttpStatusCode.OK, expectedOkResponse2.StatusCode);
+        Assert.Equal(MediaTypeNames.Text.Plain, expectedOkResponse2.Content.Headers.ContentType.MediaType);
+        Assert.Equal("Healthy", await expectedOkResponse2.Content.ReadAsStringAsync());
+    }
 }
