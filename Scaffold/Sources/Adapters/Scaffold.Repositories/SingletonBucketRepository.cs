@@ -1,6 +1,7 @@
 namespace Scaffold.Repositories;
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -100,6 +101,22 @@ public class SingletonBucketRepository : SingletonBucketReadRepository, IBucketR
     public async Task UpdateAsync(Bucket bucket, CancellationToken cancellationToken = default)
     {
         using BucketContext context = await this.factory.CreateDbContextAsync(cancellationToken);
+
+        List<Item> itemsInDb = context.Items.Where(item => EF.Property<int>(item, "BucketId") == bucket.Id).ToList();
+
+        static int KeySelector(Item item) => item.Id;
+
+        // Add New Items
+        List<Item> itemsToAdd = bucket.Items.ExceptBy(itemsInDb.Select(KeySelector), KeySelector).ToList();
+        context.Items.AddRange(itemsToAdd);
+
+        // Remove Missing Items
+        List<Item> itemsToRemove = itemsInDb.ExceptBy(bucket.Items.Select(KeySelector), KeySelector).ToList();
+        context.Items.RemoveRange(itemsToRemove);
+
+        // Update Existing Items
+        List<Item> itemsToUpdate = bucket.Items.IntersectBy(itemsInDb.Select(KeySelector), KeySelector).ToList();
+        context.Items.UpdateRange(itemsToUpdate);
 
         context.Buckets.Update(bucket);
         await context.SaveChangesAsync(cancellationToken);
