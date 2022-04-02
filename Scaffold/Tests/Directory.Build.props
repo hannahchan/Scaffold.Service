@@ -4,7 +4,6 @@
 
   <PropertyGroup>
     <!-- Disable until xUnit supports Nullable Reference Types. This feature is expected in xUnit 3. -->
-    <!-- Delete this file when all test projects are using xUnit 3. -->
     <Nullable>disable</Nullable>
   </PropertyGroup>
 

@@ -24,6 +24,7 @@ Other stuff you inherit when you bootstrap with Scaffold.
 
 - [Architecture](./Docs/Architecture.md)
 - [Code Analysis and Formatting](./Docs/CodeAnalysisAndFormatting.md)
+- [Cross-platform Support](./Docs/CrossPlatformSupport.md)
 - [Deterministic Builds](./Docs/DeterministicBuilds.md)
 - [Development Container](./Docs/DevelopmentContainer.md)
 - [Docker Support](./Docs/Docker.md)

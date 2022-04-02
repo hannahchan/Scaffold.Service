@@ -40,6 +40,7 @@ Other stuff you inherit when you bootstrap with Scaffold.Service.
 
 - [Architecture](./Scaffold/Docs/Architecture.md)
 - [Code Analysis and Formatting](./Scaffold/Docs/CodeAnalysisAndFormatting.md)
+- [Cross-platform Support](./Scaffold/Docs/CrossPlatformSupport.md)
 - [Deterministic Builds](./Scaffold/Docs/DeterministicBuilds.md)
 - [Development Container](./Scaffold/Docs/DevelopmentContainer.md)
 - [Docker Support](./Scaffold/Docs/Docker.md)
