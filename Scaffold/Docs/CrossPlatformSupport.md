@@ -4,7 +4,7 @@ Cross-platform support is sometimes also referred to as multi-platform support.
 
 ## Building on Different Platforms
 
-Whether you are developing on macOS or Windows, on ARM or Intel, on a 32-bit or 64-bit machine, the developer experience for Scaffold has been designed to be consistent as much as possible. For the most consistent cross-platform experience, we recommend using Visual Studio Code (vscode) as your Integrated Development Environment (IDE).
+Whether you are developing on macOS or Windows, on ARM or Intel, on a 32-bit or 64-bit machine, the developer experience for Scaffold has been designed to be consistent as much as possible. For the most consistent cross-platform experience, we recommend using a 64-bit development machine with Visual Studio Code (vscode) as your Integrated Development Environment (IDE).
 
 ## Building for Different Platforms
 
