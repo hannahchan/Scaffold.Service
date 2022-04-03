@@ -63,6 +63,8 @@ Stuff you might want to add to your service but not included with Scaffold.Servi
 - [Response Compressions](https://docs.microsoft.com/aspnet/core/performance/response-compression)
 - [Secrets Management](https://docs.microsoft.com/aspnet/core/security/app-secrets)
 
+If building microservices, you may want to bring your own sidecars.
+
 ## Example App
 
 Scaffold.Service includes an example application which is intended to be replaced with your actual application when using this template. This example application has been included to help demonstrate features in this template.
@@ -73,7 +75,7 @@ Explore the service by going to `/swagger` in a web browser.
 
 ## Create Your Own
 
-You are also invited to fork this repository to create your own template. Organizations may want to do this to pre-configure the template to work in their environments and incorporate their own sensible defaults.
+You are also invited to fork this repository to create your own template. Organizations may want to do this to pre-configure the template to work in their environment and incorporate their own sensible defaults.
 
 For more information about custom templates, please checkout [_Custom templates for dotnet new_](https://docs.microsoft.com/dotnet/core/tools/custom-templates).
 

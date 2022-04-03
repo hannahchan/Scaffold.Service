@@ -47,6 +47,8 @@ Stuff you might want to add to your service but not included with Scaffold.
 - [Response Compressions](https://docs.microsoft.com/aspnet/core/performance/response-compression)
 - [Secrets Management](https://docs.microsoft.com/aspnet/core/security/app-secrets)
 
+If building microservices, you may want to bring your own sidecars.
+
 ## Example App
 
 Scaffold includes an example application which is intended to be replaced with your actual application when using this template. This example application has been included to help demonstrate features in this template.
