@@ -18,4 +18,4 @@ For more information about publishing .NET applications, please visit the [_.NET
 
 ### Docker
 
-Building cross-platform container images for Scaffold is currently unexplored. It may be possible with [Buildx](https://docs.docker.com/buildx/working-with-buildx).
+Building cross-platform container images is possible with [Docker Buildx](https://docs.docker.com/buildx/working-with-buildx). For more information, please check out the [_Leverage multi-CPU architecture support_](https://docs.docker.com/desktop/multi-arch) page in the Docker documentation.
