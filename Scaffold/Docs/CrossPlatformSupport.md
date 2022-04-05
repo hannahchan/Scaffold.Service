@@ -18,4 +18,4 @@ For more information about publishing .NET applications, please visit the [_.NET
 
 ### Docker
 
-Building cross-platform container images is possible with [Docker Buildx](https://docs.docker.com/buildx/working-with-buildx). For more information, please check out the [_Leverage multi-CPU architecture support_](https://docs.docker.com/desktop/multi-arch) page in the Docker documentation.
+Building container images that target different platforms is possible with [Docker Buildx](https://docs.docker.com/buildx/working-with-buildx). It is also possible to put images that target different platforms under the same image name and tag when pushing to a container registry. For information on how to do this, please check out the [_Leverage multi-CPU architecture support_](https://docs.docker.com/desktop/multi-arch) page in the Docker documentation.
