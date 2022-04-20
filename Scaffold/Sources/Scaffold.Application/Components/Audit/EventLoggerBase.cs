@@ -1,13 +1,12 @@
 namespace Scaffold.Application.Components.Audit;
 
-using System;
 using Microsoft.Extensions.Logging;
 
-internal abstract class EventLoggerBase
+internal abstract partial class EventLoggerBase
 {
-    private protected static readonly Action<ILogger, string, string, Exception?> LogAuditableEvent =
-        LoggerMessage.Define<string, string>(LogLevel.Information, default, "{Type} - {Description}");
+    [LoggerMessage(EventId = 1, Level = LogLevel.Information, Message = "{Type} - {Description}")]
+    private protected static partial void LogAuditableEvent(ILogger logger, string type, string description);
 
-    private protected static readonly Action<ILogger, string?, Exception?> LogNonAuditableEvent =
-        LoggerMessage.Define<string?>(LogLevel.Information, default, "Received Event {Type}");
+    [LoggerMessage(EventId = 2, Level = LogLevel.Information, Message = "Received Event {Type}")]
+    private protected static partial void LogNonAuditableEvent(ILogger logger, string? type);
 }

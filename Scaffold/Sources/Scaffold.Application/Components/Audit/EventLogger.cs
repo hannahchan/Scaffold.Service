@@ -20,11 +20,11 @@ internal class EventLogger<TNotification> : EventLoggerBase, INotificationHandle
     {
         if (notification is IAuditableEvent auditableEvent)
         {
-            LogAuditableEvent(this.logger, auditableEvent.Type, auditableEvent.Description, null);
+            LogAuditableEvent(this.logger, auditableEvent.Type, auditableEvent.Description);
             return Task.CompletedTask;
         }
 
-        LogNonAuditableEvent(this.logger, notification.GetType().FullName, null);
+        LogNonAuditableEvent(this.logger, notification.GetType().FullName);
         return Task.CompletedTask;
     }
 }

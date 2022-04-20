@@ -6,27 +6,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-public class RequestLoggingHttpMessageHandler : DelegatingHandler
+public partial class RequestLoggingHttpMessageHandler : DelegatingHandler
 {
-    private const string RequestStartedMessageTemplate = "Outbound HTTP {HttpMethod} {Uri} started";
-
-    private const string RequestFinishedMessageTemplate = "Outbound HTTP {HttpMethod} {Uri} finished - {StatusCode}";
-
-    private static readonly Action<ILogger, HttpMethod, Uri, Exception?> LogRequestStarted =
-        LoggerMessage.Define<HttpMethod, Uri>(LogLevel.Information, default, RequestStartedMessageTemplate);
-
-    private static readonly Action<ILogger, HttpMethod, Uri, int, Exception?> LogRequestFinishedInformation =
-        LoggerMessage.Define<HttpMethod, Uri, int>(LogLevel.Information, default, RequestFinishedMessageTemplate);
-
-    private static readonly Action<ILogger, HttpMethod, Uri, int, Exception?> LogRequestFinishedWarning =
-        LoggerMessage.Define<HttpMethod, Uri, int>(LogLevel.Warning, default, RequestFinishedMessageTemplate);
-
-    private static readonly Action<ILogger, HttpMethod, Uri, int, Exception?> LogRequestFinishedError =
-        LoggerMessage.Define<HttpMethod, Uri, int>(LogLevel.Error, default, RequestFinishedMessageTemplate);
-
-    private static readonly Action<ILogger, HttpMethod, Uri, string, Exception?> LogRequestFinishedCritical =
-        LoggerMessage.Define<HttpMethod, Uri, string>(LogLevel.Critical, default, RequestFinishedMessageTemplate);
-
     private readonly ILogger logger;
 
     public RequestLoggingHttpMessageHandler(ILogger<RequestLoggingHttpMessageHandler> logger)
@@ -41,7 +22,7 @@ public class RequestLoggingHttpMessageHandler : DelegatingHandler
             throw new InvalidOperationException("Missing RequestUri while processing request.");
         }
 
-        LogRequestStarted(this.logger, request.Method, request.RequestUri, null);
+        LogRequestStarted(this.logger, LogLevel.Information, request.Method, request.RequestUri);
 
         try
         {
@@ -49,27 +30,36 @@ public class RequestLoggingHttpMessageHandler : DelegatingHandler
 
             int statusCode = (int)response.StatusCode;
 
-            if (statusCode >= 200 && statusCode <= 299)
+            if (statusCode is >= 200 and <= 299)
             {
-                LogRequestFinishedInformation(this.logger, request.Method, request.RequestUri, statusCode, null);
+                LogRequestFinished(this.logger, LogLevel.Information, request.Method, request.RequestUri, statusCode);
                 return response;
             }
 
             if (statusCode >= 500)
             {
-                LogRequestFinishedError(this.logger, request.Method, request.RequestUri, statusCode, null);
+                LogRequestFinished(this.logger, LogLevel.Error, request.Method, request.RequestUri, statusCode);
                 return response;
             }
 
-            LogRequestFinishedWarning(this.logger, request.Method, request.RequestUri, statusCode, null);
+            LogRequestFinished(this.logger, LogLevel.Warning, request.Method, request.RequestUri, statusCode);
 
             return response;
         }
         catch (Exception exception)
         {
-            LogRequestFinishedCritical(this.logger, request.Method, request.RequestUri, "Unhandled Exception", exception);
+            LogRequestException(this.logger, LogLevel.Critical, request.Method, request.RequestUri, exception);
 
             throw;
         }
     }
+
+    [LoggerMessage(EventId = 1, Message = "Outbound HTTP {HttpMethod} {Uri} started")]
+    private static partial void LogRequestStarted(ILogger logger, LogLevel logLevel, HttpMethod httpMethod, Uri uri);
+
+    [LoggerMessage(EventId = 2, Message = "Outbound HTTP {HttpMethod} {Uri} finished - {StatusCode}")]
+    private static partial void LogRequestFinished(ILogger logger, LogLevel logLevel, HttpMethod httpMethod, Uri uri, int StatusCode);
+
+    [LoggerMessage(EventId = 3, Message = "Outbound HTTP {HttpMethod} {Uri} finished - Unhandled Exception")]
+    private static partial void LogRequestException(ILogger logger, LogLevel logLevel, HttpMethod httpMethod, Uri uri, Exception exception);
 }
