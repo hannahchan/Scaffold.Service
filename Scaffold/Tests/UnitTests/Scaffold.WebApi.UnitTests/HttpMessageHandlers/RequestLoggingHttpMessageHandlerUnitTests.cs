@@ -42,11 +42,13 @@ public class RequestLoggingHttpMessageHandlerUnitTests
             logger.LogEntries,
             logEntry =>
             {
+                Assert.Equal(1, logEntry.EventId);
                 Assert.Equal(LogLevel.Information, logEntry.LogLevel);
                 Assert.Equal("Outbound HTTP GET http://localhost/ started", logEntry.Message);
             },
             logEntry =>
             {
+                Assert.Equal(2, logEntry.EventId);
                 Assert.Equal(expectedLogLevel, logEntry.LogLevel);
                 Assert.Equal($"Outbound HTTP GET http://localhost/ finished - {statusCode}", logEntry.Message);
             });
@@ -75,11 +77,13 @@ public class RequestLoggingHttpMessageHandlerUnitTests
             logger.LogEntries,
             logEntry =>
             {
+                Assert.Equal(1, logEntry.EventId);
                 Assert.Equal(LogLevel.Information, logEntry.LogLevel);
                 Assert.Equal("Outbound HTTP GET http://localhost/ started", logEntry.Message);
             },
             logEntry =>
             {
+                Assert.Equal(3, logEntry.EventId);
                 Assert.Equal(LogLevel.Critical, logEntry.LogLevel);
                 Assert.Equal("Outbound HTTP GET http://localhost/ finished - Unhandled Exception", logEntry.Message);
             });

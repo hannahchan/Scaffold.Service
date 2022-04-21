@@ -44,11 +44,13 @@ public class RequestLoggingMiddlewareUnitTests
             logger.LogEntries,
             logEntry =>
             {
+                Assert.Equal(1, logEntry.EventId);
                 Assert.Equal(LogLevel.Information, logEntry.LogLevel);
                 Assert.Equal("Inbound HTTP   started", logEntry.Message);
             },
             logEntry =>
             {
+                Assert.Equal(2, logEntry.EventId);
                 Assert.Equal(expectedLogLevel, logEntry.LogLevel);
                 Assert.Equal($"Inbound HTTP   finished - {statusCode}", logEntry.Message);
             });
@@ -127,11 +129,13 @@ public class RequestLoggingMiddlewareUnitTests
             logger.LogEntries,
             logEntry =>
             {
+                Assert.Equal(1, logEntry.EventId);
                 Assert.Equal(LogLevel.Information, logEntry.LogLevel);
                 Assert.Equal("Inbound HTTP   started", logEntry.Message);
             },
             logEntry =>
             {
+                Assert.Equal(3, logEntry.EventId);
                 Assert.Equal(LogLevel.Critical, logEntry.LogLevel);
                 Assert.Equal("Inbound HTTP   finished - Unhandled Exception", logEntry.Message);
             });

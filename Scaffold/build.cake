@@ -106,6 +106,9 @@ Task("Test")
 
         DeleteDirectories(GetDirectories(coverageReports), deleteSettings);
 
+        // Filter files created from Source Generators
+        string fileFilters = "-filefilters:\"-*.g.cs;-*.generated.cs\"";
+
         // Coverage Report - Combined (Integration + Unit) Tests
         DotNetTool("reportgenerator", new DotNetToolSettings
         {
@@ -116,6 +119,7 @@ Task("Test")
                 .Append($"-historydir:\"{coverageHistory}/Combined\"")
                 .Append($"-title:\"{projectName} Combined (Integration + Unit) Tests\"")
                 .Append($"-verbosity:\"Error\"")
+                .Append(fileFilters)
         });
 
         // Coverage Report - Integration Tests
@@ -128,6 +132,7 @@ Task("Test")
                 .Append($"-historydir:\"{coverageHistory}/IntegrationTests\"")
                 .Append($"-title:\"{projectName} Integration Tests\"")
                 .Append($"-verbosity:\"Error\"")
+                .Append(fileFilters)
         });
 
         // Coverage Report - Unit Tests
@@ -140,6 +145,7 @@ Task("Test")
                 .Append($"-historydir:\"{coverageHistory}/UnitTests\"")
                 .Append($"-title:\"{projectName} Unit Tests\"")
                 .Append($"-verbosity:\"Error\"")
+                .Append(fileFilters)
         });
     });
 
