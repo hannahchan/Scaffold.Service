@@ -139,11 +139,30 @@ public static class Mock
     {
         private object response;
 
+        private IAsyncEnumerable<object> stream;
+
         public List<ReceivedRequest> ReceivedRequests { get; } = new List<ReceivedRequest>();
 
         public void SetResponse(object response)
         {
             this.response = response;
+        }
+
+        public void SetStream(IAsyncEnumerable<object> stream)
+        {
+            this.stream = stream;
+        }
+
+        public IAsyncEnumerable<TResponse> CreateStream<TResponse>(IStreamRequest<TResponse> request, CancellationToken cancellationToken = default)
+        {
+            this.ReceivedRequests.Add(new ReceivedRequest(request, cancellationToken));
+            return (IAsyncEnumerable<TResponse>)this.stream;
+        }
+
+        public IAsyncEnumerable<object> CreateStream(object request, CancellationToken cancellationToken = default)
+        {
+            this.ReceivedRequests.Add(new ReceivedRequest(request, cancellationToken));
+            return this.stream;
         }
 
         public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
