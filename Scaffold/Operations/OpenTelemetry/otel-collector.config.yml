@@ -1,0 +1,27 @@
+---
+receivers:
+  otlp:
+    protocols:
+      grpc: ~
+      http: ~
+processors:
+  batch: ~
+exporters:
+  jaeger:
+    endpoint: "jaeger:14250"
+    tls:
+      insecure: true
+  prometheus:
+    endpoint: "0.0.0.0:8081"
+extensions: ~
+service:
+  extensions: []
+  pipelines:
+    metrics:
+      exporters: [prometheus]
+      processors: [batch]
+      receivers: [otlp]
+    traces:
+      exporters: [jaeger]
+      processors: [batch]
+      receivers: [otlp]

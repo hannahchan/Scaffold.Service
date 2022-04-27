@@ -17,28 +17,16 @@ services:
       - source: "${LOCAL_WORKSPACE_FOLDER:-.}/Operations/Grafana/datasources"
         target: /etc/grafana/provisioning/datasources
         type: bind
-  jaeger:
+  opentelemetry-collector:
     ports:
       - mode: ingress
-        protocol: udp
-        published: 6831
-        target: 6831
-      - mode: ingress
-        protocol: udp
-        published: 6832
-        target: 6832
-      - mode: ingress
         protocol: tcp
-        published: 5778
-        target: 5778
-      - mode: ingress
-        protocol: tcp
-        published: 14268
-        target: 14268
-      - mode: ingress
-        protocol: tcp
-        published: 14250
-        target: 14250
+        published: 4317
+        target: 4317
+    volumes:
+      - source: "${LOCAL_WORKSPACE_FOLDER:-.}/Operations/OpenTelemetry/otel-collector.config.yml"
+        target: /etc/otel-collector-config.yaml
+        type: bind
   prometheus:
     volumes:
       - source: "${LOCAL_WORKSPACE_FOLDER:-.}/Operations/Prometheus/prometheus.yml"

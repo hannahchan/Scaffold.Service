@@ -9,7 +9,7 @@
   "remoteEnv": {
     "ConnectionStrings__DefaultConnection": "Host=host.docker.internal;Port=5432;Database=postgres;Username=postgres;",
     "ConnectionStrings__ReadOnlyConnection": "Host=host.docker.internal;Port=5432;Database=postgres;Username=postgres;",
-    "Jaeger__AgentHost": "host.docker.internal",
+    "OpenTelemetry__Endpoint": "http://host.docker.internal:4317",
     "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
   },
   "remoteUser": "vscode",

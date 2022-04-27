@@ -71,7 +71,15 @@
         "command": "docker-compose.exe"
       },
       "type": "process",
-      "args": ["up", "--detach", "postgres", "grafana", "jaeger", "prometheus"],
+      "args": [
+        "up",
+        "--detach",
+        "postgres",
+        "grafana",
+        "jaeger",
+        "opentelemetry-collector",
+        "prometheus"
+      ],
       "presentation": {
         "echo": true,
         "reveal": "always",

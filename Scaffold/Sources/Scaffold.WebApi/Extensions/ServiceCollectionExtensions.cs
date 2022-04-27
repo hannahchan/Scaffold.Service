@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Npgsql;
+using OpenTelemetry.Exporter;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Polly;
@@ -75,26 +76,34 @@ internal static class ServiceCollectionExtensions
 
     public static IServiceCollection AddOpenTelemetry(this IServiceCollection services, IConfiguration config)
     {
-        string serviceName = config.GetValue("OpenTelemetry:ServiceName", "Scaffold");
-        string serviceNamespace = config.GetValue("OpenTelemetry:ServiceNamespace", string.Empty);
+        services.AddOpenTelemetryTracing(builder =>
+        {
+            // Configure OpenTelemetry
+            string serviceName = config.GetValue<string>("OpenTelemetry:ServiceName");
+            string serviceNamespace = config.GetValue<string>("OpenTelemetry:ServiceNamespace");
 
-        ResourceBuilder resourceBuilder = ResourceBuilder.CreateDefault()
-            .AddService(serviceName, serviceNamespace);
+            ResourceBuilder resourceBuilder = ResourceBuilder.CreateDefault()
+                .AddService(serviceName, serviceNamespace);
 
-        services.AddOpenTelemetryTracing(builder => builder
-            .SetResourceBuilder(resourceBuilder)
-            .AddAspNetCoreInstrumentation(options =>
+            builder.SetResourceBuilder(resourceBuilder);
+
+            // Add Instrumentation / Sources
+            builder
+                .AddAspNetCoreInstrumentation(options =>
+                {
+                    options.Filter = httpContext => !httpContext.Request.Path.IgnorePath(IgnorePatterns);
+                })
+                .AddHttpClientInstrumentation()
+                .AddNpgsql()
+                .AddSource(Application.ActivitySource.Name);
+
+            // Add Exporters
+            builder.AddOtlpExporter(options =>
             {
-                options.Filter = httpContext => !httpContext.Request.Path.IgnorePath(IgnorePatterns);
-            })
-            .AddHttpClientInstrumentation()
-            .AddNpgsql()
-            .AddSource(Application.ActivitySource.Name)
-            .AddJaegerExporter(options =>
-            {
-                options.AgentHost = config.GetValue("Jaeger:AgentHost", "localhost");
-                options.AgentPort = config.GetValue("Jaeger:AgentPort", 6831);
-            }));
+                options.Endpoint = new Uri(config.GetValue<string>("OpenTelemetry:Endpoint"));
+                options.Protocol = OtlpExportProtocol.Grpc;
+            });
+        });
 
         return services;
     }

@@ -14,7 +14,6 @@ internal static class WebHostBuilderExtensions
             {
                 configurationBuilder.AddInMemoryCollection(new Dictionary<string, string>
                 {
-                    { "Jaeger:AgentHost", "localhost" },
                 });
             })
             .ConfigureLogging(logging => logging.ClearProviders().AddDebug());
