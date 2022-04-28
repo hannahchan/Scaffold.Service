@@ -25,7 +25,7 @@ services:
         target: 4317
     volumes:
       - source: "${LOCAL_WORKSPACE_FOLDER:-.}/Operations/OpenTelemetry/otel-collector.config.yml"
-        target: /etc/otel-collector-config.yaml
+        target: /etc/otel-collector.config.yml
         type: bind
   prometheus:
     volumes:
