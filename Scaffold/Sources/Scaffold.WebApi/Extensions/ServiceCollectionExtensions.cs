@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Npgsql;
 using OpenTelemetry.Exporter;
+using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Polly;
@@ -76,33 +77,40 @@ internal static class ServiceCollectionExtensions
 
     public static IServiceCollection AddOpenTelemetry(this IServiceCollection services, IConfiguration config)
     {
+        string serviceName = config.GetValue<string>("OpenTelemetry:ServiceName");
+        string serviceNamespace = config.GetValue<string>("OpenTelemetry:ServiceNamespace");
+
+        ResourceBuilder resourceBuilder = ResourceBuilder.CreateDefault()
+            .AddService(serviceName, serviceNamespace);
+
+        void ConfigureOtlpExporter(OtlpExporterOptions options)
+        {
+            options.Endpoint = new Uri(config.GetValue<string>("OpenTelemetry:Endpoint"));
+            options.Protocol = OtlpExportProtocol.Grpc;
+        }
+
+        services.AddOpenTelemetryMetrics(builder =>
+        {
+            builder
+                .SetResourceBuilder(resourceBuilder)
+                .AddAspNetCoreInstrumentation()
+                .AddHttpClientInstrumentation()
+                .AddMeter(Application.Meter.Name)
+                .AddOtlpExporter(ConfigureOtlpExporter);
+        });
+
         services.AddOpenTelemetryTracing(builder =>
         {
-            // Configure OpenTelemetry
-            string serviceName = config.GetValue<string>("OpenTelemetry:ServiceName");
-            string serviceNamespace = config.GetValue<string>("OpenTelemetry:ServiceNamespace");
-
-            ResourceBuilder resourceBuilder = ResourceBuilder.CreateDefault()
-                .AddService(serviceName, serviceNamespace);
-
-            builder.SetResourceBuilder(resourceBuilder);
-
-            // Add Instrumentation / Sources
             builder
+                .SetResourceBuilder(resourceBuilder)
                 .AddAspNetCoreInstrumentation(options =>
                 {
                     options.Filter = httpContext => !httpContext.Request.Path.IgnorePath(IgnorePatterns);
                 })
                 .AddHttpClientInstrumentation()
                 .AddNpgsql()
-                .AddSource(Application.ActivitySource.Name);
-
-            // Add Exporters
-            builder.AddOtlpExporter(options =>
-            {
-                options.Endpoint = new Uri(config.GetValue<string>("OpenTelemetry:Endpoint"));
-                options.Protocol = OtlpExportProtocol.Grpc;
-            });
+                .AddSource(Application.ActivitySource.Name)
+                .AddOtlpExporter(ConfigureOtlpExporter);
         });
 
         return services;

@@ -1,4 +1,4 @@
-namespace Scaffold.Application.Components.Audit;
+namespace Scaffold.Application.Common.Instrumentation;
 
 using System.Threading;
 using System.Threading.Tasks;

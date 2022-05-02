@@ -17,4 +17,11 @@ public static class Application
 
         public static readonly string Version = Assembly.Version.ToString();
     }
+
+    public static class Meter
+    {
+        public static readonly string Name = Assembly.Name;
+
+        public static readonly string Version = Assembly.Version.ToString();
+    }
 }

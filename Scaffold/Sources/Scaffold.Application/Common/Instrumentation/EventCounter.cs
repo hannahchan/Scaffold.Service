@@ -1,5 +1,6 @@
-namespace Scaffold.Application.Components.Audit;
+namespace Scaffold.Application.Common.Instrumentation;
 
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -12,14 +13,18 @@ internal class EventCounter<TNotification> : EventCounterBase, INotificationHand
     {
         if (notification is IAuditableEvent auditableEvent)
         {
-            EventCounter
+            EventCounter.Add(1, new KeyValuePair<string, object?>("name", auditableEvent.Type));
+
+            EventCounterLegacy
                 .WithLabels(auditableEvent.Type)
                 .Inc();
 
             return Task.CompletedTask;
         }
 
-        EventCounter
+        EventCounter.Add(1, new KeyValuePair<string, object?>("name", notification.GetType().Name));
+
+        EventCounterLegacy
             .WithLabels(notification.GetType().Name)
             .Inc();
 

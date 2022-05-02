@@ -1,11 +1,11 @@
-namespace Scaffold.Application.UnitTests.Components.Audit;
+namespace Scaffold.Application.UnitTests.Common.Instrumentation;
 
 using System;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Scaffold.Application.Common.Instrumentation;
 using Scaffold.Application.Common.Messaging;
-using Scaffold.Application.Components.Audit;
 using Xunit;
 
 public class EventLoggerUnitTests
