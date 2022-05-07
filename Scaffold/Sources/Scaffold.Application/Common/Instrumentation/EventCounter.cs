@@ -14,20 +14,10 @@ internal class EventCounter<TNotification> : EventCounterBase, INotificationHand
         if (notification is IAuditableEvent auditableEvent)
         {
             EventCounter.Add(1, new KeyValuePair<string, object?>("name", auditableEvent.Type));
-
-            EventCounterLegacy
-                .WithLabels(auditableEvent.Type)
-                .Inc();
-
             return Task.CompletedTask;
         }
 
         EventCounter.Add(1, new KeyValuePair<string, object?>("name", notification.GetType().Name));
-
-        EventCounterLegacy
-            .WithLabels(notification.GetType().Name)
-            .Inc();
-
         return Task.CompletedTask;
     }
 }

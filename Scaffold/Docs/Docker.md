@@ -40,16 +40,17 @@ Once up and running you can access the service on `http://localhost:5000`.
 
 ## Running other Services Locally
 
-Included in the `docker-compose.yml` file are other services that you can spin up in Docker should you need them for local development. These services and the path to their UIs once spun up are:
+Included in the `docker-compose.yml` file are other services that you can spin up in Docker should you need them for local development. These services and the path to their UIs if they have one are:
 
+- Grafana - <http://localhost:3000>
 - Jaeger - <http://localhost:16686/search>
 - Prometheus - <http://localhost:9090/graph>
-- Grafana - <http://localhost:3000>
+- OpenTelemetry collector
 
 To spin up any combination of these services, use the command;
 
     docker-compose up -d [service...]
 
-For example to spin up Jaeger, Prometheus an Grafana in one command, use;
+For example to spin up Grafana, Jaeger, Prometheus and the OpenTelemetry collector in one command, use;
 
-    docker-compose up -d jaeger prometheus grafana
+    docker-compose up -d grafana jaeger prometheus opentelemetry-collector

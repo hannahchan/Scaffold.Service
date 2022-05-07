@@ -13,7 +13,7 @@ For more feature rich logging, please consider using one of the official ASP.NET
 
 ## Event Logging
 
-Included in the application layer of Scaffold is an [_EventLogger_](../Sources/Scaffold.Application/Components/Audit/EventLogger.cs) that logs all messages that pass through the [in-process event bus](./Architecture.md). When publishing messages to the in-process event bus, developers should be conscious that sensitive information in the message might be logged.
+Included in the application layer of Scaffold is an [_EventLogger_](../Sources/Scaffold.Application/Common/Instrumentation/EventLogger.cs) that logs all messages that pass through the [in-process event bus](./Architecture.md). When publishing messages to the in-process event bus, developers should be conscious that sensitive information in the message might be logged.
 
 ## Separation of Concerns
 

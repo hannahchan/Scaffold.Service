@@ -29,11 +29,6 @@ public class EventCounterUnitTests
             Assert.Equal("application.events.count", counter.Name);
             Assert.Equal("events", counter.Unit);
             Assert.Equal("measures the number of events that have been published to the in-process event bus", counter.Description);
-
-            Prometheus.Counter legacyCounter = EventCounterAccessor.GetLegacyCounter();
-            Assert.Equal("application_events_total", legacyCounter.Name);
-            Assert.Equal("Total number of events that have been published to the in-process event bus", legacyCounter.Help);
-            Assert.Equal(1, legacyCounter.Labels("MyType").Value);
         }
 
         [Fact]
@@ -53,11 +48,6 @@ public class EventCounterUnitTests
             Assert.Equal("application.events.count", counter.Name);
             Assert.Equal("events", counter.Unit);
             Assert.Equal("measures the number of events that have been published to the in-process event bus", counter.Description);
-
-            Prometheus.Counter legacyCounter = EventCounterAccessor.GetLegacyCounter();
-            Assert.Equal("application_events_total", legacyCounter.Name);
-            Assert.Equal("Total number of events that have been published to the in-process event bus", legacyCounter.Help);
-            Assert.Equal(1, legacyCounter.Labels(nameof(GenericEvent)).Value);
         }
     }
 
@@ -68,7 +58,5 @@ public class EventCounterUnitTests
     private class EventCounterAccessor : EventCounterBase
     {
         public static Counter<long> GetCounter() => EventCounter;
-
-        public static Prometheus.Counter GetLegacyCounter() => EventCounterLegacy;
     }
 }

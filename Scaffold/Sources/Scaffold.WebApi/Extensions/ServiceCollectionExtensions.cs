@@ -18,7 +18,6 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Polly;
-using Prometheus;
 using Scaffold.Application.Common.Constants;
 using Scaffold.Application.Common.Interfaces;
 using Scaffold.Application.Components.Bucket;
@@ -64,13 +63,11 @@ internal static class ServiceCollectionExtensions
     {
         services.AddHttpClient<IExampleHttpClient, ExampleHttpClient>()
             .AddTransientHttpErrorPolicy(builder => builder.RetryAsync(3))
-            .AddRequestLogging()
-            .UseHttpClientMetrics();
+            .AddRequestLogging();
 
         services.AddHttpClient<DemoController.IClient, DemoController.Client>()
             .AddTransientHttpErrorPolicy(builder => builder.RetryAsync(3))
-            .AddRequestLogging()
-            .UseHttpClientMetrics();
+            .AddRequestLogging();
 
         return services;
     }
@@ -96,6 +93,10 @@ internal static class ServiceCollectionExtensions
                 .AddAspNetCoreInstrumentation()
                 .AddHttpClientInstrumentation()
                 .AddMeter(Application.Meter.Name)
+                .AddView("http.*.duration", new ExplicitBucketHistogramConfiguration
+                {
+                    Boundaries = new double[] { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768 },
+                })
                 .AddOtlpExporter(ConfigureOtlpExporter);
         });
 

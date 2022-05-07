@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Prometheus;
 using Scaffold.Repositories;
 using Scaffold.WebApi.Extensions;
 using Scaffold.WebApi.Filters;
@@ -73,7 +72,6 @@ public class Startup
         app
             .UseCors()
             .UseRouting()
-            .UseHttpMetrics()
             .UseAuthorization()
             .UseEndpoints(endpoints =>
             {
@@ -82,13 +80,6 @@ public class Startup
                 if (this.Configuration["HealthCheckPort"] != null)
                 {
                     healthCheckEndpoint.RequireHost($"*:{this.Configuration["HealthCheckPort"]}");
-                }
-
-                IEndpointConventionBuilder metricsEndpoint = endpoints.MapMetrics();
-
-                if (this.Configuration["MetricsPort"] != null)
-                {
-                    metricsEndpoint.RequireHost($"*:{this.Configuration["MetricsPort"]}");
                 }
 
                 endpoints.MapControllers();

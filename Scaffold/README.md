@@ -11,12 +11,12 @@ Before you start developing Scaffold, please read our [Getting Started](./Docs/G
 Scaffold comes pre-configured with or aims to make developing the following features in your next service a little bit more easier.
 
 - [API Documentation](./Docs/ApiDocumentation.md)
-- [Application Metrics](./Docs/ApplicationMetrics.md)
 - [Content Negotiation](./Docs/ContentNegotiation.md)
-- [Distributed Tracing](./Docs/DistributedTracing.md)
 - [Error Handling](./Docs/ErrorHandling.md)
-- [Logging](./Docs/Logging.md)
 - [Health Checks](./Docs/HealthChecks.md)
+- [Logging](./Docs/Logging.md)
+- [Metrics](./Docs/Metrics.md)
+- [Tracing](./Docs/Tracing.md)
 
 ### Developer / Team Experience
 

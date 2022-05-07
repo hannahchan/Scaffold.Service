@@ -27,12 +27,12 @@ Alternatively just browse the [template directory](Scaffold) to copy and paste t
 Scaffold.Service comes pre-configured with or aims to make developing the following features in your next service a little bit more easier.
 
 - [API Documentation](./Scaffold/Docs/ApiDocumentation.md)
-- [Application Metrics](./Scaffold/Docs/ApplicationMetrics.md)
 - [Content Negotiation](./Scaffold/Docs/ContentNegotiation.md)
-- [Distributed Tracing](./Scaffold/Docs/DistributedTracing.md)
 - [Error Handling](./Scaffold/Docs/ErrorHandling.md)
-- [Logging](./Scaffold/Docs/Logging.md)
 - [Health Checks](./Scaffold/Docs/HealthChecks.md)
+- [Logging](./Scaffold/Docs/Logging.md)
+- [Metrics](./Scaffold/Docs/Metrics.md)
+- [Tracing](./Scaffold/Docs/Tracing.md)
 
 ### Developer / Team Experience
 

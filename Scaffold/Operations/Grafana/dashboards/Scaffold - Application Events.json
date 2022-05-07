@@ -67,10 +67,10 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.5.0",
       "targets": [
         {
-          "expr": "sum(increase(application_events_total{job=~\"${job:regex}\"}[$__range]))",
+          "expr": "sum(increase(application_events_count{job=~\"${job:regex}\"}[$__range]))",
           "legendFormat": "Total Events",
           "refId": "A"
         }
@@ -169,15 +169,15 @@
           "mode": "single"
         }
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.5.0",
       "targets": [
         {
-          "expr": "sum(rate(application_events_total{job=~\"${job:regex}\"}[$__range]))",
+          "expr": "sum(rate(application_events_count{job=~\"${job:regex}\"}[$__range]))",
           "legendFormat": "Average Event Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(application_events_total{job=~\"${job:regex}\"}[$__range]))",
+          "expr": "sum(irate(application_events_count{job=~\"${job:regex}\"}[$__range]))",
           "legendFormat": "Instant Event Rate",
           "refId": "B"
         }
@@ -215,16 +215,16 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.5.0",
       "targets": [
         {
-          "expr": "sum(rate(application_events_total{job=~\"${job:regex}\"}[$__range]))",
+          "expr": "sum(rate(application_events_count{job=~\"${job:regex}\"}[$__range]))",
           "instant": true,
           "legendFormat": "Average Event Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(application_events_total{job=~\"${job:regex}\"}[$__range]))",
+          "expr": "sum(irate(application_events_count{job=~\"${job:regex}\"}[$__range]))",
           "instant": true,
           "legendFormat": "Instant Event Rate",
           "refId": "B"
@@ -276,10 +276,10 @@
         "showUnfilled": false,
         "text": {}
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.5.0",
       "targets": [
         {
-          "expr": "topk(${top}, increase(application_events_total{job=~\"${job:regex}\"}[$__range]))",
+          "expr": "topk(${top}, increase(application_events_count{job=~\"${job:regex}\"}[$__range]))",
           "format": "time_series",
           "instant": true,
           "legendFormat": "{{name}}",
@@ -302,7 +302,7 @@
           "text": ["All"],
           "value": ["$__all"]
         },
-        "definition": "label_values(application_events_total, job)",
+        "definition": "label_values(application_events_count, job)",
         "hide": 0,
         "includeAll": true,
         "label": "Job",
@@ -310,7 +310,7 @@
         "name": "job",
         "options": [],
         "query": {
-          "query": "label_values(application_events_total, job)",
+          "query": "label_values(application_events_count, job)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
