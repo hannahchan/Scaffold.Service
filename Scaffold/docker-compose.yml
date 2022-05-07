@@ -46,10 +46,10 @@ services:
       - source: grafana
         target: /var/lib/grafana
         type: volume
-      - source: ./Operations/Grafana/dashboards
+      - source: ./Configurations/Grafana/dashboards
         target: /etc/grafana/provisioning/dashboards
         type: bind
-      - source: ./Operations/Grafana/datasources
+      - source: ./Configurations/Grafana/datasources
         target: /etc/grafana/provisioning/datasources
         type: bind
   jaeger:
@@ -77,7 +77,7 @@ services:
       - jaeger
     image: otel/opentelemetry-collector-contrib
     volumes:
-      - source: ./Operations/OpenTelemetry/otel-collector.config.yml
+      - source: ./Configurations/OpenTelemetry/otel-collector.config.yml
         target: /etc/otel-collector.config.yml
         type: bind
   prometheus:
@@ -91,7 +91,7 @@ services:
       - source: prometheus
         target: /prometheus
         type: volume
-      - source: ./Operations/Prometheus/prometheus.yml
+      - source: ./Configurations/Prometheus/prometheus.yml
         target: /etc/prometheus/prometheus.yml
         type: bind
 version: "3.7"

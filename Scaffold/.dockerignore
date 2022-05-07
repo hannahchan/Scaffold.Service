@@ -4,9 +4,10 @@
 .vs
 .vscode
 Artifacts
+Configurations
 Docs
-Operations
 tools
+.editorconfig
 .env
 .gitattributes
 .gitignore
