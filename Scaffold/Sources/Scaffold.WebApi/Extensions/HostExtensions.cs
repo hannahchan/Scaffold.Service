@@ -10,17 +10,11 @@ internal static class HostExtensions
 {
     public static IHost MigrateDatabase(this IHost host)
     {
-        using (IServiceScope serviceScope = host.Services.CreateScope())
-        {
-            IServiceProvider serviceProvider = serviceScope.ServiceProvider;
-            IHostEnvironment hostEnvironment = serviceProvider.GetRequiredService<IHostEnvironment>();
+        using IServiceScope serviceScope = host.Services.CreateScope();
+        IServiceProvider serviceProvider = serviceScope.ServiceProvider;
 
-            if (hostEnvironment.IsDevelopment())
-            {
-                BucketContext context = serviceProvider.GetRequiredService<BucketContext>();
-                context.Database.Migrate();
-            }
-        }
+        BucketContext context = serviceProvider.GetRequiredService<BucketContext>();
+        context.Database.Migrate();
 
         return host;
     }

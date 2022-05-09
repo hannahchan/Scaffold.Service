@@ -16,6 +16,7 @@ internal static class WebHostBuilderExtensions
                 {
                 });
             })
-            .ConfigureLogging(logging => logging.ClearProviders().AddDebug());
+            .ConfigureLogging(logging => logging.ClearProviders().AddDebug())
+            .UseSetting("Environment", "Production");
     }
 }

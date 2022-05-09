@@ -37,6 +37,8 @@ internal static class ServiceCollectionExtensions
 
     public static IServiceCollection AddApiDocumentation(this IServiceCollection services)
     {
+        services.AddEndpointsApiExplorer();
+
         services.AddSwaggerGen(options =>
         {
             OpenApiInfo info = new OpenApiInfo
@@ -144,7 +146,7 @@ internal static class ServiceCollectionExtensions
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services
-            .AddAutoMapper(typeof(Startup).Assembly)
+            .AddAutoMapper(typeof(Program).Assembly)
             .AddMediatR(typeof(Application).Assembly);
 
         return services;

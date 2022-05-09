@@ -11,13 +11,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Scaffold.WebApi.Controllers;
 using Xunit;
 
-public class DemoControllerIntegrationTests : IClassFixture<WebApplicationFactory<Startup>>
+public class DemoControllerIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
 {
     public class Trace : DemoControllerIntegrationTests
     {
-        private readonly WebApplicationFactory<Startup> factory;
+        private readonly WebApplicationFactory<Program> factory;
 
-        public Trace(WebApplicationFactory<Startup> factory)
+        public Trace(WebApplicationFactory<Program> factory)
         {
             this.factory = factory.WithWebHostBuilder(builder => builder
                 .ConfigureWithDefaultsForTesting()

@@ -14,11 +14,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Scaffold.Repositories;
 using Xunit;
 
-public class HealthCheckIntegrationTests : IClassFixture<WebApplicationFactory<Startup>>
+public class HealthCheckIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
 {
-    private readonly WebApplicationFactory<Startup> factory;
+    private readonly WebApplicationFactory<Program> factory;
 
-    public HealthCheckIntegrationTests(WebApplicationFactory<Startup> factory)
+    public HealthCheckIntegrationTests(WebApplicationFactory<Program> factory)
     {
         this.factory = factory.WithWebHostBuilder(builder =>
         {

@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
-public class SwaggerEndpointIntegrationTests : IClassFixture<WebApplicationFactory<Startup>>
+public class SwaggerEndpointIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
 {
-    private readonly WebApplicationFactory<Startup> factory;
+    private readonly WebApplicationFactory<Program> factory;
 
-    public SwaggerEndpointIntegrationTests(WebApplicationFactory<Startup> factory)
+    public SwaggerEndpointIntegrationTests(WebApplicationFactory<Program> factory)
     {
         this.factory = factory.WithWebHostBuilder(builder => builder.ConfigureWithDefaultsForTesting());
     }

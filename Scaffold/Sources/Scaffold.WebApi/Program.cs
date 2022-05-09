@@ -1,24 +1,87 @@
 ﻿namespace Scaffold.WebApi;
 
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Scaffold.Repositories;
 using Scaffold.WebApi.Extensions;
+using Scaffold.WebApi.Filters;
+using Scaffold.WebApi.Middleware;
 
-public static class Program
+public class Program
 {
-    public static void Main(string[] args)
+    protected Program()
     {
-        CreateHostBuilder(args).Build()
-            .MigrateDatabase()
-            .Run();
     }
 
-    public static IHostBuilder CreateHostBuilder(string[] args)
+    public static void Main(string[] args)
     {
-        return Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-                webBuilder.UseStartup<Startup>();
-            });
+        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+        ConfigureWebApplicationBuilder(builder);
+
+        using WebApplication app = builder.Build();
+        ConfigureWebApplication(app);
+
+        if (app.Environment.IsDevelopment())
+        {
+            app.MigrateDatabase();
+        }
+
+        app.Run();
+    }
+
+    // Adds services to the container.
+    private static void ConfigureWebApplicationBuilder(WebApplicationBuilder builder)
+    {
+        builder.Services.AddCors(options => options.AddDefaultPolicy(builder =>
+        {
+            // Not recommended for production. Please remove or revise for your environment.
+            builder
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin();
+        }));
+
+        builder.Services.AddHealthChecks()
+            .AddDbContextCheck<BucketContext>()
+            .AddDbContextCheck<BucketContext.ReadOnly>();
+
+        builder.Services
+            .AddHttpClients()
+            .AddOpenTelemetry(builder.Configuration)
+            .AddOptions(builder.Configuration)
+            .AddRepositories(builder.Configuration)
+            .AddServices();
+
+        builder.Services.AddControllers(options => options.Filters.Add<ExceptionFilter>())
+            .AddCustomJsonOptions()
+            .AddCustomXmlFormatters();
+
+        builder.Services.AddApiDocumentation();
+    }
+
+    // Configures the HTTP request pipeline.
+    // More information at https://docs.microsoft.com/aspnet/core/fundamentals/middleware
+    private static void ConfigureWebApplication(WebApplication app)
+    {
+        app.UseExceptionHandler("/error");
+
+        if (int.TryParse(app.Configuration["HealthCheckPort"], out int healthCheckPort))
+        {
+            app.MapHealthChecks("/health").RequireHost($"*:{healthCheckPort}");
+        }
+        else
+        {
+            app.MapHealthChecks("/health");
+        }
+
+        app
+            .UseMiddleware<RequestLoggingMiddleware>()
+            .UseSwagger()
+            .UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Scaffold.WebApi v1"))
+            .UseCors()
+            .UseAuthorization();
+
+        app.MapControllers();
     }
 }

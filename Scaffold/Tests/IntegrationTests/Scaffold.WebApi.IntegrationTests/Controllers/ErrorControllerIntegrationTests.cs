@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Net.Http.Headers;
 using Xunit;
 
-public class ErrorControllerIntegrationTests : IClassFixture<WebApplicationFactory<Startup>>
+public class ErrorControllerIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
 {
-    private readonly WebApplicationFactory<Startup> factory;
+    private readonly WebApplicationFactory<Program> factory;
 
-    public ErrorControllerIntegrationTests(WebApplicationFactory<Startup> factory)
+    public ErrorControllerIntegrationTests(WebApplicationFactory<Program> factory)
     {
         this.factory = factory.WithWebHostBuilder(builder => builder.ConfigureWithDefaultsForTesting());
     }

@@ -17,13 +17,13 @@ using Scaffold.WebApi.Models.Bucket;
 using Scaffold.WebApi.Models.Item;
 using Xunit;
 
-public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFactory<Startup>>
+public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
 {
     private static readonly InMemoryDatabaseRoot InMemoryDatabaseRoot = new InMemoryDatabaseRoot();
 
-    private readonly WebApplicationFactory<Startup> factory;
+    private readonly WebApplicationFactory<Program> factory;
 
-    public BucketsControllerIntegrationTests(WebApplicationFactory<Startup> factory)
+    public BucketsControllerIntegrationTests(WebApplicationFactory<Program> factory)
     {
         this.factory = factory;
     }
@@ -55,7 +55,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
 
     public class AddBucket : BucketsControllerIntegrationTests
     {
-        public AddBucket(WebApplicationFactory<Startup> factory)
+        public AddBucket(WebApplicationFactory<Program> factory)
             : base(factory)
         {
         }
@@ -140,7 +140,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
 
     public class GetBuckets : BucketsControllerIntegrationTests
     {
-        public GetBuckets(WebApplicationFactory<Startup> factory)
+        public GetBuckets(WebApplicationFactory<Program> factory)
             : base(factory)
         {
         }
@@ -211,7 +211,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
 
     public class GetBucket : BucketsControllerIntegrationTests
     {
-        public GetBucket(WebApplicationFactory<Startup> factory)
+        public GetBucket(WebApplicationFactory<Program> factory)
             : base(factory)
         {
         }
@@ -283,7 +283,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
 
     public class UpdateBucket : BucketsControllerIntegrationTests
     {
-        public UpdateBucket(WebApplicationFactory<Startup> factory)
+        public UpdateBucket(WebApplicationFactory<Program> factory)
             : base(factory)
         {
         }
@@ -425,7 +425,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
 
     public class RemoveBucket : BucketsControllerIntegrationTests
     {
-        public RemoveBucket(WebApplicationFactory<Startup> factory)
+        public RemoveBucket(WebApplicationFactory<Program> factory)
             : base(factory)
         {
         }
@@ -483,7 +483,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
 
     public class AddItem : BucketsControllerIntegrationTests
     {
-        public AddItem(WebApplicationFactory<Startup> factory)
+        public AddItem(WebApplicationFactory<Program> factory)
             : base(factory)
         {
         }
@@ -613,7 +613,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
 
     public class GetItems : BucketsControllerIntegrationTests
     {
-        public GetItems(WebApplicationFactory<Startup> factory)
+        public GetItems(WebApplicationFactory<Program> factory)
             : base(factory)
         {
         }
@@ -705,7 +705,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
 
     public class GetItem : BucketsControllerIntegrationTests
     {
-        public GetItem(WebApplicationFactory<Startup> factory)
+        public GetItem(WebApplicationFactory<Program> factory)
             : base(factory)
         {
         }
@@ -809,7 +809,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
 
     public class UpdateItem : BucketsControllerIntegrationTests
     {
-        public UpdateItem(WebApplicationFactory<Startup> factory)
+        public UpdateItem(WebApplicationFactory<Program> factory)
             : base(factory)
         {
         }
@@ -994,7 +994,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
 
     public class RemoveItem : BucketsControllerIntegrationTests
     {
-        public RemoveItem(WebApplicationFactory<Startup> factory)
+        public RemoveItem(WebApplicationFactory<Program> factory)
             : base(factory)
         {
         }
