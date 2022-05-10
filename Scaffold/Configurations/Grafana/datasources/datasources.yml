@@ -11,3 +11,11 @@ datasources:
     name: Prometheus
     type: prometheus
     url: "http://prometheus:9090"
+  - database: postgres
+    jsonData:
+      sslmode: disable
+      timescaledb: false
+    name: Postgres
+    type: postgres
+    url: "postgres:5432"
+    user: postgres
