@@ -4,8 +4,7 @@ receivers:
   otlp:
     protocols:
       grpc: ~
-processors:
-  batch: ~
+processors: ~
 exporters:
   jaeger:
     endpoint: "jaeger:14250"
@@ -18,9 +17,9 @@ service:
   pipelines:
     metrics:
       exporters: [prometheus]
-      processors: [batch]
+      processors: []
       receivers: [otlp]
     traces:
       exporters: [jaeger]
-      processors: [batch]
+      processors: []
       receivers: [otlp]

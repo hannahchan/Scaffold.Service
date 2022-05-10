@@ -10,7 +10,7 @@ services:
     environment:
       ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=postgres;Username=postgres;
       ConnectionStrings__ReadOnlyConnection: Host=postgres;Port=5432;Database=postgres;Username=postgres;
-      OpenTelemetry__Endpoint: "http://opentelemetry-collector:4317"
+      OpenTelemetry__Otlp__Endpoint: "http://opentelemetry-collector:4317"
     image: "${DOCKER_REGISTRY}scaffold"
     ports:
       - mode: ingress

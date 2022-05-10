@@ -1,22 +1,13 @@
 namespace Scaffold.WebApi.Extensions;
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using Npgsql;
-using OpenTelemetry.Exporter;
-using OpenTelemetry.Metrics;
-using OpenTelemetry.Resources;
-using OpenTelemetry.Trace;
 using Polly;
 using Scaffold.Application.Common.Constants;
 using Scaffold.Application.Common.Interfaces;
@@ -29,12 +20,6 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 internal static class ServiceCollectionExtensions
 {
-    private static readonly string[] IgnorePatterns =
-    {
-        "^/health$",
-        "^/metrics$",
-    };
-
     public static IServiceCollection AddApiDocumentation(this IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();
@@ -74,55 +59,10 @@ internal static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddOpenTelemetry(this IServiceCollection services, IConfiguration config)
-    {
-        string serviceName = config.GetValue<string>("OpenTelemetry:ServiceName");
-        string serviceNamespace = config.GetValue<string>("OpenTelemetry:ServiceNamespace");
-
-        ResourceBuilder resourceBuilder = ResourceBuilder.CreateDefault()
-            .AddService(serviceName, serviceNamespace);
-
-        void ConfigureOtlpExporter(OtlpExporterOptions options)
-        {
-            options.Endpoint = new Uri(config.GetValue<string>("OpenTelemetry:Endpoint"));
-            options.Protocol = OtlpExportProtocol.Grpc;
-        }
-
-        services.AddOpenTelemetryMetrics(builder =>
-        {
-            builder
-                .SetResourceBuilder(resourceBuilder)
-                .AddAspNetCoreInstrumentation()
-                .AddHttpClientInstrumentation()
-                .AddMeter(Application.Meter.Name)
-                .AddView("http.*.duration", new ExplicitBucketHistogramConfiguration
-                {
-                    Boundaries = new double[] { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768 },
-                })
-                .AddOtlpExporter(ConfigureOtlpExporter);
-        });
-
-        services.AddOpenTelemetryTracing(builder =>
-        {
-            builder
-                .SetResourceBuilder(resourceBuilder)
-                .AddAspNetCoreInstrumentation(options =>
-                {
-                    options.Filter = httpContext => !httpContext.Request.Path.IgnorePath(IgnorePatterns);
-                })
-                .AddHttpClientInstrumentation()
-                .AddNpgsql()
-                .AddSource(Application.ActivitySource.Name)
-                .AddOtlpExporter(ConfigureOtlpExporter);
-        });
-
-        return services;
-    }
-
     public static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration config)
     {
         services
-            .Configure<RequestLoggingMiddleware.Options>(options => options.IgnorePatterns = IgnorePatterns)
+            .Configure<RequestLoggingMiddleware.Options>(options => options.IgnorePatterns = new[] { "^/health$", "^/metrics$" })
             .Configure<DemoController.Options>(config.GetSection("DemoOptions"));
 
         return services;
@@ -150,10 +90,5 @@ internal static class ServiceCollectionExtensions
             .AddMediatR(typeof(Application).Assembly);
 
         return services;
-    }
-
-    private static bool IgnorePath(this PathString path, IEnumerable<string> ignorePatterns)
-    {
-        return ignorePatterns.Any(ignorePattern => Regex.IsMatch(path, ignorePattern, RegexOptions.Compiled | RegexOptions.IgnoreCase));
     }
 }
