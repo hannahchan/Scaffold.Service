@@ -10,11 +10,19 @@ exporters:
     endpoint: "jaeger:14250"
     tls:
       insecure: true
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
+    tls:
+      insecure: true
   prometheus:
     endpoint: "0.0.0.0:9090"
 service:
   extensions: []
   pipelines:
+    logs:
+      exporters: [loki]
+      processors: []
+      receivers: [otlp]
     metrics:
       exporters: [prometheus]
       processors: []

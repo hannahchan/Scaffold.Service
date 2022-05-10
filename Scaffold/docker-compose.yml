@@ -32,6 +32,7 @@ services:
   grafana:
     depends_on:
       - jaeger
+      - loki
       - prometheus
     environment:
       GF_AUTH_ANONYMOUS_ENABLED: "true"
@@ -71,16 +72,26 @@ services:
       - source: jaeger_tmp
         target: /tmp
         type: volume
+  loki:
+    command: -config.file=/etc/loki/local-config.yaml
+    image: grafana/loki
+    volumes:
+      - source: loki
+        target: /loki
+        type: volume
   opentelemetry-collector:
     command: "--config=/etc/otel-collector.config.yml"
     depends_on:
       - jaeger
+      - loki
     image: otel/opentelemetry-collector-contrib
     volumes:
       - source: ./Configurations/OpenTelemetry/otel-collector.config.yml
         target: /etc/otel-collector.config.yml
         type: bind
   prometheus:
+    depends_on:
+      - opentelemetry-collector
     image: prom/prometheus
     ports:
       - mode: ingress
@@ -99,5 +110,6 @@ volumes:
   grafana: ~
   jaeger: ~
   jaeger_tmp: ~
+  loki: ~
   postgres_pgdata: ~
   prometheus: ~

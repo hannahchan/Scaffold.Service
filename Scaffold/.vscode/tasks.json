@@ -77,6 +77,7 @@
         "postgres",
         "grafana",
         "jaeger",
+        "loki",
         "opentelemetry-collector",
         "prometheus"
       ],
