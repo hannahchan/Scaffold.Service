@@ -74,7 +74,7 @@ public class Program
             .UseCors()
             .UseAuthorization();
 
-        // Configure endpoints
+        // Configures endpoints
         if (int.TryParse(app.Configuration["HealthCheckPort"], out int healthCheckPort))
         {
             app.MapHealthChecks("/health").RequireHost($"*:{healthCheckPort}");
