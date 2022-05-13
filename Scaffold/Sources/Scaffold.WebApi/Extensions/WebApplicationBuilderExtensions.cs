@@ -3,6 +3,7 @@ namespace Scaffold.WebApi.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -24,10 +25,12 @@ internal static class WebApplicationBuilderExtensions
         IConfiguration configuration = builder.Configuration;
 
         string serviceName = configuration.GetValue<string>("OpenTelemetry:ServiceName");
-        string serviceNamespace = configuration.GetValue<string>("OpenTelemetry:ServiceNamespace");
+        string? serviceNamespace = configuration.GetValue<string?>("OpenTelemetry:ServiceNamespace");
+        string? serviceVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
+        string? serviceInstanceId = Environment.MachineName;
 
         ResourceBuilder resourceBuilder = ResourceBuilder.CreateDefault()
-            .AddService(serviceName, serviceNamespace);
+            .AddService(serviceName, serviceNamespace, serviceVersion, autoGenerateServiceInstanceId: true, serviceInstanceId);
 
         void ConfigureOtlpExporter(OtlpExporterOptions options)
         {
