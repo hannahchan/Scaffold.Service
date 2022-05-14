@@ -1,6 +1,6 @@
 # Dockerfile based on:
-# - https://github.com/microsoft/vscode-dev-containers/blob/v0.205.2/containers/dotnet/.devcontainer/Dockerfile
-# - https://github.com/microsoft/vscode-dev-containers/blob/v0.205.2/containers/docker-from-docker/.devcontainer/Dockerfile
+# - https://github.com/microsoft/vscode-dev-containers/blob/v0.234.1/containers/dotnet/.devcontainer/Dockerfile
+# - https://github.com/microsoft/vscode-dev-containers/blob/v0.234.1/containers/docker-from-docker/.devcontainer/Dockerfile
 
 # [Choice] .NET version: 6.0, 5.0, 3.1, 6.0-bullseye, 5.0-bullseye, 3.1-bullseye, 6.0-focal, 5.0-focal, 3.1-focal
 ARG VARIANT=6.0-bullseye
