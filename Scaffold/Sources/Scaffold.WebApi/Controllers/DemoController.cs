@@ -82,7 +82,7 @@ public class DemoController : ControllerBase
 
     public class Options
     {
-        public string NextHopBaseAddress { get; set; } = "http://localhost:8081";
+        public string? NextHopBaseAddress { get; set; }
 
         public int MaxDepth { get; set; } = 10;
     }

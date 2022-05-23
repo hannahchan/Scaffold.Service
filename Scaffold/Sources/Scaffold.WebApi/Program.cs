@@ -75,15 +75,18 @@ public class Program
             .UseAuthorization();
 
         // Configures endpoints
+        IEndpointConventionBuilder healthCheckEndpoint = app.MapHealthChecks("/health");
+
         if (int.TryParse(app.Configuration["HealthCheckPort"], out int healthCheckPort))
         {
-            app.MapHealthChecks("/health").RequireHost($"*:{healthCheckPort}");
-        }
-        else
-        {
-            app.MapHealthChecks("/health");
+            healthCheckEndpoint.RequireHost($"*:{healthCheckPort}");
         }
 
-        app.MapControllers();
+        IEndpointConventionBuilder controllerEndpoints = app.MapControllers();
+
+        if (int.TryParse(app.Configuration["DefaultPort"], out int defaultPort))
+        {
+            controllerEndpoints.RequireHost($"*:{defaultPort}");
+        }
     }
 }

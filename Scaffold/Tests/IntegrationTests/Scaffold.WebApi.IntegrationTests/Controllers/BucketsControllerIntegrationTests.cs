@@ -1,7 +1,6 @@
 namespace Scaffold.WebApi.IntegrationTests.Controllers;
 
 using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
@@ -9,48 +8,22 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.Extensions.DependencyInjection;
-using Scaffold.Repositories;
 using Scaffold.WebApi.Models.Bucket;
 using Scaffold.WebApi.Models.Item;
 using Xunit;
 
 public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
 {
-    private static readonly InMemoryDatabaseRoot InMemoryDatabaseRoot = new InMemoryDatabaseRoot();
-
     private readonly WebApplicationFactory<Program> factory;
 
     public BucketsControllerIntegrationTests(WebApplicationFactory<Program> factory)
     {
-        this.factory = factory;
-    }
-
-    private HttpClient CreateNewTestClient()
-    {
-        string databaseName = Guid.NewGuid().ToString();
-
-        return this.factory.WithWebHostBuilder(builder =>
+        this.factory = factory.WithWebHostBuilder(builder =>
         {
             builder
                 .ConfigureWithDefaultsForTesting()
-                .ConfigureServices(services =>
-                {
-                    services.Remove(services.SingleOrDefault(service =>
-                        service.ServiceType == typeof(DbContextOptions<BucketContext>)));
-
-                    services.AddDbContext<BucketContext>(options =>
-                        options.UseInMemoryDatabase(databaseName, InMemoryDatabaseRoot));
-
-                    services.Remove(services.SingleOrDefault(service =>
-                        service.ServiceType == typeof(DbContextOptions<BucketContext.ReadOnly>)));
-
-                    services.AddDbContext<BucketContext.ReadOnly>(options =>
-                        options.UseInMemoryDatabase(databaseName, InMemoryDatabaseRoot));
-                });
-        }).CreateClient();
+                .ConfigureInMemoryDatabase();
+        });
     }
 
     public class AddBucket : BucketsControllerIntegrationTests
@@ -64,7 +37,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_AddingBucket_Expect_Created()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var bucket = new
             {
@@ -99,7 +72,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_AddingBucket_Expect_BadRequest()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var bucket = new { Size = "abc" };
 
@@ -120,7 +93,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_AddingBucket_Expect_Conflict()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var bucket = new { Size = -new Random().Next() };
 
@@ -149,7 +122,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingBuckets_Expect_Ok()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             int size = 10;
 
@@ -198,7 +171,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingBuckets_Expect_BadRequest()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             // Act
             using HttpResponseMessage response = await client.GetAsync("/buckets?limit=abc&offset=xyz");
@@ -220,7 +193,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingBucket_Expect_Ok()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var bucket = new
             {
@@ -256,7 +229,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingBucket_Expect_BadRequest()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             // Act
             using HttpResponseMessage response = await client.GetAsync("/buckets/abc");
@@ -270,7 +243,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingBucket_Expect_NotFound()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             // Act
             using HttpResponseMessage response = await client.GetAsync("/buckets/123");
@@ -292,7 +265,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_UpdatingBucket_Expect_Ok()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var bucket = new { };
 
@@ -335,7 +308,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_UpdatingBucket_Expect_Created()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var bucket = new
             {
@@ -370,7 +343,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_UpdatingBucket_Expect_BadRequest()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var bucket = new { Size = "abc" };
 
@@ -391,7 +364,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_UpdatingBucket_Expect_Conflict()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var bucket = new { };
 
@@ -434,7 +407,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_RemovingBucket_Expect_NoContent()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var bucket = new { };
 
@@ -456,7 +429,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_RemovingBucket_Expect_BadRequest()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             // Act
             using HttpResponseMessage response = await client.DeleteAsync("/buckets/abc");
@@ -470,7 +443,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_RemovingBucket_Expect_NotFound()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             // Act
             using HttpResponseMessage response = await client.DeleteAsync("/buckets/123");
@@ -492,7 +465,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_AddingItem_Expect_Created()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var bucket = new
             {
@@ -538,7 +511,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_AddingItem_Expect_BadRequest()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var item = new { Name = 123 };
 
@@ -559,7 +532,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_AddingItem_Expect_Conflict()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var bucket = new
             {
@@ -593,7 +566,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_AddingItem_Expect_NotFound()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var item = new { };
 
@@ -622,7 +595,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingItems_Expect_Ok()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var bucket = new
             {
@@ -678,7 +651,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingItems_Expect_BadRequest()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             // Act
             using HttpResponseMessage response = await client.GetAsync("/buckets/abc/items");
@@ -692,7 +665,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingItems_Expect_NotFound()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             // Act
             using HttpResponseMessage response = await client.GetAsync("/buckets/123/items");
@@ -714,7 +687,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingItem_Expect_Ok()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var bucket = new
             {
@@ -762,7 +735,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingItem_Expect_BadRequest()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             // Act
             using HttpResponseMessage response = await client.GetAsync("/buckets/abc/items/abc");
@@ -778,7 +751,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_GettingItem_Expect_NotFound(string path)
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var bucket = new { };
 
@@ -818,7 +791,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_UpdatingItem_Expect_Ok()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var bucket = new
             {
@@ -872,7 +845,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_UpdatingItem_Expect_Created()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var bucket = new
             {
@@ -919,7 +892,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_UpdatingItem_Expect_Conflict()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var bucket = new
             {
@@ -953,7 +926,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_UpdatingItem_Expect_BadRequest()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var item = new { Name = 123 };
 
@@ -974,7 +947,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_UpdatingItem_Expect_NotFound()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var item = new { };
 
@@ -1003,7 +976,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_RemovingItem_Expect_NoContent()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var bucket = new
             {
@@ -1038,7 +1011,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_RemovingItem_Expect_BadRequest()
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             // Act
             using HttpResponseMessage response = await client.DeleteAsync("/buckets/abc/items/abc");
@@ -1054,7 +1027,7 @@ public class BucketsControllerIntegrationTests : IClassFixture<WebApplicationFac
         public async Task When_RemovingItem_Expect_NotFound(string path)
         {
             // Arrange
-            using HttpClient client = this.CreateNewTestClient();
+            using HttpClient client = this.factory.CreateClient();
 
             var bucket = new { };
 

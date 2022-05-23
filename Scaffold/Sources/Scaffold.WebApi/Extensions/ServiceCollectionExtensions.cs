@@ -63,7 +63,14 @@ internal static class ServiceCollectionExtensions
     {
         services
             .Configure<RequestLoggingMiddleware.Options>(options => options.IgnorePatterns = new[] { "^/health$", "^/metrics$" })
-            .Configure<DemoController.Options>(config.GetSection("DemoOptions"));
+            .Configure<DemoController.Options>(config.GetSection("DemoOptions"))
+            .Configure<DemoController.Options>(options =>
+            {
+                if (int.TryParse(config["DefaultPort"], out int defaultPort))
+                {
+                    options.NextHopBaseAddress ??= $"http://localhost:{defaultPort}";
+                }
+            });
 
         return services;
     }

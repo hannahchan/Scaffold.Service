@@ -26,7 +26,7 @@ public class DemoControllerUnitTests
             using HttpRequestHandler httpRequestHandler = new HttpRequestHandler(new HttpResponseMessage());
             using HttpClient httpClient = new HttpClient(httpRequestHandler);
 
-            DemoController.Options options = new DemoController.Options();
+            DemoController.Options options = new DemoController.Options { NextHopBaseAddress = "http://localhost" };
             DemoController.Client demoClient = new DemoController.Client(httpClient, Options.Create(options));
             DemoController controller = new DemoController(demoClient, Options.Create(options));
 
@@ -56,7 +56,7 @@ public class DemoControllerUnitTests
             using HttpRequestHandler httpRequestHandler = new HttpRequestHandler(new HttpResponseMessage());
             using HttpClient httpClient = new HttpClient(httpRequestHandler);
 
-            DemoController.Options options = new DemoController.Options();
+            DemoController.Options options = new DemoController.Options { NextHopBaseAddress = "http://localhost" };
             DemoController.Client demoClient = new DemoController.Client(httpClient, Options.Create(options));
             DemoController controller = new DemoController(demoClient, Options.Create(options));
 
@@ -83,7 +83,7 @@ public class DemoControllerUnitTests
             using HttpRequestHandler httpRequestHandler = new HttpRequestHandler(new HttpResponseMessage());
             using HttpClient httpClient = new HttpClient(httpRequestHandler);
 
-            DemoController.Options options = new DemoController.Options();
+            DemoController.Options options = new DemoController.Options { NextHopBaseAddress = "http://localhost" };
             DemoController.Client demoClient = new DemoController.Client(httpClient, Options.Create(options));
             DemoController controller = new DemoController(demoClient, Options.Create(options));
 
@@ -144,7 +144,7 @@ public class DemoControllerUnitTests
             using HttpRequestHandler httpRequestHandler = new HttpRequestHandler(new HttpResponseMessage());
             using HttpClient httpClient = new HttpClient(httpRequestHandler);
 
-            DemoController.Options options = new DemoController.Options() { MaxDepth = 10 };
+            DemoController.Options options = new DemoController.Options() { NextHopBaseAddress = "http://localhost", MaxDepth = 10 };
             DemoController.Client demoClient = new DemoController.Client(httpClient, Options.Create(options));
             DemoController controller = new DemoController(demoClient, Options.Create(options));
 

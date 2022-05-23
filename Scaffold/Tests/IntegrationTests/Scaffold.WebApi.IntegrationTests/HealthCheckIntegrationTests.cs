@@ -42,22 +42,9 @@ public class HealthCheckIntegrationTests : IClassFixture<WebApplicationFactory<P
         // Arrange
         using HttpClient client = this.factory.WithWebHostBuilder(builder =>
         {
-            builder.ConfigureServices(services =>
-            {
-                services.Remove(services.SingleOrDefault(service =>
-                    service.ServiceType == typeof(DbContextOptions<BucketContext>)));
-
-                services.AddDbContext<BucketContext>(options =>
-                    options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
-
-                services.Remove(services.SingleOrDefault(service =>
-                    service.ServiceType == typeof(DbContextOptions<BucketContext.ReadOnly>)));
-
-                services.AddDbContext<BucketContext.ReadOnly>(options =>
-                    options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
-            });
-
-            builder.UseSetting("HEALTHCHECKPORT", "80");
+            builder
+                .ConfigureInMemoryDatabase()
+                .UseSetting("HEALTHCHECKPORT", "80");
         }).CreateClient();
 
         // Act
@@ -148,23 +135,10 @@ public class HealthCheckIntegrationTests : IClassFixture<WebApplicationFactory<P
 
         using HttpClient client = this.factory.WithWebHostBuilder(builder =>
         {
-            builder.ConfigureServices(services =>
-            {
-                services.Remove(services.SingleOrDefault(service =>
-                    service.ServiceType == typeof(DbContextOptions<BucketContext>)));
-
-                services.AddDbContext<BucketContext>(options =>
-                    options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
-
-                services.Remove(services.SingleOrDefault(service =>
-                    service.ServiceType == typeof(DbContextOptions<BucketContext.ReadOnly>)));
-
-                services.AddDbContext<BucketContext.ReadOnly>(options =>
-                    options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
-            });
-
-            builder.UseSetting("HEALTHCHECKPORT", healthCheckPort.ToString());
-            builder.UseSetting("URLS", $"http://+:80;http://+:{healthCheckPort}");
+            builder
+                .ConfigureInMemoryDatabase()
+                .UseSetting("HEALTHCHECKPORT", healthCheckPort.ToString())
+                .UseSetting("URLS", $"http://+:80;http://+:{healthCheckPort}");
         }).CreateClient();
 
         // Act
@@ -188,23 +162,10 @@ public class HealthCheckIntegrationTests : IClassFixture<WebApplicationFactory<P
 
         using HttpClient client = this.factory.WithWebHostBuilder(builder =>
         {
-            builder.ConfigureServices(services =>
-            {
-                services.Remove(services.SingleOrDefault(service =>
-                    service.ServiceType == typeof(DbContextOptions<BucketContext>)));
-
-                services.AddDbContext<BucketContext>(options =>
-                    options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
-
-                services.Remove(services.SingleOrDefault(service =>
-                    service.ServiceType == typeof(DbContextOptions<BucketContext.ReadOnly>)));
-
-                services.AddDbContext<BucketContext.ReadOnly>(options =>
-                    options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
-            });
-
-            builder.UseSetting("HEALTHCHECKPORT", null);
-            builder.UseSetting("URLS", $"http://+:{randomPort1};http://+:{randomPort2}");
+            builder
+                .ConfigureInMemoryDatabase()
+                .UseSetting("HEALTHCHECKPORT", null)
+                .UseSetting("URLS", $"http://+:{randomPort1};http://+:{randomPort2}");
         }).CreateClient();
 
         // Act
