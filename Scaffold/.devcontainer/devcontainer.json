@@ -7,13 +7,10 @@
   "name": "Scaffold",
   "overrideCommand": false,
   "remoteEnv": {
-    "ConnectionStrings__DefaultConnection": "Host=host.docker.internal;Port=5432;Database=postgres;Username=postgres;",
-    "ConnectionStrings__ReadOnlyConnection": "Host=host.docker.internal;Port=5432;Database=postgres;Username=postgres;",
-    "OpenTelemetry__Otlp__Endpoint": "http://host.docker.internal:4317",
     "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
   },
   "remoteUser": "vscode",
-  "runArgs": ["--init"],
+  "runArgs": ["--init", "--network=host"],
   "settings": {
     "terminal.integrated.defaultProfile.linux": "bash"
   }
