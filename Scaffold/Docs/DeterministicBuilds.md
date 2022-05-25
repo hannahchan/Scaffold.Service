@@ -19,6 +19,6 @@ You will need the `Cake.Tool` installed on your local machine. You can do this q
 
     dotnet tool restore
 
-The output of the Cake script will appear under the `Artifacts` directory.
+The output of the Cake script will appear under the _artifacts_ directory.
 
 For more information about Cake, please visit <https://cakebuild.net>.

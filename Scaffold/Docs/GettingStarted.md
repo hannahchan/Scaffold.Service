@@ -29,7 +29,7 @@ To help different developers build and test the service [deterministically](./De
 
     dotnet cake
 
-You may need to run `dotnet tool restore` first if you don't have the dotnet tool `Cake.Tool` installed. By default, the Cake script will build, test and publish the service and copy all related artifacts into the `Artifacts` directory. This directory is where you will find your release ready build output and test coverage reports.
+You may need to run `dotnet tool restore` first if you don't have the dotnet tool `Cake.Tool` installed. By default, the Cake script will build, test and publish the service and copy all related artifacts into the _artifacts_ directory. This directory is where you will find your release ready build output and test coverage reports.
 
 By default, the Cake script does not produce any container images as output. To produce release ready container images, use the following command instead;
 

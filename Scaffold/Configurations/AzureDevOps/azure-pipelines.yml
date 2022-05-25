@@ -34,21 +34,21 @@ steps:
     displayName: Publish Code Coverage Results
     inputs:
       codeCoverageTool: Cobertura
-      summaryFileLocation: Artifacts/CoverageReports/Combined/Cobertura.xml
+      summaryFileLocation: artifacts/CoverageReports/Combined/Cobertura.xml
       failIfCoverageEmpty: true
 
   - task: PublishPipelineArtifact@1
     displayName: Publish Release (Compressed File)
     inputs:
-      targetPath: Artifacts/Release
+      targetPath: artifacts/Release
       artifact: Release
       publishLocation: pipeline
 
   - task: ExtractFiles@1
     displayName: Prepare Release (Container Image)
     inputs:
-      archiveFilePatterns: Artifacts/Release/Scaffold.WebApi.zip
-      destinationFolder: Artifacts/Release/Scaffold.WebApi
+      archiveFilePatterns: artifacts/Release/Scaffold.WebApi.zip
+      destinationFolder: artifacts/Release/Scaffold.WebApi
       cleanDestinationFolder: true
       overwriteExistingFiles: false
 
@@ -56,8 +56,8 @@ steps:
     displayName: Publish Release (Container Image)
     inputs:
       command: buildAndPush
-      buildContext: Artifacts/Release/Scaffold.WebApi
-      Dockerfile: Artifacts/Release/Scaffold.WebApi/Dockerfile
+      buildContext: artifacts/Release/Scaffold.WebApi
+      Dockerfile: artifacts/Release/Scaffold.WebApi/Dockerfile
       containerRegistry: $(containerRegistry)
       repository: $(repository)
       tags: |

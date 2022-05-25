@@ -36,7 +36,7 @@ Included in this solution is a Cake script with a target that you can use to gen
 
     dotnet cake --Target=Test
 
-Once generated, coverage reports are located in the _Artifacts_ directory in a subfolder called _CoverageReports_. Coverage reports are generated for;
+Once generated, coverage reports are located in the _artifacts_ directory in a subfolder called _CoverageReports_. Coverage reports are generated for;
 
 - Unit Test
 - Integration Tests

@@ -17,4 +17,4 @@ To produce a Software Bill of Material, run;
 
     dotnet cake --Target=Audit
 
-The output will be located in the _Artifacts_ directory.
+The output will be located in the _artifacts_ directory.

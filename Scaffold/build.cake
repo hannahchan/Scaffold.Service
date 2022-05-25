@@ -10,7 +10,7 @@ string target = Argument("Target", "Publish");
 // GLOBAL VARIABLES
 //////////////////////////////////////////////////////////////////////
 
-string artifacts = "./Artifacts";
+string artifacts = "./artifacts";
 string auditArtifacts = $"{artifacts}/Audit";
 string buildArtifacts = $"{artifacts}/Release";
 string testArtifacts = $"{artifacts}";
