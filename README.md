@@ -42,10 +42,10 @@ Other stuff you inherit when you bootstrap with Scaffold.Service.
 - [Code Analysis and Formatting](./Scaffold/Docs/CodeAnalysisAndFormatting.md)
 - [Cross-platform Support](./Scaffold/Docs/CrossPlatformSupport.md)
 - [Deterministic Builds](./Scaffold/Docs/DeterministicBuilds.md)
-- [Development Container](./Scaffold/Docs/DevelopmentContainer.md)
 - [Docker Support](./Scaffold/Docs/Docker.md)
 - [Entity Framework Support](./Scaffold/Docs/EntityFramework.md)
 - [Nullable Reference Types](./Scaffold/Docs/NullableReferenceTypes.md)
+- [Remote Development](./Scaffold/Docs/RemoteDevelopment.md)
 - [Software Bill of Materials](./Scaffold/Docs/SoftwareBillOfMaterials.md)
 - [Test Structure](./Scaffold/Docs/TestStructure.md)
 
