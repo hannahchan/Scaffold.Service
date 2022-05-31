@@ -35,8 +35,9 @@ public class DemoControllerUnitTests
 
             // Assert
             ObjectResult objectResult = Assert.IsType<ObjectResult>(result);
-            ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
+            Assert.Equal((int)statusCode, objectResult.StatusCode);
 
+            ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
             Assert.Equal("Example Request", problemDetails.Title);
             Assert.Equal((int)statusCode, problemDetails.Status);
         }
@@ -60,8 +61,9 @@ public class DemoControllerUnitTests
 
             // Assert
             ObjectResult objectResult = Assert.IsType<ObjectResult>(result);
-            ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
+            Assert.Equal((int)HttpStatusCode.OK, objectResult.StatusCode);
 
+            ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
             Assert.Equal("Example Trace", problemDetails.Title);
             Assert.Equal((int)HttpStatusCode.OK, problemDetails.Status);
 
@@ -94,8 +96,9 @@ public class DemoControllerUnitTests
 
             // Assert
             ObjectResult objectResult = Assert.IsType<ObjectResult>(result);
-            ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
+            Assert.Equal((int)HttpStatusCode.OK, objectResult.StatusCode);
 
+            ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
             Assert.Equal("Example Trace", problemDetails.Title);
             Assert.Equal((int)HttpStatusCode.OK, problemDetails.Status);
 
@@ -131,8 +134,9 @@ public class DemoControllerUnitTests
 
             // Assert
             ObjectResult objectResult = Assert.IsType<ObjectResult>(result);
-            ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
+            Assert.Equal((int)HttpStatusCode.OK, objectResult.StatusCode);
 
+            ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
             Assert.Equal("Example Trace", problemDetails.Title);
             Assert.Equal((int)HttpStatusCode.OK, problemDetails.Status);
 
