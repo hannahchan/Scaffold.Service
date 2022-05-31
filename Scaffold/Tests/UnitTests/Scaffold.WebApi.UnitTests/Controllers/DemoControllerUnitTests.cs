@@ -4,80 +4,48 @@ namespace Scaffold.WebApi.UnitTests.Controllers;
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Scaffold.WebApi.Controllers;
 using Xunit;
 
 public class DemoControllerUnitTests
 {
+    public class ExampleRequest
+    {
+        [Theory]
+        [InlineData(HttpStatusCode.OK)]
+        [InlineData(HttpStatusCode.BadRequest)]
+        [InlineData(HttpStatusCode.InternalServerError)]
+        public async Task When_InvokingExampleRequest_Expect_StatusCode(HttpStatusCode statusCode)
+        {
+            // Arrange
+            using HttpClient httpClient = new HttpClient();
+
+            DemoController.Options options = new DemoController.Options();
+            DemoController.Client demoClient = new DemoController.Client(httpClient, Options.Create(options));
+            DemoController controller = new DemoController(demoClient, Options.Create(options));
+
+            // Act
+            ActionResult result = await controller.ExampleRequest(statusCode: statusCode);
+
+            // Assert
+            ObjectResult objectResult = Assert.IsType<ObjectResult>(result);
+            ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
+
+            Assert.Equal("Example Request", problemDetails.Title);
+            Assert.Equal((int)statusCode, problemDetails.Status);
+        }
+    }
+
     public class Trace
     {
         [Fact]
-        public async Task When_InvokingTrace_Expect_HierarchicalFormatTraceId()
-        {
-            // Arrange
-            Activity.DefaultIdFormat = ActivityIdFormat.Hierarchical;
-            using Activity activity = new Activity(nameof(activity));
-
-            using HttpRequestHandler httpRequestHandler = new HttpRequestHandler(new HttpResponseMessage());
-            using HttpClient httpClient = new HttpClient(httpRequestHandler);
-
-            DemoController.Options options = new DemoController.Options { NextHopBaseAddress = "http://localhost" };
-            DemoController.Client demoClient = new DemoController.Client(httpClient, Options.Create(options));
-            DemoController controller = new DemoController(demoClient, Options.Create(options));
-
-            // Act
-            activity.Start();
-
-            string result = await controller.Trace();
-
-            // Assert
-            Assert.Equal(activity.RootId, result);
-
-            Assert.Collection(
-                httpRequestHandler.ReceivedRequests,
-                request =>
-                {
-                    Assert.EndsWith("/demo/trace/1", request.RequestUri.ToString());
-                });
-        }
-
-        [Fact]
-        public async Task When_InvokingTrace_Expect_W3CFormatTraceId()
-        {
-            // Arrange
-            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
-            using Activity activity = new Activity(nameof(activity));
-
-            using HttpRequestHandler httpRequestHandler = new HttpRequestHandler(new HttpResponseMessage());
-            using HttpClient httpClient = new HttpClient(httpRequestHandler);
-
-            DemoController.Options options = new DemoController.Options { NextHopBaseAddress = "http://localhost" };
-            DemoController.Client demoClient = new DemoController.Client(httpClient, Options.Create(options));
-            DemoController controller = new DemoController(demoClient, Options.Create(options));
-
-            // Act
-            activity.Start();
-
-            string result = await controller.Trace();
-
-            // Assert
-            Assert.Equal(activity.TraceId.ToHexString(), result);
-
-            Assert.Collection(
-                httpRequestHandler.ReceivedRequests,
-                request =>
-                {
-                    Assert.EndsWith("/demo/trace/1", request.RequestUri.ToString());
-                });
-        }
-
-        [Fact]
-        public async Task When_InvokingTrace_Expect_NullTraceId()
+        public async Task When_InvokingTrace_Expect_Ok()
         {
             // Arrange
             using HttpRequestHandler httpRequestHandler = new HttpRequestHandler(new HttpResponseMessage());
@@ -88,16 +56,20 @@ public class DemoControllerUnitTests
             DemoController controller = new DemoController(demoClient, Options.Create(options));
 
             // Act
-            string result = await controller.Trace();
+            ActionResult result = await controller.Trace();
 
             // Assert
-            Assert.Null(result);
+            ObjectResult objectResult = Assert.IsType<ObjectResult>(result);
+            ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
+
+            Assert.Equal("Example Trace", problemDetails.Title);
+            Assert.Equal((int)HttpStatusCode.OK, problemDetails.Status);
 
             Assert.Collection(
                 httpRequestHandler.ReceivedRequests,
                 request =>
                 {
-                    Assert.EndsWith("/demo/trace/1", request.RequestUri.ToString());
+                    Assert.EndsWith("/demo/trace?depth=1", request.RequestUri.ToString());
                 });
         }
 
@@ -107,7 +79,7 @@ public class DemoControllerUnitTests
         [InlineData(1, true)]
         [InlineData(int.MinValue, false)]
         [InlineData(int.MaxValue, true)]
-        public async Task When_InvokingTrace_Expect_HttpRequestMessage(int depth, bool expectHttpRequestMessage)
+        public async Task When_InvokingTraceWithDepth_Expect_Ok(int depth, bool expectHttpRequestMessage)
         {
             // Arrange
             using HttpRequestHandler httpRequestHandler = new HttpRequestHandler(new HttpResponseMessage());
@@ -118,9 +90,15 @@ public class DemoControllerUnitTests
             DemoController controller = new DemoController(demoClient, Options.Create(options));
 
             // Act
-            await controller.Trace(depth);
+            ActionResult result = await controller.Trace(depth);
 
             // Assert
+            ObjectResult objectResult = Assert.IsType<ObjectResult>(result);
+            ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
+
+            Assert.Equal("Example Trace", problemDetails.Title);
+            Assert.Equal((int)HttpStatusCode.OK, problemDetails.Status);
+
             if (expectHttpRequestMessage)
             {
                 Assert.Collection(
@@ -134,24 +112,30 @@ public class DemoControllerUnitTests
         }
 
         [Theory]
-        [InlineData(9, "/demo/trace/8")]
-        [InlineData(10, "/demo/trace/9")]
-        [InlineData(11, "/demo/trace/10")]
-        [InlineData(12, "/demo/trace/10")]
-        public async Task When_InvokingTrace_Expect_Path(int depth, string expectedPath)
+        [InlineData(9, "/demo/trace?depth=8")]
+        [InlineData(10, "/demo/trace?depth=9")]
+        [InlineData(11, "/demo/trace?depth=10")]
+        [InlineData(12, "/demo/trace?depth=10")]
+        public async Task When_InvokingTraceWithDepthAroundMaximum_Expect_Ok(int depth, string expectedPath)
         {
             // Arrange
             using HttpRequestHandler httpRequestHandler = new HttpRequestHandler(new HttpResponseMessage());
             using HttpClient httpClient = new HttpClient(httpRequestHandler);
 
-            DemoController.Options options = new DemoController.Options() { NextHopBaseAddress = "http://localhost", MaxDepth = 10 };
+            DemoController.Options options = new DemoController.Options() { NextHopBaseAddress = "http://localhost", TraceMaxDepth = 10 };
             DemoController.Client demoClient = new DemoController.Client(httpClient, Options.Create(options));
             DemoController controller = new DemoController(demoClient, Options.Create(options));
 
             // Act
-            await controller.Trace(depth);
+            ActionResult result = await controller.Trace(depth);
 
             // Assert
+            ObjectResult objectResult = Assert.IsType<ObjectResult>(result);
+            ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
+
+            Assert.Equal("Example Trace", problemDetails.Title);
+            Assert.Equal((int)HttpStatusCode.OK, problemDetails.Status);
+
             Assert.Collection(
                 httpRequestHandler.ReceivedRequests,
                 request =>
