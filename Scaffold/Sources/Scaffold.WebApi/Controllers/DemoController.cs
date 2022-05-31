@@ -32,7 +32,8 @@ public class DemoController : ControllerBase
     /// <summary>Creates an example request.</summary>
     /// <param name="duration">The minimum duration in milliseconds the request should at least take.</param>
     /// <param name="statusCode">The HTTP status code the request should return.</param>
-    /// <returns>Problem Details (RFC 7807) Response.</returns>
+    /// <returns>A custom Problem Details (RFC 7807) response.</returns>
+    /// <response code="default">Problem Details (RFC 7807).</response>
     [HttpDelete(ExampleRequestRouteTemplate)]
     [HttpGet(ExampleRequestRouteTemplate)]
     [HttpPost(ExampleRequestRouteTemplate)]
@@ -54,8 +55,8 @@ public class DemoController : ControllerBase
 
     /// <summary>Creates an example chain of requests.</summary>
     /// <param name="depth">The number of requests to make in the chain.</param>
-    /// <returns>A string containing the trace identifier (TraceID) for the chain.</returns>
-    /// <response code="default">Problem Details (RFC 7807) Response.</response>
+    /// <returns>A custom Problem Details (RFC 7807) response.</returns>
+    /// <response code="default">Problem Details (RFC 7807).</response>
     [HttpGet("trace")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesDefaultResponseType]

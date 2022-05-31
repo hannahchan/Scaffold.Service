@@ -29,7 +29,7 @@ public class BucketsController : ControllerBase
     /// <param name="requestBody">A complete or partial set of key-value pairs to create the Bucket object with.</param>
     /// <returns>The created Bucket object.</returns>
     /// <response code="201">Bucket created successfully.</response>
-    /// <response code="default">Problem Details (RFC 7807) Response.</response>
+    /// <response code="default">Problem Details (RFC 7807).</response>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Bucket))]
     [ProducesDefaultResponseType]
@@ -51,7 +51,7 @@ public class BucketsController : ControllerBase
     /// <param name="requestQuery">The parameters for the request.</param>
     /// <returns>A list of Bucket objects.</returns>
     /// <response code="200">Buckets retrieved successfully.</response>
-    /// <response code="default">Problem Details (RFC 7807) Response.</response>
+    /// <response code="default">Problem Details (RFC 7807).</response>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesDefaultResponseType]
@@ -72,7 +72,7 @@ public class BucketsController : ControllerBase
     /// <param name="bucketId">The Id. of the Bucket object to be retrieved.</param>
     /// <returns>The specified Bucket object.</returns>
     /// <response code="200">Bucket retrieved successfully.</response>
-    /// <response code="default">Problem Details (RFC 7807) Response.</response>
+    /// <response code="default">Problem Details (RFC 7807).</response>
     [HttpGet("{bucketId}", Name = "GetBucket")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesDefaultResponseType]
@@ -88,7 +88,7 @@ public class BucketsController : ControllerBase
     /// <returns>The created or updated Bucket object.</returns>
     /// <response code="200">Bucket updated successfully.</response>
     /// <response code="201">Bucket created successfully.</response>
-    /// <response code="default">Problem Details (RFC 7807) Response.</response>
+    /// <response code="default">Problem Details (RFC 7807).</response>
     [HttpPut("{bucketId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Bucket))]
@@ -111,7 +111,7 @@ public class BucketsController : ControllerBase
     /// <param name="bucketId">The Id. of the Bucket object to be deleted.</param>
     /// <returns>A "No Content (204)" HTTP status response.</returns>
     /// <response code="204">Bucket deleted successfully.</response>
-    /// <response code="default">Problem Details (RFC 7807) Response.</response>
+    /// <response code="default">Problem Details (RFC 7807).</response>
     [HttpDelete("{bucketId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesDefaultResponseType]
@@ -126,7 +126,7 @@ public class BucketsController : ControllerBase
     /// <param name="requestBody">A complete or partial set of key-value pairs to create the Item object with.</param>
     /// <returns>The created Item object.</returns>
     /// <response code="201">Item created successfully.</response>
-    /// <response code="default">Problem Details (RFC 7807) Response.</response>
+    /// <response code="default">Problem Details (RFC 7807).</response>
     [HttpPost("{bucketId}/items")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Item))]
     [ProducesDefaultResponseType]
@@ -147,7 +147,7 @@ public class BucketsController : ControllerBase
     /// <param name="bucketId">The Id. of the Bucket object to retrieve the items from.</param>
     /// <returns>A list of Item objects.</returns>
     /// <response code="200">Items retrieved successfully.</response>
-    /// <response code="default">Problem Details (RFC 7807) Response.</response>
+    /// <response code="default">Problem Details (RFC 7807).</response>
     [HttpGet("{bucketId}/items")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesDefaultResponseType]
@@ -162,7 +162,7 @@ public class BucketsController : ControllerBase
     /// <param name="itemId">The Id. of the Item object to be retrieved.</param>
     /// <returns>The specified Item object.</returns>
     /// <response code="200">Item retrieved successfully.</response>
-    /// <response code="default">Problem Details (RFC 7807) Response.</response>
+    /// <response code="default">Problem Details (RFC 7807).</response>
     [HttpGet("{bucketId}/items/{itemId}", Name = "GetItem")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesDefaultResponseType]
@@ -184,7 +184,7 @@ public class BucketsController : ControllerBase
     /// <returns>The created or updated Item object.</returns>
     /// <response code="200">Item updated successfully.</response>
     /// <response code="201">Item created successfully.</response>
-    /// <response code="default">Problem Details (RFC 7807) Response.</response>
+    /// <response code="default">Problem Details (RFC 7807).</response>
     [HttpPut("{bucketId}/items/{itemId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Item))]
@@ -208,7 +208,7 @@ public class BucketsController : ControllerBase
     /// <param name="itemId">The Id. of the Item object to be deleted.</param>
     /// <returns>A "No Content (204)" HTTP status response.</returns>
     /// <response code="204">Item deleted successfully.</response>
-    /// <response code="default">Problem Details (RFC 7807) Response.</response>
+    /// <response code="default">Problem Details (RFC 7807).</response>
     [HttpDelete("{bucketId}/items/{itemId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesDefaultResponseType]
