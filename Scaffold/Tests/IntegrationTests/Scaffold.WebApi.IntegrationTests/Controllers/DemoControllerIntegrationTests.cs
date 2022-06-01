@@ -133,11 +133,39 @@ public class DemoControllerIntegrationTests : IClassFixture<WebApplicationFactor
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             Assert.Equal(CustomMediaTypeNames.Application.ProblemJson, response.Content.Headers.ContentType.MediaType);
         }
+
+        [Fact]
+        public async Task When_InvokingTraceWithSync_Expect_Ok()
+        {
+            // Arrange
+            using HttpClient client = this.factory.CreateClient();
+
+            // Act
+            using HttpResponseMessage response = await client.GetAsync($"/demo/trace?sync=true");
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(CustomMediaTypeNames.Application.ProblemJson, response.Content.Headers.ContentType.MediaType);
+        }
+
+        [Fact]
+        public async Task When_InvokingTraceWithSync_Expect_BadRequest()
+        {
+            // Arrange
+            using HttpClient client = this.factory.CreateClient();
+
+            // Act
+            using HttpResponseMessage response = await client.GetAsync($"/demo/trace?sync=abc");
+
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(CustomMediaTypeNames.Application.ProblemJson, response.Content.Headers.ContentType.MediaType);
+        }
     }
 
     private class MockDemoClient : DemoController.IClient
     {
-        public Task Trace(int depth, CancellationToken cancellationToken = default)
+        public Task Trace(int depth, bool sync, CancellationToken cancellationToken = default)
         {
             return Task.CompletedTask;
         }

@@ -9,7 +9,9 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using Scaffold.WebApi.Controllers;
 using Xunit;
 
@@ -71,7 +73,8 @@ public class DemoControllerUnitTests
                 httpRequestHandler.ReceivedRequests,
                 request =>
                 {
-                    Assert.EndsWith("/demo/trace?depth=1", request.RequestUri.ToString());
+                    Dictionary<string, StringValues> queryString = QueryHelpers.ParseQuery(request.RequestUri.Query);
+                    Assert.Equal("1", queryString["depth"]);
                 });
         }
 
@@ -115,11 +118,11 @@ public class DemoControllerUnitTests
         }
 
         [Theory]
-        [InlineData(9, "/demo/trace?depth=8")]
-        [InlineData(10, "/demo/trace?depth=9")]
-        [InlineData(11, "/demo/trace?depth=10")]
-        [InlineData(12, "/demo/trace?depth=10")]
-        public async Task When_InvokingTraceWithDepthAroundMaximum_Expect_Ok(int depth, string expectedPath)
+        [InlineData(9, 8)]
+        [InlineData(10, 9)]
+        [InlineData(11, 10)]
+        [InlineData(12, 10)]
+        public async Task When_InvokingTraceWithDepthAroundMaximum_Expect_Ok(int depth, int expectedDepth)
         {
             // Arrange
             using HttpRequestHandler httpRequestHandler = new HttpRequestHandler(new HttpResponseMessage());
@@ -144,7 +147,8 @@ public class DemoControllerUnitTests
                 httpRequestHandler.ReceivedRequests,
                 request =>
                 {
-                    Assert.EndsWith(expectedPath, request.RequestUri.ToString());
+                    Dictionary<string, StringValues> queryString = QueryHelpers.ParseQuery(request.RequestUri.Query);
+                    Assert.Equal(expectedDepth.ToString(), queryString["depth"]);
                 });
         }
     }

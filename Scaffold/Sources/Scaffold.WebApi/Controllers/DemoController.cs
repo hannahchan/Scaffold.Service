@@ -1,11 +1,13 @@
 namespace Scaffold.WebApi.Controllers;
 
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 
 [ApiController]
@@ -26,7 +28,7 @@ public class DemoController : ControllerBase
 
     public interface IClient
     {
-        Task Trace(int depth, CancellationToken cancellationToken = default);
+        Task Trace(int depth, bool sync, CancellationToken cancellationToken = default);
     }
 
     /// <summary>Creates an example request.</summary>
@@ -53,18 +55,24 @@ public class DemoController : ControllerBase
         return this.Problem(title: "Example Request", statusCode: (int)statusCode);
     }
 
-    /// <summary>Creates an example chain of requests.</summary>
-    /// <param name="depth">The number of requests to make in the chain.</param>
+    /// <summary>Creates an example trace.</summary>
+    /// <param name="depth">The number of downstream services to call in the chain.</param>
+    /// <param name="sync">Whether to wait for downstream requests to complete before returning a response.</param>
     /// <returns>A custom Problem Details (RFC 7807) response.</returns>
     /// <response code="default">Problem Details (RFC 7807).</response>
     [HttpGet("trace")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesDefaultResponseType]
-    public async Task<ActionResult> Trace(int depth = 2)
+    public async Task<ActionResult> Trace(int depth = 2, bool sync = false)
     {
         if (depth > 0)
         {
-            await this.demoClient.Trace(depth > this.options.TraceMaxDepth ? this.options.TraceMaxDepth : depth - 1);
+            Task request = this.demoClient.Trace(depth > this.options.TraceMaxDepth ? this.options.TraceMaxDepth : depth - 1, sync);
+
+            if (sync)
+            {
+                await request;
+            }
         }
 
         return this.Problem(title: "Example Trace", statusCode: (int)HttpStatusCode.OK);
@@ -82,9 +90,16 @@ public class DemoController : ControllerBase
             this.options = options.Value;
         }
 
-        public async Task Trace(int depth, CancellationToken cancellationToken = default)
+        public async Task Trace(int depth, bool sync, CancellationToken cancellationToken = default)
         {
-            await this.httpClient.GetAsync($"{this.options.NextHopBaseAddress}/demo/trace?depth={depth}", cancellationToken);
+            Dictionary<string, string?> queryString = new Dictionary<string, string?>
+            {
+                [nameof(depth)] = depth.ToString(),
+                [nameof(sync)] = sync.ToString(),
+            };
+
+            string uri = QueryHelpers.AddQueryString($"{this.options.NextHopBaseAddress}/demo/trace", queryString);
+            await this.httpClient.GetAsync(uri, cancellationToken);
         }
     }
 
