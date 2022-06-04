@@ -1,13 +1,13 @@
 {
   "build": {
-    "context": ".",
-    "dockerfile": "Dockerfile"
+    "context": "../Scaffold/.devcontainer",
+    "dockerfile": "../Scaffold/.devcontainer/Dockerfile"
   },
   "extensions": ["ms-azuretools.vscode-docker", "ms-dotnettools.csharp"],
   "mounts": [
     "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind"
   ],
-  "name": "Scaffold",
+  "name": "Scaffold.Service",
   "overrideCommand": false,
   "remoteEnv": {
     "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
