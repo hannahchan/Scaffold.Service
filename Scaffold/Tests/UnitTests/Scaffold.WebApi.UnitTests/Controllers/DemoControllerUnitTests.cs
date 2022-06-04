@@ -75,6 +75,8 @@ public class DemoControllerUnitTests
                 {
                     Dictionary<string, StringValues> queryString = QueryHelpers.ParseQuery(request.RequestUri.Query);
                     Assert.Equal("1", queryString["depth"]);
+                    Assert.Equal("1", queryString["fanOut"]);
+                    Assert.Equal("False", queryString["sync"]);
                 });
         }
 
@@ -95,7 +97,7 @@ public class DemoControllerUnitTests
             DemoController controller = new DemoController(demoClient, Options.Create(options));
 
             // Act
-            ActionResult result = await controller.Trace(depth);
+            ActionResult result = await controller.Trace(depth: depth);
 
             // Assert
             ObjectResult objectResult = Assert.IsType<ObjectResult>(result);
@@ -121,7 +123,6 @@ public class DemoControllerUnitTests
         [InlineData(9, 8)]
         [InlineData(10, 9)]
         [InlineData(11, 10)]
-        [InlineData(12, 10)]
         public async Task When_InvokingTraceWithDepthAroundMaximum_Expect_Ok(int depth, int expectedDepth)
         {
             // Arrange
@@ -133,7 +134,7 @@ public class DemoControllerUnitTests
             DemoController controller = new DemoController(demoClient, Options.Create(options));
 
             // Act
-            ActionResult result = await controller.Trace(depth);
+            ActionResult result = await controller.Trace(depth: depth);
 
             // Assert
             ObjectResult objectResult = Assert.IsType<ObjectResult>(result);
@@ -150,6 +151,127 @@ public class DemoControllerUnitTests
                     Dictionary<string, StringValues> queryString = QueryHelpers.ParseQuery(request.RequestUri.Query);
                     Assert.Equal(expectedDepth.ToString(), queryString["depth"]);
                 });
+        }
+
+        [Fact]
+        public async Task When_InvokingTraceWithNegativeMaximumDepth_Expect_Ok()
+        {
+            // Arrange
+            using HttpRequestHandler httpRequestHandler = new HttpRequestHandler(new HttpResponseMessage());
+            using HttpClient httpClient = new HttpClient(httpRequestHandler);
+
+            DemoController.Options options = new DemoController.Options() { NextHopBaseAddress = "http://localhost", TraceMaxDepth = -10 };
+            DemoController.Client demoClient = new DemoController.Client(httpClient, Options.Create(options));
+            DemoController controller = new DemoController(demoClient, Options.Create(options));
+
+            // Act
+            ActionResult result = await controller.Trace();
+
+            // Assert
+            ObjectResult objectResult = Assert.IsType<ObjectResult>(result);
+            Assert.Equal((int)HttpStatusCode.OK, objectResult.StatusCode);
+
+            ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
+            Assert.Equal("Example Trace", problemDetails.Title);
+            Assert.Equal((int)HttpStatusCode.OK, problemDetails.Status);
+
+            Assert.Empty(httpRequestHandler.ReceivedRequests);
+        }
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        public async Task When_InvokingTraceWithFanOut_Expect_Ok(int fanOut)
+        {
+            // Arrange
+            using HttpRequestHandler httpRequestHandler = new HttpRequestHandler(new HttpResponseMessage());
+            using HttpClient httpClient = new HttpClient(httpRequestHandler);
+
+            DemoController.Options options = new DemoController.Options { NextHopBaseAddress = "http://localhost" };
+            DemoController.Client demoClient = new DemoController.Client(httpClient, Options.Create(options));
+            DemoController controller = new DemoController(demoClient, Options.Create(options));
+
+            // Act
+            ActionResult result = await controller.Trace(fanOut: fanOut);
+
+            // Assert
+            ObjectResult objectResult = Assert.IsType<ObjectResult>(result);
+            Assert.Equal((int)HttpStatusCode.OK, objectResult.StatusCode);
+
+            ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
+            Assert.Equal("Example Trace", problemDetails.Title);
+            Assert.Equal((int)HttpStatusCode.OK, problemDetails.Status);
+
+            if (fanOut > 1)
+            {
+                Assert.Equal(fanOut, httpRequestHandler.ReceivedRequests.Count);
+            }
+            else
+            {
+                Assert.Collection(
+                    httpRequestHandler.ReceivedRequests,
+                    request =>
+                    {
+                        Dictionary<string, StringValues> queryString = QueryHelpers.ParseQuery(request.RequestUri.Query);
+                        Assert.Equal("1", queryString["fanOut"]);
+                    });
+            }
+        }
+
+        [Theory]
+        [InlineData(9, 9)]
+        [InlineData(10, 10)]
+        [InlineData(11, 10)]
+        public async Task When_InvokingTraceWithFanOutAroundMaximum_Expect_Ok(int fanOut, int expectedFanOut)
+        {
+            // Arrange
+            using HttpRequestHandler httpRequestHandler = new HttpRequestHandler(new HttpResponseMessage());
+            using HttpClient httpClient = new HttpClient(httpRequestHandler);
+
+            DemoController.Options options = new DemoController.Options() { NextHopBaseAddress = "http://localhost", TraceMaxFanOut = 10 };
+            DemoController.Client demoClient = new DemoController.Client(httpClient, Options.Create(options));
+            DemoController controller = new DemoController(demoClient, Options.Create(options));
+
+            // Act
+            ActionResult result = await controller.Trace(fanOut: fanOut);
+
+            // Assert
+            ObjectResult objectResult = Assert.IsType<ObjectResult>(result);
+            Assert.Equal((int)HttpStatusCode.OK, objectResult.StatusCode);
+
+            ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
+            Assert.Equal("Example Trace", problemDetails.Title);
+            Assert.Equal((int)HttpStatusCode.OK, problemDetails.Status);
+
+            Assert.Equal(expectedFanOut, httpRequestHandler.ReceivedRequests.Count);
+        }
+
+        [Fact]
+        public async Task When_InvokingTraceWithNegativeMaximumFanOut_Expect_Ok()
+        {
+            // Arrange
+            using HttpRequestHandler httpRequestHandler = new HttpRequestHandler(new HttpResponseMessage());
+            using HttpClient httpClient = new HttpClient(httpRequestHandler);
+
+            DemoController.Options options = new DemoController.Options() { NextHopBaseAddress = "http://localhost", TraceMaxFanOut = -10 };
+            DemoController.Client demoClient = new DemoController.Client(httpClient, Options.Create(options));
+            DemoController controller = new DemoController(demoClient, Options.Create(options));
+
+            // Act
+            ActionResult result = await controller.Trace();
+
+            // Assert
+            ObjectResult objectResult = Assert.IsType<ObjectResult>(result);
+            Assert.Equal((int)HttpStatusCode.OK, objectResult.StatusCode);
+
+            ProblemDetails problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
+            Assert.Equal("Example Trace", problemDetails.Title);
+            Assert.Equal((int)HttpStatusCode.OK, problemDetails.Status);
+
+            Assert.NotEmpty(httpRequestHandler.ReceivedRequests);
         }
     }
 

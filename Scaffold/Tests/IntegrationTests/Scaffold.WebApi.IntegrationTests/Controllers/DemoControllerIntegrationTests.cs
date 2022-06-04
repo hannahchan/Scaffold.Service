@@ -135,6 +135,34 @@ public class DemoControllerIntegrationTests : IClassFixture<WebApplicationFactor
         }
 
         [Fact]
+        public async Task When_InvokingTraceWithFanOut_Expect_Ok()
+        {
+            // Arrange
+            using HttpClient client = this.factory.CreateClient();
+
+            // Act
+            using HttpResponseMessage response = await client.GetAsync($"/demo/trace?fanOut={new Random().Next()}");
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(CustomMediaTypeNames.Application.ProblemJson, response.Content.Headers.ContentType.MediaType);
+        }
+
+        [Fact]
+        public async Task When_InvokingTraceWithFanOut_Expect_BadRequest()
+        {
+            // Arrange
+            using HttpClient client = this.factory.CreateClient();
+
+            // Act
+            using HttpResponseMessage response = await client.GetAsync($"/demo/trace?fanOut=abc");
+
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(CustomMediaTypeNames.Application.ProblemJson, response.Content.Headers.ContentType.MediaType);
+        }
+
+        [Fact]
         public async Task When_InvokingTraceWithSync_Expect_Ok()
         {
             // Arrange
@@ -165,7 +193,7 @@ public class DemoControllerIntegrationTests : IClassFixture<WebApplicationFactor
 
     private class MockDemoClient : DemoController.IClient
     {
-        public Task Trace(int depth, bool sync, CancellationToken cancellationToken = default)
+        public Task Trace(int depth, int fanOut, bool sync, CancellationToken cancellationToken = default)
         {
             return Task.CompletedTask;
         }

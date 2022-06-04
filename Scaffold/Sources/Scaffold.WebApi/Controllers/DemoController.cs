@@ -28,7 +28,7 @@ public class DemoController : ControllerBase
 
     public interface IClient
     {
-        Task Trace(int depth, bool sync, CancellationToken cancellationToken = default);
+        Task Trace(int depth, int fanOut, bool sync, CancellationToken cancellationToken = default);
     }
 
     /// <summary>Creates an example request.</summary>
@@ -57,21 +57,46 @@ public class DemoController : ControllerBase
 
     /// <summary>Creates an example trace.</summary>
     /// <param name="depth">The number of downstream services to call in the chain.</param>
+    /// <param name="fanOut">The number of parallel calls to make to each downstream service.</param>
     /// <param name="sync">Whether to wait for downstream requests to complete before returning a response.</param>
     /// <returns>A custom Problem Details (RFC 7807) response.</returns>
     /// <response code="default">Problem Details (RFC 7807).</response>
     [HttpGet("trace")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesDefaultResponseType]
-    public async Task<ActionResult> Trace(int depth = 2, bool sync = false)
+    public async Task<ActionResult> Trace(int depth = 2, int fanOut = 1, bool sync = false)
     {
-        if (depth > 0)
+        if (depth > 0 && this.options.TraceMaxDepth > 0)
         {
-            Task request = this.demoClient.Trace(depth > this.options.TraceMaxDepth ? this.options.TraceMaxDepth : depth - 1, sync);
+            if (depth > this.options.TraceMaxDepth)
+            {
+                depth = this.options.TraceMaxDepth;
+            }
+            else
+            {
+                depth--;
+            }
+
+            if (fanOut > this.options.TraceMaxFanOut)
+            {
+                fanOut = this.options.TraceMaxFanOut;
+            }
+
+            if (fanOut < 1)
+            {
+                fanOut = 1;
+            }
+
+            List<Task> requests = new List<Task>();
+
+            for (int i = 0; i < fanOut; i++)
+            {
+                requests.Add(this.demoClient.Trace(depth, fanOut, sync));
+            }
 
             if (sync)
             {
-                await request;
+                await Task.WhenAll(requests);
             }
         }
 
@@ -90,11 +115,12 @@ public class DemoController : ControllerBase
             this.options = options.Value;
         }
 
-        public async Task Trace(int depth, bool sync, CancellationToken cancellationToken = default)
+        public async Task Trace(int depth, int fanOut, bool sync, CancellationToken cancellationToken = default)
         {
             Dictionary<string, string?> queryString = new Dictionary<string, string?>
             {
                 [nameof(depth)] = depth.ToString(),
+                [nameof(fanOut)] = fanOut.ToString(),
                 [nameof(sync)] = sync.ToString(),
             };
 
@@ -109,6 +135,8 @@ public class DemoController : ControllerBase
 
         public int RequestMaxDuration { get; set; } = 30000;
 
-        public int TraceMaxDepth { get; set; } = 10;
+        public int TraceMaxDepth { get; set; } = 5;
+
+        public int TraceMaxFanOut { get; set; } = 5;
     }
 }
