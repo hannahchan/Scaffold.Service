@@ -435,6 +435,48 @@ public class SingletonBucketRepositoryUnitTests
 
     public class UpdateBucket : SingletonBucketRepositoryUnitTests
     {
+        [Fact]
+        public void When_UpdatingExistingBucket_Expect_Updated()
+        {
+            // Arrange
+            using ServiceProvider serviceProvider = CreateNewServiceProvider();
+
+            IDbContextFactory<BucketContext> contextFactory = serviceProvider.GetRequiredService<IDbContextFactory<BucketContext>>();
+            SingletonBucketRepository repository = new SingletonBucketRepository(contextFactory);
+
+            Bucket[] buckets =
+            {
+                new Bucket { Name = "Bucket 1" },
+                new Bucket { Name = "Bucket 2" },
+                new Bucket { Name = "Bucket 3" },
+                new Bucket { Name = "Bucket 4" },
+                new Bucket { Name = "Bucket 5" },
+            };
+
+            using (BucketContext context = contextFactory.CreateDbContext())
+            {
+                context.Buckets.AddRange(buckets);
+                context.SaveChanges();
+            }
+
+            string newValue = Guid.NewGuid().ToString();
+
+            // Act
+            buckets[1].Name = newValue;
+            repository.Update(buckets[1]);
+
+            // Assert
+            using (BucketContext context = contextFactory.CreateDbContext())
+            {
+                Assert.Collection(
+                    context.Buckets,
+                    bucket => Assert.Equal("Bucket 1", bucket.Name),
+                    bucket => Assert.Equal(newValue, bucket.Name),
+                    bucket => Assert.Equal("Bucket 3", bucket.Name),
+                    bucket => Assert.Equal("Bucket 4", bucket.Name),
+                    bucket => Assert.Equal("Bucket 5", bucket.Name));
+            }
+        }
     }
 
     public class UpdateBuckets : SingletonBucketRepositoryUnitTests
@@ -443,6 +485,48 @@ public class SingletonBucketRepositoryUnitTests
 
     public class UpdateBucketAsync : SingletonBucketRepositoryUnitTests
     {
+        [Fact]
+        public async Task When_UpdatingExistingBucket_Expect_Updated()
+        {
+            // Arrange
+            using ServiceProvider serviceProvider = CreateNewServiceProvider();
+
+            IDbContextFactory<BucketContext> contextFactory = serviceProvider.GetRequiredService<IDbContextFactory<BucketContext>>();
+            SingletonBucketRepository repository = new SingletonBucketRepository(contextFactory);
+
+            Bucket[] buckets =
+            {
+                new Bucket { Name = "Bucket 1" },
+                new Bucket { Name = "Bucket 2" },
+                new Bucket { Name = "Bucket 3" },
+                new Bucket { Name = "Bucket 4" },
+                new Bucket { Name = "Bucket 5" },
+            };
+
+            using (BucketContext context = contextFactory.CreateDbContext())
+            {
+                context.Buckets.AddRange(buckets);
+                context.SaveChanges();
+            }
+
+            string newValue = Guid.NewGuid().ToString();
+
+            // Act
+            buckets[1].Name = newValue;
+            await repository.UpdateAsync(buckets[1]);
+
+            // Assert
+            using (BucketContext context = contextFactory.CreateDbContext())
+            {
+                Assert.Collection(
+                    context.Buckets,
+                    bucket => Assert.Equal("Bucket 1", bucket.Name),
+                    bucket => Assert.Equal(newValue, bucket.Name),
+                    bucket => Assert.Equal("Bucket 3", bucket.Name),
+                    bucket => Assert.Equal("Bucket 4", bucket.Name),
+                    bucket => Assert.Equal("Bucket 5", bucket.Name));
+            }
+        }
     }
 
     public class UpdateBucketsAsync : SingletonBucketRepositoryUnitTests
