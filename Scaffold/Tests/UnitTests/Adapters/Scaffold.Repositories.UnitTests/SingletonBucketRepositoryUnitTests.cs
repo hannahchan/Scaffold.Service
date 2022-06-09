@@ -481,6 +481,92 @@ public class SingletonBucketRepositoryUnitTests
 
     public class UpdateBuckets : SingletonBucketRepositoryUnitTests
     {
+        [Fact]
+        public void When_UpdatingMultipleExistingBuckets_Expect_Updated()
+        {
+            // Arrange
+            using ServiceProvider serviceProvider = CreateNewServiceProvider();
+
+            IDbContextFactory<BucketContext> contextFactory = serviceProvider.GetRequiredService<IDbContextFactory<BucketContext>>();
+            SingletonBucketRepository repository = new SingletonBucketRepository(contextFactory);
+
+            Bucket[] buckets =
+            {
+                new Bucket { Name = "Bucket 1" },
+                new Bucket { Name = "Bucket 2" },
+                new Bucket { Name = "Bucket 3" },
+                new Bucket { Name = "Bucket 4" },
+                new Bucket { Name = "Bucket 5" },
+            };
+
+            using (BucketContext context = contextFactory.CreateDbContext())
+            {
+                context.Buckets.AddRange(buckets);
+                context.SaveChanges();
+            }
+
+            string newValue1 = Guid.NewGuid().ToString();
+            string newValue2 = Guid.NewGuid().ToString();
+
+            // Act
+            buckets[1].Name = newValue1;
+            buckets[3].Name = newValue2;
+            repository.Update(new Bucket[] { buckets[1], buckets[3] });
+
+            // Assert
+            using (BucketContext context = contextFactory.CreateDbContext())
+            {
+                Assert.Collection(
+                    context.Buckets,
+                    bucket => Assert.Equal("Bucket 1", bucket.Name),
+                    bucket => Assert.Equal(newValue1, bucket.Name),
+                    bucket => Assert.Equal("Bucket 3", bucket.Name),
+                    bucket => Assert.Equal(newValue2, bucket.Name),
+                    bucket => Assert.Equal("Bucket 5", bucket.Name));
+            }
+        }
+
+        [Fact]
+        public void When_UpdatingMultipleBucketsWithEmptyEnumerableOfBuckets_Expect_NoChange()
+        {
+            // Arrange
+            using ServiceProvider serviceProvider = CreateNewServiceProvider();
+
+            IDbContextFactory<BucketContext> contextFactory = serviceProvider.GetRequiredService<IDbContextFactory<BucketContext>>();
+            SingletonBucketRepository repository = new SingletonBucketRepository(contextFactory);
+
+            Bucket[] buckets =
+            {
+                new Bucket { Name = "Bucket 1" },
+                new Bucket { Name = "Bucket 2" },
+                new Bucket { Name = "Bucket 3" },
+                new Bucket { Name = "Bucket 4" },
+                new Bucket { Name = "Bucket 5" },
+            };
+
+            using (BucketContext context = contextFactory.CreateDbContext())
+            {
+                context.Buckets.AddRange(buckets);
+                context.SaveChanges();
+            }
+
+            // Act
+            Exception exception = Record.Exception(() => repository.Update(Array.Empty<Bucket>()));
+
+            // Assert
+            Assert.Null(exception);
+
+            using (BucketContext context = contextFactory.CreateDbContext())
+            {
+                Assert.Collection(
+                    context.Buckets,
+                    bucket => Assert.Equal("Bucket 1", bucket.Name),
+                    bucket => Assert.Equal("Bucket 2", bucket.Name),
+                    bucket => Assert.Equal("Bucket 3", bucket.Name),
+                    bucket => Assert.Equal("Bucket 4", bucket.Name),
+                    bucket => Assert.Equal("Bucket 5", bucket.Name));
+            }
+        }
     }
 
     public class UpdateBucketAsync : SingletonBucketRepositoryUnitTests
@@ -531,5 +617,91 @@ public class SingletonBucketRepositoryUnitTests
 
     public class UpdateBucketsAsync : SingletonBucketRepositoryUnitTests
     {
+        [Fact]
+        public async Task When_UpdatingMultipleExistingBuckets_Expect_Updated()
+        {
+            // Arrange
+            using ServiceProvider serviceProvider = CreateNewServiceProvider();
+
+            IDbContextFactory<BucketContext> contextFactory = serviceProvider.GetRequiredService<IDbContextFactory<BucketContext>>();
+            SingletonBucketRepository repository = new SingletonBucketRepository(contextFactory);
+
+            Bucket[] buckets =
+            {
+                new Bucket { Name = "Bucket 1" },
+                new Bucket { Name = "Bucket 2" },
+                new Bucket { Name = "Bucket 3" },
+                new Bucket { Name = "Bucket 4" },
+                new Bucket { Name = "Bucket 5" },
+            };
+
+            using (BucketContext context = contextFactory.CreateDbContext())
+            {
+                context.Buckets.AddRange(buckets);
+                context.SaveChanges();
+            }
+
+            string newValue1 = Guid.NewGuid().ToString();
+            string newValue2 = Guid.NewGuid().ToString();
+
+            // Act
+            buckets[1].Name = newValue1;
+            buckets[3].Name = newValue2;
+            await repository.UpdateAsync(new Bucket[] { buckets[1], buckets[3] });
+
+            // Assert
+            using (BucketContext context = contextFactory.CreateDbContext())
+            {
+                Assert.Collection(
+                    context.Buckets,
+                    bucket => Assert.Equal("Bucket 1", bucket.Name),
+                    bucket => Assert.Equal(newValue1, bucket.Name),
+                    bucket => Assert.Equal("Bucket 3", bucket.Name),
+                    bucket => Assert.Equal(newValue2, bucket.Name),
+                    bucket => Assert.Equal("Bucket 5", bucket.Name));
+            }
+        }
+
+        [Fact]
+        public async Task When_UpdatingMultipleBucketsWithEmptyEnumerableOfBuckets_Expect_NoChange()
+        {
+            // Arrange
+            using ServiceProvider serviceProvider = CreateNewServiceProvider();
+
+            IDbContextFactory<BucketContext> contextFactory = serviceProvider.GetRequiredService<IDbContextFactory<BucketContext>>();
+            SingletonBucketRepository repository = new SingletonBucketRepository(contextFactory);
+
+            Bucket[] buckets =
+            {
+                new Bucket { Name = "Bucket 1" },
+                new Bucket { Name = "Bucket 2" },
+                new Bucket { Name = "Bucket 3" },
+                new Bucket { Name = "Bucket 4" },
+                new Bucket { Name = "Bucket 5" },
+            };
+
+            using (BucketContext context = contextFactory.CreateDbContext())
+            {
+                context.Buckets.AddRange(buckets);
+                context.SaveChanges();
+            }
+
+            // Act
+            Exception exception = await Record.ExceptionAsync(() => repository.UpdateAsync(Array.Empty<Bucket>()));
+
+            // Assert
+            Assert.Null(exception);
+
+            using (BucketContext context = contextFactory.CreateDbContext())
+            {
+                Assert.Collection(
+                    context.Buckets,
+                    bucket => Assert.Equal("Bucket 1", bucket.Name),
+                    bucket => Assert.Equal("Bucket 2", bucket.Name),
+                    bucket => Assert.Equal("Bucket 3", bucket.Name),
+                    bucket => Assert.Equal("Bucket 4", bucket.Name),
+                    bucket => Assert.Equal("Bucket 5", bucket.Name));
+            }
+        }
     }
 }
