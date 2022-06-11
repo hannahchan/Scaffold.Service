@@ -29,6 +29,7 @@ public class SingletonBucketRepositoryUnitTests
             SingletonBucketRepository repository = new SingletonBucketRepository(contextFactory);
 
             Bucket bucket = new Bucket();
+            bucket.AddItem(new Item());
 
             // Act
             repository.Add(bucket);
@@ -37,10 +38,12 @@ public class SingletonBucketRepositoryUnitTests
             using BucketContext context = contextFactory.CreateDbContext();
 
             Assert.Single(context.Buckets);
+            Assert.Single(context.Items);
 
             Bucket result = context.Buckets.Find(bucket.Id);
             Assert.NotEqual(bucket, result);
             Assert.Equal(bucket.Id, result.Id);
+            Assert.Single(result.Items);
         }
     }
 
@@ -107,6 +110,7 @@ public class SingletonBucketRepositoryUnitTests
             SingletonBucketRepository repository = new SingletonBucketRepository(contextFactory);
 
             Bucket bucket = new Bucket();
+            bucket.AddItem(new Item());
 
             // Act
             await repository.AddAsync(bucket);
@@ -115,10 +119,12 @@ public class SingletonBucketRepositoryUnitTests
             using BucketContext context = contextFactory.CreateDbContext();
 
             Assert.Single(context.Buckets);
+            Assert.Single(context.Items);
 
             Bucket result = context.Buckets.Find(bucket.Id);
             Assert.NotEqual(bucket, result);
             Assert.Equal(bucket.Id, result.Id);
+            Assert.Single(result.Items);
         }
     }
 

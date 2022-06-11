@@ -25,6 +25,7 @@ public class ScopedBucketRepositoryUnitTests
         {
             // Arrange
             Bucket bucket = new Bucket();
+            bucket.AddItem(new Item());
 
             // Act
             using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -37,10 +38,12 @@ public class ScopedBucketRepositoryUnitTests
             using (BucketContext context = new BucketContext(this.dbContextOptions))
             {
                 Assert.Single(context.Buckets);
+                Assert.Single(context.Items);
 
                 Bucket result = context.Buckets.Find(bucket.Id);
                 Assert.NotEqual(bucket, result);
                 Assert.Equal(bucket.Id, result.Id);
+                Assert.Single(result.Items);
             }
         }
     }
@@ -106,6 +109,7 @@ public class ScopedBucketRepositoryUnitTests
         {
             // Arrange
             Bucket bucket = new Bucket();
+            bucket.AddItem(new Item());
 
             // Act
             using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -118,10 +122,12 @@ public class ScopedBucketRepositoryUnitTests
             using (BucketContext context = new BucketContext(this.dbContextOptions))
             {
                 Assert.Single(context.Buckets);
+                Assert.Single(context.Items);
 
                 Bucket result = context.Buckets.Find(bucket.Id);
                 Assert.NotEqual(bucket, result);
                 Assert.Equal(bucket.Id, result.Id);
+                Assert.Single(result.Items);
             }
         }
 
