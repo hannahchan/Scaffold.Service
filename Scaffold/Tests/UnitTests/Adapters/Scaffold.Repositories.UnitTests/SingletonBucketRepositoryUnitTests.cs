@@ -204,28 +204,31 @@ public class SingletonBucketRepositoryUnitTests
             IDbContextFactory<BucketContext> contextFactory = serviceProvider.GetRequiredService<IDbContextFactory<BucketContext>>();
             SingletonBucketRepository repository = new SingletonBucketRepository(contextFactory);
 
-            Bucket[] buckets =
-            {
-                new Bucket { Name = "Bucket 1" },
-                new Bucket { Name = "Bucket 2" },
-                new Bucket { Name = "Bucket 3" },
-                new Bucket { Name = "Bucket 4" },
-                new Bucket { Name = "Bucket 5" },
-            };
+            Bucket bucket1 = new Bucket { Name = "Bucket 1" };
+            Bucket bucket2 = new Bucket { Name = "Bucket 2" };
+            Bucket bucket3 = new Bucket { Name = "Bucket 3" };
+            Bucket bucket4 = new Bucket { Name = "Bucket 4" };
+            Bucket bucket5 = new Bucket { Name = "Bucket 5" };
+
+            bucket1.AddItem(new Item { Name = "Item 1" });
+            bucket2.AddItem(new Item { Name = "Item 2" });
+            bucket3.AddItem(new Item { Name = "Item 3" });
+            bucket4.AddItem(new Item { Name = "Item 4" });
+            bucket5.AddItem(new Item { Name = "Item 5" });
 
             using (BucketContext context = contextFactory.CreateDbContext())
             {
-                context.Buckets.AddRange(buckets);
+                context.Buckets.AddRange(new Bucket[] { bucket1, bucket2, bucket3, bucket4, bucket5 });
                 context.SaveChanges();
             }
 
             // Act
-            repository.Remove(buckets[2]);
+            repository.Remove(bucket3);
 
             // Assert
             using (BucketContext context = contextFactory.CreateDbContext())
             {
-                Assert.Null(context.Buckets.Find(buckets[2].Id));
+                Assert.Null(context.Buckets.Find(bucket3.Id));
 
                 Assert.Collection(
                     context.Buckets,
@@ -233,6 +236,13 @@ public class SingletonBucketRepositoryUnitTests
                     bucket => Assert.Equal("Bucket 2", bucket.Name),
                     bucket => Assert.Equal("Bucket 4", bucket.Name),
                     bucket => Assert.Equal("Bucket 5", bucket.Name));
+
+                Assert.Collection(
+                    context.Items,
+                    item => Assert.Equal("Item 1", item.Name),
+                    item => Assert.Equal("Item 2", item.Name),
+                    item => Assert.Equal("Item 4", item.Name),
+                    item => Assert.Equal("Item 5", item.Name));
             }
         }
     }
@@ -334,28 +344,31 @@ public class SingletonBucketRepositoryUnitTests
             IDbContextFactory<BucketContext> contextFactory = serviceProvider.GetRequiredService<IDbContextFactory<BucketContext>>();
             SingletonBucketRepository repository = new SingletonBucketRepository(contextFactory);
 
-            Bucket[] buckets =
-            {
-                new Bucket { Name = "Bucket 1" },
-                new Bucket { Name = "Bucket 2" },
-                new Bucket { Name = "Bucket 3" },
-                new Bucket { Name = "Bucket 4" },
-                new Bucket { Name = "Bucket 5" },
-            };
+            Bucket bucket1 = new Bucket { Name = "Bucket 1" };
+            Bucket bucket2 = new Bucket { Name = "Bucket 2" };
+            Bucket bucket3 = new Bucket { Name = "Bucket 3" };
+            Bucket bucket4 = new Bucket { Name = "Bucket 4" };
+            Bucket bucket5 = new Bucket { Name = "Bucket 5" };
+
+            bucket1.AddItem(new Item { Name = "Item 1" });
+            bucket2.AddItem(new Item { Name = "Item 2" });
+            bucket3.AddItem(new Item { Name = "Item 3" });
+            bucket4.AddItem(new Item { Name = "Item 4" });
+            bucket5.AddItem(new Item { Name = "Item 5" });
 
             using (BucketContext context = contextFactory.CreateDbContext())
             {
-                context.Buckets.AddRange(buckets);
+                context.Buckets.AddRange(new Bucket[] { bucket1, bucket2, bucket3, bucket4, bucket5 });
                 context.SaveChanges();
             }
 
             // Act
-            await repository.RemoveAsync(buckets[2]);
+            await repository.RemoveAsync(bucket3);
 
             // Assert
             using (BucketContext context = contextFactory.CreateDbContext())
             {
-                Assert.Null(context.Buckets.Find(buckets[2].Id));
+                Assert.Null(context.Buckets.Find(bucket3.Id));
 
                 Assert.Collection(
                     context.Buckets,
@@ -363,6 +376,13 @@ public class SingletonBucketRepositoryUnitTests
                     bucket => Assert.Equal("Bucket 2", bucket.Name),
                     bucket => Assert.Equal("Bucket 4", bucket.Name),
                     bucket => Assert.Equal("Bucket 5", bucket.Name));
+
+                Assert.Collection(
+                    context.Items,
+                    item => Assert.Equal("Item 1", item.Name),
+                    item => Assert.Equal("Item 2", item.Name),
+                    item => Assert.Equal("Item 4", item.Name),
+                    item => Assert.Equal("Item 5", item.Name));
             }
         }
     }
