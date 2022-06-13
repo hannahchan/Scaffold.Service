@@ -1,7 +1,6 @@
 namespace Scaffold.Repositories.UnitTests;
 
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Scaffold.Domain.Aggregates.Bucket;
@@ -137,22 +136,6 @@ public class ScopedBucketRepositoryUnitTests
                 Assert.Single(result.Items);
             }
         }
-
-        [Fact(Skip = "Not testable with Entity Framework Core In-Memory Database")]
-        public async Task When_AddingBucketAndCancellationIsRequested_Expect_OperationCanceledException()
-        {
-            // Arrange
-            Bucket bucket = new Bucket();
-
-            using BucketContext context = new BucketContext(this.dbContextOptions);
-            ScopedBucketRepository repository = new ScopedBucketRepository(context);
-
-            // Act
-            Exception exception = await Record.ExceptionAsync(() => repository.AddAsync(bucket, new CancellationToken(true)));
-
-            // Assert
-            Assert.IsType<OperationCanceledException>(exception);
-        }
     }
 
     public class AddBucketsAsync : ScopedBucketRepositoryUnitTests
@@ -213,27 +196,6 @@ public class ScopedBucketRepositoryUnitTests
             {
                 Assert.Empty(context.Buckets);
             }
-        }
-
-        [Fact(Skip = "Not testable with Entity Framework Core In-Memory Database")]
-        public async Task When_AddingEnumerableOfBucketsAndCancellationIsRequested_Expect_OperationCanceledException()
-        {
-            // Arrange
-            Bucket[] buckets =
-            {
-                new Bucket { Name = "Bucket 1" },
-                new Bucket { Name = "Bucket 2" },
-                new Bucket { Name = "Bucket 3" },
-            };
-
-            using BucketContext context = new BucketContext(this.dbContextOptions);
-            ScopedBucketRepository repository = new ScopedBucketRepository(context);
-
-            // Act
-            Exception exception = await Record.ExceptionAsync(() => repository.AddAsync(buckets, new CancellationToken(true)));
-
-            // Assert
-            Assert.IsType<OperationCanceledException>(exception);
         }
     }
 
@@ -447,22 +409,6 @@ public class ScopedBucketRepositoryUnitTests
                     item => Assert.Equal("Item 5", item.Name));
             }
         }
-
-        [Fact(Skip = "Not testable with Entity Framework Core In-Memory Database")]
-        public async Task When_RemovingBucketAndCancellationIsRequested_Expect_OperationCanceledException()
-        {
-            // Arrange
-            Bucket bucket = new Bucket();
-
-            using BucketContext context = new BucketContext(this.dbContextOptions);
-            ScopedBucketRepository repository = new ScopedBucketRepository(context);
-
-            // Act
-            Exception exception = await Record.ExceptionAsync(() => repository.RemoveAsync(bucket, new CancellationToken(true)));
-
-            // Assert
-            Assert.IsType<OperationCanceledException>(exception);
-        }
     }
 
     public class RemoveBucketsAsync : ScopedBucketRepositoryUnitTests
@@ -568,27 +514,6 @@ public class ScopedBucketRepositoryUnitTests
                     bucket => Assert.Equal("Item 4", bucket.Name),
                     bucket => Assert.Equal("Item 5", bucket.Name));
             }
-        }
-
-        [Fact(Skip = "Not testable with Entity Framework Core In-Memory Database")]
-        public async Task When_RemovingEnumerableOfBucketsAndCancellationIsRequested_Expect_OperationCanceledException()
-        {
-            // Arrange
-            Bucket[] buckets =
-            {
-                new Bucket { Name = "Bucket 1" },
-                new Bucket { Name = "Bucket 2" },
-                new Bucket { Name = "Bucket 3" },
-            };
-
-            using BucketContext context = new BucketContext(this.dbContextOptions);
-            ScopedBucketRepository repository = new ScopedBucketRepository(context);
-
-            // Act
-            Exception exception = await Record.ExceptionAsync(() => repository.RemoveAsync(buckets, new CancellationToken(true)));
-
-            // Assert
-            Assert.IsType<OperationCanceledException>(exception);
         }
     }
 
@@ -770,22 +695,6 @@ public class ScopedBucketRepositoryUnitTests
                     bucket => Assert.Equal("Bucket 5", bucket.Name));
             }
         }
-
-        [Fact(Skip = "Not testable with Entity Framework Core In-Memory Database")]
-        public async Task When_UpdatingBucketAndCancellationIsRequested_Expect_OperationCanceledException()
-        {
-            // Arrange
-            Bucket bucket = new Bucket();
-
-            using BucketContext context = new BucketContext(this.dbContextOptions);
-            ScopedBucketRepository repository = new ScopedBucketRepository(context);
-
-            // Act
-            Exception exception = await Record.ExceptionAsync(() => repository.UpdateAsync(bucket, new CancellationToken(true)));
-
-            // Assert
-            Assert.IsType<OperationCanceledException>(exception);
-        }
     }
 
     public class UpdateBucketsAsync : ScopedBucketRepositoryUnitTests
@@ -875,27 +784,6 @@ public class ScopedBucketRepositoryUnitTests
                     bucket => Assert.Equal("Bucket 4", bucket.Name),
                     bucket => Assert.Equal("Bucket 5", bucket.Name));
             }
-        }
-
-        [Fact(Skip = "Not testable with Entity Framework Core In-Memory Database")]
-        public async Task When_UpdatingMultipleBucketAndCancellationIsRequested_Expect_OperationCanceledException()
-        {
-            // Arrange
-            Bucket[] buckets =
-            {
-                new Bucket { Name = "Bucket 1" },
-                new Bucket { Name = "Bucket 2" },
-                new Bucket { Name = "Bucket 3" },
-            };
-
-            using BucketContext context = new BucketContext(this.dbContextOptions);
-            ScopedBucketRepository repository = new ScopedBucketRepository(context);
-
-            // Act
-            Exception exception = await Record.ExceptionAsync(() => repository.UpdateAsync(buckets, new CancellationToken(true)));
-
-            // Assert
-            Assert.IsType<OperationCanceledException>(exception);
         }
     }
 }
