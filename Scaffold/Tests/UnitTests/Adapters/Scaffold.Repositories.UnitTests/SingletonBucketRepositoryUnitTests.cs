@@ -549,14 +549,9 @@ public class SingletonBucketRepositoryUnitTests
             string newValue = Guid.NewGuid().ToString();
 
             // Act
-            Console.WriteLine($"------- Item IDs: {bucket2Item1.Id}, {bucket2Item2.Id}, {bucket2Item3.Id}");
-            Console.WriteLine($"------- Bucket 2 Items Count: {bucket2.Items.Count}");
-
             bucket2.Name = newValue;
             bucket2.AddItem(new Item { Name = "Bucket 2, Item 4" });
-            Console.WriteLine($"------- Bucket 2 Items After Add: {bucket2.Items.Count}");
             bucket2.RemoveItem(bucket2Item2);
-            Console.WriteLine($"------- Bucket 2 Items After Remove: {bucket2.Items.Count}");
             bucket2Item3.Name = newValue;
 
             repository.Update(bucket2);
