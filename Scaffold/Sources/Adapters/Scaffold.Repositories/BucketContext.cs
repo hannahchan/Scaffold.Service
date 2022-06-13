@@ -22,6 +22,8 @@ public class BucketContext : DbContext
 
     public DbSet<Bucket> Buckets => this.Set<Bucket>();
 
+    public DbSet<Item> Items => this.Set<Item>();
+
     public override int SaveChanges()
     {
         this.ChangeTracker.UpdateChangeTrackingTimestamps(DateTime.UtcNow);

@@ -25,6 +25,7 @@ public class ScopedBucketRepositoryUnitTests
         {
             // Arrange
             Bucket bucket = new Bucket();
+            bucket.AddItem(new Item());
 
             // Act
             using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -37,10 +38,12 @@ public class ScopedBucketRepositoryUnitTests
             using (BucketContext context = new BucketContext(this.dbContextOptions))
             {
                 Assert.Single(context.Buckets);
+                Assert.Single(context.Items);
 
                 Bucket result = context.Buckets.Find(bucket.Id);
                 Assert.NotEqual(bucket, result);
                 Assert.Equal(bucket.Id, result.Id);
+                Assert.Single(result.Items);
             }
         }
     }
@@ -51,18 +54,19 @@ public class ScopedBucketRepositoryUnitTests
         public void When_AddingEnumerableOfBuckets_Expect_Saved()
         {
             // Arrange
-            Bucket[] buckets =
-            {
-                new Bucket { Name = "Bucket 1" },
-                new Bucket { Name = "Bucket 2" },
-                new Bucket { Name = "Bucket 3" },
-            };
+            Bucket bucket1 = new Bucket { Name = "Bucket 1" };
+            Bucket bucket2 = new Bucket { Name = "Bucket 2" };
+            Bucket bucket3 = new Bucket { Name = "Bucket 3" };
+
+            bucket1.AddItem(new Item { Name = "Item 1" });
+            bucket2.AddItem(new Item { Name = "Item 2" });
+            bucket3.AddItem(new Item { Name = "Item 3" });
 
             // Act
             using (BucketContext context = new BucketContext(this.dbContextOptions))
             {
                 ScopedBucketRepository repository = new ScopedBucketRepository(context);
-                repository.Add(buckets);
+                repository.Add(new Bucket[] { bucket1, bucket2, bucket3 });
             }
 
             // Assert
@@ -73,6 +77,12 @@ public class ScopedBucketRepositoryUnitTests
                     bucket => Assert.Equal("Bucket 1", bucket.Name),
                     bucket => Assert.Equal("Bucket 2", bucket.Name),
                     bucket => Assert.Equal("Bucket 3", bucket.Name));
+
+                Assert.Collection(
+                    context.Items,
+                    item => Assert.Equal("Item 1", item.Name),
+                    item => Assert.Equal("Item 2", item.Name),
+                    item => Assert.Equal("Item 3", item.Name));
             }
         }
 
@@ -106,6 +116,7 @@ public class ScopedBucketRepositoryUnitTests
         {
             // Arrange
             Bucket bucket = new Bucket();
+            bucket.AddItem(new Item());
 
             // Act
             using (BucketContext context = new BucketContext(this.dbContextOptions))
@@ -118,10 +129,12 @@ public class ScopedBucketRepositoryUnitTests
             using (BucketContext context = new BucketContext(this.dbContextOptions))
             {
                 Assert.Single(context.Buckets);
+                Assert.Single(context.Items);
 
                 Bucket result = context.Buckets.Find(bucket.Id);
                 Assert.NotEqual(bucket, result);
                 Assert.Equal(bucket.Id, result.Id);
+                Assert.Single(result.Items);
             }
         }
 
@@ -148,18 +161,19 @@ public class ScopedBucketRepositoryUnitTests
         public async Task When_AddingEnumerableOfBuckets_Expect_Saved()
         {
             // Arrange
-            Bucket[] buckets =
-            {
-                new Bucket { Name = "Bucket 1" },
-                new Bucket { Name = "Bucket 2" },
-                new Bucket { Name = "Bucket 3" },
-            };
+            Bucket bucket1 = new Bucket { Name = "Bucket 1" };
+            Bucket bucket2 = new Bucket { Name = "Bucket 2" };
+            Bucket bucket3 = new Bucket { Name = "Bucket 3" };
+
+            bucket1.AddItem(new Item { Name = "Item 1" });
+            bucket2.AddItem(new Item { Name = "Item 2" });
+            bucket3.AddItem(new Item { Name = "Item 3" });
 
             // Act
             using (BucketContext context = new BucketContext(this.dbContextOptions))
             {
                 ScopedBucketRepository repository = new ScopedBucketRepository(context);
-                await repository.AddAsync(buckets);
+                await repository.AddAsync(new Bucket[] { bucket1, bucket2, bucket3 });
             }
 
             // Assert
@@ -170,6 +184,12 @@ public class ScopedBucketRepositoryUnitTests
                     bucket => Assert.Equal("Bucket 1", bucket.Name),
                     bucket => Assert.Equal("Bucket 2", bucket.Name),
                     bucket => Assert.Equal("Bucket 3", bucket.Name));
+
+                Assert.Collection(
+                    context.Items,
+                    item => Assert.Equal("Item 1", item.Name),
+                    item => Assert.Equal("Item 2", item.Name),
+                    item => Assert.Equal("Item 3", item.Name));
             }
         }
 
@@ -223,18 +243,21 @@ public class ScopedBucketRepositoryUnitTests
         public void When_RemovingExistingBucket_Expect_Removed()
         {
             // Arrange
-            Bucket[] buckets =
-            {
-                new Bucket { Name = "Bucket 1" },
-                new Bucket { Name = "Bucket 2" },
-                new Bucket { Name = "Bucket 3" },
-                new Bucket { Name = "Bucket 4" },
-                new Bucket { Name = "Bucket 5" },
-            };
+            Bucket bucket1 = new Bucket { Name = "Bucket 1" };
+            Bucket bucket2 = new Bucket { Name = "Bucket 2" };
+            Bucket bucket3 = new Bucket { Name = "Bucket 3" };
+            Bucket bucket4 = new Bucket { Name = "Bucket 4" };
+            Bucket bucket5 = new Bucket { Name = "Bucket 5" };
+
+            bucket1.AddItem(new Item { Name = "Item 1" });
+            bucket2.AddItem(new Item { Name = "Item 2" });
+            bucket3.AddItem(new Item { Name = "Item 3" });
+            bucket4.AddItem(new Item { Name = "Item 4" });
+            bucket5.AddItem(new Item { Name = "Item 5" });
 
             using (BucketContext context = new BucketContext(this.dbContextOptions))
             {
-                context.Buckets.AddRange(buckets);
+                context.Buckets.AddRange(new Bucket[] { bucket1, bucket2, bucket3, bucket4, bucket5 });
                 context.SaveChanges();
             }
 
@@ -242,13 +265,13 @@ public class ScopedBucketRepositoryUnitTests
             using (BucketContext context = new BucketContext(this.dbContextOptions))
             {
                 ScopedBucketRepository repository = new ScopedBucketRepository(context);
-                repository.Remove(buckets[2]);
+                repository.Remove(bucket3);
             }
 
             // Assert
             using (BucketContext context = new BucketContext(this.dbContextOptions))
             {
-                Assert.Null(context.Buckets.Find(buckets[2].Id));
+                Assert.Null(context.Buckets.Find(bucket3.Id));
 
                 Assert.Collection(
                     context.Buckets,
@@ -256,6 +279,13 @@ public class ScopedBucketRepositoryUnitTests
                     bucket => Assert.Equal("Bucket 2", bucket.Name),
                     bucket => Assert.Equal("Bucket 4", bucket.Name),
                     bucket => Assert.Equal("Bucket 5", bucket.Name));
+
+                Assert.Collection(
+                    context.Items,
+                    item => Assert.Equal("Item 1", item.Name),
+                    item => Assert.Equal("Item 2", item.Name),
+                    item => Assert.Equal("Item 4", item.Name),
+                    item => Assert.Equal("Item 5", item.Name));
             }
         }
     }
@@ -266,18 +296,21 @@ public class ScopedBucketRepositoryUnitTests
         public void When_RemovingEnumerableOfBuckets_Expect_Removed()
         {
             // Arrange
-            Bucket[] buckets =
-            {
-                new Bucket { Name = "Bucket 1" },
-                new Bucket { Name = "Bucket 2" },
-                new Bucket { Name = "Bucket 3" },
-                new Bucket { Name = "Bucket 4" },
-                new Bucket { Name = "Bucket 5" },
-            };
+            Bucket bucket1 = new Bucket { Name = "Bucket 1" };
+            Bucket bucket2 = new Bucket { Name = "Bucket 2" };
+            Bucket bucket3 = new Bucket { Name = "Bucket 3" };
+            Bucket bucket4 = new Bucket { Name = "Bucket 4" };
+            Bucket bucket5 = new Bucket { Name = "Bucket 5" };
+
+            bucket1.AddItem(new Item { Name = "Item 1" });
+            bucket2.AddItem(new Item { Name = "Item 2" });
+            bucket3.AddItem(new Item { Name = "Item 3" });
+            bucket4.AddItem(new Item { Name = "Item 4" });
+            bucket5.AddItem(new Item { Name = "Item 5" });
 
             using (BucketContext context = new BucketContext(this.dbContextOptions))
             {
-                context.Buckets.AddRange(buckets);
+                context.Buckets.AddRange(new Bucket[] { bucket1, bucket2, bucket3, bucket4, bucket5 });
                 context.SaveChanges();
             }
 
@@ -285,20 +318,26 @@ public class ScopedBucketRepositoryUnitTests
             using (BucketContext context = new BucketContext(this.dbContextOptions))
             {
                 ScopedBucketRepository repository = new ScopedBucketRepository(context);
-                repository.Remove(new Bucket[] { buckets[1], buckets[3] });
+                repository.Remove(new Bucket[] { bucket2, bucket4 });
             }
 
             // Assert
             using (BucketContext context = new BucketContext(this.dbContextOptions))
             {
-                Assert.Null(context.Buckets.Find(buckets[1].Id));
-                Assert.Null(context.Buckets.Find(buckets[3].Id));
+                Assert.Null(context.Buckets.Find(bucket2.Id));
+                Assert.Null(context.Buckets.Find(bucket4.Id));
 
                 Assert.Collection(
                     context.Buckets,
                     bucket => Assert.Equal("Bucket 1", bucket.Name),
                     bucket => Assert.Equal("Bucket 3", bucket.Name),
                     bucket => Assert.Equal("Bucket 5", bucket.Name));
+
+                Assert.Collection(
+                    context.Items,
+                    bucket => Assert.Equal("Item 1", bucket.Name),
+                    bucket => Assert.Equal("Item 3", bucket.Name),
+                    bucket => Assert.Equal("Item 5", bucket.Name));
             }
         }
 
@@ -306,18 +345,21 @@ public class ScopedBucketRepositoryUnitTests
         public void When_RemovingEmptyEnumerableOfBuckets_Expect_NoChange()
         {
             // Arrange
-            Bucket[] buckets =
-            {
-                new Bucket { Name = "Bucket 1" },
-                new Bucket { Name = "Bucket 2" },
-                new Bucket { Name = "Bucket 3" },
-                new Bucket { Name = "Bucket 4" },
-                new Bucket { Name = "Bucket 5" },
-            };
+            Bucket bucket1 = new Bucket { Name = "Bucket 1" };
+            Bucket bucket2 = new Bucket { Name = "Bucket 2" };
+            Bucket bucket3 = new Bucket { Name = "Bucket 3" };
+            Bucket bucket4 = new Bucket { Name = "Bucket 4" };
+            Bucket bucket5 = new Bucket { Name = "Bucket 5" };
+
+            bucket1.AddItem(new Item { Name = "Item 1" });
+            bucket2.AddItem(new Item { Name = "Item 2" });
+            bucket3.AddItem(new Item { Name = "Item 3" });
+            bucket4.AddItem(new Item { Name = "Item 4" });
+            bucket5.AddItem(new Item { Name = "Item 5" });
 
             using (BucketContext context = new BucketContext(this.dbContextOptions))
             {
-                context.Buckets.AddRange(buckets);
+                context.Buckets.AddRange(new Bucket[] { bucket1, bucket2, bucket3, bucket4, bucket5 });
                 context.SaveChanges();
             }
 
@@ -342,6 +384,14 @@ public class ScopedBucketRepositoryUnitTests
                     bucket => Assert.Equal("Bucket 3", bucket.Name),
                     bucket => Assert.Equal("Bucket 4", bucket.Name),
                     bucket => Assert.Equal("Bucket 5", bucket.Name));
+
+                Assert.Collection(
+                    context.Items,
+                    bucket => Assert.Equal("Item 1", bucket.Name),
+                    bucket => Assert.Equal("Item 2", bucket.Name),
+                    bucket => Assert.Equal("Item 3", bucket.Name),
+                    bucket => Assert.Equal("Item 4", bucket.Name),
+                    bucket => Assert.Equal("Item 5", bucket.Name));
             }
         }
     }
@@ -352,18 +402,21 @@ public class ScopedBucketRepositoryUnitTests
         public async Task When_RemovingExistingBucket_Expect_Removed()
         {
             // Arrange
-            Bucket[] buckets =
-            {
-                new Bucket { Name = "Bucket 1" },
-                new Bucket { Name = "Bucket 2" },
-                new Bucket { Name = "Bucket 3" },
-                new Bucket { Name = "Bucket 4" },
-                new Bucket { Name = "Bucket 5" },
-            };
+            Bucket bucket1 = new Bucket { Name = "Bucket 1" };
+            Bucket bucket2 = new Bucket { Name = "Bucket 2" };
+            Bucket bucket3 = new Bucket { Name = "Bucket 3" };
+            Bucket bucket4 = new Bucket { Name = "Bucket 4" };
+            Bucket bucket5 = new Bucket { Name = "Bucket 5" };
+
+            bucket1.AddItem(new Item { Name = "Item 1" });
+            bucket2.AddItem(new Item { Name = "Item 2" });
+            bucket3.AddItem(new Item { Name = "Item 3" });
+            bucket4.AddItem(new Item { Name = "Item 4" });
+            bucket5.AddItem(new Item { Name = "Item 5" });
 
             using (BucketContext context = new BucketContext(this.dbContextOptions))
             {
-                context.Buckets.AddRange(buckets);
+                context.Buckets.AddRange(new Bucket[] { bucket1, bucket2, bucket3, bucket4, bucket5 });
                 context.SaveChanges();
             }
 
@@ -371,13 +424,13 @@ public class ScopedBucketRepositoryUnitTests
             using (BucketContext context = new BucketContext(this.dbContextOptions))
             {
                 ScopedBucketRepository repository = new ScopedBucketRepository(context);
-                await repository.RemoveAsync(buckets[2]);
+                await repository.RemoveAsync(bucket3);
             }
 
             // Assert
             using (BucketContext context = new BucketContext(this.dbContextOptions))
             {
-                Assert.Null(context.Buckets.Find(buckets[2].Id));
+                Assert.Null(context.Buckets.Find(bucket3.Id));
 
                 Assert.Collection(
                     context.Buckets,
@@ -385,6 +438,13 @@ public class ScopedBucketRepositoryUnitTests
                     bucket => Assert.Equal("Bucket 2", bucket.Name),
                     bucket => Assert.Equal("Bucket 4", bucket.Name),
                     bucket => Assert.Equal("Bucket 5", bucket.Name));
+
+                Assert.Collection(
+                    context.Items,
+                    item => Assert.Equal("Item 1", item.Name),
+                    item => Assert.Equal("Item 2", item.Name),
+                    item => Assert.Equal("Item 4", item.Name),
+                    item => Assert.Equal("Item 5", item.Name));
             }
         }
 
@@ -411,18 +471,21 @@ public class ScopedBucketRepositoryUnitTests
         public async Task When_RemovingEnumerableOfBuckets_Expect_Removed()
         {
             // Arrange
-            Bucket[] buckets =
-            {
-                new Bucket { Name = "Bucket 1" },
-                new Bucket { Name = "Bucket 2" },
-                new Bucket { Name = "Bucket 3" },
-                new Bucket { Name = "Bucket 4" },
-                new Bucket { Name = "Bucket 5" },
-            };
+            Bucket bucket1 = new Bucket { Name = "Bucket 1" };
+            Bucket bucket2 = new Bucket { Name = "Bucket 2" };
+            Bucket bucket3 = new Bucket { Name = "Bucket 3" };
+            Bucket bucket4 = new Bucket { Name = "Bucket 4" };
+            Bucket bucket5 = new Bucket { Name = "Bucket 5" };
+
+            bucket1.AddItem(new Item { Name = "Item 1" });
+            bucket2.AddItem(new Item { Name = "Item 2" });
+            bucket3.AddItem(new Item { Name = "Item 3" });
+            bucket4.AddItem(new Item { Name = "Item 4" });
+            bucket5.AddItem(new Item { Name = "Item 5" });
 
             using (BucketContext context = new BucketContext(this.dbContextOptions))
             {
-                context.Buckets.AddRange(buckets);
+                context.Buckets.AddRange(new Bucket[] { bucket1, bucket2, bucket3, bucket4, bucket5 });
                 context.SaveChanges();
             }
 
@@ -430,20 +493,26 @@ public class ScopedBucketRepositoryUnitTests
             using (BucketContext context = new BucketContext(this.dbContextOptions))
             {
                 ScopedBucketRepository repository = new ScopedBucketRepository(context);
-                await repository.RemoveAsync(new Bucket[] { buckets[1], buckets[3] });
+                await repository.RemoveAsync(new Bucket[] { bucket2, bucket4 });
             }
 
             // Assert
             using (BucketContext context = new BucketContext(this.dbContextOptions))
             {
-                Assert.Null(context.Buckets.Find(buckets[1].Id));
-                Assert.Null(context.Buckets.Find(buckets[3].Id));
+                Assert.Null(context.Buckets.Find(bucket2.Id));
+                Assert.Null(context.Buckets.Find(bucket4.Id));
 
                 Assert.Collection(
                     context.Buckets,
                     bucket => Assert.Equal("Bucket 1", bucket.Name),
                     bucket => Assert.Equal("Bucket 3", bucket.Name),
                     bucket => Assert.Equal("Bucket 5", bucket.Name));
+
+                Assert.Collection(
+                    context.Items,
+                    bucket => Assert.Equal("Item 1", bucket.Name),
+                    bucket => Assert.Equal("Item 3", bucket.Name),
+                    bucket => Assert.Equal("Item 5", bucket.Name));
             }
         }
 
@@ -451,18 +520,21 @@ public class ScopedBucketRepositoryUnitTests
         public async Task When_RemovingEmptyEnumerableOfBuckets_Expect_NoChange()
         {
             // Arrange
-            Bucket[] buckets =
-            {
-                new Bucket { Name = "Bucket 1" },
-                new Bucket { Name = "Bucket 2" },
-                new Bucket { Name = "Bucket 3" },
-                new Bucket { Name = "Bucket 4" },
-                new Bucket { Name = "Bucket 5" },
-            };
+            Bucket bucket1 = new Bucket { Name = "Bucket 1" };
+            Bucket bucket2 = new Bucket { Name = "Bucket 2" };
+            Bucket bucket3 = new Bucket { Name = "Bucket 3" };
+            Bucket bucket4 = new Bucket { Name = "Bucket 4" };
+            Bucket bucket5 = new Bucket { Name = "Bucket 5" };
+
+            bucket1.AddItem(new Item { Name = "Item 1" });
+            bucket2.AddItem(new Item { Name = "Item 2" });
+            bucket3.AddItem(new Item { Name = "Item 3" });
+            bucket4.AddItem(new Item { Name = "Item 4" });
+            bucket5.AddItem(new Item { Name = "Item 5" });
 
             using (BucketContext context = new BucketContext(this.dbContextOptions))
             {
-                context.Buckets.AddRange(buckets);
+                context.Buckets.AddRange(new Bucket[] { bucket1, bucket2, bucket3, bucket4, bucket5 });
                 context.SaveChanges();
             }
 
@@ -487,6 +559,14 @@ public class ScopedBucketRepositoryUnitTests
                     bucket => Assert.Equal("Bucket 3", bucket.Name),
                     bucket => Assert.Equal("Bucket 4", bucket.Name),
                     bucket => Assert.Equal("Bucket 5", bucket.Name));
+
+                Assert.Collection(
+                    context.Items,
+                    bucket => Assert.Equal("Item 1", bucket.Name),
+                    bucket => Assert.Equal("Item 2", bucket.Name),
+                    bucket => Assert.Equal("Item 3", bucket.Name),
+                    bucket => Assert.Equal("Item 4", bucket.Name),
+                    bucket => Assert.Equal("Item 5", bucket.Name));
             }
         }
 

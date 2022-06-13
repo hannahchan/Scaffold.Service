@@ -3,6 +3,7 @@
 namespace Scaffold.Application.UnitTests;
 
 using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Scaffold.Application.Components.Bucket;
@@ -11,7 +12,7 @@ using Xunit;
 
 public sealed class TestRepositories : TheoryData<IBucketRepository>, IDisposable
 {
-    private readonly ServiceProvider serviceProvider = CreateServiceProvider();
+    private readonly List<IDisposable> disposables = new List<IDisposable>();
 
     private bool disposed;
 
@@ -28,21 +29,32 @@ public sealed class TestRepositories : TheoryData<IBucketRepository>, IDisposabl
         }
 
         this.disposed = true;
-        this.serviceProvider?.Dispose();
-    }
 
-    private static ServiceProvider CreateServiceProvider()
-    {
-        ServiceCollection services = new ServiceCollection();
-        services.AddDbContextFactory<BucketContext>(builder => builder.UseInMemoryDatabase(Guid.NewGuid().ToString()));
-
-        return services.BuildServiceProvider();
+        foreach (IDisposable disposable in this.disposables)
+        {
+            disposable?.Dispose();
+        }
     }
 
     private BucketContext CreateNewBucketContext()
     {
-        return this.serviceProvider
-            .GetRequiredService<IDbContextFactory<BucketContext>>()
-            .CreateDbContext();
+        BucketContext context = new BucketContext(new DbContextOptionsBuilder<BucketContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options);
+
+        this.disposables.Add(context);
+
+        return context;
+    }
+
+    private IDbContextFactory<BucketContext> CreateNewBucketContextFactory()
+    {
+        ServiceCollection services = new ServiceCollection();
+        services.AddDbContextFactory<BucketContext>(builder => builder.UseInMemoryDatabase(Guid.NewGuid().ToString()));
+
+        ServiceProvider serviceProvider = services.BuildServiceProvider();
+        this.disposables.Add(serviceProvider);
+
+        return serviceProvider.GetRequiredService<IDbContextFactory<BucketContext>>();
     }
 }
