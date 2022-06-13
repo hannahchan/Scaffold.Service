@@ -85,8 +85,29 @@ public class SingletonBucketRepository : SingletonBucketReadRepository, IBucketR
     public void Update(Bucket bucket)
     {
         using BucketContext context = this.factory.CreateDbContext();
-
         context.Buckets.Update(bucket);
+
+        List<Item> itemsInDb = context.Items.Where(item => EF.Property<int>(item, "BucketId") == bucket.Id).ToList();
+        static int ItemKeySelector(Item item) => item.Id;
+
+        // Add New Items
+        IEnumerable<Item> itemsToAdd = bucket.Items.ExceptBy(itemsInDb.Select(ItemKeySelector), ItemKeySelector);
+        context.Items.AddRange(itemsToAdd);
+
+        // Remove Missing Items
+        IEnumerable<Item> itemsToRemove = itemsInDb.ExceptBy(bucket.Items.Select(ItemKeySelector), ItemKeySelector);
+        context.Items.RemoveRange(itemsToRemove);
+
+        // Update Existing Items
+        IEnumerable<Item> itemsToUpdate = bucket.Items.IntersectBy(itemsInDb.Select(ItemKeySelector), ItemKeySelector);
+        context.Items.UpdateRange(itemsToUpdate);
+
+        // System.Console.WriteLine($"------- ITEMS IN BUCKED: {bucket.Items.Count}");
+        // System.Console.WriteLine($"------- ITEMS IN DB: {itemsInDb.Count}");
+        // System.Console.WriteLine($"------- ITEMS TO ADD: {itemsToAdd.Count()}");
+        // System.Console.WriteLine($"------- ITEMS TO REMOVE: {itemsToRemove.Count()}");
+        // System.Console.WriteLine($"------- ITEMS TO UPDATE: {itemsToUpdate.Count()}");
+
         context.SaveChanges();
     }
 

@@ -524,26 +524,42 @@ public class SingletonBucketRepositoryUnitTests
             IDbContextFactory<BucketContext> contextFactory = serviceProvider.GetRequiredService<IDbContextFactory<BucketContext>>();
             SingletonBucketRepository repository = new SingletonBucketRepository(contextFactory);
 
-            Bucket[] buckets =
-            {
-                new Bucket { Name = "Bucket 1" },
-                new Bucket { Name = "Bucket 2" },
-                new Bucket { Name = "Bucket 3" },
-                new Bucket { Name = "Bucket 4" },
-                new Bucket { Name = "Bucket 5" },
-            };
+            Bucket bucket1 = new Bucket { Name = "Bucket 1" };
+            Bucket bucket2 = new Bucket { Name = "Bucket 2" };
+            Bucket bucket3 = new Bucket { Name = "Bucket 3" };
+            Bucket bucket4 = new Bucket { Name = "Bucket 4" };
+            Bucket bucket5 = new Bucket { Name = "Bucket 5" };
+
+            Item bucket2Item1 = new Item { Name = "Bucket 2, Item 1" };
+            Item bucket2Item2 = new Item { Name = "Bucket 2, Item 2" };
+            Item bucket2Item3 = new Item { Name = "Bucket 2, Item 3" };
+
+            bucket2.AddItem(bucket2Item1);
+            bucket2.AddItem(bucket2Item2);
+            bucket2.AddItem(bucket2Item3);
+
+            bucket4.AddItem(new Item { Name = "Bucket 4, Item 1" });
 
             using (BucketContext context = contextFactory.CreateDbContext())
             {
-                context.Buckets.AddRange(buckets);
+                context.Buckets.AddRange(new Bucket[] { bucket1, bucket2, bucket3, bucket4, bucket5 });
                 context.SaveChanges();
             }
 
             string newValue = Guid.NewGuid().ToString();
 
             // Act
-            buckets[1].Name = newValue;
-            repository.Update(buckets[1]);
+            Console.WriteLine($"------- Item IDs: {bucket2Item1.Id}, {bucket2Item2.Id}, {bucket2Item3.Id}");
+            Console.WriteLine($"------- Bucket 2 Items Count: {bucket2.Items.Count}");
+
+            bucket2.Name = newValue;
+            bucket2.AddItem(new Item { Name = "Bucket 2, Item 4" });
+            Console.WriteLine($"------- Bucket 2 Items After Add: {bucket2.Items.Count}");
+            bucket2.RemoveItem(bucket2Item2);
+            Console.WriteLine($"------- Bucket 2 Items After Remove: {bucket2.Items.Count}");
+            bucket2Item3.Name = newValue;
+
+            repository.Update(bucket2);
 
             // Assert
             using (BucketContext context = contextFactory.CreateDbContext())
@@ -555,6 +571,13 @@ public class SingletonBucketRepositoryUnitTests
                     bucket => Assert.Equal("Bucket 3", bucket.Name),
                     bucket => Assert.Equal("Bucket 4", bucket.Name),
                     bucket => Assert.Equal("Bucket 5", bucket.Name));
+
+                Assert.Collection(
+                    context.Items,
+                    item => Assert.Equal("Bucket 2, Item 1", item.Name),
+                    item => Assert.Equal(newValue, item.Name),
+                    item => Assert.Equal("Bucket 4, Item 1", item.Name),
+                    item => Assert.Equal("Bucket 2, Item 4", item.Name));
             }
         }
     }
