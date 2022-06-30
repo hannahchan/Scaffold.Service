@@ -5,17 +5,20 @@ datasources:
     isDefault: false
     name: Jaeger
     type: jaeger
+    uid: jaeger
     url: "http://jaeger:16686"
   - access: proxy
     isDefault: true
     name: Prometheus
     type: prometheus
+    uid: prometheus
     url: "http://prometheus:9090"
   - database: postgres
     jsonData:
       sslmode: disable
       timescaledb: false
-    name: Postgres
+    name: PostgreSQL
     type: postgres
+    uid: postgres
     url: "postgres:5432"
     user: postgres
