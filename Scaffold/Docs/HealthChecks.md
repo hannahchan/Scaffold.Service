@@ -8,11 +8,12 @@ Health checks that check instances of an application are usually intended for co
 
 ## Health Check Port
 
-Health checks intended for monitoring services usually only need to be exposed internally.
+Health checks usually only need to be exposed internally. By default, the health check endpoint in Scaffold is exposed on the same port as the rest of the application. To specify a different port, set the environment variable `ASPNETCORE_HEALTHCHECKPORT` with the new port and update `ASPNETCORE_URLS` to match.
 
-When you build a container image of Scaffold and run it, the health check endpoint is exposed on port `8081` while the rest of the application remains on port `80`. Port `80` is intended to be the public port while port `8081` is the private port intended for monitoring services. You can change the ports used in the Scaffold container image by modifying the Dockerfiles used to build it and the [docker-compose.yml](../docker-compose.yml) used to run it.
+For example;
 
-When Scaffold is run locally, the health check endpoint is still exposed on port `8081` while the rest of the application is on port `5000`. You can change this by modifying [launchSettings.json](../Sources/Scaffold.WebApi/Properties/launchSettings.json).
+    ASPNETCORE_HEALTHCHECKPORT=8081
+    ASPNETCORE_URLS=http://+:80;http://+:8081
 
 ## Entity Framework Core DbContext Check
 

@@ -17,10 +17,6 @@ services:
         protocol: tcp
         published: 80
         target: 80
-      - mode: ingress
-        protocol: tcp
-        published: 8081
-        target: 8081
   postgres:
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
