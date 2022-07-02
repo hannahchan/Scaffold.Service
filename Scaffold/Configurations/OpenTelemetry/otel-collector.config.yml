@@ -1,25 +1,32 @@
 ---
-extensions: ~
+extensions:
+  zpages:
+    endpoint: "0.0.0.0:55679"
+
 receivers:
   otlp:
     protocols:
       grpc: ~
+
 processors: ~
+
 exporters:
+  logging: ~
   jaeger:
     endpoint: "jaeger:14250"
     tls:
       insecure: true
   prometheus:
     endpoint: "0.0.0.0:9090"
+
 service:
-  extensions: []
+  extensions: [zpages]
   pipelines:
     metrics:
-      exporters: [prometheus]
-      processors: []
       receivers: [otlp]
+      processors: []
+      exporters: [logging, prometheus]
     traces:
-      exporters: [jaeger]
-      processors: []
       receivers: [otlp]
+      processors: []
+      exporters: [logging, jaeger]

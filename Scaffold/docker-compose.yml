@@ -28,6 +28,7 @@ services:
   grafana:
     depends_on:
       - jaeger
+      - postgres
       - prometheus
     environment:
       GF_AUTH_ANONYMOUS_ENABLED: "true"
@@ -71,7 +72,12 @@ services:
     command: "--config=/etc/otel-collector.config.yml"
     depends_on:
       - jaeger
-    image: otel/opentelemetry-collector-contrib
+    image: otel/opentelemetry-collector:0.54.0
+    ports:
+      - mode: ingress
+        protocol: tcp
+        published: 55679
+        target: 55679
     volumes:
       - source: ./Configurations/OpenTelemetry/otel-collector.config.yml
         target: /etc/otel-collector.config.yml
