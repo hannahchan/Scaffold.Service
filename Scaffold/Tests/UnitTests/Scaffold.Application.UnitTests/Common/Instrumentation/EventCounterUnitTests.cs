@@ -26,8 +26,8 @@ public class EventCounterUnitTests
             Assert.Null(exception);
 
             Counter<long> counter = EventCounterAccessor.GetCounter();
-            Assert.Equal("application.events.count", counter.Name);
-            Assert.Equal("events", counter.Unit);
+            Assert.Equal("application.events", counter.Name);
+            Assert.Equal("total", counter.Unit);
             Assert.Equal("measures the number of events that have been published to the in-process event bus", counter.Description);
         }
 
@@ -45,8 +45,8 @@ public class EventCounterUnitTests
             Assert.Null(exception);
 
             Counter<long> counter = EventCounterAccessor.GetCounter();
-            Assert.Equal("application.events.count", counter.Name);
-            Assert.Equal("events", counter.Unit);
+            Assert.Equal("application.events", counter.Name);
+            Assert.Equal("total", counter.Unit);
             Assert.Equal("measures the number of events that have been published to the in-process event bus", counter.Description);
         }
     }
