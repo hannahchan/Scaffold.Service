@@ -64,7 +64,7 @@ public class DemoController : ControllerBase
     [HttpGet("trace")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesDefaultResponseType]
-    public async Task<ActionResult> Trace(int depth = 2, int fanOut = 1, bool sync = false)
+    public async Task<ActionResult> Trace(int depth = 2, int fanOut = 1, bool sync = true)
     {
         if (depth > 0 && this.options.TraceMaxDepth > 0)
         {

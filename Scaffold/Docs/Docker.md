@@ -36,7 +36,7 @@ To run the service natively on your computer, change directory to the [Scaffold.
 
     dotnet run
 
-Once up and running you can access the service on `http://localhost:5000`.
+Once up and running you can access the service on `http://localhost`.
 
 ## Running other Services Locally
 

@@ -76,7 +76,7 @@ public class DemoControllerUnitTests
                     Dictionary<string, StringValues> queryString = QueryHelpers.ParseQuery(request.RequestUri.Query);
                     Assert.Equal("1", queryString["depth"]);
                     Assert.Equal("1", queryString["fanOut"]);
-                    Assert.Equal("False", queryString["sync"]);
+                    Assert.Equal("True", queryString["sync"]);
                 });
         }
 

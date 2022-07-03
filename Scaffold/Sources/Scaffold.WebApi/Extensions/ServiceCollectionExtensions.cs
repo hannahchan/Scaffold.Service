@@ -70,6 +70,8 @@ internal static class ServiceCollectionExtensions
                 {
                     options.NextHopBaseAddress ??= $"http://localhost:{defaultPort}";
                 }
+
+                options.NextHopBaseAddress ??= "http://localhost";
             });
 
         return services;
