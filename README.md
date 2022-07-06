@@ -6,7 +6,7 @@ Scaffold.Service is an opinionated template of a service built using ASP.NET Cor
 
 To bootstrap your next service with Scaffold.Service.
 
-1. Install the template package from [NuGet.org](https://www.nuget.org/packages/Scaffold.Service) onto your computer by running;
+1. Install or update the template package from [NuGet.org](https://www.nuget.org/packages/Scaffold.Service) onto your computer by running;
 
    ```
    dotnet new --install Scaffold.Service
