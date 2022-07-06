@@ -6,7 +6,7 @@
   <PropertyGroup>
     <PackageType>Template</PackageType>
     <PackageId>Scaffold.Service</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>6.0.0</PackageVersion>
     <Title>Scaffold Service Template</Title>
     <Authors>Hannah Chan</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
