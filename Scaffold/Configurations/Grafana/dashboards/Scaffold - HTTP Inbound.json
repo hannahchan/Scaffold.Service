@@ -1454,6 +1454,7 @@
   },
   "timezone": "browser",
   "title": "Scaffold - HTTP Inbound",
+  "uid": "HttpIn",
   "version": 1,
   "weekStart": ""
 }

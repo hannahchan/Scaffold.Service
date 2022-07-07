@@ -1454,6 +1454,7 @@
   },
   "timezone": "browser",
   "title": "Scaffold - HTTP Outbound",
+  "uid": "HttpOut",
   "version": 1,
   "weekStart": ""
 }
