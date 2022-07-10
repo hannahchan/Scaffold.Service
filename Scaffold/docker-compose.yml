@@ -69,10 +69,14 @@ services:
         target: /tmp
         type: volume
   opentelemetry-collector:
-    command: "--config=/etc/otel-collector.config.yml"
+    command:
+      [
+        "--config=/etc/otel-collector.config.yml",
+        "--feature-gates=pkg.translator.prometheus.NormalizeName",
+      ]
     depends_on:
       - jaeger
-    image: otel/opentelemetry-collector:0.54.0
+    image: otel/opentelemetry-collector:0.55.0
     ports:
       - mode: ingress
         protocol: tcp
