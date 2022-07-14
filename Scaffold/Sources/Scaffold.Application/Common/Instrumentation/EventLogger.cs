@@ -11,7 +11,7 @@ internal class EventLogger<TNotification> : EventLoggerBase, INotificationHandle
 {
     private readonly ILogger logger;
 
-    public EventLogger(ILogger<EventLogger<TNotification>> logger)
+    public EventLogger(ILogger<TNotification> logger)
     {
         this.logger = logger;
     }
