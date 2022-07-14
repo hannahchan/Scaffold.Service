@@ -19,7 +19,7 @@ public class EventLoggerUnitTests
             Mock.Logger<AuditableEvent> logger = new Mock.Logger<AuditableEvent>();
             EventLogger<AuditableEvent> eventLogger = new EventLogger<AuditableEvent>(logger);
 
-            AuditableEvent auditableEvent = new AuditableEvent(default, default, default, "MyType", "MyDescription");
+            AuditableEvent auditableEvent = new AuditableEvent(default, default, default, default, "MyType", "MyDescription");
 
             // Act
             await eventLogger.Handle(auditableEvent, default);
@@ -57,7 +57,7 @@ public class EventLoggerUnitTests
         }
     }
 
-    private record AuditableEvent(DateTime Timestamp, string TraceId, Type Source, string Type, string Description) : IAuditableEvent, INotification;
+    private record AuditableEvent(DateTime Timestamp, string TraceId, string SpanId, Type Source, string Type, string Description) : IAuditableEvent, INotification;
 
     private record GenericEvent() : INotification;
 }

@@ -9,7 +9,7 @@ using Xunit;
 public class BucketEventUnitTests
 {
     [Fact]
-    public void When_InstantiatingBucketEvent_Expect_TraceId()
+    public void When_InstantiatingBucketEvent_Expect_TraceContext()
     {
         // Arrange
         using Activity activity = new Activity(nameof(activity));
@@ -21,16 +21,18 @@ public class BucketEventUnitTests
 
         // Assert
         Assert.Equal(activity.GetTraceId(), result.TraceId);
+        Assert.Equal(activity.GetSpanId(), result.SpanId);
     }
 
     [Fact]
-    public void When_InstantiatingBucketEvent_Expect_NullTraceId()
+    public void When_InstantiatingBucketEvent_Expect_NullTraceContext()
     {
         // Act
         TestBucketEvent result = new TestBucketEvent(string.Empty, string.Empty);
 
         // Assert
         Assert.Null(result.TraceId);
+        Assert.Null(result.SpanId);
     }
 
     private record TestBucketEvent(string Type, string Description)

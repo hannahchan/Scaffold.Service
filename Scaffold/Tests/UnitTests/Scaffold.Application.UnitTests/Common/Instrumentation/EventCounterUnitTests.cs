@@ -17,7 +17,7 @@ public class EventCounterUnitTests
         {
             // Arrange
             EventCounter<AuditableEvent> eventCounter = new EventCounter<AuditableEvent>();
-            AuditableEvent auditableEvent = new AuditableEvent(default, default, default, "MyType", "MyDescription");
+            AuditableEvent auditableEvent = new AuditableEvent(default, default, default, default, "MyType", "MyDescription");
 
             // Act
             Exception exception = await Record.ExceptionAsync(() => eventCounter.Handle(auditableEvent, default));
@@ -51,7 +51,7 @@ public class EventCounterUnitTests
         }
     }
 
-    private record AuditableEvent(DateTime Timestamp, string TraceId, Type Source, string Type, string Description) : IAuditableEvent, INotification;
+    private record AuditableEvent(DateTime Timestamp, string TraceId, string SpanId, Type Source, string Type, string Description) : IAuditableEvent, INotification;
 
     private record GenericEvent() : INotification;
 

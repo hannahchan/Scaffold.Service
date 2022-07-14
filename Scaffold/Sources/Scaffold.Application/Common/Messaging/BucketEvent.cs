@@ -10,6 +10,8 @@ internal abstract record BucketEvent(string Type, string Description) : IAuditab
     public DateTime Timestamp { get; } = DateTime.UtcNow;
 
     public string? TraceId { get; } = Activity.Current?.GetTraceId();
+
+    public string? SpanId { get; } = Activity.Current?.GetSpanId();
 }
 
 internal record BucketAddedEvent(int BucketId) : BucketEvent(
