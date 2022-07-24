@@ -224,4 +224,46 @@ public static class ActivityExtensionsUnitTests
             });
         }
     }
+
+    [Collection(TestCollection.Activity)]
+    public class RecordException
+    {
+        [Fact]
+        public void When_RecordingException_Expect_ExceptionRecorded()
+        {
+            // Arrange
+            using Activity activity = new Activity(nameof(activity));
+
+            Exception exception = new InvalidOperationException("My Test Exception");
+
+            // Act
+            activity.Start();
+            activity.RecordException(exception);
+
+            // Assert
+            Assert.Collection(
+                activity.Events,
+                activityEvent =>
+                {
+                    Assert.Equal("exception", activityEvent.Name);
+                    Assert.Collection(
+                        activityEvent.Tags,
+                        tag =>
+                        {
+                            Assert.Equal("exception.type", tag.Key);
+                            Assert.Equal("System.InvalidOperationException", tag.Value);
+                        },
+                        tag =>
+                        {
+                            Assert.Equal("exception.message", tag.Key);
+                            Assert.Equal("My Test Exception", tag.Value);
+                        },
+                        tag =>
+                        {
+                            Assert.Equal("exception.stacktrace", tag.Key);
+                            Assert.Equal(exception.ToString(), tag.Value);
+                        });
+                });
+        }
+    }
 }
