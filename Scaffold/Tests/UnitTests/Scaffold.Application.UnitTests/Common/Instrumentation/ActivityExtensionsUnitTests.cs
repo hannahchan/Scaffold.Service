@@ -185,7 +185,7 @@ public static class ActivityExtensionsUnitTests
         }
 
         [Fact]
-        public void When_ActivityIsAllDataRequestIsFalse_Expect_NoException()
+        public void When_ActivityIsNotNullAllDataRequestIsFalse_Expect_NoException()
         {
             // Arrange
             using Activity activity = new Activity(Guid.NewGuid().ToString())
