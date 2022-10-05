@@ -42,6 +42,7 @@ Stuff you might want to add to your service but not included with Scaffold.
 - [Caching](https://docs.microsoft.com/dotnet/core/extensions/caching) (See also [Overview of caching in ASP.NET Core](https://docs.microsoft.com/aspnet/core/performance/caching/overview))
 - [Console Log Formatting](https://docs.microsoft.com/dotnet/core/extensions/console-log-formatter)
 - [Cross-Origin Resource Sharing (CORS)](https://docs.microsoft.com/aspnet/core/security/cors)
+- [Feature Gates](https://github.com/hannahchan/FeatureGates.Net)
 - [Forwarded Headers Handling](https://docs.microsoft.com/aspnet/core/host-and-deploy/proxy-load-balancer)
 - [Header Propagation](https://docs.microsoft.com/aspnet/core/fundamentals/http-requests#header-propagation-middleware)
 - [Response Compressions](https://docs.microsoft.com/aspnet/core/performance/response-compression)
