@@ -35,7 +35,7 @@ internal static class ActivityExtensions
         };
     }
 
-    public static Activity? InvokeIfNotNullAndIsAllDataRequested(this Activity? activity, Action<Activity> action)
+    public static Activity? InvokeIfRecording(this Activity? activity, Action<Activity> action)
     {
         if (activity != null && activity.IsAllDataRequested)
         {

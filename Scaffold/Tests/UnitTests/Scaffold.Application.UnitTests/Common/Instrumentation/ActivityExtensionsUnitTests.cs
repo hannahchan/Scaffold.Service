@@ -167,7 +167,7 @@ public static class ActivityExtensionsUnitTests
     }
 
     [Collection(TestCollection.Activity)]
-    public class InvokeIfNotNullAndIsAllDataRequested
+    public class InvokeIfRecording
     {
         [Fact]
         public void When_ActivityIsNull_Expect_NoException()
@@ -176,7 +176,7 @@ public static class ActivityExtensionsUnitTests
             Activity activity = null;
 
             // Act
-            Exception exception = Record.Exception(() => activity.InvokeIfNotNullAndIsAllDataRequested(activity =>
+            Exception exception = Record.Exception(() => activity.InvokeIfRecording(activity =>
                 activity.SetTag("Key", "Value")));
 
             // Assert
@@ -194,7 +194,7 @@ public static class ActivityExtensionsUnitTests
             };
 
             // Act
-            Exception exception = Record.Exception(() => activity.InvokeIfNotNullAndIsAllDataRequested(activity =>
+            Exception exception = Record.Exception(() => activity.InvokeIfRecording(activity =>
                 activity.SetTag("Key", "Value")));
 
             // Assert
@@ -212,7 +212,7 @@ public static class ActivityExtensionsUnitTests
             };
 
             // Act
-            Exception exception = Record.Exception(() => activity.InvokeIfNotNullAndIsAllDataRequested(activity =>
+            Exception exception = Record.Exception(() => activity.InvokeIfRecording(activity =>
                 activity.SetTag("Key", "Value")));
 
             // Assert
