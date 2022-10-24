@@ -22,7 +22,7 @@ To stop the service running in Docker, run;
 
 This will stop the service and the PostgreSQL containers that were running in the background. This command will also leave behind a Docker volume belonging to PostgreSQL which contains any data that was persisted to the database. To remove this volume, run;
 
-    docker-compose down --volume
+    docker-compose down --volumes
 
 ## Running the PostgreSQL Database Only
 
