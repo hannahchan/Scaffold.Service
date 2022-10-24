@@ -1,6 +1,6 @@
 # Health Checks
 
-Scaffold uses a basic implementation of the [Health Check Middleware](https://docs.microsoft.com/aspnet/core/host-and-deploy/health-checks) included in ASP.NET Core. The health status of Scaffold can be check at `/health` and returns a HTTP 200 OK response when the service is healthy. This health check is intended to be used by monitoring services.
+Scaffold uses a basic implementation of the [Health Check Middleware](https://learn.microsoft.com/aspnet/core/host-and-deploy/health-checks) included in ASP.NET Core. The health status of Scaffold can be check at `/health` and returns a HTTP 200 OK response when the service is healthy. This health check is intended to be used by monitoring services.
 
 ## Health Checks for Monitoring Services
 

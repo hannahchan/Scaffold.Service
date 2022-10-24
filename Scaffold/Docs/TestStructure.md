@@ -22,7 +22,7 @@ Nested classes are also heavily used in Scaffold to help organize tests. For an 
 
 ## Integration Tests
 
-Integrations tests help ensure that different parts of an application work together correctly. In Scaffold, integration tests are done from the point-of-view of a consumer of the application and make heavy use of an [in-memory test server](https://docs.microsoft.com/aspnet/core/test/integration-tests).
+Integrations tests help ensure that different parts of an application work together correctly. In Scaffold, integration tests are done from the point-of-view of a consumer of the application and make heavy use of an [in-memory test server](https://learn.microsoft.com/aspnet/core/test/integration-tests).
 
 When used correctly, an in-memory test server allows individual integration tests to spin up their own instance of your application for full test isolation. Further, each instance can be customized according to the individual needs of each integration test. For example in one of your integration tests, you could test the behavior of your application when the database is down while it is up in the other tests.
 

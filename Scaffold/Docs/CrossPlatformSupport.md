@@ -14,7 +14,7 @@ The default publishing mode _framework-dependent_ in .NET Core or .NET 5 and lat
 
 It is also possible to specify the target platform when publishing platform-specific executables.
 
-For more information about publishing .NET applications, please visit the [_.NET application publishing overview_](https://docs.microsoft.com/dotnet/core/deploying).
+For more information about publishing .NET applications, please visit the [_.NET application publishing overview_](https://learn.microsoft.com/dotnet/core/deploying).
 
 ### Docker
 

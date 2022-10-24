@@ -8,7 +8,7 @@ A software architecture provides a common language to help communicate the desig
 
 ## Primary / Driving Adapters
 
-The Primary / Driving Adapters for Scaffold currently live in the [Sources](../Sources) directory along with the Application and Domain Layer. Each individual Primary / Driving Adapter is its own [host](https://docs.microsoft.com/aspnet/core/fundamentals/host/generic-host) and communicates with the Application Layer via the Command / Query Bus.
+The Primary / Driving Adapters for Scaffold currently live in the [Sources](../Sources) directory along with the Application and Domain Layer. Each individual Primary / Driving Adapter is its own [host](https://learn.microsoft.com/aspnet/core/fundamentals/host/generic-host) and communicates with the Application Layer via the Command / Query Bus.
 
 - [Scaffold.WebApi](../Sources/Scaffold.WebApi)
 

@@ -8,7 +8,7 @@ For more details about using OpenTelemetry in .NET, please check out the [OpenTe
 
 ## Instrumenting Code
 
-To instrument your code with metrics, you can use the native [.NET Metrics API](https://docs.microsoft.com/dotnet/core/diagnostics/metrics). For for more information on how to instrument code for OpenTelemetry, please refer to documentation in the [OpenTelemetry .NET API](https://github.com/open-telemetry/opentelemetry-dotnet/tree/main/src/OpenTelemetry.Api).
+To instrument your code with metrics, you can use the native [.NET Metrics API](https://learn.microsoft.com/dotnet/core/diagnostics/metrics). For for more information on how to instrument code for OpenTelemetry, please refer to documentation in the [OpenTelemetry .NET API](https://github.com/open-telemetry/opentelemetry-dotnet/tree/main/src/OpenTelemetry.Api).
 
 ### Meter Provider
 

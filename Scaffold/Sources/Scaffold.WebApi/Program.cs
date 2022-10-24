@@ -62,7 +62,7 @@ public class Program
     }
 
     // Configures the HTTP request pipeline.
-    // More information at https://docs.microsoft.com/aspnet/core/fundamentals/middleware
+    // More information at https://learn.microsoft.com/aspnet/core/fundamentals/middleware
     private static void ConfigureWebApplication(WebApplication app)
     {
         // Configures middleware

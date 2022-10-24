@@ -4,8 +4,8 @@ To help developers write less buggy code, the nullable aware context has been en
 
 Learn more about nullable reference types with the links below.
 
-- <https://docs.microsoft.com/dotnet/csharp/language-reference/builtin-types/nullable-reference-types>
-- <https://docs.microsoft.com/dotnet/csharp/nullable-references>
+- <https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/nullable-reference-types>
+- <https://learn.microsoft.com/dotnet/csharp/nullable-references>
 
 ## Pitfalls
 

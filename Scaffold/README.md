@@ -38,15 +38,15 @@ Other stuff you inherit when you bootstrap with Scaffold.
 Stuff you might want to add to your service but not included with Scaffold.
 
 - [API Versioning](https://github.com/Microsoft/aspnet-api-versioning)
-- [Authentication](https://docs.microsoft.com/aspnet/core/security/authentication) and [Authorization](https://docs.microsoft.com/aspnet/core/security/authorization)
-- [Caching](https://docs.microsoft.com/dotnet/core/extensions/caching) (See also [Overview of caching in ASP.NET Core](https://docs.microsoft.com/aspnet/core/performance/caching/overview))
-- [Console Log Formatting](https://docs.microsoft.com/dotnet/core/extensions/console-log-formatter)
-- [Cross-Origin Resource Sharing (CORS)](https://docs.microsoft.com/aspnet/core/security/cors)
+- [Authentication](https://learn.microsoft.com/aspnet/core/security/authentication) and [Authorization](https://learn.microsoft.com/aspnet/core/security/authorization)
+- [Caching](https://learn.microsoft.com/dotnet/core/extensions/caching) (See also [Overview of caching in ASP.NET Core](https://learn.microsoft.com/aspnet/core/performance/caching/overview))
+- [Console Log Formatting](https://learn.microsoft.com/dotnet/core/extensions/console-log-formatter)
+- [Cross-Origin Resource Sharing (CORS)](https://learn.microsoft.com/aspnet/core/security/cors)
 - [Feature Gates](https://github.com/hannahchan/FeatureGates.Net)
-- [Forwarded Headers Handling](https://docs.microsoft.com/aspnet/core/host-and-deploy/proxy-load-balancer)
-- [Header Propagation](https://docs.microsoft.com/aspnet/core/fundamentals/http-requests#header-propagation-middleware)
-- [Response Compressions](https://docs.microsoft.com/aspnet/core/performance/response-compression)
-- [Secrets Management](https://docs.microsoft.com/aspnet/core/security/app-secrets)
+- [Forwarded Headers Handling](https://learn.microsoft.com/aspnet/core/host-and-deploy/proxy-load-balancer)
+- [Header Propagation](https://learn.microsoft.com/aspnet/core/fundamentals/http-requests#header-propagation-middleware)
+- [Response Compressions](https://learn.microsoft.com/aspnet/core/performance/response-compression)
+- [Secrets Management](https://learn.microsoft.com/aspnet/core/security/app-secrets)
 
 If building microservices, you may want to bring your own sidecars.
 
