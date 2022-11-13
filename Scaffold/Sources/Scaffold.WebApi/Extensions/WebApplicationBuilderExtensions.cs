@@ -61,9 +61,9 @@ internal static class WebApplicationBuilderExtensions
 
         string[] ignorePatterns = { "^/health$", "^/metrics$" };
 
-        webApplicationBuilder.Services.AddOpenTelemetryTracing(tracerProviderBuilder =>
+        webApplicationBuilder.Services.AddOpenTelemetryTracing(builder =>
         {
-            tracerProviderBuilder
+            builder
                 .SetResourceBuilder(resourceBuilder)
                 .AddAspNetCoreInstrumentation(options =>
                 {
