@@ -398,7 +398,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Scaffold - Application Events",
+  "title": "Application Events",
   "uid": "AppEvents",
   "version": 1,
   "weekStart": ""

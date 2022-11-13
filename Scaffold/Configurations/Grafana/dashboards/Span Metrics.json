@@ -70,15 +70,15 @@
       "pluginVersion": "8.5.0",
       "targets": [
         {
-          "expr": "sum(rate(http_server_duration_milliseconds_sum{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range])) /\nsum(rate(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range]))",
+          "expr": "sum(rate(latency_milliseconds_sum{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range])) /\nsum(rate(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range]))",
           "instant": true,
-          "legendFormat": "Average Request Duration",
+          "legendFormat": "Average Span Duration",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(http_server_duration_milliseconds_sum{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range])) /\nsum(irate(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range]))",
+          "expr": "sum(irate(latency_milliseconds_sum{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range])) /\nsum(irate(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range]))",
           "instant": true,
-          "legendFormat": "Instant Request Duration",
+          "legendFormat": "Instant Span Duration",
           "refId": "B"
         }
       ],
@@ -130,7 +130,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Average Request Duration"
+              "options": "Average Span Duration"
             },
             "properties": [
               {
@@ -145,7 +145,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Instant Request Duration"
+              "options": "Instant Span Duration"
             },
             "properties": [
               {
@@ -179,13 +179,13 @@
       "pluginVersion": "8.5.0",
       "targets": [
         {
-          "expr": "sum(rate(http_server_duration_milliseconds_sum{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range])) /\nsum(rate(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range]))",
-          "legendFormat": "Average Request Duration",
+          "expr": "sum(rate(latency_milliseconds_sum{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range])) /\nsum(rate(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range]))",
+          "legendFormat": "Average Span Duration",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(http_server_duration_milliseconds_sum{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range])) /\nsum(irate(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range]))",
-          "legendFormat": "Instant Request Duration",
+          "expr": "sum(irate(latency_milliseconds_sum{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range])) /\nsum(irate(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range]))",
+          "legendFormat": "Instant Span Duration",
           "refId": "B"
         }
       ],
@@ -225,26 +225,26 @@
       "pluginVersion": "8.5.0",
       "targets": [
         {
-          "expr": "histogram_quantile(0.99, sum(rate(http_server_duration_milliseconds_bucket{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range])) by (le))",
+          "expr": "histogram_quantile(0.99, sum(rate(latency_milliseconds_bucket{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range])) by (le))",
           "hide": false,
           "instant": true,
           "legendFormat": "99th Percentile",
           "refId": "A"
         },
         {
-          "expr": "histogram_quantile(0.95, sum(rate(http_server_duration_milliseconds_bucket{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range])) by (le))",
+          "expr": "histogram_quantile(0.95, sum(rate(latency_milliseconds_bucket{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range])) by (le))",
           "instant": true,
           "legendFormat": "95th Percentile",
           "refId": "B"
         },
         {
-          "expr": "histogram_quantile(0.85, sum(rate(http_server_duration_milliseconds_bucket{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range])) by (le))",
+          "expr": "histogram_quantile(0.85, sum(rate(latency_milliseconds_bucket{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range])) by (le))",
           "instant": true,
           "legendFormat": "85th Percentile",
           "refId": "C"
         },
         {
-          "expr": "histogram_quantile(0.50, sum(rate(http_server_duration_milliseconds_bucket{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range])) by (le))",
+          "expr": "histogram_quantile(0.50, sum(rate(latency_milliseconds_bucket{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range])) by (le))",
           "instant": true,
           "legendFormat": "50th Percentile",
           "refId": "D"
@@ -377,22 +377,22 @@
       "pluginVersion": "8.5.0",
       "targets": [
         {
-          "expr": "histogram_quantile(0.99, sum(rate(http_server_duration_milliseconds_bucket{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range])) by (le))",
+          "expr": "histogram_quantile(0.99, sum(rate(latency_milliseconds_bucket{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range])) by (le))",
           "legendFormat": "99th Percentile",
           "refId": "A"
         },
         {
-          "expr": "histogram_quantile(0.95, sum(rate(http_server_duration_milliseconds_bucket{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range])) by (le))",
+          "expr": "histogram_quantile(0.95, sum(rate(latency_milliseconds_bucket{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range])) by (le))",
           "legendFormat": "95th Percentile",
           "refId": "B"
         },
         {
-          "expr": "histogram_quantile(0.85, sum(rate(http_server_duration_milliseconds_bucket{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range])) by (le))",
+          "expr": "histogram_quantile(0.85, sum(rate(latency_milliseconds_bucket{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range])) by (le))",
           "legendFormat": "85th Percentile",
           "refId": "C"
         },
         {
-          "expr": "histogram_quantile(0.50, sum(rate(http_server_duration_milliseconds_bucket{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range])) by (le))",
+          "expr": "histogram_quantile(0.50, sum(rate(latency_milliseconds_bucket{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range])) by (le))",
           "legendFormat": "50th Percentile",
           "refId": "D"
         }
@@ -408,7 +408,7 @@
         "y": 8
       },
       "id": 6,
-      "title": "Traffic",
+      "title": "Spans",
       "type": "row"
     },
     {
@@ -419,7 +419,7 @@
             "mode": "absolute",
             "steps": []
           },
-          "unit": "reqps"
+          "unit": "spn/s"
         },
         "overrides": []
       },
@@ -445,15 +445,15 @@
       "pluginVersion": "8.5.0",
       "targets": [
         {
-          "expr": "sum(rate(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range]))",
+          "expr": "sum(rate(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range]))",
           "instant": true,
-          "legendFormat": "Average Request Rate",
+          "legendFormat": "Average Span Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range]))",
+          "expr": "sum(irate(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range]))",
           "instant": true,
-          "legendFormat": "Instant Request Rate",
+          "legendFormat": "Instant Span Rate",
           "refId": "B"
         }
       ],
@@ -499,13 +499,13 @@
             "mode": "absolute",
             "steps": []
           },
-          "unit": "reqps"
+          "unit": "spn/s"
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "Average Request Rate"
+              "options": "Average Span Rate"
             },
             "properties": [
               {
@@ -520,7 +520,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Instant Request Rate"
+              "options": "Instant Span Rate"
             },
             "properties": [
               {
@@ -554,13 +554,13 @@
       "pluginVersion": "8.5.0",
       "targets": [
         {
-          "expr": "sum(rate(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range]))",
-          "legendFormat": "Average Request Rate",
+          "expr": "sum(rate(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range]))",
+          "legendFormat": "Average Span Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range]))",
-          "legendFormat": "Instant Request Rate",
+          "expr": "sum(irate(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range]))",
+          "legendFormat": "Instant Span Rate",
           "refId": "B"
         }
       ],
@@ -599,27 +599,27 @@
       "pluginVersion": "8.5.0",
       "targets": [
         {
-          "expr": "sum(increase(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range]))",
+          "expr": "sum(increase(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range]))",
           "instant": true,
-          "legendFormat": "All Requests",
+          "legendFormat": "All Spans",
           "refId": "A"
         },
         {
-          "expr": "sum(increase(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\"2.*\"}[$__range]))",
+          "expr": "sum(increase(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=\"STATUS_CODE_OK\"}[$__range]))",
           "instant": true,
-          "legendFormat": "Successes (2xx)",
+          "legendFormat": "OK",
           "refId": "B"
         },
         {
-          "expr": "sum(increase(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\"4.*\"}[$__range]))",
+          "expr": "sum(increase(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=\"STATUS_CODE_UNSET\"}[$__range]))",
           "instant": true,
-          "legendFormat": "Client Errors (4xx)",
+          "legendFormat": "UNSET",
           "refId": "C"
         },
         {
-          "expr": "sum(increase(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\"5.*\"}[$__range]))",
+          "expr": "sum(increase(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=\"STATUS_CODE_ERROR\"}[$__range]))",
           "instant": true,
-          "legendFormat": "Server Errors (5xx)",
+          "legendFormat": "ERROR",
           "refId": "D"
         }
       ],
@@ -671,7 +671,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "All Requests"
+              "options": "All Spans"
             },
             "properties": [
               {
@@ -686,7 +686,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Client Errors (4xx)"
+              "options": "UNSET"
             },
             "properties": [
               {
@@ -701,7 +701,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Server Errors (5xx)"
+              "options": "ERROR"
             },
             "properties": [
               {
@@ -716,7 +716,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Successes (2xx)"
+              "options": "OK"
             },
             "properties": [
               {
@@ -750,23 +750,23 @@
       "pluginVersion": "8.5.0",
       "targets": [
         {
-          "expr": "sum(increase(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range]))",
-          "legendFormat": "All Requests",
+          "expr": "sum(increase(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range]))",
+          "legendFormat": "All Spans",
           "refId": "A"
         },
         {
-          "expr": "sum(increase(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\"2.*\"}[$__range]))",
-          "legendFormat": "Successes (2xx)",
+          "expr": "sum(increase(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=\"STATUS_CODE_OK\"}[$__range]))",
+          "legendFormat": "OK",
           "refId": "B"
         },
         {
-          "expr": "sum(increase(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\"4.*\"}[$__range]))",
-          "legendFormat": "Client Errors (4xx)",
+          "expr": "sum(increase(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=\"STATUS_CODE_UNSET\"}[$__range]))",
+          "legendFormat": "UNSET",
           "refId": "C"
         },
         {
-          "expr": "sum(increase(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\"5.*\"}[$__range]))",
-          "legendFormat": "Server Errors (5xx)",
+          "expr": "sum(increase(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=\"STATUS_CODE_ERROR\"}[$__range]))",
+          "legendFormat": "ERROR",
           "refId": "D"
         }
       ],
@@ -818,9 +818,9 @@
       "pluginVersion": "8.5.0",
       "targets": [
         {
-          "expr": "sum(increase(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\"2.*\"}[$__range])) /\nsum(increase(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range]))",
+          "expr": "sum(increase(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=\"STATUS_CODE_OK\"}[$__range])) /\nsum(increase(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range]))",
           "instant": true,
-          "legendFormat": "% Successes (2xx)",
+          "legendFormat": "% OK",
           "refId": "A"
         }
       ],
@@ -866,13 +866,13 @@
             "mode": "absolute",
             "steps": []
           },
-          "unit": "reqps"
+          "unit": "spn/s"
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "Average Success (2xx) Rate"
+              "options": "Average OK Rate"
             },
             "properties": [
               {
@@ -887,7 +887,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Instant Success (2xx) Rate"
+              "options": "Instant OK Rate"
             },
             "properties": [
               {
@@ -921,13 +921,13 @@
       "pluginVersion": "8.5.0",
       "targets": [
         {
-          "expr": "sum(rate(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\"2.*\"}[$__range]))",
-          "legendFormat": "Average Success (2xx) Rate",
+          "expr": "sum(rate(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=\"STATUS_CODE_OK\"}[$__range]))",
+          "legendFormat": "Average OK Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\"2.*\"}[$__range]))",
-          "legendFormat": "Instant Success (2xx) Rate",
+          "expr": "sum(irate(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=\"STATUS_CODE_OK\"}[$__range]))",
+          "legendFormat": "Instant OK Rate",
           "refId": "B"
         }
       ],
@@ -967,9 +967,9 @@
       "pluginVersion": "8.5.0",
       "targets": [
         {
-          "expr": "sum(increase(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\"4.*\"}[$__range])) /\nsum(increase(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range]))",
+          "expr": "sum(increase(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=\"STATUS_CODE_UNSET\"}[$__range])) /\nsum(increase(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range]))",
           "instant": true,
-          "legendFormat": "% Client Errors (4xx)",
+          "legendFormat": "% UNSET",
           "refId": "A"
         }
       ],
@@ -1015,13 +1015,13 @@
             "mode": "absolute",
             "steps": []
           },
-          "unit": "reqps"
+          "unit": "spn/s"
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "Average Client Error (4xx) Rate"
+              "options": "Average UNSET Rate"
             },
             "properties": [
               {
@@ -1036,7 +1036,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Instant Client Error (4xx) Rate"
+              "options": "Instant UNSET Rate"
             },
             "properties": [
               {
@@ -1070,13 +1070,13 @@
       "pluginVersion": "8.5.0",
       "targets": [
         {
-          "expr": "sum(rate(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\"4.*\"}[$__range]))",
-          "legendFormat": "Average Client Error (4xx) Rate",
+          "expr": "sum(rate(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=\"STATUS_CODE_UNSET\"}[$__range]))",
+          "legendFormat": "Average UNSET Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\"4.*\"}[$__range]))",
-          "legendFormat": "Instant Client Error (4xx) Rate",
+          "expr": "sum(irate(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=\"STATUS_CODE_UNSET\"}[$__range]))",
+          "legendFormat": "Instant UNSET Rate",
           "refId": "B"
         }
       ],
@@ -1116,9 +1116,9 @@
       "pluginVersion": "8.5.0",
       "targets": [
         {
-          "expr": "sum(increase(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\"5.*\"}[$__range])) /\nsum(increase(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\".+\"}[$__range]))",
+          "expr": "sum(increase(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=\"STATUS_CODE_ERROR\"}[$__range])) /\nsum(increase(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=~\".+\"}[$__range]))",
           "instant": true,
-          "legendFormat": "% Server Errors (5xx)",
+          "legendFormat": "% ERROR",
           "refId": "A"
         }
       ],
@@ -1164,13 +1164,13 @@
             "mode": "absolute",
             "steps": []
           },
-          "unit": "reqps"
+          "unit": "spn/s"
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "Average Server Error (5xx) Rate"
+              "options": "Average ERROR Rate"
             },
             "properties": [
               {
@@ -1185,7 +1185,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Instant Server Error (5xx) Rate"
+              "options": "Instant ERROR Rate"
             },
             "properties": [
               {
@@ -1219,13 +1219,13 @@
       "pluginVersion": "8.5.0",
       "targets": [
         {
-          "expr": "sum(rate(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\"5.*\"}[$__range]))",
-          "legendFormat": "Average Server Error (5xx) Rate",
+          "expr": "sum(rate(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=\"STATUS_CODE_ERROR\"}[$__range]))",
+          "legendFormat": "Average ERROR Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\"5.*\"}[$__range]))",
-          "legendFormat": "Instant Server Error (5xx) Rate",
+          "expr": "sum(irate(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=\"STATUS_CODE_ERROR\"}[$__range]))",
+          "legendFormat": "Instant ERROR Rate",
           "refId": "B"
         }
       ],
@@ -1239,7 +1239,7 @@
             "mode": "absolute",
             "steps": []
           },
-          "unit": "reqps"
+          "unit": "spn/s"
         },
         "overrides": []
       },
@@ -1265,15 +1265,15 @@
       "pluginVersion": "8.5.0",
       "targets": [
         {
-          "expr": "sum(rate(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\"2.*\"}[$__range]))",
+          "expr": "sum(rate(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=\"STATUS_CODE_OK\"}[$__range]))",
           "instant": true,
-          "legendFormat": "Average Success (2xx) Rate",
+          "legendFormat": "Average OK Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\"2.*\"}[$__range]))",
+          "expr": "sum(irate(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=\"STATUS_CODE_OK\"}[$__range]))",
           "instant": true,
-          "legendFormat": "Instant Success (2xx) Rate",
+          "legendFormat": "Instant OK Rate",
           "refId": "B"
         }
       ],
@@ -1287,7 +1287,7 @@
             "mode": "absolute",
             "steps": []
           },
-          "unit": "reqps"
+          "unit": "spn/s"
         },
         "overrides": []
       },
@@ -1313,15 +1313,15 @@
       "pluginVersion": "8.5.0",
       "targets": [
         {
-          "expr": "sum(rate(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\"4.*\"}[$__range]))",
+          "expr": "sum(rate(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=\"STATUS_CODE_UNSET\"}[$__range]))",
           "instant": true,
-          "legendFormat": "Average Client Error (4xx) Rate",
+          "legendFormat": "Average UNSET Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\"4.*\"}[$__range]))",
+          "expr": "sum(irate(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=\"STATUS_CODE_UNSET\"}[$__range]))",
           "instant": true,
-          "legendFormat": "Instant Client Error (4xx) Rate",
+          "legendFormat": "Instant UNSET Rate",
           "refId": "B"
         }
       ],
@@ -1335,7 +1335,7 @@
             "mode": "absolute",
             "steps": []
           },
-          "unit": "reqps"
+          "unit": "spn/s"
         },
         "overrides": []
       },
@@ -1361,15 +1361,15 @@
       "pluginVersion": "8.5.0",
       "targets": [
         {
-          "expr": "sum(rate(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\"5.*\"}[$__range]))",
+          "expr": "sum(rate(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=\"STATUS_CODE_ERROR\"}[$__range]))",
           "instant": true,
-          "legendFormat": "Average Server Error (5xx) Rate",
+          "legendFormat": "Average ERROR Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(irate(http_server_duration_milliseconds_count{job=~\"${job:regex}\", http_method=~\"${http_method:regex}\", http_status_code=~\"5.*\"}[$__range]))",
+          "expr": "sum(irate(latency_milliseconds_count{service_name=\"${service_name}\", operation=\"${operation}\", status_code=\"STATUS_CODE_ERROR\"}[$__range]))",
           "instant": true,
-          "legendFormat": "Instant Server Error (5xx) Rate",
+          "legendFormat": "Instant ERROR Rate",
           "refId": "B"
         }
       ],
@@ -1389,16 +1389,16 @@
           "text": ["All"],
           "value": ["$__all"]
         },
-        "definition": "label_values(http_server_duration_milliseconds_count, job)",
+        "definition": "label_values(latency_milliseconds_count, service_name)",
         "hide": 0,
-        "includeAll": true,
-        "label": "Job",
-        "multi": true,
-        "name": "job",
+        "includeAll": false,
+        "label": "Service Name",
+        "multi": false,
+        "name": "service_name",
         "options": [],
         "query": {
-          "query": "label_values(http_server_duration_milliseconds_count, job)",
-          "refId": "Prometheus-job-Variable-Query"
+          "query": "label_values(latency_milliseconds_count, service_name)",
+          "refId": "Prometheus-service-Variable-Query"
         },
         "refresh": 1,
         "regex": "",
@@ -1414,16 +1414,16 @@
           "text": ["All"],
           "value": ["$__all"]
         },
-        "definition": "label_values(http_server_duration_milliseconds_count, http_method)",
+        "definition": "label_values(latency_milliseconds_count, operation)",
         "hide": 0,
-        "includeAll": true,
-        "label": "HTTP Method",
-        "multi": true,
-        "name": "http_method",
+        "includeAll": false,
+        "label": "Operation",
+        "multi": false,
+        "name": "operation",
         "options": [],
         "query": {
-          "query": "label_values(http_server_duration_milliseconds_count, http_method)",
-          "refId": "Prometheus-method-Variable-Query"
+          "query": "label_values(latency_milliseconds_count, operation)",
+          "refId": "Prometheus-operation-Variable-Query"
         },
         "refresh": 1,
         "regex": "",
@@ -1453,8 +1453,8 @@
     ]
   },
   "timezone": "browser",
-  "title": "Scaffold - HTTP Inbound",
-  "uid": "HttpIn",
+  "title": "Span Metrics",
+  "uid": "SpanMetrics",
   "version": 1,
   "weekStart": ""
 }
