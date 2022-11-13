@@ -1,10 +1,10 @@
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
 ENV ASPNETCORE_FORWARDEDHEADERS_ENABLED=true
 ENV ASPNETCORE_URLS=http://+:80
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY . .
 WORKDIR /src/Sources/Scaffold.WebApi

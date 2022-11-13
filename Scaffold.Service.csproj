@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
     <PackageType>Template</PackageType>
     <PackageId>Scaffold.Service</PackageId>
-    <PackageVersion>6.0.0</PackageVersion>
+    <PackageVersion>7.0.0</PackageVersion>
     <Title>Scaffold Service Template</Title>
     <Authors>Hannah Chan</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

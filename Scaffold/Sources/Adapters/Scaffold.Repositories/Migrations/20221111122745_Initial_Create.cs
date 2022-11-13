@@ -6,8 +6,10 @@ using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-public partial class Initial_Create : Migration
+/// <inheritdoc />
+public partial class InitialCreate : Migration
 {
+    /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
         migrationBuilder.CreateTable(
@@ -51,6 +53,7 @@ public partial class Initial_Create : Migration
             });
     }
 
+    /// <inheritdoc />
     protected override void Down(MigrationBuilder migrationBuilder)
     {
         migrationBuilder.DropTable(

@@ -58,7 +58,7 @@ public partial class RequestLoggingHttpMessageHandler : DelegatingHandler
     private static partial void LogRequestStarted(ILogger logger, LogLevel logLevel, HttpMethod httpMethod, Uri uri);
 
     [LoggerMessage(EventId = 2, Message = "Outbound HTTP {HttpMethod} {Uri} finished - {StatusCode}")]
-    private static partial void LogRequestFinished(ILogger logger, LogLevel logLevel, HttpMethod httpMethod, Uri uri, int StatusCode);
+    private static partial void LogRequestFinished(ILogger logger, LogLevel logLevel, HttpMethod httpMethod, Uri uri, int statusCode);
 
     [LoggerMessage(EventId = 3, Message = "Outbound HTTP {HttpMethod} {Uri} finished - Unhandled Exception")]
     private static partial void LogRequestException(ILogger logger, LogLevel logLevel, HttpMethod httpMethod, Uri uri, Exception exception);

@@ -5,7 +5,8 @@
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_URLS": "http://+:80"
+        "ASPNETCORE_URLS": "http://+:80",
+        "OTEL_SERVICE_NAME": "Scaffold"
       }
     }
   }

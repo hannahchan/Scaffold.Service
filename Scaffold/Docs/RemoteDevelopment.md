@@ -5,7 +5,7 @@ Scaffold includes configuration which you can use with [Visual Studio Code Remot
 - Use a sandboxed development environment.
 - Get started faster with a consistent development environment.
 
-Other [remote development scenarios](https://code.visualstudio.com/docs/remote/remote-overview) are also possible but require further configuration.
+Other [remote development scenarios](https://code.visualstudio.com/docs/remote/remote-overview) are also possible but require further configuration. Learn more about remote developer and development containers from [containers.dev](https://containers.dev).
 
 ## Visual Studio Code Remote - Containers
 

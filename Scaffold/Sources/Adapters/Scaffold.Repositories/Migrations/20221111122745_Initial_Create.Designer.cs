@@ -9,14 +9,15 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Scaffold.Repositories.Migrations
 {
     [DbContext(typeof(BucketContext))]
-    [Migration("20220706114718_Initial_Create")]
-    partial class Initial_Create
+    [Migration("20221111122745_Initial_Create")]
+    partial class InitialCreate
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.6")
+                .HasAnnotation("ProductVersion", "7.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);

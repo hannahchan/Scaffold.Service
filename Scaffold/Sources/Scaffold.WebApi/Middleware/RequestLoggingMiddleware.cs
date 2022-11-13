@@ -70,7 +70,7 @@ public partial class RequestLoggingMiddleware
     private static partial void LogRequestStarted(ILogger logger, LogLevel logLevel, string httpMethod, PathString requestPath);
 
     [LoggerMessage(EventId = 2, Message = "Inbound HTTP {HttpMethod} {RequestPath} finished - {StatusCode}")]
-    private static partial void LogRequestFinished(ILogger logger, LogLevel logLevel, string httpMethod, PathString requestPath, int StatusCode);
+    private static partial void LogRequestFinished(ILogger logger, LogLevel logLevel, string httpMethod, PathString requestPath, int statusCode);
 
     [LoggerMessage(EventId = 3, Message = "Inbound HTTP {HttpMethod} {RequestPath} finished - Unhandled Exception")]
     private static partial void LogRequestException(ILogger logger, LogLevel logLevel, string httpMethod, PathString requestPath, Exception exception);
