@@ -11,14 +11,14 @@ The local development experience is what most developers will be familiar with. 
 - [Docker Compose](https://docs.docker.com/compose/install)
 - [Visual Studio Code](https://code.visualstudio.com) (Recommended)
 
-## Remote Development
+## Development Container
 
-Scaffold includes configuration which you can use with [Visual Studio Code Remote - Containers](https://code.visualstudio.com/docs/remote/containers) or [GitHub Codespaces](https://code.visualstudio.com/docs/remote/codespaces) to spin up a remote development environment. This is ideal for those who want to;
+Scaffold includes configuration which you can use with [Visual Studio Code Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers) or [GitHub Codespaces](https://code.visualstudio.com/docs/remote/codespaces) to spin up a local or remote development container. This is ideal for those who want to;
 
 - Use a sandboxed development environment.
 - Get started faster with a consistent development environment.
 
-For more information, please take a look at the [Remote Development](./RemoteDevelopment.md) documentation.
+For more information, please take a look at the [Development Container](./DevelopmentContainer.md) documentation.
 
 ## Building and Testing the Service
 

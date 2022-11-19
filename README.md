@@ -9,7 +9,7 @@ To bootstrap your next service with Scaffold.Service.
 1. Install or update the template package from [NuGet.org](https://www.nuget.org/packages/Scaffold.Service) onto your computer by running;
 
    ```
-   dotnet new --install Scaffold.Service
+   dotnet new install Scaffold.Service
    ```
 
 2. Create your new service by running;
@@ -42,10 +42,10 @@ Other stuff you inherit when you bootstrap with Scaffold.Service.
 - [Code Analysis and Formatting](./Scaffold/Docs/CodeAnalysisAndFormatting.md)
 - [Cross-platform Support](./Scaffold/Docs/CrossPlatformSupport.md)
 - [Deterministic Builds](./Scaffold/Docs/DeterministicBuilds.md)
+- [Development Container](./Scaffold/Docs/DevelopmentContainer.md)
 - [Docker Support](./Scaffold/Docs/Docker.md)
 - [Entity Framework Support](./Scaffold/Docs/EntityFramework.md)
 - [Nullable Reference Types](./Scaffold/Docs/NullableReferenceTypes.md)
-- [Remote Development](./Scaffold/Docs/RemoteDevelopment.md)
 - [Software Bill of Materials](./Scaffold/Docs/SoftwareBillOfMaterials.md)
 - [Test Structure](./Scaffold/Docs/TestStructure.md)
 

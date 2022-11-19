@@ -26,10 +26,10 @@ Other stuff you inherit when you bootstrap with Scaffold.
 - [Code Analysis and Formatting](./Docs/CodeAnalysisAndFormatting.md)
 - [Cross-platform Support](./Docs/CrossPlatformSupport.md)
 - [Deterministic Builds](./Docs/DeterministicBuilds.md)
+- [Development Container](./Docs/DevelopmentContainer.md)
 - [Docker Support](./Docs/Docker.md)
 - [Entity Framework Support](./Docs/EntityFramework.md)
 - [Nullable Reference Types](./Docs/NullableReferenceTypes.md)
-- [Remote Development](./Docs/RemoteDevelopment.md)
 - [Software Bill of Materials](./Docs/SoftwareBillOfMaterials.md)
 - [Test Structure](./Docs/TestStructure.md)
 
